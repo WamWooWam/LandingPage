@@ -1,0 +1,15 @@
+{
+  "compileOnSave": true,
+  "compilerOptions": {
+    "experimentalDecorators": true,
+    "noImplicitAny": true,
+    "sourceMap": true,
+    "lib": [ "ES2020", "DOM", "DOM.Iterable" ],
+    "target": "ES6",
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+    "outDir": "./dist",
+    "jsx": "react-jsx",
+    "jsxImportSource": "preact"
+  }
+}

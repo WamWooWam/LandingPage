@@ -1,0 +1,15 @@
+{
+  "name": "manifest-loader",
+  "version": "1.0.0",
+  "description": "",
+  "main": "manifest-loader.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "base32.js": "^0.1.0",
+    "xmldom": "^0.6.0"
+  }
+}
