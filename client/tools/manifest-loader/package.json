@@ -10,6 +10,7 @@
   "license": "ISC",
   "dependencies": {
     "base32.js": "^0.1.0",
+    "minify-xml": "^3.4.0",
     "xmldom": "^0.6.0"
   }
 }
