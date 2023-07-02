@@ -8,6 +8,7 @@ export interface StartTileGroup {
 export interface RawTileProps {
     packageName: string;
     appId: string;
+    query?: string;
     size: TileSize;
     fence: boolean;
 }
@@ -51,6 +52,12 @@ export const parseLayout = (text: string) => {
                 else {
                     tileProps.packageName = rawAppId.substring(0, idx);
                     tileProps.appId = rawAppId.substring(idx + 1);
+                }
+
+                idx = tileProps.appId.indexOf("?");
+                if (idx !== -1) {
+                    tileProps.appId = tileProps.appId.substring(0, idx);
+                    tileProps.query = tileProps.appId.substring(idx + 1);
                 }
 
                 tileProps.fence = tile.getAttribute("FencePost") === "1";

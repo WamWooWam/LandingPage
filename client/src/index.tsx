@@ -1,13 +1,14 @@
 import "preact/debug"
 import { render } from "preact"
-import { Start } from './Start';
 import { PackageRegistry } from "./Data/PackageRegistry";
 import { PackageReader } from "./Data/PackageReader";
+import { Root } from "./Root";
 import './index.css';
 import './segoe.css';
 
 const packages = [
   require('../../packages/Socials/AppxManifest.xml').default,
+  require('../../packages/Projects/AppxManifest.xml').default,
 ];
 
 document.addEventListener("DOMContentLoaded", async () => {
@@ -17,5 +18,5 @@ document.addEventListener("DOMContentLoaded", async () => {
     PackageRegistry.registerPackage(pack);
   }
 
-  render(<Start />, document.body);
+  render(<Root/>, document.body);
 })

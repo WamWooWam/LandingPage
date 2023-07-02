@@ -1,14 +1,17 @@
 import { Component } from "preact";
 import { useContext } from "preact/hooks";
-import { TileSize } from "../../../shared/TileSize";
 import { PackageApplication } from "../Data/PackageApplication";
 import { Package } from "../Data/Package";
 import { PackageRegistry } from "../Data/PackageRegistry";
-import { getVisuals } from "./TileToast"
 import { TileVisual } from "./TileVisual";
 import { TileVisualRenderer } from "./TileVisualRenderer";
+import { MobileContext } from "../Root";
+import { TileBackgroundRenderer } from "./TileBackgroundRenderer";
+import { TileSize } from "../../../shared/TileSize";
 import { lightenDarkenColour2 } from "../../../shared/ColourUtils";
+import { getVisuals } from "./TileToast"
 import "./tile.css"
+import { TileUpdateManager } from "./TileUpdateManager";
 
 export interface TileProps {
     packageName?: string;
@@ -17,6 +20,7 @@ export interface TileProps {
     fence?: boolean;
     row?: number,
     column?: number;
+    key?: string;
 }
 
 interface TileState {
@@ -71,26 +75,24 @@ export class TileRenderer extends Component<TileProps, TileState> {
     }
 
     componentDidMount() {
-        setTimeout(async () => {
-            // fuck me this is a mouthful
-            let url = this.state.app?.visualElements.defaultTile.tileUpdateUrl;
-            if (url) {
-                console.log(`fetching tile notifications from ${url}`);
+        TileUpdateManager.getInstance()
+            .registerVisualUpdateCallback(this.state.app, this.didGetVisuals.bind(this));
+    }
 
-                // todo: process variables (i probably dont need this)
-                let resp = await fetch(url);
-                let doc = new DOMParser().parseFromString(await resp.text(), 'application/xml');
+    componentWillUnmount() {
+        TileUpdateManager.getInstance()
+            .unregisterVisualUpdateCallback(this.state.app, this.didGetVisuals.bind(this));
+    }
 
-                let visuals = [DefaultVisual, ...getVisuals(doc, this.props.size)];
-                if (visuals.length > 1) {
-                    // random difference between +- 2 secs
-                    let interval = setInterval(() => this.updateBinding(), (5 + Math.floor(Math.random() * 5)) * 1000);
+    didGetVisuals(visuals: Map<TileSize, TileVisual[]>) {
+        let tileVisuals = [DefaultVisual, ...visuals.get(this.props.size)];
+        if (tileVisuals.length > 1) {
+            // random difference between +- 2 secs
+            let interval = setInterval(() => this.updateBinding(), 5000 + Math.random() * 4000);
 
-                    this.setState({ visuals, visualIdx: 0, interval });
-                    setTimeout(() => this.updateBinding(), 1000);
-                }
-            }
-        }, Math.random() * 5000)
+            this.setState({ visuals: tileVisuals, visualIdx: 0, interval });
+            this.updateBinding()
+        }
     }
 
     updateBinding() {
@@ -131,31 +133,43 @@ export class TileRenderer extends Component<TileProps, TileState> {
     }
 
     render(props: TileProps, state: TileState) {
-        let containerStyle = (props.column !== undefined && props.row !== undefined) ?
-            `grid-row-start: ${props.row + 1}; grid-column-start: ${props.column + 1};` :
-            '';
+        // let isMobile = useContext(MobileContext);
+        let isMobile = false; // disable for now
 
-        let classList = ["tile-container", TileSize[props.size], "press-" + state.pressState];
-
-        let tileColour = state.tileColour;
-        let frontStyle = { background: `linear-gradient(to right, ${tileColour}, ${state.tileColourLight})` };
+        let containerStyle = {
+            gridRowStart: props.row !== undefined ? props.row + 2 : undefined,
+            gridColumnStart: props.column !== undefined ? props.column + 1 : undefined,
+        }
 
         if (!state.pack || !state.app) {
             return (
-                <button class={classList.join(" ")}
+                <a class={`tile-container ${TileSize[props.size]}`}
                     style={containerStyle}>
                     <div class="tile" />
-                </button>
+                </a>
             );
         }
 
-        let visual = state.visuals[state.visualIdx];
-        let nextVisual = state.visuals[(state.visualIdx + 1) % state.visuals.length];
 
+        let classList = ["tile-container", TileSize[props.size], "press-" + state.pressState];
+        let tileColour = state.tileColour;
+        let frontStyle = {};
         if (state.app.visualElements.foregroundText === "light")
             classList.push("text-light");
         else
             classList.push("text-dark");
+
+        if (!isMobile) {
+            frontStyle = {
+                background: `linear-gradient(to right, ${tileColour}, ${state.tileColourLight})`
+            }
+        }
+        else {
+
+        }
+
+        let visual = state.visuals[state.visualIdx];
+        let nextVisual = state.visuals[(state.visualIdx + 1) % state.visuals.length];
 
         //let size = this.getTileSize(props.size)
         return (
@@ -168,6 +182,7 @@ export class TileRenderer extends Component<TileProps, TileState> {
                     title={state.app.visualElements.displayName}
                     aria-label={state.app.visualElements.displayName}
                     href={state.app.startPage}>
+                    {isMobile && <TileBackgroundRenderer />}
                     <div class="tile">
                         <div class="front" style={frontStyle}>
                             <TileVisualRenderer app={state.app} visual={visual} size={props.size} />

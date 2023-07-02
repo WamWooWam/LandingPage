@@ -90,8 +90,6 @@ export function collapseTiles(tiles: RawTileProps[]): Array<TilePropsWithType> {
 
     currentFence = resetFence([]);
 
-    console.log("collaped tiles");
-
     return fullTiles;
 }
 

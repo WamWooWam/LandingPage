@@ -2,21 +2,6 @@
     display: none;
 }
 
-.tile-group-tiles {
-    display: grid;
-    grid-gap: 8px;
-    grid-template-columns: repeat(2, 1fr);
-    grid-template-rows: auto;
-    grid-auto-flow: row;
-    grid-auto-rows: auto;
-}
-
-@media screen and (min-width: 350px) {
-    .tile-group-tiles {
-        grid-template-columns: repeat(3, 1fr);
-    }
-}
-
 .fence-tile-container {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -29,7 +14,7 @@
 @media screen and (min-width: 600px) {
     .tile-group-tiles {
         grid-template-columns: 120px;
-        grid-template-rows: 120px;
+        grid-template-rows: repeat(auto-fill, 120px);
         grid-auto-columns: 120px;
         grid-auto-rows: 120px;
         grid-auto-flow: none;
@@ -41,15 +26,28 @@
     }
 
     .tile-group-header {
-        display: block;
-        padding: 0 0 8px 0;
+        display: flex;
+        margin: 0;
         font-size: 22px;
         font-weight: 300;
-    }
-    
-    .tile-group-header-text {
+        white-space: nowrap;
         opacity: 0.75;
+        grid-area: head;
+        grid-column-end: span 2;
     }
+
+    .start-tile-group>.fence-tile-container {
+        grid-area: tiles;
+        grid-row-end: span 1;
+        grid-column-end: span 1;
+    }
+
+    .start-tile-group>.tile-container {
+        grid-area: tiles;
+        grid-row-end: span 1;
+        grid-column-end: span 1;
+    }
+
 }
 
 .tile {
@@ -79,6 +77,7 @@
 }
 
 .tile-container {
+    display: flex;
     grid-row-end: span 1;
     grid-column-end: span 1;
     transform-style: preserve-3d;
@@ -87,7 +86,7 @@
     padding: 0;
     border: none;
     text-align: left;
-    font-family: 'Segoe UI';    
+    font-family: 'Segoe UI';
     transform-style: preserve-3d;
     transition: transform 0.05s ease-out;
     aspect-ratio: 1/1;
@@ -407,8 +406,8 @@
     flex-direction: column;
 }
 
-.tile-square-header-and-text>h1,
-.tile-wide-header-and-text>h1 {
+.tile-square-header-and-text>h3,
+.tile-wide-header-and-text>h3 {
     display: flex;
     font-size: 16pt;
     font-weight: 300;
@@ -432,4 +431,12 @@
     overflow: hidden;
     text-overflow: ellipsis;
     overflow-wrap: break-word;
+}
+
+.tile-background {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-repeat: no-repeat;
+    background-image: url(../../static/wallpaper/the-cliffs.webp);
 }

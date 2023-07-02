@@ -109,7 +109,7 @@ function TileSquare150x150HeaderAndText(props: TileVisualRendererProps, binding:
 
     return (
         <div className="tile-binding tile-square-header-and-text">
-            <h1>{text1.content}</h1>
+            <h3>{text1.content}</h3>
             <p>{text2.content}</p>
         </div>
     )
@@ -121,7 +121,7 @@ function TileWide310x150HeaderAndText(props: TileVisualRendererProps, binding: T
 
     return (
         <div className="tile-binding tile-wide-header-and-text">
-            <h1>{text1.content}</h1>
+            <h3>{text1.content}</h3>
             <p>{text2.content}</p>
         </div>
     )

@@ -16,13 +16,13 @@ export class FenceTileRenderer extends Component<FenceTileProps> {
 
     render(props: FenceTileProps) {
         let style = {
-            gridRowStart: props.row ? props.row  + 1 : undefined,
+            gridRowStart: props.row ? props.row + 2 : undefined,
             gridColumnStart: props.column ? props.column + 1 : undefined
         }
 
         return (
             <div class="fence-tile-container square150x150" style={style}>
-                {...props.apps.map(a => <TileRenderer {...a}/>)}
+                {...props.apps.map(a => <TileRenderer key={`Tile_${a.packageName}!${a.appId}`} {...a} />)}
             </div>
         )
     }

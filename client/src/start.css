@@ -39,7 +39,7 @@ html {
 }
 
 .start-tiles {
-    margin: 32px 0 8px 8px;
+    margin: 32px 8px 8px 8px;
 }
 
 .start-footer {
@@ -53,6 +53,12 @@ html {
 
 .start-tile-group {
     margin-bottom: 8px;
+    display: grid;
+    grid-gap: 8px;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: auto;
+    grid-auto-flow: row;
+    grid-auto-rows: auto;
 }
 
 .start-show-all-button {
@@ -61,17 +67,20 @@ html {
 }
 
 @media screen and (min-width: 350px) {
-    .start-content {        
+    .start-content {
         grid-template-columns: 0 1fr 0;
     }
 
     .start-tiles {
         margin-right: 8px;
-        margin-left: 0;
     }
 
     .start-footer {
         display: none;
+    }
+
+    .start-tile-group {        
+        grid-template-columns: repeat(3, 1fr);
     }
 }
 
@@ -80,15 +89,7 @@ html {
         background-color: #25079b;
         background-image: url(../static/wallpaper/the-cliffs.jpg);
 
-        @supports (background-image: url(../static/wallpaper/the-cliffs.webp)) {
-            background-image: url(../static/wallpaper/the-cliffs.webp);
-        }
-
-        @supports (background-image: url(../static/wallpaper/the-cliffs.avif)) {
-            background-image: url(../static/wallpaper/the-cliffs.avif);
-        }
-
-        background-image: image-set("../static/wallpaper/the-cliffs.avif" type("image/avif"),
+        background-image: image-set(
             "../static/wallpaper/the-cliffs.webp" type("image/webp"),
             "../static/wallpaper/the-cliffs.jpg" type("image/jpeg"));
 
@@ -208,11 +209,12 @@ html {
     }
 
     .start-tiles {
-        padding: 24px 118px 0px 16px;
+        padding: 64px 118px 72px 62px;
         display: flex;
         align-self: center;
         align-items: center;
-        height: calc(100% - 196px);
+        height: calc(100% - 228px);
+        margin-left: 0;
     }
 
     .start-footer {
@@ -225,26 +227,33 @@ html {
         grid-row: 3;
     }
 
-    @media screen and (min-width: 767px) {
-        .start-footer {
-            margin-left: 118px;
-        }
+    .start-footer {
+        margin-left: 118px;
+    }
 
-        .start-header {
-            margin-left: 118px;
-        }
-
-        .start-tiles {
-            padding: 64px 118px 0px 62px;
-        }
+    .start-header {
+        margin-left: 118px;
     }
 
     .start-tile-group {
-        display: flex;
-        flex-direction: column;
+        display: grid;
+        grid-gap: 8px;
+        grid-template-columns: 120px;
+        grid-template-rows: 32px repeat(auto-fill, 120px);
+        grid-auto-columns: 120px;
+        grid-auto-rows: 120px;
+        grid-auto-flow: none;
+
+        grid-template-areas: 
+        "head"
+        "tiles";
+
+        /* display: flex;
+        align-self: flex-start; */
         margin-left: 56px;
-        align-self: flex-start;
         margin-bottom: 0;
+        align-self: stretch;
+        align-content: center;
     }
 
     .start-show-all-button {

@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<Package IgnorableNamespaces="build" xmlns="http://schemas.microsoft.com/appx/2010/manifest"
+    xmlns:wb="http://schemas.microsoft.com/appx/2013/manifest"
+    xmlns:build="http://schemas.microsoft.com/developer/appx/2012/build">
+    <Identity Name="Projects" ProcessorArchitecture="x86" Publisher="CN=Wan Kerr Co. Ltd."
+        Version="2.6.672.0" />
+    <Properties>
+        <DisplayName>Projects</DisplayName>
+        <PublisherDisplayName>Wan Kerr Co. Ltd.</PublisherDisplayName>
+        <Description>Social Media Links</Description>
+        <Logo>twitter-logo-square.svg</Logo>
+    </Properties>
+    <Prerequisites>
+        <OSMinVersion>6.3.0</OSMinVersion>
+        <OSMaxVersionTested>6.3.0</OSMaxVersionTested>
+    </Prerequisites>
+    <Resources>
+        <Resource wb:Scale="100" />
+        <Resource Language="en-US" />
+        <Resource Language="en-GB" />
+    </Resources>
+    <Applications>       
+        <Application Id="GitHub" StartPage="https://github.com/wamwoowam">
+            <wb:VisualElements DisplayName="GitHub" Description="GitHub" ForegroundText="light"
+                BackgroundColor="#000000" Square150x150Logo="images/github-square150x150.svg"
+                Square30x30Logo="images/github-square30x30.svg" ToastCapable="true">
+                <wb:DefaultTile Square70x70Logo="images/github-square70x70.svg"
+                    Wide310x150Logo="images/github-wide310x150.svg"
+                    Square310x310Logo="images/github-square310x310.svg">
+                    <wb:TileUpdate Recurrence="halfHour"
+                        UriTemplate="/api/live-tiles/github/recent-activity.xml" />
+                    <wb:ShowNameOnTiles>
+                        <wb:ShowOn Tile="square150x150Logo" />
+                        <wb:ShowOn Tile="wide310x150Logo" />
+                        <wb:ShowOn Tile="square310x310Logo" />
+                    </wb:ShowNameOnTiles>
+                </wb:DefaultTile>
+                <wb:SplashScreen BackgroundColor="#FF0000" Image="github-splash.svg" />
+            </wb:VisualElements>
+        </Application>
+
+        <!-- Unicord -->
+        <Application Id="Unicord" StartPage="https://github.com/UnicordDev/Unicord">
+            <wb:VisualElements DisplayName="Unicord" Description="Unicord" ForegroundText="light"
+                BackgroundColor="#0078d7" Square150x150Logo="images/unicord-square150x150.svg"
+                Square30x30Logo="images/unicord-square30x30.svg" ToastCapable="true">
+                <wb:DefaultTile Square70x70Logo="images/unicord-square70x70.svg"
+                    Wide310x150Logo="images/unicord-wide310x150.svg"
+                    Square310x310Logo="images/unicord-square310x310.svg">
+                    <wb:TileUpdate Recurrence="halfHour"
+                        UriTemplate="/api/live-tiles/unicord/recent-activity.xml" />
+                    <wb:ShowNameOnTiles>
+                        <wb:ShowOn Tile="square150x150Logo" />
+                        <wb:ShowOn Tile="wide310x150Logo" />
+                        <wb:ShowOn Tile="square310x310Logo" />
+                    </wb:ShowNameOnTiles>
+                </wb:DefaultTile>
+                <wb:SplashScreen BackgroundColor="#0078d7" Image="unicord-splash.svg" />
+            </wb:VisualElements>
+        </Application>
+    </Applications>
+    <Capabilities></Capabilities>
+    <Dependencies></Dependencies>
+    <Extensions></Extensions>
+</Package>

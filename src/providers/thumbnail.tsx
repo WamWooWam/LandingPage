@@ -69,7 +69,7 @@ export namespace Thumbnail {
     }
 
     const generateThumbnail = async () => {
-        const startLayout = await fs.readFile('./shared/static/StartScreen.xml', 'utf-8');
+        const startLayout = await fs.readFile('./packages/StartScreen.xml', 'utf-8');
         const tileGroups = parseLayout(startLayout);
 
         const map = new Map<string, string>();
@@ -88,8 +88,6 @@ export namespace Thumbnail {
 
             x += maxColumn * 88 + 20;
         };
-
-
 
         return render(
             <svg width="640" height="320" viewBox="0 0 640 320"
@@ -129,11 +127,11 @@ export namespace Thumbnail {
             font: {
                 fontFiles: [
                     './fonts/segoeuib.ttf',
-                    './fonts/segoeuil.ttf',
-                    './fonts/segoeui.ttf',
+                    './fonts/segoeuil.ttf'
                 ],
                 loadSystemFonts: false,
-                defaultFontFamily: 'Segoe UI Light',
+                defaultFontFamily: 'Segoe UI',
+                defaultFontWeight: 'light',
             },
         }
 

@@ -16,7 +16,7 @@ export namespace GitHub {
                 textElement.textContent = `${event.actor.login} pushed ${event.payload.size} commits`;
                 break;
             case 'CreateEvent':
-                textElement.textContent = `${event.actor.login} created ${event.payload.ref_type} ${event.payload.ref}`;
+                textElement.textContent = `${event.actor.login} created ${event.payload.ref_type}`;
                 break;
             case 'DeleteEvent':
                 textElement.textContent = `${event.actor.login} deleted ${event.payload.ref_type} ${event.payload.ref}`;

@@ -1,11 +1,13 @@
 const path = require('path');
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const CssMinimizerPlugin = require("css-minimizer-webpack-plugin");
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const { env } = require('process');
 
 module.exports = [
     {
         entry: "./src/index.tsx",
-        mode: "production",
+        mode: env.NODE_ENV || "development",
         devtool: 'source-map',
         module: {
             rules: [
@@ -32,7 +34,7 @@ module.exports = [
                         }],
                 },
                 {
-                    test: /\.(woff(2)?|ttf|eot|svg|png|jpg|webp|avif)(\?v=\d+\.\d+\.\d+)?$/,
+                    test: /\.(woff(2)?|ttf|eot|png|jpg|webp|avif)(\?v=\d+\.\d+\.\d+)?$/,
                     use: [
                         {
                             loader: 'file-loader',
@@ -41,10 +43,23 @@ module.exports = [
                             }
                         }
                     ]
+                }, {
+                    test: /\.svg$/i,
+                    use: [
+                        {
+                            loader: 'file-loader',
+                            options: {
+                                outputPath: 'static/'
+                            }
+                        },
+                        {
+                            loader: 'xml-loader'
+                        }
+                    ]
                 },
                 {
                     test: /\.xml$/i,
-                    use: ['raw-loader']
+                    use: ['raw-loader', 'xml-loader']
                 },
                 {
                     test: /AppxManifest\.xml$/i,
@@ -61,7 +76,10 @@ module.exports = [
                 new CssMinimizerPlugin(),
             ],
         },
-        plugins: [new MiniCssExtractPlugin()],
+        plugins: [new MiniCssExtractPlugin(), new HtmlWebpackPlugin({
+            inject: true,
+            template: "./src/index.html"
+        })],
         output: {
             filename: 'index.js',
             path: path.resolve(__dirname, 'dist'),

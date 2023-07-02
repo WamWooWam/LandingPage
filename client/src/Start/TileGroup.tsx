@@ -4,6 +4,8 @@ import { TileSize } from "../../../shared/TileSize";
 import { FenceTileRenderer, FenceTileProps } from "./FenceTileRenderer";
 import { RawTileProps } from "../../../shared/StartLayoutParser";
 import "./tile.css"
+import { useContext } from "preact/hooks";
+import { MobileContext } from "../Root";
 
 interface TileGroupProps {
     title: string;
@@ -14,7 +16,7 @@ type TilePropsWithType = (TileProps | FenceTileProps) & { type: "fence" | "tile"
 
 interface TileGroupState {
     observer: ResizeObserver;
-    collapsedTiles: TilePropsWithType[];
+    availableHeight: number;
 }
 
 export class TileGroup extends Component<TileGroupProps, TileGroupState> {
@@ -30,17 +32,14 @@ export class TileGroup extends Component<TileGroupProps, TileGroupState> {
     }
 
     componentDidMount() {
-        let startTilesElement = this.groupRef.current.parentElement;
-        let headerText = this.headerRef.current;
+        let startTilesElement = this.groupRef.current;
 
         if (window.ResizeObserver) {
             console.log("ResizeObserver supported!");
             let resizeObserver = new ResizeObserver((entries) => {
                 for (const entry of entries) {
                     if (entry.target === startTilesElement) {
-                        let availableHeight = startTilesElement.offsetHeight - headerText.offsetHeight;
-                        let tiles = this.calculateLayout(this.props.tiles, availableHeight);
-                        this.setState({ collapsedTiles: tiles });
+                        this.setHeight();
                     }
                 }
             });
@@ -53,20 +52,17 @@ export class TileGroup extends Component<TileGroupProps, TileGroupState> {
             window.addEventListener("resize", this.onResize.bind(this));
         }
 
-        let availableHeight = startTilesElement.offsetHeight - headerText.offsetHeight;
-        let tiles = this.calculateLayout(this.props.tiles, availableHeight);
-
-        console.log("Tiles: ", tiles);
-        this.setState({ collapsedTiles: tiles });
+        this.setHeight();
     }
 
     private onResize() {
-        let startTilesElement = this.groupRef.current.parentElement;
-        let headerText = this.headerRef.current;
-        let availableHeight = startTilesElement.offsetHeight - headerText.offsetHeight;
-        let tiles = this.calculateLayout(this.props.tiles, availableHeight);
-        console.log("Tiles: ", tiles);
-        this.setState({ collapsedTiles: tiles });
+        this.setHeight();
+    }
+
+    private setHeight() {        
+        let startTilesElement = this.groupRef.current;
+        let availableHeight = startTilesElement.getBoundingClientRect().height - 32;
+        this.setState({ availableHeight });
     }
 
     componentWillUnmount() {
@@ -79,20 +75,18 @@ export class TileGroup extends Component<TileGroupProps, TileGroupState> {
     }
 
     render() {
+        let isMobile = useContext(MobileContext);
+        let tiles = this.calculateLayout(this.props.tiles, this.state.availableHeight, isMobile);
+
         return (
             <div class="start-tile-group" ref={this.groupRef}>
-                <div class="tile-group-header" ref={this.headerRef}>
-                    <div class="tile-group-header-text">
-                        {/* a non breaking space is inserted here to ensure the layout remains the same */}
-                        {this.props.title && this.props.title !== "" ? this.props.title : "\u00A0"}
-                    </div>
-                </div>
-
-                {this.state.collapsedTiles ?
-                    <div class="tile-group-tiles">
-                        {...this.state.collapsedTiles.map(t => t.type === "fence" ? <FenceTileRenderer {...t as FenceTileProps} /> : <TileRenderer {...t as TileProps} />)}
-                    </div>
-                    : null}
+                <h2 class="tile-group-header" ref={this.headerRef}>
+                    {/* a non breaking space is inserted here to ensure the layout remains the same */}
+                    {this.props.title && this.props.title !== "" ? this.props.title : "\u00A0"}
+                </h2>
+                {/* <div class="tile-group-tiles"> */}
+                    {...tiles.map(t => t.type === "fence" ? <FenceTileRenderer key={"Fence_" + t.key} {...t as FenceTileProps} /> : <TileRenderer key={"Tile_" + t.key} {...t as TileProps} />)}
+                {/* </div> */}
             </div>
         )
     }
@@ -136,7 +130,7 @@ export class TileGroup extends Component<TileGroupProps, TileGroupState> {
                     key: `${currentFence[0].packageName}!${currentFence[0].appId}`
                 });
             }
-            
+
             currentFence = val;
         }
 
@@ -171,11 +165,11 @@ export class TileGroup extends Component<TileGroupProps, TileGroupState> {
         return fullTiles;
     }
 
-    private calculateLayout(tiles: RawTileProps[], availableHeight: number): Array<TilePropsWithType> {
+    private calculateLayout(tiles: RawTileProps[], availableHeight: number, isMobile: boolean): Array<TilePropsWithType> {
         let collapsedTiles = this.collapseTiles(tiles);
 
         // if the window is below 600px wide, we use the mobile layout
-        if (window.matchMedia("(max-width: 600px)").matches) {
+        if (isMobile) {
             return collapsedTiles;
         }
         else {

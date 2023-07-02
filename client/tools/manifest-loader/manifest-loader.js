@@ -5,6 +5,9 @@ const { minify } = require('minify-xml');
 const crypto = require('crypto');
 const base32 = require('base32.js');
 
+export const AppX2010ManifestNS = "http://schemas.microsoft.com/appx/2010/manifest";
+export const AppX2013ManifestNS = "http://schemas.microsoft.com/appx/2013/manifest";
+
 async function readIdentity(element) {
     let name = element.getAttribute("Name");
     let publisher = element.getAttribute("Publisher");
@@ -35,31 +38,36 @@ module.exports = function (source) {
         .parseFromString(source, 'text/xml').documentElement;
 
     let mode = "windows8.1";
-    let osMinVersion = manifest.getElementsByTagName("OSMinVersion")[0].textContent;
+    let osMinVersion = manifest.getElementsByTagNameNS(AppX2010ManifestNS, "OSMinVersion")[0].textContent;
 
     if (osMinVersion?.startsWith("6.2")) {
         mode = "windows8";
     }
     let rootPath = path.dirname(this.resourcePath);
     // read the identity from the manifest
-    let identityElement = manifest.getElementsByTagName("Identity")[0];
+    let identityElement = manifest.getElementsByTagNameNS(AppX2010ManifestNS, "Identity")[0];
     readIdentity(identityElement).then(identity => {
         let addFile = (file) => {
             let filePath = path.resolve(rootPath, file);
             this.addDependency(filePath);
 
-            this.emitFile(path.join("packages", identity.packageFamilyName, file), fs.readFileSync(filePath));
+            let data = fs.readFileSync(filePath);
+            if (file.endsWith(".xml") || file.endsWith(".svg")) {
+                data = minify(data.toString());
+            }
+
+            this.emitFile(path.join("packages", identity.packageFamilyName, file), data);
         }
 
-        let applicationsElement = manifest.getElementsByTagName("Applications")[0];
+        let applicationsElement = manifest.getElementsByTagNameNS(AppX2010ManifestNS, "Applications")[0];
 
         // collect all visual elements from the manifest
 
-        let applicationElements = applicationsElement.getElementsByTagName("Application");
+        let applicationElements = applicationsElement.getElementsByTagNameNS(AppX2010ManifestNS, "Application");
         for (let i = 0; i < applicationElements.length; i++) {
             let applicationElement = applicationElements[i];
-            let visualElementsElement = applicationElement.getElementsByTagName("wb:VisualElements")[0];
-            let defaultTile = visualElementsElement.getElementsByTagName("wb:DefaultTile")[0];
+            let visualElementsElement = applicationElement.getElementsByTagNameNS(AppX2013ManifestNS, "VisualElements")[0];
+            let defaultTile = visualElementsElement.getElementsByTagNameNS(AppX2013ManifestNS, "DefaultTile")[0];
 
             let square150x150Logo = visualElementsElement.getAttribute("Square150x150Logo");
             let square30x30Logo = visualElementsElement.getAttribute("Square30x30Logo");
