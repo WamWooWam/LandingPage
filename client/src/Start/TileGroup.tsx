@@ -1,12 +1,13 @@
 import { Component, createRef, RefObject, } from "preact";
 import { TileRenderer, TileProps } from "./TileRenderer";
-import { TileSize } from "./TileSize";
+import { TileSize } from "../../../shared/TileSize";
 import { FenceTileRenderer, FenceTileProps } from "./FenceTileRenderer";
+import { RawTileProps } from "../../../shared/StartLayoutParser";
 import "./tile.css"
 
 interface TileGroupProps {
     title: string;
-    tiles: TileProps[];
+    tiles: RawTileProps[];
 }
 
 type TilePropsWithType = (TileProps | FenceTileProps) & { type: "fence" | "tile", key: any };
@@ -96,6 +97,7 @@ export class TileGroup extends Component<TileGroupProps, TileGroupState> {
         )
     }
 
+    // todo: a lot of this should be adapted to use the shared code 
     private tileSizeToWidth(size: TileSize): number {
         switch (size) {
             case TileSize.square150x150:
@@ -122,7 +124,7 @@ export class TileGroup extends Component<TileGroupProps, TileGroupState> {
         }
     }
 
-    private collapseTiles(tiles: TileProps[]): Array<TilePropsWithType> {
+    private collapseTiles(tiles: RawTileProps[]): Array<TilePropsWithType> {
         let fullTiles: TilePropsWithType[] = [];
         let currentFence: Array<TileProps> = null;
         let resetFence = (val: [] = null) => {
@@ -169,7 +171,7 @@ export class TileGroup extends Component<TileGroupProps, TileGroupState> {
         return fullTiles;
     }
 
-    private calculateLayout(tiles: TileProps[], availableHeight: number): Array<TilePropsWithType> {
+    private calculateLayout(tiles: RawTileProps[], availableHeight: number): Array<TilePropsWithType> {
         let collapsedTiles = this.collapseTiles(tiles);
 
         // if the window is below 600px wide, we use the mobile layout

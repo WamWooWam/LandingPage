@@ -1,5 +1,5 @@
 import { TileElement } from "./TileElement";
-import { TileSize } from "./TileSize";
+import { TileSize } from "../../../shared/TileSize";
 import { TileVisual } from "./TileVisual";
 
 const TileTemplateComponentMap: Map<string, string[]> = new Map([

@@ -2,7 +2,7 @@ import { RenderableProps } from "preact";
 import { TileBinding } from "./TileBinding";
 import { TileVisual } from "./TileVisual";
 import { PackageApplication } from "../Data/PackageApplication";
-import { TileSize } from "./TileSize";
+import { TileSize } from "../../../shared/TileSize";
 
 interface TileVisualRendererProps {
     app: PackageApplication,

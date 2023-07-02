@@ -7,7 +7,7 @@ import './index.css';
 import './segoe.css';
 
 const packages = [
-  require('../packages/Socials/AppxManifest.xml').default,
+  require('../../packages/Socials/AppxManifest.xml').default,
 ];
 
 document.addEventListener("DOMContentLoaded", async () => {

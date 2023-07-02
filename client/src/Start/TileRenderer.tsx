@@ -1,13 +1,13 @@
 import { Component } from "preact";
 import { useContext } from "preact/hooks";
-import { TileSize } from "./TileSize";
-import { lightenDarkenColour2 } from "../Util";
+import { TileSize } from "../../../shared/TileSize";
 import { PackageApplication } from "../Data/PackageApplication";
 import { Package } from "../Data/Package";
 import { PackageRegistry } from "../Data/PackageRegistry";
 import { getVisuals } from "./TileToast"
 import { TileVisual } from "./TileVisual";
 import { TileVisualRenderer } from "./TileVisualRenderer";
+import { lightenDarkenColour2 } from "../../../shared/ColourUtils";
 import "./tile.css"
 
 export interface TileProps {

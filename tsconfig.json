@@ -14,7 +14,9 @@
                 "node_modules/*"
             ]
         },
-        "lib": ["ESNext", "DOM"]
+        "lib": ["ESNext", "DOM"],
+        "jsx": "react-jsx",
+        "jsxImportSource": "preact"
     },
     "include": [
         "src/**/*"

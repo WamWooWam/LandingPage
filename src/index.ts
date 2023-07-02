@@ -9,6 +9,7 @@ import { Snug } from './providers/snug';
 import { Twitch } from './providers/twitch';
 import { YouTube } from './providers/youtube';
 import { GitHub } from './providers/github';
+import { Thumbnail } from './providers/thumbnail';
 
 const app = express();
 
@@ -18,6 +19,9 @@ const app = express();
     app.get('/api/live-tiles/twitch/is-live.xml', apicache.middleware('10 minutes'), Twitch.isLive);
     app.get('/api/live-tiles/youtube/recent-videos.xml', apicache.middleware('10 minutes'), YouTube.recentVideos);
     app.get('/api/live-tiles/github/recent-activity.xml', apicache.middleware('10 minutes'), GitHub.recentActivity);
+
+    app.get('/api/media/og-image.svg', apicache.middleware('10 minutes'), Thumbnail.generateThumbnailSvg);
+    app.get('/api/media/og-image.png', apicache.middleware('10 minutes'), Thumbnail.generateThumbnailPng);
 
     app.use(express.static(path.join(process.cwd(), "client", "dist")))
     app.get('/', (req, res) => {

@@ -1,4 +1,4 @@
-import { TileSize } from "./TileSize";
+import { TileSize } from "../../../shared/TileSize";
 import { TileElement } from "./TileElement";
 
 

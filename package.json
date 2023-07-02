@@ -4,10 +4,13 @@
   "main": "dist/index.js",
   "license": "MIT",
   "dependencies": {
+    "@resvg/resvg-js": "^2.4.1",
     "apicache": "^1.6.3",
     "dotenv": "^16.3.1",
     "express": ">=5.0.0-beta.1",
     "memory-cache": "^0.2.0",
+    "preact": "^10.15.1",
+    "preact-render-to-string": "^6.1.0",
     "twitter-api-sdk": "^1.0.6",
     "xmldom": "^0.6.0"
   },
@@ -19,6 +22,6 @@
   },
   "scripts": {
     "prestart": "tsc",
-    "start": "node ./dist/index.js"
+    "start": "node ./dist/src/index.js"
   }
 }

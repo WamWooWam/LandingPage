@@ -8,7 +8,6 @@ import { PackageIdentity } from "./PackageIdentity";
 import { PackageProperties } from "./PackageProperties";
 import base32Encode from 'base32-encode';
 
-
 export class PackageReader {
 
     private packageManifest: string;
