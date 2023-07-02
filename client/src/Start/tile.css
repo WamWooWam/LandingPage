@@ -297,6 +297,8 @@
     position: absolute;
     bottom: 0;
     left: 0;
+    white-space: nowrap;
+    text-overflow: ellipsis;
 }
 
 .tile-visual {

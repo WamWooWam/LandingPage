@@ -3,18 +3,16 @@ import { Resvg } from '@resvg/resvg-js';
 import { DOMParser } from 'xmldom';
 import fs from 'fs/promises'
 
-import { StartTileGroup, parseLayout } from '../../shared/StartLayoutParser';
+import { parseLayout } from '../../shared/StartLayoutParser';
 import { FenceTileProps, TileProps, TilePropsWithType, collapseTiles, layoutDesktop } from '../../shared/StartLayout';
-import { lightenDarkenColour, lightenDarkenColour2 } from '../../shared/ColourUtils';
+import { lightenDarkenColour2 } from '../../shared/ColourUtils';
 
 export namespace Thumbnail {
 
 
     const Tile = (props: { x: number, y: number, width: number, height: number, fill: string }) => {
         return (
-            <>
-                <rect x={props.x} y={props.y} width={props.width} height={props.height} fill={props.fill} />
-            </>
+            <rect x={props.x} y={props.y} width={props.width} height={props.height} fill={props.fill} />
         )
     }
 
@@ -48,9 +46,7 @@ export namespace Thumbnail {
                 });
 
                 return (
-                    <>
-                        {fenceTiles}
-                    </>
+                    <>{fenceTiles}</>
                 )
             }
 
@@ -61,7 +57,7 @@ export namespace Thumbnail {
 
         return (
             <>
-                <text x={props.x} y={props.y - 8} font-size="14pt" fill="white" style={"font-family: 'Segoe UI Light'"}>{props.title}</text>
+                <text x={props.x} y={props.y - 8} font-size="12pt" fill="white" style={"font-family: 'Segoe UI Light'"}>{props.title}</text>
                 {tiles}
             </>
         )
@@ -73,7 +69,10 @@ export namespace Thumbnail {
         const tileGroups = parseLayout(startLayout);
 
         const map = new Map<string, string>();
-        await loadPackage("Socials", map);
+        const packages = await fs.readdir('./packages');
+        for (let packageName of packages) {
+            await loadPackage(packageName, map);
+        }
 
         let x = 58;
         let renderedTileGroups = [];
@@ -90,7 +89,7 @@ export namespace Thumbnail {
         };
 
         return render(
-            <svg width="640" height="320" viewBox="0 0 640 320"
+            <svg width="1280" height="640" viewBox="0 0 640 320"
                 fill="none" xmlns="http://www.w3.org/2000/svg">
                 <defs>
                     {[...map.entries()].map(([key, value]) => {
@@ -130,9 +129,8 @@ export namespace Thumbnail {
                     './fonts/segoeuil.ttf'
                 ],
                 loadSystemFonts: false,
-                defaultFontFamily: 'Segoe UI',
-                defaultFontWeight: 'light',
-            },
+                defaultFontFamily: 'Segoe UI'
+            }
         }
 
         const resvg = new Resvg(svg, options as any);
@@ -143,16 +141,19 @@ export namespace Thumbnail {
     }
 
     async function loadPackage(name: string, map: Map<string, string>) {
-        const socialsPackageManifest = await fs.readFile(`./packages/${name}/AppxManifest.xml`, 'utf-8');
-        const xml = new DOMParser().parseFromString(socialsPackageManifest, 'text/xml');
-        const applications = xml.getElementsByTagName('Application');
+        try {
+            const appxManifest = await fs.readFile(`./packages/${name}/AppxManifest.xml`, 'utf-8');
+            const xml = new DOMParser().parseFromString(appxManifest, 'text/xml');
+            const applications = xml.getElementsByTagName('Application');
 
-        for (let i = 0; i < applications.length; i++) {
-            const application = applications[i]!;
-            const id = application.getAttribute('Id')!;
-            const visualElements = application.getElementsByTagNameNS('http://schemas.microsoft.com/appx/2013/manifest', 'VisualElements')[0]!;
-            const backgroundColour = visualElements.getAttribute('BackgroundColor')!;
-            map.set(id, backgroundColour);
+            for (let i = 0; i < applications.length; i++) {
+                const application = applications[i]!;
+                const id = application.getAttribute('Id')!;
+                const visualElements = application.getElementsByTagNameNS('http://schemas.microsoft.com/appx/2013/manifest', 'VisualElements')[0]!;
+                const backgroundColour = visualElements.getAttribute('BackgroundColor')!;
+                map.set(id, backgroundColour);
+            }
+        } catch (error) {
         }
     }
 }

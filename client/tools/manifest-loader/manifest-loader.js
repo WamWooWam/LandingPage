@@ -49,6 +49,10 @@ module.exports = function (source) {
     readIdentity(identityElement).then(identity => {
         let addFile = (file) => {
             let filePath = path.resolve(rootPath, file);
+            if (!fs.existsSync(filePath) || fs.lstatSync(filePath).isDirectory()) {
+                return;
+            }
+
             this.addDependency(filePath);
 
             let data = fs.readFileSync(filePath);

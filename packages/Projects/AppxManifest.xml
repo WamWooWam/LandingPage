@@ -21,7 +21,7 @@
     </Resources>
     <Applications>       
         <Application Id="GitHub" StartPage="https://github.com/wamwoowam">
-            <wb:VisualElements DisplayName="GitHub" Description="GitHub" ForegroundText="light"
+            <wb:VisualElements DisplayName="GitHub" Description="My GitHub profile." ForegroundText="light"
                 BackgroundColor="#000000" Square150x150Logo="images/github-square150x150.svg"
                 Square30x30Logo="images/github-square30x30.svg" ToastCapable="true">
                 <wb:DefaultTile Square70x70Logo="images/github-square70x70.svg"
@@ -41,7 +41,7 @@
 
         <!-- Unicord -->
         <Application Id="Unicord" StartPage="https://github.com/UnicordDev/Unicord">
-            <wb:VisualElements DisplayName="Unicord" Description="Unicord" ForegroundText="light"
+            <wb:VisualElements DisplayName="Unicord" Description="A free, open-source Discord client for Windows 10 &amp; Windows Phone 10" ForegroundText="light"
                 BackgroundColor="#0078d7" Square150x150Logo="images/unicord-square150x150.svg"
                 Square30x30Logo="images/unicord-square30x30.svg" ToastCapable="true">
                 <wb:DefaultTile Square70x70Logo="images/unicord-square70x70.svg"

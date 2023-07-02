@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<Package IgnorableNamespaces="build" xmlns="http://schemas.microsoft.com/appx/2010/manifest"
+    xmlns:wb="http://schemas.microsoft.com/appx/2013/manifest"
+    xmlns:build="http://schemas.microsoft.com/developer/appx/2012/build">
+    <Identity Name="Games" ProcessorArchitecture="x86" Publisher="CN=Wan Kerr Co. Ltd."
+        Version="2.6.672.0" />
+    <Properties>
+        <DisplayName>Games</DisplayName>
+        <PublisherDisplayName>Wan Kerr Co. Ltd.</PublisherDisplayName>
+        <Description>Gamess</Description>
+        <Logo>twitter-logo-square.svg</Logo>
+    </Properties>
+    <Prerequisites>
+        <OSMinVersion>6.3.0</OSMinVersion>
+        <OSMaxVersionTested>6.3.0</OSMaxVersionTested>
+    </Prerequisites>
+    <Resources>
+        <Resource wb:Scale="100" />
+        <Resource Language="en-US" />
+        <Resource Language="en-GB" />
+    </Resources>
+    <Applications>       
+        <Application Id="S4E1" StartPage="https://wamwoowam.github.io/sonic4">
+            <wb:VisualElements DisplayName="Sonic 4 - Episode I" Description="The sequel fans have waited 16 years for is finally here - Sonic the Hedgehog 4 Episode I! Featuring enhanced gameplay elements, including the classic Sonic Spin Dash, and the versatile Homing Attack, Sonic the Hedgehog 4 Episode I picks up right where Sonic and Knuckles™ left off." ForegroundText="light"
+                BackgroundColor="#FFFFFF" Square150x150Logo="images/s4e1-square150x150.webp"
+                Square30x30Logo="images/s4e1-square30x30.webp" ToastCapable="true">
+                <wb:DefaultTile Square70x70Logo="images/s4e1-square70x70.webp"/>
+                <wb:SplashScreen BackgroundColor="#FF0000" Image="images/s4e1-splash.webp" />
+            </wb:VisualElements>
+        </Application>
+    </Applications>
+    <Capabilities></Capabilities>
+    <Dependencies></Dependencies>
+    <Extensions></Extensions>
+</Package>

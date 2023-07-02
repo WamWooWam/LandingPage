@@ -15,5 +15,9 @@
             <tile AppID="Projects_zfgz6xjnaz0ym!GitHub" size="wide310x150" FencePost="0" />
             <tile AppID="Projects_zfgz6xjnaz0ym!Unicord" size="square150x150" FencePost="0" />
         </group>
+
+        <group name="Games">
+            <tile AppID="Games_zfgz6xjnaz0ym!S4E1" size="square150x150" FencePost="0" />
+        </group>
     </view>
 </launcher>

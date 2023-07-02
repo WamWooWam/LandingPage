@@ -9,6 +9,7 @@ import './segoe.css';
 const packages = [
   require('../../packages/Socials/AppxManifest.xml').default,
   require('../../packages/Projects/AppxManifest.xml').default,
+  require('../../packages/Games/AppxManifest.xml').default,
 ];
 
 document.addEventListener("DOMContentLoaded", async () => {
