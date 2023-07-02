@@ -11,6 +11,8 @@ import { YouTube } from './providers/youtube';
 import { GitHub } from './providers/github';
 import { Thumbnail } from './providers/thumbnail';
 
+globalThis.DOMParser = require('xmldom').DOMParser; // hacky fix to stop webpack including xmldom in the client bundle
+
 const app = express();
 
 (async () => {

@@ -13,7 +13,7 @@ export interface RawTileProps {
 }
 
 export const parseLayout = (text: string) => {
-    const DOMParser = globalThis.DOMParser ?? require('xmldom').DOMParser;
+    const DOMParser = globalThis.DOMParser;
 
     let doc = new DOMParser().parseFromString(text, 'application/xml');
     let root = doc.getElementsByTagName("launcher")[0];

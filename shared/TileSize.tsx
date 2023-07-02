@@ -1,4 +1,3 @@
-
 export enum TileSize {
     square70x70,
     square150x150,
