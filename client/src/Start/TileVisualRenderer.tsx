@@ -3,6 +3,9 @@ import { TileBinding } from "./TileBinding";
 import { TileVisual } from "./TileVisual";
 import { PackageApplication } from "../Data/PackageApplication";
 import { TileSize } from "../../../shared/TileSize";
+import { WebPContext } from "../Root";
+import { fixupUrl } from "../Util";
+import { useContext } from "preact/hooks";
 
 interface TileVisualRendererProps {
     app: PackageApplication,
@@ -21,10 +24,11 @@ const TileTemplateMap: Map<string, Function>
     ]);
 
 export const TileVisualRenderer = ({ app, size, visual }: RenderableProps<TileVisualRendererProps>) => {
+    let hasWebP = useContext(WebPContext);
     let visualElements = app.visualElements;
 
     if (!visual || !visual.bindings || visual.bindings.length == 0) {
-        let tileImageUrl = getTileImageUrl(size, app);
+        let tileImageUrl = fixupUrl(getTileImageUrl(size, app), hasWebP);
         let showTextSizes = visualElements.defaultTile.showNameOnTiles.map(v => TileSize[v as keyof typeof TileSize]);
 
         let tileVisualText = null;

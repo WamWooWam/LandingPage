@@ -5,13 +5,14 @@ import { Package } from "../Data/Package";
 import { PackageRegistry } from "../Data/PackageRegistry";
 import { TileVisual } from "./TileVisual";
 import { TileVisualRenderer } from "./TileVisualRenderer";
-import { MobileContext } from "../Root";
+import { MobileContext, WebPContext } from "../Root";
 import { TileBackgroundRenderer } from "./TileBackgroundRenderer";
 import { TileSize } from "../../../shared/TileSize";
 import { lightenDarkenColour2 } from "../../../shared/ColourUtils";
 import { getVisuals } from "./TileToast"
 import "./tile.css"
 import { TileUpdateManager } from "./TileUpdateManager";
+import { fixupUrl } from "../Util";
 
 export interface TileProps {
     packageName?: string;
@@ -135,6 +136,7 @@ export class TileRenderer extends Component<TileProps, TileState> {
     render(props: TileProps, state: TileState) {
         // let isMobile = useContext(MobileContext);
         let isMobile = false; // disable for now
+        let hasWebP = useContext(WebPContext);
 
         let containerStyle = {
             gridRowStart: props.row !== undefined ? props.row + 2 : undefined,
@@ -171,6 +173,7 @@ export class TileRenderer extends Component<TileProps, TileState> {
         let visual = state.visuals[state.visualIdx];
         let nextVisual = state.visuals[(state.visualIdx + 1) % state.visuals.length];
 
+
         //let size = this.getTileSize(props.size)
         return (
             <>
@@ -193,7 +196,7 @@ export class TileRenderer extends Component<TileProps, TileState> {
                             </div>
                         }
                         <div className={"tile-toast-footer" + (!visual || visual === DefaultVisual ? " hidden" : "")}>
-                            <img className="tile-badge-icon" src={state.app.visualElements.square30x30Logo} alt={""} />
+                            <img className="tile-badge-icon" src={fixupUrl(state.app.visualElements.square30x30Logo, hasWebP)} alt={""} />
                         </div>
                     </div>
                     <div className="tile-border"

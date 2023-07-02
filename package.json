@@ -22,6 +22,7 @@
   },
   "scripts": {
     "prestart": "tsc",
+    "build": "tsc",
     "start": "node ./dist/src/index.js"
   }
 }

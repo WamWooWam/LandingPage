@@ -5,8 +5,8 @@ const { minify } = require('minify-xml');
 const crypto = require('crypto');
 const base32 = require('base32.js');
 
-export const AppX2010ManifestNS = "http://schemas.microsoft.com/appx/2010/manifest";
-export const AppX2013ManifestNS = "http://schemas.microsoft.com/appx/2013/manifest";
+const AppX2010ManifestNS = "http://schemas.microsoft.com/appx/2010/manifest";
+const AppX2013ManifestNS = "http://schemas.microsoft.com/appx/2013/manifest";
 
 async function readIdentity(element) {
     let name = element.getAttribute("Name");
@@ -48,6 +48,12 @@ module.exports = function (source) {
     let identityElement = manifest.getElementsByTagNameNS(AppX2010ManifestNS, "Identity")[0];
     readIdentity(identityElement).then(identity => {
         let addFile = (file) => {
+            // if this is a webp, check if a png version exists and use that too
+            if (file.endsWith(".webp")) {
+                let pngFile = file.substring(0, file.length - 5) + ".png";
+                addFile(pngFile);
+            }
+
             let filePath = path.resolve(rootPath, file);
             if (!fs.existsSync(filePath) || fs.lstatSync(filePath).isDirectory()) {
                 return;

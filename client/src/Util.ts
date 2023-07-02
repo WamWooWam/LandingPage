@@ -35,3 +35,28 @@ export function newGuid() {
         return v.toString(16);
     });
 }
+
+export async function hasWebP(): Promise<boolean> {
+    // some small (2x1 px) test images for each feature
+    var images = {
+        lossless: "data:image/webp;base64,UklGRh4AAABXRUJQVlA4TBEAAAAvAQAAAAfQ//73v/+BiOh/AAA="
+    };
+
+    return new Promise((resolve, reject) => {
+        var img = new Image();
+        img.onload = () => {
+            var result = (img.width > 0) && (img.height > 0);
+            resolve(result);
+        };
+        img.onerror = () => {
+            resolve(false);
+        };
+        img.src = images.lossless;
+    });
+};
+
+export const fixupUrl = (url: string, hasWebP: boolean) => {
+    if (hasWebP)
+        return url;
+    return url.replace(".webp", ".png");
+}

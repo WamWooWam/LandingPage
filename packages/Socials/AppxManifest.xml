@@ -40,11 +40,11 @@
         </Application>
         <Application Id="Snug" StartPage="https://snug.moe/@wamwoowam">
             <wb:VisualElements DisplayName="snug.moe" Description="snug.moe" ForegroundText="light"
-                BackgroundColor="#ff5975" Square150x150Logo="images/snug-square150x150.svg"
-                Square30x30Logo="images/snug-square30x30.svg" ToastCapable="true">
-                <wb:DefaultTile Square70x70Logo="images/snug-square70x70.svg"
-                    Wide310x150Logo="images/snug-wide310x150.svg"
-                    Square310x310Logo="images/snug-square310x310.svg">
+                BackgroundColor="#ff5975" Square150x150Logo="images/snug-square150x150.webp"
+                Square30x30Logo="images/snug-square30x30.webp" ToastCapable="true">
+                <wb:DefaultTile Square70x70Logo="images/snug-square70x70.webp"
+                    Wide310x150Logo="images/snug-wide310x150.webp"
+                    Square310x310Logo="images/snug-square310x310.webp">
                     <wb:TileUpdate Recurrence="halfHour"
                         UriTemplate="/api/live-tiles/snug/latest-notes.xml" />
                     <wb:ShowNameOnTiles>
@@ -53,7 +53,7 @@
                         <wb:ShowOn Tile="square310x310Logo" />
                     </wb:ShowNameOnTiles>
                 </wb:DefaultTile>
-                <wb:SplashScreen BackgroundColor="#FF0000" Image="twitch-splash.svg" />
+                <wb:SplashScreen BackgroundColor="#FF0000" Image="twitch-splash.webp" />
             </wb:VisualElements>
         </Application>
         <Application Id="Twitch" StartPage="https://twitch.tv/wamwoowam">
