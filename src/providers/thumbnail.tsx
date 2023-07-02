@@ -61,7 +61,7 @@ export namespace Thumbnail {
 
         return (
             <>
-                <text x={props.x} y={props.y - 6} font-size="14pt" fill="white" style={"font-family: 'Segoe UI Light'"}>{props.title}</text>
+                <text x={props.x} y={props.y - 8} font-size="14pt" fill="white" style={"font-family: 'Segoe UI Light'"}>{props.title}</text>
                 {tiles}
             </>
         )
@@ -128,12 +128,12 @@ export namespace Thumbnail {
             },
             font: {
                 fontFiles: [
-                    './src/fonts/segoeuib.ttf',
-                    './src/fonts/segoeuil.ttf',
-                    './stc/fonts/segoeui.ttf',
+                    './fonts/segoeuib.ttf',
+                    './fonts/segoeuil.ttf',
+                    './fonts/segoeui.ttf',
                 ],
                 loadSystemFonts: false,
-                defaultFontFamily: 'Segoe UI',
+                defaultFontFamily: 'Segoe UI Light',
             },
         }
 
