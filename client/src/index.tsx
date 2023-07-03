@@ -1,10 +1,12 @@
-import "preact/debug"
+// import "preact/debug"
+import "./polyfill";
 import { render } from "preact"
 import { PackageRegistry } from "./Data/PackageRegistry";
 import { PackageReader } from "./Data/PackageReader";
 import { Root } from "./Root";
 import './index.css';
 import './segoe.css';
+
 
 const packages = [
   require('../../packages/Socials/AppxManifest.xml').default,

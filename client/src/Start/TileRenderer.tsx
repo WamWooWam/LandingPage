@@ -88,8 +88,9 @@ export class TileRenderer extends Component<TileProps, TileState> {
     didGetVisuals(visuals: Map<TileSize, TileVisual[]>) {
         let tileVisuals = [DefaultVisual, ...visuals.get(this.props.size)];
         if (tileVisuals.length > 1) {
-            // random difference between +- 2 secs
-            let interval = setInterval(() => this.updateBinding(), 5000 + Math.random() * 4000);
+            if (this.state.interval)
+                clearInterval(this.state.interval);
+            let interval = setInterval(() => this.updateBinding(), 10000 + (Math.random() * 5000));
 
             this.setState({ visuals: tileVisuals, visualIdx: 0, interval });
             this.updateBinding()
