@@ -5,7 +5,15 @@
 
 export const AUTH_HEADER = "Bearer AAAAAAAAAAAAAAAAAAAAAFQODgEAAAAAVHTp76lzh3rFzcHbmHVvQxYYpTw%3DckAlMINMjmCwxUcaXbAN4XqJVdgMJaHqNOFgPMK0zN1qLqLQCF";
 export const BASE_URL = "https://api.twitter.com/graphql/";
-export const USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36"
+
+// new releases of chrome are released ~ every month, so this'll calculate
+// the "current" version - 2 based on the current date
+const getChromeVersion = () => {
+    let currentDate = new Date();
+    return 70 + ((currentDate.getFullYear() - 2020) * 12) + currentDate.getMonth();
+}
+
+export const USER_AGENT = `Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/${getChromeVersion()}.0.4472.124 Safari/537.36`
 
 export const GRAPHQL = {
     UserResultByScreenName: BASE_URL + "u7wQyGi6oExe8_TRWGMq4Q/UserResultByScreenNameQuery",
