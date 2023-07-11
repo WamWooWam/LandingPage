@@ -7,6 +7,9 @@ import "./start.css"
 import { useContext } from "preact/hooks";
 import { MobileContext } from "./Root";
 
+type FullscreenDocument = Document & { webkitFullscreenElement?: Element, msFullscreenElement?: Element, mozFullScreenElement?: Element, webkitExitFullscreen?: Function, msExitFullscreen?: Function, mozCancelFullScreen?: Function };
+type FullscreenElement = HTMLElement & { webkitRequestFullscreen?: Function, msRequestFullscreen?: Function, mozRequestFullScreen?: Function };
+
 interface StartState {
     tileGroups: Array<StartTileGroup>
 }
@@ -17,6 +20,21 @@ export class Start extends Component<{}, StartState> {
         this.setState({ tileGroups: parseLayout(StartLayout) });
     }
 
+    onStartTitleClick = () => {
+        // i hate web browsers
+        let doc = document as FullscreenDocument;
+        let root = document.documentElement as FullscreenElement;
+        let requestFullscreen = root.requestFullscreen || root.webkitRequestFullscreen || root.msRequestFullscreen || root.mozRequestFullScreen;
+        let exitFullscreen = doc.exitFullscreen || doc.webkitExitFullscreen || doc.msExitFullscreen || doc.mozCancelFullScreen;
+
+        if (doc.fullscreenElement || doc.webkitFullscreenElement || doc.msFullscreenElement || doc.mozFullScreenElement) {
+            exitFullscreen.call(doc);
+        }
+        else {
+            requestFullscreen.call(root);
+        }
+    }
+
     render() {
         const isMobile = useContext(MobileContext);
 
@@ -25,7 +43,7 @@ export class Start extends Component<{}, StartState> {
                 <div class="start-content">
                     {!isMobile &&
                         <div class="start-header start-main-header">
-                            <h1 class="start-title">Start</h1>
+                            <h1 class="start-title" role="button" onClick={this.onStartTitleClick}>Start</h1>
                         </div>
                     }
 

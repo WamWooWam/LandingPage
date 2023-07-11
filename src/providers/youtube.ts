@@ -19,14 +19,12 @@ export namespace YouTube {
         const json = await resp.json()
         const items = json.items;
 
-        let tile = TileUpdateManager.getTemplateContent(TileTemplateType.tileWideSmallImageAndText03);
-        let root = new DOMParser().parseFromString(tile, 'application/xml');
+        let root = TileUpdateManager.getTemplateContent(TileTemplateType.tileWideSmallImageAndText03);
         let rootElement = root.getElementsByTagName("tile")[0];
         rootElement.removeChild(rootElement.getElementsByTagName("visual")[0]);
 
         for (const video of items) {
-            let tile = TileUpdateManager.getTemplateContent(TileTemplateType.tileSquarePeekImageAndText04);
-            let content = new DOMParser().parseFromString(tile, 'application/xml');
+            let content = TileUpdateManager.getTemplateContent(TileTemplateType.tileSquarePeekImageAndText04);
             content.getElementsByTagName("image")[0].setAttribute("src", video.snippet.thumbnails.medium.url);
             content.getElementsByTagName("text")[0].textContent = video.snippet.title;
 

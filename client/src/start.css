@@ -213,7 +213,7 @@ html {
         display: flex;
         align-self: center;
         align-items: center;
-        height: calc(100% - 228px);
+        height: calc(100% - 224px);
         margin-left: 0;
     }
 

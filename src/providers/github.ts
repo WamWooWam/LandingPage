@@ -71,8 +71,7 @@ export namespace GitHub {
 
         const json = await resp.json()
 
-        let tile = TileUpdateManager.getTemplateContent(TileTemplateType.tileWideSmallImageAndText03);
-        let root = new DOMParser().parseFromString(tile, 'application/xml');
+        let root = TileUpdateManager.getTemplateContent(TileTemplateType.tileWideSmallImageAndText03);
         let rootElement = root.getElementsByTagName("tile")[0];
         rootElement.removeChild(rootElement.getElementsByTagName("visual")[0]);
         
@@ -82,16 +81,14 @@ export namespace GitHub {
             visual.setAttribute("version", "4");
 
             {
-                let tile = TileUpdateManager.getTemplateContent(TileTemplateType.tileSquare150x150Text02);
-                let content = new DOMParser().parseFromString(tile, 'application/xml');
+                let content = TileUpdateManager.getTemplateContent(TileTemplateType.tileSquare150x150Text02);
                 if (populateEvent(event, content, true)) {
                     visual.appendChild(root.importNode(content.getElementsByTagName("binding")[0], true));
                 }
             }
 
             {
-                let tile = TileUpdateManager.getTemplateContent(TileTemplateType.tileWide310x150Text09);
-                let content = new DOMParser().parseFromString(tile, 'application/xml');
+                let content = TileUpdateManager.getTemplateContent(TileTemplateType.tileWide310x150Text09);
                 if (populateEvent(event, content, false)) {
                     visual.appendChild(root.importNode(content.getElementsByTagName("binding")[0], true));
                 }

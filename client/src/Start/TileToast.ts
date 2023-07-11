@@ -7,7 +7,8 @@ const TileTemplateComponentMap: Map<string, string[]> = new Map([
     ["TileWide310x150PeekImage05", ["TileWide310x150PeekImage", "TileWide310x150SmallImageAndText"]],
     ["TileWide310x150Text09", ["TileWide310x150HeaderAndText"]],
     ["TileSquare150x150PeekImageAndText04", ["TileSquare150x150PeekImage", "TileSquare150x150Text"]],
-    ["TileSquare150x150Text02", ["TileSquare150x150HeaderAndText"]]
+    ["TileSquare150x150Text02", ["TileSquare150x150HeaderAndText"]],
+    ["TileSquare150x150Text04", ["TileSquare150x150Text"]],
 ])
 
 export function getTileSize(template: string): TileSize {

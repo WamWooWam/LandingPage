@@ -138,7 +138,7 @@ export class TileUpdateManager {
         [TileTemplateType.tileSquare310x310Text09]: '<tile><visual version="4"><binding template="TileSquare310x310Text09"><text id="1"></text><text id="2"></text><text id="3"></text><text id="4"></text><text id="5"></text></binding></visual></tile>',
     }
 
-    static getTemplateContent(type: TileTemplateType): string {
-        return TileUpdateManager.TEMPLATE_MAP[type];
+    static getTemplateContent(type: TileTemplateType): Document {
+        return new DOMParser().parseFromString(TileUpdateManager.TEMPLATE_MAP[type], 'text/xml');
     }
 }

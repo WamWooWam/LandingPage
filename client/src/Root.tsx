@@ -15,8 +15,8 @@ export class Root extends Component<{}, { mobile: boolean, webp: boolean }> {
 
     async componentDidMount() {
         window.addEventListener("resize", this.updateMobileContext);
-        this.updateMobileContext();
         this.setState({ webp: await hasWebP() });
+        this.updateMobileContext();
     }
 
     componentWillUnmount() {

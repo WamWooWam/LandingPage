@@ -1,7 +1,10 @@
 import render from 'preact-render-to-string';
 import { Resvg } from '@resvg/resvg-js';
 import { DOMParser } from 'xmldom';
-import fs from 'fs/promises'
+import fs from 'node:fs'
+import fsp from 'node:fs/promises'
+import os from 'node:os'
+import path from 'node:path'
 
 import { parseLayout } from '../../shared/StartLayoutParser';
 import { FenceTileProps, TileProps, TilePropsWithType, collapseTiles, layoutDesktop } from '../../shared/StartLayout';
@@ -9,6 +12,8 @@ import { lightenDarkenColour2 } from '../../shared/ColourUtils';
 
 export namespace Thumbnail {
 
+    const TEMP_PATH = path.join(os.tmpdir(), 'landing-page-cache');
+    const THUMBNAIL_PATH = path.join(TEMP_PATH, 'thumbnail');
 
     const Tile = (props: { x: number, y: number, width: number, height: number, fill: string }) => {
         return (
@@ -65,11 +70,11 @@ export namespace Thumbnail {
     }
 
     const generateThumbnail = async () => {
-        const startLayout = await fs.readFile('./packages/StartScreen.xml', 'utf-8');
+        const startLayout = await fsp.readFile('./packages/StartScreen.xml', 'utf-8');
         const tileGroups = parseLayout(startLayout);
 
         const map = new Map<string, string>();
-        const packages = await fs.readdir('./packages');
+        const packages = await fsp.readdir('./packages');
         for (let packageName of packages) {
             await loadPackage(packageName, map);
         }
@@ -110,12 +115,32 @@ export namespace Thumbnail {
     }
 
     export const generateThumbnailSvg = async (req, res) => {
+        if (!fs.existsSync(TEMP_PATH)) {
+            fs.mkdirSync(TEMP_PATH);
+        }
+
+        let svgPath = THUMBNAIL_PATH + '.svg';
+        if (fs.existsSync(svgPath)) {
+            res.sendFile(svgPath);
+            return;
+        }
+
         let svg = await generateThumbnail();
+        await fsp.writeFile(svgPath, svg);
         res.setHeader('Content-Type', 'image/svg+xml');
         res.send(svg);
     };
 
     export const generateThumbnailPng = async (req, res) => {
+        if (!fs.existsSync(TEMP_PATH)) {
+            fs.mkdirSync(TEMP_PATH);
+        }
+
+        if (fs.existsSync(THUMBNAIL_PATH + '.png')) {
+            res.sendFile(THUMBNAIL_PATH + '.png');
+            return;
+        }
+
         const svg = await generateThumbnail();
         const options = {
             background: '#000000',
@@ -136,13 +161,15 @@ export namespace Thumbnail {
         const resvg = new Resvg(svg, options as any);
         const png = resvg.render().asPng();
 
+        await fsp.writeFile(THUMBNAIL_PATH + '.png', png, 'binary');
+
         res.setHeader('Content-Type', 'image/png');
         res.send(png);
     }
 
     async function loadPackage(name: string, map: Map<string, string>) {
         try {
-            const appxManifest = await fs.readFile(`./packages/${name}/AppxManifest.xml`, 'utf-8');
+            const appxManifest = await fsp.readFile(`./packages/${name}/AppxManifest.xml`, 'utf-8');
             const xml = new DOMParser().parseFromString(appxManifest, 'text/xml');
             const applications = xml.getElementsByTagName('Application');
 

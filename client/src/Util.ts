@@ -22,10 +22,6 @@ export function cubicEase(t: number, b: number, c: number, d: number) {
 }
 
 export function circularEase(t: number, b: number, c: number, d: number) {
-    // t /= d;
-    // t--;
-    // return c * Math.sqrt(1 - t * t) + b;
-
     return c * easeOutCirc(t) + b;
 }
 
