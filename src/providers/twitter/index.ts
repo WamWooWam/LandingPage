@@ -1,8 +1,8 @@
 import { XMLSerializer } from "xmldom";
-import { TileTemplateType } from "../../TileTemplateType";
-import { TileUpdateManager } from "../../TileUpdateManager";
-import { TimelineType, getGraphUserByUsername, getGraphUserTweets } from "./api";
-import { EXT_XMLNS, createBindingFromTemplate, createRoot, createVisual, } from "../utils";
+import { TileTemplateType } from "../../TileTemplateType.js";
+import { TileUpdateManager } from "../../TileUpdateManager.js";
+import { TimelineType, getGraphUserByUsername, getGraphUserTweets } from "./api.js";
+import { EXT_XMLNS, createBindingFromTemplate, createRoot, createVisual, } from "../utils.js";
 
 let userCache = null;
 
@@ -14,7 +14,6 @@ export namespace Twitter {
             }
 
             let root = createRoot();
-            let rootElement = root.documentElement;
             let timeline = await getGraphUserTweets(userCache["id_str"], TimelineType.Tweets, 10);
             let tweets = timeline["data"]["user_result"]["result"]["timeline_response"]["timeline"]["instructions"][2]["entries"];
 

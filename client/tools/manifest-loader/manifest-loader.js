@@ -1,6 +1,6 @@
 const path = require('path');
 const fs = require('fs');
-const { DOMParser, XMLSerializer } = require('xmldom');
+const { DOMParser, XMLSerializer } = require('xmldom-qsa');
 const { minify } = require('minify-xml');
 const crypto = require('crypto');
 const base32 = require('base32.js');
@@ -95,6 +95,7 @@ module.exports = function (source) {
         // add the manifest to the output
         addFile("AppxManifest.xml");
 
+        
         // return the manifest XML as a string
         return callback(null, minify(new XMLSerializer().serializeToString(manifest)));
     });

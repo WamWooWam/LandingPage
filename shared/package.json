@@ -1,0 +1,11 @@
+{
+  "name": "landing-page-shared",
+  "version": "1.0.0",
+  "main": "./dist/index.js",
+  "license": "MIT",
+  "types": "./types/index.d.ts",
+  "dependencies": {
+    "base32.js": "^0.1.0",
+    "typescript": "^5.1.6"
+  }
+}

@@ -4,7 +4,9 @@
   "private": true,
   "dependencies": {
     "base32-encode": "^2.0.0",
+    "base32.js": "^0.1.0",
     "colorsys": "^1.0.22",
+    "landing-page-shared": "../shared",
     "preact": "^10.15.1",
     "preact-portal": "^1.1.3"
   },

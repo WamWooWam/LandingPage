@@ -1,17 +1,16 @@
 import { Component } from "preact";
 import { useContext } from "preact/hooks";
-import { PackageApplication } from "../Data/PackageApplication";
-import { Package } from "../Data/Package";
 import { PackageRegistry } from "../Data/PackageRegistry";
 import { TileVisual } from "./TileVisual";
 import { TileVisualRenderer } from "./TileVisualRenderer";
 import { MobileContext, WebPContext } from "../Root";
 import { TileBackgroundRenderer } from "./TileBackgroundRenderer";
-import { TileSize } from "../../../shared/TileSize";
-import { lightenDarkenColour2 } from "../../../shared/ColourUtils";
 import { TileUpdateManager } from "./TileUpdateManager";
 import { fixupUrl } from "../Util";
 import { getVisuals } from "./TileToast"
+
+import { TileSize, lightenDarkenColour2, PackageApplication, Package } from "landing-page-shared";
+
 import "./tile.css"
 
 export interface TileProps {
@@ -198,7 +197,7 @@ export class TileRenderer extends Component<TileProps, TileState> {
                 </a>
             </>
         )
-    } 
+    }
 
     private getAppAndPackage(props: TileProps = this.props) {
         let pack = PackageRegistry.getPackage(props.packageName);

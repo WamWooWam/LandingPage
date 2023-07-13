@@ -1,8 +1,8 @@
 import 'dotenv/config'
 
-import express from 'express';
-import path from 'path'
-import apicache from 'apicache'
+import * as express from 'express';
+import * as path from 'path'
+import * as apicache from 'apicache'
 
 import { Twitter } from './providers/twitter';
 import { Snug } from './providers/snug';

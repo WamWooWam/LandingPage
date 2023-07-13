@@ -69,6 +69,7 @@ module.exports = [
         },
         resolve: {
             extensions: ['.tsx', '.ts', '.js'],
+            fallback: { "crypto": false }
         },
         optimization: {
             minimizer: [

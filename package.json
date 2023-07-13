@@ -6,8 +6,11 @@
   "dependencies": {
     "@resvg/resvg-js": "^2.4.1",
     "apicache": "^1.6.3",
+    "base32-encode": "^2.0.0",
+    "base32.js": "^0.1.0",
     "dotenv": "^16.3.1",
     "express": ">=5.0.0-beta.1",
+    "landing-page-shared": "./shared",
     "memory-cache": "^0.2.0",
     "preact": "^10.15.1",
     "preact-render-to-string": "^6.1.0",
@@ -23,6 +26,6 @@
   "scripts": {
     "prestart": "tsc",
     "build": "tsc",
-    "start": "node ./dist/src/index.js"
+    "start": "node ./dist/index.js"
   }
 }

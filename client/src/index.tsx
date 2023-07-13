@@ -2,7 +2,7 @@
 import "./polyfill";
 import { render } from "preact"
 import { PackageRegistry } from "./Data/PackageRegistry";
-import { PackageReader } from "./Data/PackageReader";
+import { PackageReader } from "landing-page-shared";
 import { Root } from "./Root";
 import './index.css';
 import './segoe.css';

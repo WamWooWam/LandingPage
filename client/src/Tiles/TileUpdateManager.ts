@@ -1,7 +1,6 @@
-import { PackageApplication } from "../Data/PackageApplication";
 import { TileVisual } from "./TileVisual";
 import { getVisuals } from "./TileToast";
-import { TileSize } from "../../../shared/TileSize";
+import { TileSize, PackageApplication } from "landing-page-shared";
 
 export type TileUpdateCallback = (visuals: Map<TileSize, TileVisual[]>) => void;
 

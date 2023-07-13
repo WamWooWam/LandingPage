@@ -4,18 +4,20 @@
         "target": "es2022",
         "noImplicitAny": false,
         "moduleResolution": "node",
-        "experimentalDecorators": true,
+        "declaration": true,
         "sourceMap": true,
         "outDir": "dist",
+        "declarationDir": "types",
         "baseUrl": ".",
         "paths": {
             "*": [
                 "node_modules/*"
             ]
         },
-        "lib": ["ESNext", "DOM"],
-        "jsx": "react-jsx",
-        "jsxImportSource": "preact"
+        "lib": [
+            "ESNext",
+            "DOM"
+        ]
     },
     "include": [
         "src/**/*"

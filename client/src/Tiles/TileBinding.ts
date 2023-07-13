@@ -1,4 +1,4 @@
-import { TileSize } from "../../../shared/TileSize";
+import { TileSize } from "landing-page-shared";
 import { TileElement } from "./TileElement";
 
 export interface TileBinding {

@@ -1,14 +1,12 @@
-import render from 'preact-render-to-string';
+import { render } from 'preact-render-to-string';
 import { Resvg } from '@resvg/resvg-js';
 import { DOMParser } from 'xmldom';
-import fs from 'node:fs'
-import fsp from 'node:fs/promises'
-import os from 'node:os'
-import path from 'node:path'
+import * as fs from 'node:fs'
+import * as fsp from 'node:fs/promises'
+import * as os from 'node:os'
+import * as path from 'node:path'
 
-import { parseLayout } from '../../shared/StartLayoutParser';
-import { FenceTileProps, TileProps, TilePropsWithType, collapseTiles, layoutDesktop } from '../../shared/StartLayout';
-import { lightenDarkenColour2 } from '../../shared/ColourUtils';
+import { parseLayout, FenceTileProps, TileProps, TilePropsWithType, collapseTiles, layoutDesktop, lightenDarkenColour2, PackageReader } from "landing-page-shared";
 
 export namespace Thumbnail {
 
@@ -70,7 +68,7 @@ export namespace Thumbnail {
     }
 
     const generateThumbnail = async () => {
-        const startLayout = await fsp.readFile('./packages/StartScreen.xml', 'utf-8');
+        const startLayout = await fsp.readFile('./packages/StartScreen-test.xml', 'utf-8');
         const tileGroups = parseLayout(startLayout);
 
         const map = new Map<string, string>();
@@ -170,17 +168,15 @@ export namespace Thumbnail {
     async function loadPackage(name: string, map: Map<string, string>) {
         try {
             const appxManifest = await fsp.readFile(`./packages/${name}/AppxManifest.xml`, 'utf-8');
-            const xml = new DOMParser().parseFromString(appxManifest, 'text/xml');
-            const applications = xml.getElementsByTagName('Application');
 
-            for (let i = 0; i < applications.length; i++) {
-                const application = applications[i]!;
-                const id = application.getAttribute('Id')!;
-                const visualElements = application.getElementsByTagNameNS('http://schemas.microsoft.com/appx/2013/manifest', 'VisualElements')[0]!;
-                const backgroundColour = visualElements.getAttribute('BackgroundColor')!;
-                map.set(id, backgroundColour);
+            let parser = new PackageReader(appxManifest);
+            let manifest = await parser.readPackage();
+
+            for (let [id, application] of manifest.applications) {
+                map.set(id, application.visualElements.backgroundColor);
             }
-        } catch (error) {
+        }
+        catch (e) {
         }
     }
 }

@@ -3,8 +3,8 @@
     See LICENCE in the current folder for more information.
 */
 
-import { GRAPHQL, GRAPHQL_FEATURES } from "./consts";
-import { fetchRaw } from "./fetch";
+import { GRAPHQL, GRAPHQL_FEATURES } from "./consts.js";
+import { fetchRaw } from "./fetch.js";
 
 export enum TimelineType {
     Tweets, Replies, Media

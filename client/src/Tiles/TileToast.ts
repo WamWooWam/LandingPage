@@ -1,5 +1,5 @@
 import { TileElement } from "./TileElement";
-import { TileSize } from "../../../shared/TileSize";
+import { TileSize } from "landing-page-shared";
 import { TileVisual } from "./TileVisual";
 import { EXT_XMLNS } from "../Util";
 

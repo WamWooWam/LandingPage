@@ -3,7 +3,7 @@
     See LICENCE in the current folder for more information.
 */
 
-import { AUTH_HEADER, USER_AGENT } from "./consts";
+import { AUTH_HEADER, USER_AGENT } from "./consts.js";
 
 const LAST_USE_TIMEOUT = 1 * 60 * 60 * 1000; // 1 hour
 const MAX_AGE = 175 * 60 * 1000; // 175 minutes

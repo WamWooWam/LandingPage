@@ -1,8 +1,7 @@
 import { Component, createRef, RefObject, } from "preact";
 import { TileRenderer, TileProps } from "./TileRenderer";
-import { TileSize } from "../../../shared/TileSize";
 import { FenceTileRenderer, FenceTileProps } from "./FenceTileRenderer";
-import { RawTileProps } from "../../../shared/StartLayoutParser";
+import { TileSize, RawTileProps } from "landing-page-shared";
 import "./tile.css"
 import { useContext } from "preact/hooks";
 import { MobileContext } from "../Root";

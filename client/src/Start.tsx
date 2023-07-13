@@ -1,7 +1,7 @@
 import { Component, RenderableProps, createContext } from "preact";
 import { useContext } from "preact/hooks";
 import { TileGroup } from "./Tiles/TileGroup";
-import { parseLayout, StartTileGroup } from "../../shared/StartLayoutParser";
+import { parseLayout, StartTileGroup } from "landing-page-shared";
 import { MobileContext } from "./Root";
 import "./start.css"
 

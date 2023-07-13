@@ -1,10 +1,9 @@
 import { RenderableProps } from "preact";
 import { TileBinding } from "./TileBinding";
 import { TileVisual } from "./TileVisual";
-import { PackageApplication } from "../Data/PackageApplication";
-import { TileSize } from "../../../shared/TileSize";
 import { WebPContext } from "../Root";
 import { fixupUrl } from "../Util";
+import { PackageApplication, TileSize } from "landing-page-shared";
 import { useContext } from "preact/hooks";
 
 interface TileVisualRendererProps {
