@@ -17,6 +17,10 @@ module.exports = [
                     exclude: /node_modules/,
                 },
                 {
+                    test: /AppxManifest\.xml$/i,
+                    use: ['manifest-loader']
+                },
+                {
                     test: /\.css$/i,
                     use: [
                         MiniCssExtractPlugin.loader,
@@ -43,7 +47,8 @@ module.exports = [
                             }
                         }
                     ]
-                }, {
+                }, 
+                {
                     test: /\.svg$/i,
                     use: [
                         {
@@ -58,18 +63,14 @@ module.exports = [
                     ]
                 },
                 {
-                    test: /\.xml$/i,
+                    test: /StartScreen\.xml$/i,
                     use: ['raw-loader', 'xml-loader']
-                },
-                {
-                    test: /AppxManifest\.xml$/i,
-                    use: ['manifest-loader']
                 },
             ],
         },
         resolve: {
             extensions: ['.tsx', '.ts', '.js'],
-            fallback: { "crypto": false }
+            fallback: { "crypto": false, "xmldom": false }
         },
         optimization: {
             minimizer: [

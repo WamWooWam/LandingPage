@@ -12,6 +12,8 @@ import * as base32 from "base32.js"
 const AppX2010ManifestNS = "http://schemas.microsoft.com/appx/2010/manifest";
 const AppX2013ManifestNS = "http://schemas.microsoft.com/appx/2013/manifest";
 
+const DOMParser = globalThis.DOMParser ?? require('xmldom').DOMParser;
+
 export class PackageReader {
 
     private packageManifest: string;
@@ -25,7 +27,7 @@ export class PackageReader {
 
     async readPackage(): Promise<Package> {
         //let pack = new Package(this.packagePath);
-        const pack: Package = { path: "", applications: new Map() };
+        const pack: Package = { path: "", applications: {} };
         const manifestDocument = new DOMParser()
             .parseFromString(this.packageManifest, 'application/xml');
 
@@ -56,7 +58,7 @@ export class PackageReader {
         for (let i = 0; i < applicationElements.length; i++) {
             const applicationElement = applicationElements[i];
             const application = this.loadTextResources(this.readApplication(applicationElement));
-            pack.applications!.set(application.id, application);
+            pack.applications[application.id] = application;
         }
 
         pack.path = "/packages/" + this.identity.packageFamilyName + "/";

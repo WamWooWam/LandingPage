@@ -202,7 +202,7 @@ export class TileRenderer extends Component<TileProps, TileState> {
     private getAppAndPackage(props: TileProps = this.props) {
         let pack = PackageRegistry.getPackage(props.packageName);
         if (!pack) console.warn(`Package ${props.packageName} not found!`);
-        let app = pack?.applications.get(props.appId);
+        let app = pack?.applications[props.appId];
         if (!app) console.warn(`App ${props.appId} in package ${props.packageName} not found!`);
         return { pack, app };
     }

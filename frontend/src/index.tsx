@@ -2,7 +2,6 @@
 import "./polyfill";
 import { render } from "preact"
 import { PackageRegistry } from "./Data/PackageRegistry";
-import { PackageReader } from "landing-page-shared";
 import { Root } from "./Root";
 import './index.css';
 import './segoe.css';
@@ -15,9 +14,7 @@ const packages = [
 ];
 
 document.addEventListener("DOMContentLoaded", async () => {
-  for (const packageXml of packages) {
-    let reader = new PackageReader(packageXml)
-    let pack = await reader.readPackage();
+  for (const pack of packages) {
     PackageRegistry.registerPackage(pack);
   }
 

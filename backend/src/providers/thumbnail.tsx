@@ -172,7 +172,8 @@ export namespace Thumbnail {
             let parser = new PackageReader(appxManifest);
             let manifest = await parser.readPackage();
 
-            for (let [id, application] of manifest.applications) {
+            for (const id in manifest.applications) {
+                const application = manifest.applications[id]!;
                 map.set(id, application.visualElements.backgroundColor);
             }
         }

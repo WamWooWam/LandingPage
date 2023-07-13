@@ -25,9 +25,9 @@ const app = express();
     app.get('/api/media/og-image.svg', apicache.middleware('30 days'), Thumbnail.generateThumbnailSvg);
     app.get('/api/media/og-image.png', apicache.middleware('30 days'), Thumbnail.generateThumbnailPng);
 
-    app.use(express.static(path.join(process.cwd(), "client", "dist")))
+    app.use(express.static(path.join(process.cwd(), "..", "frontend", "dist")))
     app.get('/', (req, res) => {
-        res.sendFile(path.join(process.cwd(), "client", "dist", "index.html"))
+        res.sendFile(path.join(process.cwd(), "..", "frontend", "dist", "index.html"))
     });
 
     app.use((err, req, res, next) => {
