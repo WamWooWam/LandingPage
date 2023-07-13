@@ -1,11 +1,12 @@
 import { Component, RenderableProps, createContext } from "preact";
-import { TileGroup } from "./Start/TileGroup";
-import { parseLayout, StartTileGroup } from "../../shared/StartLayoutParser";
-import ShowAllApps from "../static/start/down-arrow.svg"
-import StartLayout from '../../packages/StartScreen.xml'
-import "./start.css"
 import { useContext } from "preact/hooks";
+import { TileGroup } from "./Tiles/TileGroup";
+import { parseLayout, StartTileGroup } from "../../shared/StartLayoutParser";
 import { MobileContext } from "./Root";
+import "./start.css"
+
+import StartLayout from '../../packages/StartScreen.xml'
+import { AllAppsButton } from "./Start/AllAppsButton";
 
 type FullscreenDocument = Document & { webkitFullscreenElement?: Element, msFullscreenElement?: Element, mozFullScreenElement?: Element, webkitExitFullscreen?: Function, msExitFullscreen?: Function, mozCancelFullScreen?: Function };
 type FullscreenElement = HTMLElement & { webkitRequestFullscreen?: Function, msRequestFullscreen?: Function, mozRequestFullScreen?: Function };
@@ -49,14 +50,12 @@ export class Start extends Component<{}, StartState> {
 
                     <div class="start-tiles-scroll-container">
                         <div class="start-tiles">
-                            {this.state.tileGroups ? this.state.tileGroups.map(m => <TileGroup {...m} />) : []}
+                            {this.state.tileGroups.map(m => <TileGroup {...m} />)}
                         </div>
                     </div>
 
                     <div class="start-footer">
-                        <div class="start-show-all-button start-arrow-button" role="button">
-                            <img src={ShowAllApps} alt="show all" width={32} height={32} draggable={false} />
-                        </div>
+                        <AllAppsButton/>
                     </div>
                 </div>
             </div>

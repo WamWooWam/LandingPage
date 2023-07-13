@@ -1,8 +1,10 @@
 import { TileTemplateType } from "../TileTemplateType";
 import { TileUpdateManager } from "../TileUpdateManager";
 
+export const EXT_XMLNS = "https://wamwoowam.co.uk/tiles/2022";
+
 export function createRoot(): Document {
-    return new DOMParser().parseFromString("<tile></tile>", "application/xml");
+    return new DOMParser().parseFromString("<tile xmlns=\"\" xmlns:ext=\"https://wamwoowam.co.uk/tiles/2022\"></tile>", "application/xml");
 }
 
 export function createVisual(document: Document): Element {

@@ -1,0 +1,64 @@
+<launcher version="2">
+    <view name="Start">
+        <group name="Lifestyle">
+            <tile
+                AppID="microsoft.windowscommunicationsapps_8wekyb3d8bbwe!Microsoft.WindowsLive.Mail"
+                size="wide310x150" FencePost="0" />
+            <tile AppID="Microsoft.BingSports_8wekyb3d8bbwe!AppexSports" size="wide310x150"
+                FencePost="0" />
+            <tile AppID="Microsoft.SkypeApp_kzf8qxf38zg5c!App" size="square150x150" FencePost="0" />
+            <tile
+                AppID="microsoft.windowscommunicationsapps_8wekyb3d8bbwe!Microsoft.WindowsLive.People"
+                size="square150x150" FencePost="0" />
+            <tile AppID="Microsoft.Windows.Desktop" size="square150x150" FencePost="0" />
+            <tile AppID="Microsoft.Windows.Computer" size="square70x70" FencePost="1" />
+            <tile
+                AppID="windows.immersivecontrolpanel_cw5n1h2txyewy!microsoft.windows.immersivecontrolpanel"
+                size="square70x70" FencePost="0" />
+            <tile AppID="Microsoft.Windows.Documents" size="square70x70" FencePost="0" />
+            <tile AppID="Microsoft.Windows.Pictures" size="square70x70" FencePost="0" />
+            <tile
+                AppID="microsoft.windowscommunicationsapps_8wekyb3d8bbwe!Microsoft.WindowsLive.Calendar"
+                size="wide310x150" FencePost="0" />
+            <tile AppID="Microsoft.BingFinance_8wekyb3d8bbwe!AppexFinance" size="wide310x150"
+                FencePost="0" />
+            <tile AppID="Microsoft.BingWeather_8wekyb3d8bbwe!App" size="square310x310" FencePost="0" />
+            <tile AppID="FileManager_cw5n1h2txyewy!Microsoft.Windows.FileManager"
+                size="square150x150" FencePost="0" />
+            <tile AppID="Microsoft.ZuneVideo_8wekyb3d8bbwe!Microsoft.ZuneVideo" size="square70x70"
+                FencePost="1" />
+            <tile AppID="Microsoft.ZuneMusic_8wekyb3d8bbwe!Microsoft.ZuneMusic" size="square70x70"
+                FencePost="0" />
+            <tile AppID="Microsoft.XboxLIVEGames_8wekyb3d8bbwe!Microsoft.XboxLIVEGames"
+                size="square70x70" FencePost="0" />
+            <tile AppID="Microsoft.MoCamera_cw5n1h2txyewy!Microsoft.Camera" size="square70x70"
+                FencePost="0" />
+            <tile AppID="Microsoft.InternetExplorer.Default" size="square150x150" FencePost="0" />
+            <tile AppID="Microsoft.HelpAndTips_8wekyb3d8bbwe!HelpAndTips" size="square150x150"
+                FencePost="0" />
+            <tile AppID="FileManager_cw5n1h2txyewy!Microsoft.Windows.PhotoManager"
+                size="square150x150" FencePost="0" />
+            <tile AppID="Microsoft.Office.OneNote_8wekyb3d8bbwe!microsoft.onenoteim"
+                size="square150x150" FencePost="0" />
+            <tile AppID="Microsoft.BingNews_8wekyb3d8bbwe!AppexNews" size="wide310x150"
+                FencePost="0" />
+        </group>
+        <group>
+            <tile AppID="winstore_cw5n1h2txyewy!Windows.Store" size="square310x310" FencePost="0" />
+            <tile AppID="Microsoft.BingMaps_8wekyb3d8bbwe!AppexMaps" size="square150x150"
+                FencePost="0" />
+            <tile AppID="Microsoft.WindowsReadingList_8wekyb3d8bbwe!Microsoft.WindowsReadingList"
+                size="square150x150" FencePost="0" />
+            <tile AppID="Microsoft.BingFoodAndDrink_8wekyb3d8bbwe!AppexFoodAndDrink"
+                size="square150x150" FencePost="0" />
+            <tile AppID="Microsoft.BingHealthAndFitness_8wekyb3d8bbwe!AppexHealthAndFitness"
+                size="square150x150" FencePost="0" />
+        </group>
+        <group>
+            <tile AppID="VisualStudio.11.0" size="square150x150" FencePost="0" />
+            <tile
+                AppID="{7C5A40EF-A0FB-4BFC-874A-C0F2E0B9FA8E}\Microsoft SDKs\Windows Phone\v8.0\Tools\XAP Deployment\XapDeploy.exe"
+                size="square150x150" FencePost="0" />
+        </group>
+    </view>
+</launcher>

@@ -119,12 +119,14 @@ html {
     }
 
     .start-title {
+
+        /* 42pt;Light;None;Segoe UI */
         font-family: "Segoe UI";
         font-size: 42pt;
         font-weight: 200;
+        font-feature-settings: "ss17" 1, "dlig" 1;
+        line-height: 80px;
         margin: 0;
-        padding-bottom: 8px;
-        margin-left: -2px;
     }
 
     .start-header-buttons {
@@ -209,17 +211,18 @@ html {
     }
 
     .start-tiles {
-        padding: 64px 118px 72px 62px;
         display: flex;
         align-self: center;
         align-items: center;
-        height: calc(100% - 224px);
-        margin-left: 0;
+        height: calc(100% - 200px);
+        margin-left: 64px;
+        margin-top: 112px;
+        margin-bottom: 88px;
     }
 
     .start-footer {
         position: relative;
-        top: -72px;
+        top: -60px;
         margin-left: 72px;
         display: flex;
         align-items: center;
@@ -228,11 +231,11 @@ html {
     }
 
     .start-footer {
-        margin-left: 118px;
+        margin-left: 136px;
     }
 
     .start-header {
-        margin-left: 118px;
+        margin-left: 124px;
     }
 
     .start-tile-group {

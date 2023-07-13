@@ -67,7 +67,7 @@ export class TileUpdateManager {
     }
 
     private async fetchVisuals(packageApplication: PackageApplication): Promise<boolean> {
-        if (!packageApplication.visualElements.defaultTile.tileUpdateUrl)
+        if (!packageApplication?.visualElements.defaultTile.tileUpdateUrl)
             return false;
 
         console.log(`fetching visuals from ${packageApplication.visualElements.defaultTile.tileUpdateUrl} for ${packageApplication.id}`);

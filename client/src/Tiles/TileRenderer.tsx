@@ -9,10 +9,10 @@ import { MobileContext, WebPContext } from "../Root";
 import { TileBackgroundRenderer } from "./TileBackgroundRenderer";
 import { TileSize } from "../../../shared/TileSize";
 import { lightenDarkenColour2 } from "../../../shared/ColourUtils";
-import { getVisuals } from "./TileToast"
-import "./tile.css"
 import { TileUpdateManager } from "./TileUpdateManager";
 import { fixupUrl } from "../Util";
+import { getVisuals } from "./TileToast"
+import "./tile.css"
 
 export interface TileProps {
     packageName?: string;
@@ -29,9 +29,6 @@ interface TileState {
     app: PackageApplication;
     pressState?: "none" | "top" | "bottom" | "left" | "right" | "center";
 
-    tileColour: string;
-    tileColourLight: string;
-
     visualIdx: number;
     nextVisualIdx?: number;
     visuals: TileVisual[]
@@ -47,11 +44,12 @@ export class TileRenderer extends Component<TileProps, TileState> {
 
     constructor(props: TileProps) {
         super(props);
+
+        let { pack, app } = this.getAppAndPackage(props);
+
         this.state = {
-            app: null,
-            pack: null,
-            tileColour: null,
-            tileColourLight: null,
+            app,
+            pack,
             pressState: "none",
             visuals: [DefaultVisual],
             visualIdx: 0,
@@ -59,20 +57,14 @@ export class TileRenderer extends Component<TileProps, TileState> {
         }
     }
 
-    // derrive state
-    static getDerivedStateFromProps(props: TileProps, state: TileState) {
-        let pack = PackageRegistry.getPackage(props.packageName);
-        if (!pack)
-            console.warn("Package " + props.packageName + " not found!");
+    componentDidUpdate(previousProps: Readonly<TileProps>, previousState: Readonly<TileState>, snapshot: any): void {
+        if (this.props.packageName !== previousProps.packageName || this.props.appId !== previousProps.appId) {
+            let { pack, app } = this.getAppAndPackage();
 
-        let app = pack?.applications.get(props.appId);
-        if (!app)
-            console.warn("App " + props.appId + " in package " + props.packageName + " not found!");
+            clearInterval(this.state.interval);
 
-        let tileColour = app?.visualElements.backgroundColor ?? "#4617b4";
-        let tileColourLight = lightenDarkenColour2(tileColour, 0.05);
-
-        return { pack, app, tileColour, tileColourLight };
+            this.setState({ pack, app, visualIdx: 0, visuals: [DefaultVisual], nextVisualIdx: undefined });
+        }
     }
 
     componentDidMount() {
@@ -111,8 +103,12 @@ export class TileRenderer extends Component<TileProps, TileState> {
     }
 
     pointerMoved(e: PointerEvent) {
-        if (!e.buttons)
-            this.updatePressState(e);
+        // if the current element is "active" then we dont want to change the state
+        if (e.buttons !== 0) {
+            return;
+        }
+
+        this.updatePressState(e);
     }
 
     onAnimationEnded(e: AnimationEvent) {
@@ -135,8 +131,6 @@ export class TileRenderer extends Component<TileProps, TileState> {
     }
 
     render(props: TileProps, state: TileState) {
-        // let isMobile = useContext(MobileContext);
-        let isMobile = false; // disable for now
         let hasWebP = useContext(WebPContext);
 
         let containerStyle = {
@@ -144,36 +138,36 @@ export class TileRenderer extends Component<TileProps, TileState> {
             gridColumnStart: props.column !== undefined ? props.column + 1 : undefined,
         }
 
+        let tileColour = state.app?.visualElements.backgroundColor ?? "#4617b4";
+        let tileColourLight = lightenDarkenColour2(tileColour, 0.05);
+        let frontStyle = {
+            background: `linear-gradient(to right, ${tileColour}, ${tileColourLight})`
+        }
+
+        let classList = ["tile-container", TileSize[props.size], "press-" + state.pressState];
+
         if (!state.pack || !state.app) {
             return (
-                <a class={`tile-container ${TileSize[props.size]}`}
+                <a class={classList.join(" ")}
+                    onPointerEnter={this.pointerEntered.bind(this)}
+                    onPointerLeave={this.pointerExited.bind(this)}
+                    onPointerMove={this.pointerMoved.bind(this)}
                     style={containerStyle}>
-                    <div class="tile" />
+                    <div class="tile" style={frontStyle} />
+                    <div className="tile-border"
+                        style={{ border: '1px solid rgba(255,255,255,0.1)' }} />
                 </a>
             );
         }
 
 
-        let classList = ["tile-container", TileSize[props.size], "press-" + state.pressState];
-        let tileColour = state.tileColour;
-        let frontStyle = {};
         if (state.app.visualElements.foregroundText === "light")
             classList.push("text-light");
         else
             classList.push("text-dark");
 
-        if (!isMobile) {
-            frontStyle = {
-                background: `linear-gradient(to right, ${tileColour}, ${state.tileColourLight})`
-            }
-        }
-        else {
-
-        }
-
         let visual = state.visuals[state.visualIdx];
         let nextVisual = state.visuals[(state.visualIdx + 1) % state.visuals.length];
-
 
         //let size = this.getTileSize(props.size)
         return (
@@ -186,13 +180,12 @@ export class TileRenderer extends Component<TileProps, TileState> {
                     title={state.app.visualElements.displayName}
                     aria-label={state.app.visualElements.displayName}
                     href={state.app.startPage}>
-                    {isMobile && <TileBackgroundRenderer />}
                     <div class="tile">
                         <div class="front" style={frontStyle}>
                             <TileVisualRenderer app={state.app} visual={visual} size={props.size} />
                         </div>
                         {state.swapping &&
-                            <div class={"next"} style={frontStyle} onAnimationEnd={this.onAnimationEnded.bind(this)}>
+                            <div class="next" style={frontStyle} onAnimationEnd={this.onAnimationEnded.bind(this)}>
                                 <TileVisualRenderer app={state.app} visual={nextVisual} size={props.size} />
                             </div>
                         }
@@ -205,6 +198,14 @@ export class TileRenderer extends Component<TileProps, TileState> {
                 </a>
             </>
         )
+    } 
+
+    private getAppAndPackage(props: TileProps = this.props) {
+        let pack = PackageRegistry.getPackage(props.packageName);
+        if (!pack) console.warn(`Package ${props.packageName} not found!`);
+        let app = pack?.applications.get(props.appId);
+        if (!app) console.warn(`App ${props.appId} in package ${props.packageName} not found!`);
+        return { pack, app };
     }
 
     private updatePressState(e: PointerEvent) {
@@ -212,8 +213,8 @@ export class TileRenderer extends Component<TileProps, TileState> {
         const offsetX = Math.max(0, Math.min(e.offsetX, size.width));
         const offsetY = Math.max(0, Math.min(e.offsetY, size.height));
 
-        if ((offsetX >= (size.width * 0.33) && offsetX <= (size.width * 0.66)) &&
-            (offsetY >= (size.height * 0.33) && offsetY <= (size.height * 0.66))) {
+        if ((offsetX >= (size.width * 0.30) && offsetX <= (size.width * 0.70)) &&
+            (offsetY >= (size.height * 0.30) && offsetY <= (size.height * 0.70))) {
             this.setState({ pressState: "center" })
         }
         else {

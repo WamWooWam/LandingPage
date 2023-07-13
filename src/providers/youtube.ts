@@ -1,6 +1,7 @@
 import { TileTemplateType } from "../TileTemplateType";
 import { TileUpdateManager } from "../TileUpdateManager";
 import { DOMParser, XMLSerializer } from 'xmldom'
+import { EXT_XMLNS, createRoot } from "./utils";
 
 export namespace YouTube {
     const rootUrl = 'https://www.googleapis.com/youtube/v3'
@@ -19,13 +20,13 @@ export namespace YouTube {
         const json = await resp.json()
         const items = json.items;
 
-        let root = TileUpdateManager.getTemplateContent(TileTemplateType.tileWideSmallImageAndText03);
-        let rootElement = root.getElementsByTagName("tile")[0];
-        rootElement.removeChild(rootElement.getElementsByTagName("visual")[0]);
+        let root = createRoot();
+        let rootElement = root.documentElement;
 
         for (const video of items) {
             let content = TileUpdateManager.getTemplateContent(TileTemplateType.tileSquarePeekImageAndText04);
             content.getElementsByTagName("image")[0].setAttribute("src", video.snippet.thumbnails.medium.url);
+            content.getElementsByTagName("image")[0].setAttributeNS(EXT_XMLNS, "ext:alt", "Thumbnail for " + video.snippet.title);
             content.getElementsByTagName("text")[0].textContent = video.snippet.title;
 
             rootElement.appendChild(root.importNode(content.getElementsByTagName("visual")[0], true));

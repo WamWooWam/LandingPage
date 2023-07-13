@@ -442,3 +442,45 @@
     background-repeat: no-repeat;
     background-image: url(../../static/wallpaper/the-cliffs.webp);
 }
+
+.tile-square-image-and-text-overlay-02 {
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+
+    background-size: cover;
+    background-position: center;
+    background-color: #BBBBBB;
+    background-blend-mode: multiply;
+
+    justify-content: space-between;
+}
+
+.tile-square-image-and-text-overlay-02>h3 {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    line-clamp: 2;
+    font-size: 16pt;
+    font-weight: 300;
+    margin: 16px 16px 4px 16px;
+    overflow: hidden;
+    text-overflow: clip;
+    overflow-wrap: break-word;
+}
+
+.tile-square-image-and-text-overlay-02>p {
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    line-clamp: 3;
+    font-size: 9pt;
+    line-height: 16px;
+    margin: 4px 16px 36px 16px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    overflow-wrap: break-word;
+    justify-self: flex-end;
+}

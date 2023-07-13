@@ -1,6 +1,6 @@
 import { Component, RefObject, createRef } from "preact";
 import { useContext } from "preact/hooks";
-import { ScrollStateContext } from "./ScrollStateProvider";
+import { ScrollStateContext } from "../Start/ScrollStateProvider";
 const WallpaperSize = 3840;
 
 export interface TileBackgroundProps {

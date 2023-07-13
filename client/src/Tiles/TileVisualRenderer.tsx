@@ -20,7 +20,8 @@ const TileTemplateMap: Map<string, Function>
         ["TileWide310x150HeaderAndText", TileWide310x150HeaderAndText],
         ["TileSquare150x150PeekImage", TileSquare150x150PeekImage],
         ["TileSquare150x150Text", TileSquare150x150Text],
-        ["TileSquare150x150HeaderAndText", TileSquare150x150HeaderAndText]
+        ["TileSquare150x150HeaderAndText", TileSquare150x150HeaderAndText],
+        ["TileSquare310x310ImageAndTextOverlay02", TileSquare310x310ImageAndTextOverlay02]
     ]);
 
 export const TileVisualRenderer = ({ app, size, visual }: RenderableProps<TileVisualRendererProps>) => {
@@ -73,8 +74,8 @@ function TileWide310x150SmallImageAndText(props: TileVisualRendererProps, bindin
 
     return (
         <div className="tile-binding tile-wide-small-image-and-text">
-            <img src={image.content} width={64} height={64} />
-            <p>{text.content}</p>
+            <img src={image.content} alt={image.alt} width={64} height={64} />
+            <p>{text.content ?? '\u00A0'}</p>
         </div>
     )
 }
@@ -84,7 +85,9 @@ function TileWide310x150PeekImage(props: TileVisualRendererProps, binding: TileB
 
     return (
         <div className="tile-binding tile-wide-peak-image"
-            style={{ backgroundImage: `url(${image.content})` }} />
+            style={{ backgroundImage: `url(${image.content})` }}
+            role="img"
+            aria-label={image.alt} />
     )
 }
 
@@ -94,7 +97,9 @@ function TileSquare150x150PeekImage(props: TileVisualRendererProps, binding: Til
 
     return (
         <div className="tile-binding tile-wide-peak-image"
-            style={{ backgroundImage: `url(${image.content})` }} />)
+            style={{ backgroundImage: `url(${image.content})` }}
+            role="img"
+            aria-label={image.alt} />)
 }
 
 function TileSquare150x150Text(props: TileVisualRendererProps, binding: TileBinding) {
@@ -102,7 +107,7 @@ function TileSquare150x150Text(props: TileVisualRendererProps, binding: TileBind
 
     return (
         <div className="tile-binding tile-square-text">
-            <p>{text.content}</p>
+            <p>{text.content ?? '\u00A0'}</p>
         </div>
     )
 }
@@ -113,8 +118,8 @@ function TileSquare150x150HeaderAndText(props: TileVisualRendererProps, binding:
 
     return (
         <div className="tile-binding tile-square-header-and-text">
-            <h3>{text1.content}</h3>
-            <p>{text2.content}</p>
+            <h3>{text1.content ?? '\u00A0'}</h3>
+            <p>{text2.content ?? '\u00A0'}</p>
         </div>
     )
 }
@@ -125,8 +130,23 @@ function TileWide310x150HeaderAndText(props: TileVisualRendererProps, binding: T
 
     return (
         <div className="tile-binding tile-wide-header-and-text">
-            <h3>{text1.content}</h3>
-            <p>{text2.content}</p>
+            <h3>{text1.content ?? '\u00A0'}</h3>
+            <p>{text2.content ?? '\u00A0'}</p>
+        </div>
+    )
+}
+
+function TileSquare310x310ImageAndTextOverlay02(props: TileVisualRendererProps, binding: TileBinding) {
+    let text1 = binding.elements.find(f => f.type == "text" && f.id == 1);
+    let text2 = binding.elements.find(f => f.type == "text" && f.id == 2);
+    let image = binding.elements.find(f => f.type == "image" && f.id == 1);
+
+    return (
+        <div className="tile-binding tile-square-image-and-text-overlay-02"
+            style={{ backgroundImage: `url(${image.content})` }}
+            aria-label={image.alt}>
+            <h3>{text1.content ?? '\u00A0'}</h3>
+            <p>{text2.content ?? '\u00A0'}</p>
         </div>
     )
 }

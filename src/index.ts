@@ -32,9 +32,16 @@ const app = express();
 
     app.use((err, req, res, next) => {
         console.error(err.stack)
-        res.status(500)
-            .contentType('text/plain')
-            .send('Something went wrong! Please try again later.')
+        if (process.env.NODE_ENV === 'development') {
+            res.status(500)
+                .contentType('text/plain')
+                .send(err.stack)
+        }
+        else {
+            res.status(500)
+                .contentType('text/plain')
+                .send('Something went wrong! Please try again later.')
+        }
     })
 
     app.listen(5001);

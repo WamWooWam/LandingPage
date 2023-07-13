@@ -1,8 +1,10 @@
 import { TileElement } from "./TileElement";
 import { TileSize } from "../../../shared/TileSize";
 import { TileVisual } from "./TileVisual";
+import { EXT_XMLNS } from "../Util";
 
 const TileTemplateComponentMap: Map<string, string[]> = new Map([
+    ["TileSquare310x310ImageAndTextOverlay02", ["TileSquare310x310ImageAndTextOverlay02"]],
     ["TileWide310x150SmallImageAndText03", ["TileWide310x150SmallImageAndText"]],
     ["TileWide310x150PeekImage05", ["TileWide310x150PeekImage", "TileWide310x150SmallImageAndText"]],
     ["TileWide310x150Text09", ["TileWide310x150HeaderAndText"]],
@@ -40,9 +42,20 @@ export function getVisuals(doc: Document, size: TileSize): TileVisual[] {
 
         for (let i = 0; i < bindingElements.length; i++) {
             let element = bindingElements[i];
-            var components = TileTemplateComponentMap.get(element.getAttribute("template"))
-            if (getTileSize(element.getAttribute("template")) !== size)
+            let template = element.getAttribute("template");
+            let fallback = element.getAttribute("fallback");
+
+            if (getTileSize(template) !== size || (fallback && getTileSize(fallback) !== size))
                 continue;
+
+            var components = TileTemplateComponentMap.get(template);
+            if (!components) {
+                components = fallback && TileTemplateComponentMap.get(fallback);
+                if (!components) {
+                    console.warn(`unknown template ${template} (${fallback}). out of date client?`);
+                    continue;
+                }
+            }
 
             for (let i = 0; i < components.length; i++) {
                 let visual: TileVisual = { bindings: [] };
@@ -61,7 +74,7 @@ export function getVisuals(doc: Document, size: TileSize): TileVisual[] {
     }
 
     console.log(`got ${visuals.length} visuals for size ${TileSize[size]}`)
-    
+
     return visuals;
 }
 
@@ -69,6 +82,7 @@ function getElements(node: Element): TileElement {
     return {
         id: parseInt(node.getAttribute("id")),
         type: <"image" | "text">node.tagName.toLowerCase(),
-        content: node.tagName.toLowerCase() === "image" ? node.getAttribute("src") : node.textContent
+        content: node.tagName.toLowerCase() === "image" ? node.getAttribute("src") : node.textContent,
+        alt: node.getAttributeNS(EXT_XMLNS, "alt")
     }
 }

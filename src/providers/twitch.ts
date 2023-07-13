@@ -1,6 +1,7 @@
 import { TileTemplateType } from "../TileTemplateType";
 import { TileUpdateManager } from "../TileUpdateManager";
 import { DOMParser, XMLSerializer } from 'xmldom'
+import { EXT_XMLNS } from "./utils";
 
 export namespace Twitch {
     const rootUrl = 'https://api.twitch.tv/helix'
@@ -68,6 +69,8 @@ export namespace Twitch {
             let stream = json.data[0];
             let content = TileUpdateManager.getTemplateContent(TileTemplateType.tileSquarePeekImageAndText04);
             content.getElementsByTagName("image")[0].setAttribute("src", stream.thumbnail_url.replace('{width}', '1280').replace('{height}', '720'));
+            content.getElementsByTagName("image")[0].setAttributeNS(EXT_XMLNS, "ext:alt", "Thumbnail for " + stream.title);
+
             content.getElementsByTagName("text")[0].textContent = "🔴 LIVE: " + stream.title;
 
             res.contentType('application/xml')
@@ -95,6 +98,7 @@ export namespace Twitch {
             for (const video of json.data) {
                 let content = TileUpdateManager.getTemplateContent(TileTemplateType.tileSquarePeekImageAndText04);
                 content.getElementsByTagName("image")[0].setAttribute("src", video.thumbnail_url.replace('%{width}', '1280').replace('%{height}', '720'));
+                content.getElementsByTagName("image")[0].setAttributeNS(EXT_XMLNS, "ext:alt", "Thumbnail for " + video.title);
                 content.getElementsByTagName("text")[0].textContent = "📺 " + video.title;
     
                 rootElement.appendChild(root.importNode(content.getElementsByTagName("visual")[0], true));
