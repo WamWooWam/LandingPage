@@ -10,7 +10,7 @@ export namespace Twitter {
     export const latestTweets = async (req, res) => {
         try {
             if (!userCache) {
-                userCache = await getGraphUserByUsername("da_wamwoowam"); // TODO: env
+                userCache = await getGraphUserByUsername(process.env.TWITTER_USERNAME);
             }
 
             let root = createRoot();
