@@ -2269,7 +2269,7 @@ lru-cache@^6.0.0:
   dependencies:
     yallist "^4.0.0"
 
-manifest-loader@./tools/manifest-loader:
+manifest-loader@../tools/manifest-loader:
   version "1.0.0"
   dependencies:
     base32.js "^0.1.0"
@@ -4123,7 +4123,7 @@ ws@^8.13.0:
   resolved "https://registry.yarnpkg.com/ws/-/ws-8.13.0.tgz#9a9fb92f93cf41512a0735c8f4dd09b8a1211cd0"
   integrity sha512-x9vcZYTrFPC7aSIbj7sRCYo7L/Xb8Iy+pW0ng0wt2vCJv7M9HOMy0UoN3rr+IFC7hb7vXoqS+P9ktyLLLhO+LA==
 
-xml-loader@./tools/xml-loader:
+xml-loader@../tools/xml-loader:
   version "1.0.0"
   dependencies:
     minify-xml "^3.4.0"
