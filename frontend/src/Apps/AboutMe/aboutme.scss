@@ -1,0 +1,185 @@
+#about-me-root {
+    display: flex;
+    margin: 0;
+    padding: 0;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    flex-direction: column;
+    background: #F4F4F4;
+    font-family: "Segoe UI", "Segoe UI Symbol", "Symbols", "Segoe UI Emoji" !important;
+
+    .header {
+        height: 160px;
+        width: 100%;
+    }
+
+    .content {
+        flex: 1;
+        color: white;
+        overflow-x: hidden;
+        overflow-y: hidden;
+    }
+
+    .scroll-wrapper {
+        display: block;
+        width: calc(100vh - 240px);
+        height: 100vw;
+        margin: 0;
+        overflow-y: auto;
+        overflow-x: hidden;
+        transform: rotate(-90deg) translateY(calc(-100vh + 240px));
+        direction: rtl;
+        transform-origin: right top;
+    }
+
+    .scroll-wrapper>* {
+        display: flex;
+        flex-direction: row;
+        transform: rotate(90deg) translateX(calc(100%));
+        transform-origin: right top;
+        direction: ltr;
+    }
+
+    main {
+        min-width: calc(100vw);
+        height: calc(100vh - 240px);
+        display: flex;
+    }
+
+    .footer {
+        height: 80px;
+        width: 100%;
+    }
+
+    .people-me {
+        width: 520px;
+        height: 100%;
+        display: grid;
+        grid-template-columns: 100%;
+        grid-template-rows: 20px 100px 1fr auto;
+    }
+
+    .people-b {
+        flex: 1;
+        height: 100%;
+        width: 100%;
+        box-sizing: border-box;
+        display: grid;
+        grid-template-columns: auto;
+        grid-template-rows: 20px 104px 1fr;
+    }
+
+    .people-b-background {
+        background-color: #1c1c1c;
+        width: 100%;
+        height: 100%;
+        grid-row-start: 2;
+        grid-row-end: span 4;
+    }
+
+    .people-me>* {
+        grid-column: 1;
+    }
+
+    .people-me-background {
+        background: #d24625;
+        width: 100%;
+        height: 100%;
+        grid-row-start: 2;
+        grid-row-end: span 4;
+    }
+
+    .me-tile {
+        margin-left: 120px;
+        margin-right: 40px;
+        width: auto;
+        overflow: hidden;
+        display: grid;
+        grid-template-rows: 1fr auto auto;
+        grid-template-columns: 120px auto;
+        grid-row-start: 1;
+        grid-row-end: span 2;
+        justify-content: flex-start;
+    }
+
+    .me-tile-container {
+        grid-row-start: 1;
+        grid-row-end: span 3;
+        grid-column-start: 1;
+    }
+
+    .me-tile-img {
+        width: 120px;
+        height: 120px;
+    }
+
+    .me-tile-primary {
+        margin-top: 0px;
+        margin-left: 10px;
+        grid-row-start: 2;
+        grid-column-start: 2;
+        display: flex;
+        flex-direction: row;
+    }
+
+    .me-tile-primary-text {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        font-size: 26.66667px;
+        letter-spacing: 0.02em;
+        line-height: 32px;
+        padding-bottom: 5px;
+        padding-top: 3px;
+        font-weight: 200;
+        color: #ffffff;
+        display: block;
+    }
+
+    .me-tile-primary-chevron {
+        font-family: "Segoe UI Symbol", "Segoe UI", Tahoma, Verdana, Arial, sans-serif;
+    }
+
+    .notification-list {
+        color: #ffffff;
+        height: 100%;
+        margin-top: 32px;
+        margin-left: 115px;
+        margin-right: 40px;
+        display: -ms-flexbox;
+        grid-row-start: 3;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .notification-boiler-text {
+        font-size: 26.66667px;
+        letter-spacing: 0.02em;
+        line-height: 32px;
+        padding-bottom: 5px;
+        padding-top: 3px;
+        font-weight: 200;
+        max-height: calc(128px);
+        overflow: hidden;
+        color: #ffffff;
+        display: block;
+    }
+
+    .header-text {
+        color: #d24625;
+        font-family: "Segoe UI";
+        font-weight: lighter;
+        margin-left: 120px;
+        margin-top: 36px;
+        font-size: 56px;
+        letter-spacing: 0;
+        line-height: 64px;
+        padding-bottom: 11px;
+        padding-top: 5px;
+        grid-row-start: 1;
+        grid-column-start: 1;
+    }
+}

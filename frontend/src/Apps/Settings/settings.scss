@@ -1,0 +1,121 @@
+#settings-root {
+    height: 100%;
+
+    .container {
+        display: flex;
+        width: 100%;
+        height: 100%;
+    }
+
+    #sidebar {
+        display: flex;
+        flex-direction: column;
+        width: 400px;
+        background: #140044;
+        color: white;
+    }
+
+    #sidebar-content {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        margin-top: 50px;
+        height: 100%;
+    }
+
+    .sidebar-list-view-container {
+        flex: 1;
+        overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .inline-container {
+        display: flex;
+        margin-right: 8px;
+        margin-bottom: 16px;
+    }
+
+    .inline-container>.win-navigation-backbutton {
+        width: 32px !important;
+        height: 32px !important;
+        margin: 0 8px 0 16px !important;
+    }
+
+    .inline-container>.win-navigation-backbutton:hover:enabled>.win-back {
+        background-color: rgba(255, 255, 255, 0.2);
+    }
+
+    .inline-container>.win-navigation-backbutton>.win-back {
+        color: white !important;
+        border-color: white !important;
+        width: 32px;
+        height: 32px;
+        font-size: 11pt;
+        line-height: 30px;
+    }
+
+    #sidebar-title {
+        flex: 1;
+        font-weight: 100;
+    }
+
+    .sidebar-search-button {
+        border: none;
+        background: none;
+        min-width: 0;
+        min-height: 0;
+        color: white;
+        font-family: "Segoe UI Symbol";
+        font-size: 18px;
+        font-weight: normal;
+    }
+
+    .sidebar-search-button::before {
+        content: "\E11A";
+    }
+
+    .win-container {
+        margin: 4px 0 0 0 !important;
+    }
+
+    .win-container:hover {
+        border: none;
+        background-color: rgba(255, 255, 255, 0.2);
+    }
+
+    .win-container:active {
+        transform: scale(0.985, 0.985);
+    }
+
+    .win-itembox {
+        background: transparent !important;
+    }
+
+
+    #sidebar-list-view {
+        height: 100%;
+    }
+
+    .sidebar-list-view-item {
+        margin-left: 55px;
+    }
+
+    #control-panel-link {
+        margin: 0px 0px 30px 55px;
+        color: rgba(255, 255, 255, 0.6);
+    }
+
+
+    #control-panel-link:hover {
+        color: rgba(255, 255, 255, 0.8);
+    }
+
+    #contenthost {
+        width: calc(100% - 400px);
+        position: relative;
+    }
+
+    a {
+        color: #140044;
+    }
+}

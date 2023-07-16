@@ -1,6 +1,7 @@
 {
   "compileOnSave": true,
   "compilerOptions": {
+    "module": "ES2020",
     "experimentalDecorators": true,
     "noImplicitAny": true,
     "sourceMap": true,

@@ -1,23 +1,30 @@
 const path = require('path');
 const fs = require('fs');
 const { PackageReader } = require('landing-page-shared');
+const minify = require('minify-xml').minify;
 
 module.exports = function (source) {
-    let callback = this.async();
+    const callback = this.async();
 
-    let reader = new PackageReader(source);
-    let rootPath = path.dirname(this.resourcePath);
+    // set as cacheable
+    this.cacheable(true);
 
-    let addFile = (file) => {
+    const reader = new PackageReader(source);
+
+    const addFile = (file) => {
         if (!file) return;
 
         // if this is a webp, check if a png version exists and use that too
         if (file.endsWith(".webp")) {
-            let pngFile = file.substring(0, file.length - 5) + ".png";
-            addFile(pngFile);
+            addFile(file.substring(0, file.length - 5) + ".png");
         }
 
-        let filePath = path.resolve(rootPath, file);
+        if (file.startsWith("/") || file.startsWith("\\")) {
+            file = file.substring(1);
+        }
+
+        const rootPath = path.dirname(this.resourcePath);
+        const filePath = path.resolve(rootPath, file);
         if (!fs.existsSync(filePath) || fs.lstatSync(filePath).isDirectory()) {
             return;
         }
@@ -32,19 +39,41 @@ module.exports = function (source) {
         this.emitFile(path.join("packages", reader.identity.packageFamilyName, file), data);
     }
 
+    // hack
+    const map = new Map();
+    const fixupUrl_orig = reader.fixupUrl.bind(reader);
+    const fixupUrl = (url) => {
+        let fixedUrl = fixupUrl_orig(url);
+        map.set(fixedUrl, url);
+        return fixedUrl;
+    };
+
+    reader.fixupUrl = fixupUrl;
+
     reader.readPackage().then((manifest) => {
-        for (const id in manifest.applications) {
+        const modules = [];
+
+        const name = manifest.identity.packageFamilyName.replace(/\./g, "_");
+
+        for (const id of Object.keys(manifest.applications)) {
             let application = manifest.applications[id];
             let visualElements = application.visualElements;
 
-            addFile(visualElements.square150x150Logo);
-            addFile(visualElements.square30x30Logo);
-            addFile(visualElements.wide310x150Logo);
-            addFile(visualElements.defaultTile.square70x70Logo);
-            addFile(visualElements.defaultTile.wide310x150Logo);
-            addFile(visualElements.splashScreen.image);
+            addFile(map.get(visualElements.square150x150Logo));
+            addFile(map.get(visualElements.square30x30Logo));
+            addFile(map.get(visualElements.wide310x150Logo));
+            addFile(map.get(visualElements.defaultTile.square70x70Logo));
+            addFile(map.get(visualElements.defaultTile.wide310x150Logo));
+            addFile(map.get(visualElements.splashScreen.image));
+
+            if (!application.startPage.startsWith("http")) {
+                modules.push(`${name}.applications['${id}'].load = (async () => await import("../../frontend/src/${application.startPage}"))`);
+            }
         }
 
-        return callback(null, `export default ${JSON.stringify(manifest)};`);
+        return callback(null, `
+        const ${name} = ${JSON.stringify(manifest)};
+        ${modules.join(";\n")}
+        export default ${name};`);
     });
 }

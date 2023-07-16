@@ -13,7 +13,7 @@ const TileTemplateComponentMap: Map<string, string[]> = new Map([
     ["TileSquare150x150Text04", ["TileSquare150x150Text"]],
 ])
 
-export function getTileSize(template: string): TileSize {
+export function getTileSizeForTemplate(template: string): TileSize {
     // Windows 8.1 types
     if (template.startsWith("TileWide310x150"))
         return TileSize.wide310x150;
@@ -45,7 +45,7 @@ export function getVisuals(doc: Document, size: TileSize): TileVisual[] {
             let template = element.getAttribute("template");
             let fallback = element.getAttribute("fallback");
 
-            if (getTileSize(template) !== size || (fallback && getTileSize(fallback) !== size))
+            if (getTileSizeForTemplate(template) !== size || (fallback && getTileSizeForTemplate(fallback) !== size))
                 continue;
 
             var components = TileTemplateComponentMap.get(template);

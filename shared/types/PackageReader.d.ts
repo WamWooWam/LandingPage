@@ -1,9 +1,10 @@
 import { Package } from "./Package";
 export declare class PackageReader {
+    private parser;
     private packageManifest;
     private identity;
     private compatibilityMode;
-    constructor(packageManifest?: string);
+    constructor(packageManifest: string, parser?: DOMParser);
     readPackage(): Promise<Package>;
     private readIdentity;
     private readProperties;

@@ -2,6 +2,7 @@ import { Component, ComponentChild, RenderableProps, createContext } from "preac
 import { Start } from "./Start";
 import { ScrollStateProvider } from "./Start/ScrollStateProvider";
 import { hasWebP } from "./Util";
+import { CoreWindowContainer } from "./CoreWindow/CoreWindowContainer";
 
 // The site is in a mobile context if the screen width is less than 600px and will update on resize
 export const MobileContext = createContext(false);
@@ -34,6 +35,8 @@ export class Root extends Component<{}, { mobile: boolean, webp: boolean }> {
                     <ScrollStateProvider>
                         <Start />
                     </ScrollStateProvider>
+                    
+                    <CoreWindowContainer/>
                 </WebPContext.Provider>
             </MobileContext.Provider>
         )

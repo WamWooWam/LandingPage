@@ -1,6 +1,16 @@
 
 export const EXT_XMLNS = "https://wamwoowam.co.uk/tiles/2022";
 
+export interface Size {
+    width: number;
+    height: number;
+}
+
+export interface Position {
+    x: number;
+    y: number;
+}
+
 export function easeOutCubic(x: number): number {
     return 1 - Math.pow(1 - x, 3);
 }

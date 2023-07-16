@@ -169,7 +169,7 @@ export namespace Thumbnail {
         try {
             const appxManifest = await fsp.readFile(`./packages/${name}/AppxManifest.xml`, 'utf-8');
 
-            let parser = new PackageReader(appxManifest);
+            let parser = new PackageReader(appxManifest, new DOMParser());
             let manifest = await parser.readPackage();
 
             for (const id in manifest.applications) {

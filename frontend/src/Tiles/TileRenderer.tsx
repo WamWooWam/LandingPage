@@ -1,4 +1,4 @@
-import { Component } from "preact";
+import { Component, Ref, RefObject, createRef } from "preact";
 import { useContext } from "preact/hooks";
 import { PackageRegistry } from "../Data/PackageRegistry";
 import { TileVisual } from "./TileVisual";
@@ -8,11 +8,12 @@ import { TileBackgroundRenderer } from "./TileBackgroundRenderer";
 import { TileUpdateManager } from "./TileUpdateManager";
 import { fixupUrl } from "../Util";
 import { getVisuals } from "./TileToast"
-
 import { TileSize, lightenDarkenColour2, PackageApplication, Package } from "landing-page-shared";
+import { AppLaunchRequestedEvent, Events } from "../Events";
+import { getTileSize } from "./TileUtils";
+
 
 import "./tile.css"
-
 export interface TileProps {
     packageName?: string;
     appId: string;
@@ -31,29 +32,35 @@ interface TileState {
     visualIdx: number;
     nextVisualIdx?: number;
     visuals: TileVisual[]
+    visible: boolean;
 
     swapping: boolean;
+    clicked: boolean;
 
     interval?: any;
 }
 
-const DefaultVisual: TileVisual = {} as TileVisual;
+export const DefaultVisual: TileVisual = {} as TileVisual;
 
 export class TileRenderer extends Component<TileProps, TileState> {
 
+    private root: RefObject<HTMLAnchorElement>;
+
     constructor(props: TileProps) {
         super(props);
-
         let { pack, app } = this.getAppAndPackage(props);
-
         this.state = {
             app,
             pack,
             pressState: "none",
             visuals: [DefaultVisual],
             visualIdx: 0,
-            swapping: false
-        }
+            swapping: false,
+            clicked: false,
+            visible: true
+        };
+
+        this.root = createRef();
     }
 
     componentDidUpdate(previousProps: Readonly<TileProps>, previousState: Readonly<TileState>, snapshot: any): void {
@@ -129,12 +136,38 @@ export class TileRenderer extends Component<TileProps, TileState> {
         });
     }
 
+    onClick(e: MouseEvent) {
+        if (this.state.app.load) {
+            e.preventDefault();
+            this.setState({ clicked: true });
+        }
+    }
+
+    onTransitionEnd(e: TransitionEvent) {
+        if (this.state.clicked) {
+            this.setState({ clicked: false, visible: false });
+            
+            const bounds = this.root.current.getBoundingClientRect();
+            const event = new AppLaunchRequestedEvent(this.state.pack, this.state.app, {
+                tileX: bounds.x,
+                tileY: bounds.y,
+                tileWidth: bounds.width,
+                tileHeight: bounds.height,
+                tileVisual: this.state.visuals[this.state.visualIdx],
+                tileSize: this.props.size
+            });
+
+            Events.getInstance().dispatchEvent(event);
+        }
+    }
+
     render(props: TileProps, state: TileState) {
         let hasWebP = useContext(WebPContext);
 
         let containerStyle = {
             gridRowStart: props.row !== undefined ? props.row + 2 : undefined,
             gridColumnStart: props.column !== undefined ? props.column + 1 : undefined,
+            opacity: state.visible ? 1 : 0,
         }
 
         let tileColour = state.app?.visualElements.backgroundColor ?? "#4617b4";
@@ -171,11 +204,14 @@ export class TileRenderer extends Component<TileProps, TileState> {
         //let size = this.getTileSize(props.size)
         return (
             <>
-                <a class={classList.join(" ")}
+                <a ref={this.root}
+                    class={classList.join(" ")}
                     style={containerStyle}
                     onPointerEnter={this.pointerEntered.bind(this)}
                     onPointerLeave={this.pointerExited.bind(this)}
                     onPointerMove={this.pointerMoved.bind(this)}
+                    onClick={this.onClick.bind(this)}
+                    onTransitionEnd={this.onTransitionEnd.bind(this)}
                     title={state.app.visualElements.displayName}
                     aria-label={state.app.visualElements.displayName}
                     href={state.app.startPage}>
@@ -208,7 +244,7 @@ export class TileRenderer extends Component<TileProps, TileState> {
     }
 
     private updatePressState(e: PointerEvent) {
-        const size = this.getTileSize(this.props.size);
+        const size = getTileSize(this.props.size);
         const offsetX = Math.max(0, Math.min(e.offsetX, size.width));
         const offsetY = Math.max(0, Math.min(e.offsetY, size.height));
 
@@ -232,19 +268,6 @@ export class TileRenderer extends Component<TileProps, TileState> {
                 this.setState({ pressState: "bottom" })
             else
                 this.setState({ pressState: "top" })
-        }
-    }
-
-    private getTileSize(size: TileSize) {
-        switch (size) {
-            case TileSize.square70x70:
-                return { width: 56, height: 56 };
-            case TileSize.square150x150:
-                return { width: 120, height: 120 };
-            case TileSize.wide310x150:
-                return { width: 248, height: 120 };
-            case TileSize.square310x310:
-                return { width: 248, height: 248 };
         }
     }
 }

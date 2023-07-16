@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <Package IgnorableNamespaces="build" xmlns="http://schemas.microsoft.com/appx/2010/manifest"
     xmlns:wb="http://schemas.microsoft.com/appx/2013/manifest"
+    xmlns:m2="http://schemas.microsoft.com/appx/2013/manifest"
     xmlns:build="http://schemas.microsoft.com/developer/appx/2012/build">
     <Identity Name="Socials" ProcessorArchitecture="x86" Publisher="CN=Wan Kerr Co. Ltd."
         Version="2.6.672.0" />
@@ -20,6 +21,31 @@
         <Resource Language="en-GB" />
     </Resources>
     <Applications>
+        <Application Id="AboutMe" StartPage="Apps/AboutMe">
+            <m2:VisualElements DisplayName="About Me"
+                Square150x150Logo="images/people.png"
+                Square30x30Logo="images/peoplesmall.png"
+                Description="About Me" ForegroundText="light"
+                BackgroundColor="#d24726">
+                <m2:DefaultTile ShortName="About Me"
+                    Square70x70Logo="images/peopletiny.png"
+                    Wide310x150Logo="images/peoplewide.png"
+                    Square310x310Logo="images/peoplelarge.png">
+                    <m2:TileUpdate Recurrence="halfHour"
+                        UriTemplate="/api/live-tiles/snug/latest-notes.xml?cache=no" />
+                    <m2:ShowNameOnTiles>
+                        <m2:ShowOn Tile="square150x150Logo" />
+                        <m2:ShowOn Tile="wide310x150Logo" />
+                        <m2:ShowOn Tile="square310x310Logo" />
+                    </m2:ShowNameOnTiles>
+                </m2:DefaultTile>
+                <m2:SplashScreen Image="images/peoplesplash.png" />
+                <m2:ApplicationView MinWidth="width320" />
+            </m2:VisualElements>
+            <ApplicationContentUriRules>
+                <Rule Type="include" Match="https://support.microsoft.com/" />
+            </ApplicationContentUriRules>
+        </Application>
         <Application Id="Twitter" StartPage="https://twitter.com/da_wamwoowam">
             <wb:VisualElements DisplayName="Twitter" Description="Twitter" ForegroundText="light"
                 BackgroundColor="#00ACEE" Square150x150Logo="images/twitter-square150x150.svg"

@@ -8,8 +8,19 @@ import "./start.css"
 import StartLayout from '../../packages/StartScreen.xml'
 import { AllAppsButton } from "./Start/AllAppsButton";
 
-type FullscreenDocument = Document & { webkitFullscreenElement?: Element, msFullscreenElement?: Element, mozFullScreenElement?: Element, webkitExitFullscreen?: Function, msExitFullscreen?: Function, mozCancelFullScreen?: Function };
-type FullscreenElement = HTMLElement & { webkitRequestFullscreen?: Function, msRequestFullscreen?: Function, mozRequestFullScreen?: Function };
+type FullscreenDocument = Document & {
+    webkitFullscreenElement?: Element,
+    msFullscreenElement?: Element,
+    mozFullScreenElement?: Element,
+    webkitExitFullscreen?: Function,
+    msExitFullscreen?: Function,
+    mozCancelFullScreen?: Function
+};
+type FullscreenElement = HTMLElement & {
+    webkitRequestFullscreen?: Function,
+    msRequestFullscreen?: Function,
+    mozRequestFullScreen?: Function
+};
 
 interface StartState {
     tileGroups: Array<StartTileGroup>
@@ -36,6 +47,18 @@ export class Start extends Component<{}, StartState> {
         }
     }
 
+    onWheel(e: WheelEvent) {
+        // invert the deltas so that scrolling vertically scrolls horizontally
+        const deltaX = e.deltaY;
+        const deltaY = e.deltaX;
+        
+        const scrollContainer = e.currentTarget as HTMLElement;
+        const scrollLeft = scrollContainer.scrollLeft;
+        const scrollWidth = scrollContainer.scrollWidth;
+        const scrollLeftNew = Math.max(0, Math.min(scrollWidth - scrollContainer.clientWidth, scrollLeft + deltaX));
+        scrollContainer.scrollTo({ left: scrollLeftNew, behavior: "auto" });
+    }
+
     render() {
         const isMobile = useContext(MobileContext);
 
@@ -48,14 +71,15 @@ export class Start extends Component<{}, StartState> {
                         </div>
                     }
 
-                    <div class="start-tiles-scroll-container">
+                    <div class="start-tiles-scroll-container"
+                        onWheel={this.onWheel.bind(this)}>
                         <div class="start-tiles">
                             {this.state.tileGroups.map(m => <TileGroup {...m} />)}
                         </div>
                     </div>
 
                     <div class="start-footer">
-                        <AllAppsButton/>
+                        <AllAppsButton />
                     </div>
                 </div>
             </div>

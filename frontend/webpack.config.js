@@ -23,19 +23,17 @@ module.exports = [
                 {
                     test: /\.css$/i,
                     use: [
-                        MiniCssExtractPlugin.loader,
+                        "style-loader",
+                        "css-loader"
+                    ]
+                },
+                {
+                    test: /\.scss$/i,
+                    use: [
+                        "style-loader",
                         "css-loader",
-                        {
-                            loader: "postcss-loader",
-                            options: {
-                                postcssOptions: {
-                                    plugins: [
-                                        "postcss-aspect-ratio-polyfill",
-                                        ["postcss-preset-env", { plugins: { autoprefixer: { flexbox: true } } }]
-                                    ],
-                                },
-                            },
-                        }],
+                        "sass-loader",
+                    ],
                 },
                 {
                     test: /\.(woff(2)?|ttf|eot|png|jpg|webp|avif)(\?v=\d+\.\d+\.\d+)?$/,
@@ -47,7 +45,7 @@ module.exports = [
                             }
                         }
                     ]
-                }, 
+                },
                 {
                     test: /\.svg$/i,
                     use: [
@@ -68,22 +66,19 @@ module.exports = [
                 },
             ],
         },
+        optimization: {
+            usedExports: true,
+        },
         resolve: {
             extensions: ['.tsx', '.ts', '.js'],
             fallback: { "crypto": false, "xmldom": false }
         },
-        optimization: {
-            minimizer: [
-                `...`,
-                new CssMinimizerPlugin(),
-            ],
-        },
-        plugins: [new MiniCssExtractPlugin(), new HtmlWebpackPlugin({
+        plugins: [new HtmlWebpackPlugin({
             inject: true,
             template: "./src/index.html"
         })],
         output: {
-            filename: 'index.js',
+            filename: '[name].bundle.js',
             path: path.resolve(__dirname, 'dist'),
         }
     }];

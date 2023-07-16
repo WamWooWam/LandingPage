@@ -12,24 +12,22 @@ import * as base32 from "base32.js"
 const AppX2010ManifestNS = "http://schemas.microsoft.com/appx/2010/manifest";
 const AppX2013ManifestNS = "http://schemas.microsoft.com/appx/2013/manifest";
 
-const DOMParser = globalThis.DOMParser ?? require('xmldom').DOMParser;
-
 export class PackageReader {
 
+    private parser: DOMParser;
     private packageManifest: string;
 
     private identity: PackageIdentity;
     private compatibilityMode: PackageCompatibilityMode;
 
-    constructor(packageManifest?: string) {
+    constructor(packageManifest: string, parser?: DOMParser) {
         this.packageManifest = packageManifest ?? ``;
+        this.parser = parser ?? new DOMParser();
     }
 
     async readPackage(): Promise<Package> {
-        //let pack = new Package(this.packagePath);
         const pack: Package = { path: "", applications: {} };
-        const manifestDocument = new DOMParser()
-            .parseFromString(this.packageManifest, 'application/xml');
+        const manifestDocument = this.parser.parseFromString(this.packageManifest, 'application/xml');
 
         if (manifestDocument === null) {
             throw new Error("Manifest failed to parse!");

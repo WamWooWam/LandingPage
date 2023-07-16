@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Package xmlns="http://schemas.microsoft.com/appx/2010/manifest"
+    xmlns:wb="http://schemas.microsoft.com/appx/2013/manifest">
+  <Identity Name="windows.immersivecontrolpanel" Publisher="CN=Microsoft Windows, O=Microsoft Corporation, L=Redmond, S=Washington, C=US" Version="6.2.0.0" ResourceId="neutral" />
+  <Properties>
+    <DisplayName>PC Settings</DisplayName>
+    <Description>PC Settings</Description>
+    <Logo>images\logo.png</Logo>
+    <PublisherDisplayName>Microsoft Windows</PublisherDisplayName>
+  </Properties>
+
+  <Prerequisites>
+    <OSMinVersion>6.3.0</OSMinVersion>
+    <OSMaxVersionTested>6.3.0</OSMaxVersionTested>
+  </Prerequisites>
+
+  <Resources>
+    <Resource Language="en-us" />
+  </Resources>
+
+  <Applications>
+    <Application Id="microsoft.windows.immersivecontrolpanel" StartPage="Apps/Settings">
+      <wb:VisualElements DisplayName="PC settings" Description="Change settings and customise how you use your computer." Square150x150Logo="images/tileSmall.png" Square30x30Logo="images/logo.png" ForegroundText="light" BackgroundColor="#5133AB">
+        <wb:SplashScreen Image="images/SplashScreen.png" BackgroundColor="#5133AB" />
+        <wb:DefaultTile DefaultSize="square150x150Logo" ShortName="PC settings" Square70x70Logo="images\tinytile.png">
+          <wb:ShowNameOnTiles>
+            <wb:ShowOn Tile="square150x150Logo" />
+          </wb:ShowNameOnTiles>
+        </wb:DefaultTile>
+      </wb:VisualElements>
+    </Application>
+  </Applications>
+
+</Package>
