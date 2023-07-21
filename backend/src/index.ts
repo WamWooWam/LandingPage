@@ -44,5 +44,5 @@ const app = express();
         }
     })
 
-    app.listen(5001);
+    app.listen(process.env.PORT || 5001);
 })();

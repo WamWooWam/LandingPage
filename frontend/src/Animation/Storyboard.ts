@@ -1,4 +1,5 @@
-import { Animation, AnimationValue, EasingFunction, TimedEasingFunction } from "./Animation";
+import Animation from "./Animation";
+import { AnimationValue, TimedEasingFunction, EasingFunction } from "./types";
 
 interface StoryboardLayer {
     name: string;
@@ -9,7 +10,7 @@ interface StoryboardLayer {
     easing: TimedEasingFunction;
 }
 
-export class Storyboard {
+export default class Storyboard {
     private layers: StoryboardLayer[];
 
     constructor() {

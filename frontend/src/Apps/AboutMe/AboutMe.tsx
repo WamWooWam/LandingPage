@@ -1,8 +1,6 @@
-import { h, render } from 'preact';
-
-import "./aboutme.scss"
-import "../Shared/winjs-light.scss"
 import { AboutMeContent } from './AboutMeContent';
+import WinJS from "winjs/light";
+import "./aboutme.scss"
 
 export const AboutMe = () => {
     console.log("AboutMe app rendering")
@@ -14,7 +12,7 @@ export const AboutMe = () => {
             </div>
 
             <main>
-                <AboutMeContent/>
+                <AboutMeContent />
             </main>
 
             <footer class="border-top footer text-muted">

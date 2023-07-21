@@ -1,10 +1,11 @@
 import { RenderableProps } from "preact";
-import { TileBinding } from "./TileBinding";
-import { TileVisual } from "./TileVisual";
 import { WebPContext } from "../Root";
 import { fixupUrl } from "../Util";
-import { PackageApplication, TileSize } from "landing-page-shared";
+import { PackageApplication } from "shared/PackageApplication";
+import { TileSize } from "shared/TileSize";
 import { useContext } from "preact/hooks";
+import TileBinding from "./TileBinding";
+import TileVisual from "./TileVisual";
 
 interface TileVisualRendererProps {
     app: PackageApplication,
@@ -23,7 +24,7 @@ const TileTemplateMap: Map<string, Function>
         ["TileSquare310x310ImageAndTextOverlay02", TileSquare310x310ImageAndTextOverlay02]
     ]);
 
-export const TileVisualRenderer = ({ app, size, visual }: RenderableProps<TileVisualRendererProps>) => {
+export default function TileVisualRenderer({ app, size, visual }: RenderableProps<TileVisualRendererProps>) {
     let hasWebP = useContext(WebPContext);
     let visualElements = app.visualElements;
 
@@ -54,7 +55,7 @@ export const TileVisualRenderer = ({ app, size, visual }: RenderableProps<TileVi
     )
 }
 
-const getTileImageUrl = (size: TileSize, app: PackageApplication) => {
+function getTileImageUrl(size: TileSize, app: PackageApplication) {
     switch (size) {
         case TileSize.square70x70:
             return app.visualElements.defaultTile.square70x70Logo;

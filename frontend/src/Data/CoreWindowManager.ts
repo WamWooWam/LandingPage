@@ -5,28 +5,52 @@
 // that window anywhere in the DOM
 //
 
-import { newGuid } from "../Util";
-import { AppInstance } from "./AppInstanceManager";
-import { CoreWindowInfo } from "./CoreWindowInfo";
-import { Package, PackageApplication } from "landing-page-shared";
+import Events from "../Events";
+import AppInstance from "./AppInstance";
+import CoreWindowEvent from "../Events/CoreWindowEvent";
+import CoreWindow from "./CoreWindow";
+import AppInstanceManager from "./AppInstanceManager";
+import CoreWindowLayoutManager from "./CoreWindowLayoutManager";
 
-export class CoreWindowManager {
-    static coreWindowMap: Map<string, CoreWindowInfo> = new Map();
+export default class CoreWindowManager {
+    static coreWindowMap: Map<string, CoreWindow> = new Map();
 
-    static createCoreWindowForApp(instance: AppInstance): CoreWindowInfo {
-        let id = `${instance.package.identity.packageFamilyName}_${instance.packageApplication.id}_${newGuid()}`;
-        let view = document.createElement("div");
-        view.id = id;
+    static createCoreWindowForApp(instance: AppInstance): CoreWindow {
+        let info = new CoreWindow(instance);
+        console.log(info.id, info);
+        CoreWindowManager.coreWindowMap.set(info.id, info);
 
-        let info: CoreWindowInfo = { id, package: instance.package, packageApplication: instance.packageApplication, instance, view };
-        console.log(id);
-
-        CoreWindowManager.coreWindowMap.set(id, info);
+        Events.getInstance().dispatchEvent(new CoreWindowEvent("core-window-created", info));
 
         return info;
     }
 
-    static getWindowById(id: string): CoreWindowInfo {
+    static getWindowById(id: string): CoreWindow {
         return CoreWindowManager.coreWindowMap.get(id);
+    }
+
+    static deleteWindowById(id: string): void {
+        let window = CoreWindowManager.coreWindowMap.get(id);
+        if (!window) return;
+
+        CoreWindowLayoutManager.getInstance()
+            .removeWindow(id);
+
+        Events.getInstance()
+            .dispatchEvent(new CoreWindowEvent("core-window-destroyed", window));
+
+        if (window) {
+            let instance = window.instance;
+            let index = instance.windows.indexOf(window);
+            if (index > -1) {
+                instance.windows.splice(index, 1);
+            }
+
+            if (window === instance.mainWindow) {
+                AppInstanceManager.terminateInstance(instance);
+            }
+
+            CoreWindowManager.coreWindowMap.delete(id);
+        }
     }
 }

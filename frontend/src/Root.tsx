@@ -1,17 +1,28 @@
 import { Component, ComponentChild, RenderableProps, createContext } from "preact";
-import { Start } from "./Start";
 import { ScrollStateProvider } from "./Start/ScrollStateProvider";
 import { hasWebP } from "./Util";
-import { CoreWindowContainer } from "./CoreWindow/CoreWindowContainer";
+
+import { Suspense, lazy } from "preact/compat"
+
+import Start from "./Start";
+import LayoutState from "./LayoutState";
+
+const CoreWindowContainer = lazy(() => import("./CoreWindow/CoreWindowContainer"));
 
 // The site is in a mobile context if the screen width is less than 600px and will update on resize
-export const MobileContext = createContext(false);
+export const LayoutStateContext = createContext(LayoutState.windows81);
 export const WebPContext = createContext(false);
 
-export class Root extends Component<{}, { mobile: boolean, webp: boolean }> {
+
+interface RootState {
+    layoutState: LayoutState;
+    webp: boolean;
+}
+
+export default class Root extends Component<{}, RootState> {
     constructor(props: {}) {
         super(props);
-        this.state = { mobile: false, webp: true };
+        this.state = { layoutState: LayoutState.windows81, webp: true };
     }
 
     async componentDidMount() {
@@ -25,20 +36,23 @@ export class Root extends Component<{}, { mobile: boolean, webp: boolean }> {
     }
 
     updateMobileContext = () => {
-        this.setState({ mobile: window.matchMedia ? window.matchMedia("(max-width: 600px)").matches : window.innerWidth < 600 });
+        let mobile = window.matchMedia ? window.matchMedia("(max-width: 600px)").matches : window.innerWidth < 600;
+        this.setState({ layoutState: mobile ? LayoutState.windowsPhone81 : LayoutState.windows81 });
     }
 
     render(props: RenderableProps<{}>, state?: Readonly<{}>, context?: any): ComponentChild {
         return (
-            <MobileContext.Provider value={this.state.mobile}>
+            <LayoutStateContext.Provider value={this.state.layoutState}>
                 <WebPContext.Provider value={this.state.webp}>
                     <ScrollStateProvider>
                         <Start />
                     </ScrollStateProvider>
-                    
-                    <CoreWindowContainer/>
+
+                    <Suspense fallback={null}>
+                        <CoreWindowContainer />
+                    </Suspense>
                 </WebPContext.Provider>
-            </MobileContext.Provider>
+            </LayoutStateContext.Provider>
         )
     }
 }

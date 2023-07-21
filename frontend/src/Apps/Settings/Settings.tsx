@@ -1,7 +1,8 @@
-import { Component } from "preact";
-import '../Shared/winjs-light.scss'
-import "./settings.scss"
+import { Component, render } from "preact";
 import { useState } from "preact/hooks";
+import WinJS from "winjs/light";
+import "./settings.scss"
+import MainView from "./pages/mainview";
 
 const Items = [
     {
@@ -37,25 +38,68 @@ const Items = [
     }
 ];
 
-const SidebarItem = (props: any) => {
-    const [isPressed, setPressed] = useState(false);
-    const classList = ["win-container"]
-    if (isPressed) classList.push("win-pressed")
+class BackButton extends Component {
+    shouldComponentUpdate(): boolean {
+        return false;
+    }
 
-    return (
-        <div class={classList.join(' ')} onMouseDown={() => setPressed(true)} onMouseUp={() => setPressed(false)}>
-            <div class="win-itembox">
-                <div class="win-template win-disposable win-item" role="option">
-                    <div class="sidebar-list-view-item">
-                        <p>{props.title}</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    );
+    componentDidMount(): void {
+        let backButton = new WinJS.UI.BackButton(this.base as HTMLElement)
+        this.setState({ backButton: backButton });
+    }
+
+    render() {
+        return (
+            <button id="sidebar-back-button" />
+        );
+    }
+}
+
+class ListView extends Component {
+    shouldComponentUpdate(): boolean {
+        return false;
+    }
+
+    componentDidMount(): void {
+        let renderer = WinJS.Utilities.markSupportedForProcessing((itemPromise: WinJS.Promise<WinJS.UI.IItem<any>>) => {
+            return itemPromise.then((item) => {
+                let element = document.createElement("div");
+                element.className = "sidebar-list-view-item";
+                render(<p>{item.data.title}</p>, element);
+                return element;
+            });
+        });
+
+        let listView = new WinJS.UI.ListView(this.base as HTMLElement, {
+            itemDataSource: new WinJS.Binding.List(Items).dataSource,
+            itemTemplate: renderer,
+            layout: new WinJS.UI.ListLayout(),
+            selectionMode: "single",
+
+        });
+
+        listView.addEventListener("iteminvoked", (e: CustomEvent) => {
+            let item = Items[e.detail.itemIndex];
+            if (item.page) {
+                WinJS.Navigation.navigate(item.page);
+            }
+        });
+
+        this.setState({ listView: listView });
+    }
+
+    render() {
+        return (
+            <div id="sidebar-list-view" />
+        );
+    }
 }
 
 export class Settings extends Component {
+    componentDidMount() {
+        WinJS.UI.processAll();
+    }
+
     render() {
         return (
             <div id="settings-root" className="winjs-root">
@@ -63,27 +107,21 @@ export class Settings extends Component {
                     <div id="sidebar">
                         <div id="sidebar-content">
                             <div id="sidebar-list-view-header" class="inline-container">
-                                <button id="sidebar-back-button"
-                                    class="win-navigation-backbutton win-disposable"
-                                    aria-label="Back"
-                                    title="Back"
-                                    type="button">
-                                    <span class="win-back"></span>
-                                </button>
+                                <BackButton />
                                 <h2 id="sidebar-title">PC settings</h2>
                                 <button class="sidebar-search-button"></button>
                             </div>
                             <div class="sidebar-list-view-container">
-                                <div class="win-disposable win-listview win-swipeable win-element-resize">
-                                    {Items.map((item) => {
-                                        return (<SidebarItem key={item.title} title={item.title} />)
-                                    })}
-                                </div>
+                                <ListView />
                             </div>
                             <a id="control-panel-link" href="#">Control Panel</a>
                         </div>
                     </div>
-                    <div id="contenthost" data-win-control="Application.PageControlNavigator" data-win-options="{home: '/pages/mainview.html'}"></div>
+                    <div id="contenthost">
+                        <div class="pagecontrol">
+                            <MainView />
+                        </div>
+                    </div>
                 </div>
             </div>
         );

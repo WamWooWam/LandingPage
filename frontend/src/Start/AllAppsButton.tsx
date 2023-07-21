@@ -1,9 +1,8 @@
-import ShowAllApps from "../../static/start/down-arrow.svg";
-import { DownArrow } from "./DownArrow";
+import DownArrow from "./DownArrow";
 
-export function AllAppsButton() {
+export default function AllAppsButton() {
     return (
-        <button class="start-show-all-button start-arrow-button" role="button">
+        <button class="start-show-all-button start-arrow-button" role="button" aria-label={"Show all apps"}>
             <DownArrow width={32} height={32} />
         </button>
     );

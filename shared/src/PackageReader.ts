@@ -99,6 +99,7 @@ export class PackageReader {
     private readApplication(element: Element): PackageApplication {
         const id = element.getAttribute("Id")!;
         const startPage = element.getAttribute("StartPage")!;
+        const entryPoint = element.getAttribute("EntryPoint")!;
 
         const visualElementsElement = element.getElementsByTagNameNS(AppX2013ManifestNS, "VisualElements")[0]!;
         const visualElements = this.loadTextResources(this.readVisualElements(visualElementsElement));
@@ -107,7 +108,7 @@ export class PackageReader {
         // let extensionsElement = element.getElementsByTagNameNS(AppX2018ManifestNS, "Extensions")[0];
         // for (const extensionElement of extensionsElement.childNodes) {
         // }
-        return { id, startPage, visualElements, extensions: [] };
+        return { id, startPage, entryPoint, visualElements, extensions: [] };
     }
 
     private readVisualElements(element: Element): ApplicationVisualElements {

@@ -1,23 +1,27 @@
 import { Component } from "preact";
-import { TileRenderer, TileProps } from "./TileRenderer";
+import TileRenderer, { TileProps } from "./TileRenderer";
 import "./tile.css"
 
 export interface FenceTileProps {
     apps: TileProps[]
     row?: number,
     column?: number;
+    animColumn?: number;
 }
 
-export class FenceTileRenderer extends Component<FenceTileProps> {
-
+export default class FenceTileRenderer extends Component<FenceTileProps> {
     constructor(props: FenceTileProps) {
         super(props);
     }
 
     render(props: FenceTileProps) {
-        let style = {
+        let style: any = {
             gridRowStart: props.row ? props.row + 2 : undefined,
-            gridColumnStart: props.column ? props.column + 1 : undefined
+            gridColumnStart: props.column ? props.column + 1 : undefined,
+        }
+
+        if (props.animColumn) {
+            style["animation-delay"] = `${(props.animColumn - 1) * 0.1}s`;
         }
 
         return (

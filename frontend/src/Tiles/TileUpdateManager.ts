@@ -1,10 +1,12 @@
-import { TileVisual } from "./TileVisual";
+import TileVisual from "./TileVisual";
 import { getVisuals } from "./TileToast";
-import { TileSize, PackageApplication } from "landing-page-shared";
+import { Package } from "shared/Package"
+import { PackageApplication } from "shared/PackageApplication"
+import { TileSize } from "shared/TileSize";
 
 export type TileUpdateCallback = (visuals: Map<TileSize, TileVisual[]>) => void;
 
-export class TileUpdateManager {
+export default class TileUpdateManager {
     private static instance: TileUpdateManager = new TileUpdateManager();
     public static getInstance(): TileUpdateManager {
         return TileUpdateManager.instance;
@@ -108,6 +110,6 @@ export class TileUpdateManager {
 
         if (!this._fetching) {
             this.processFetchQueue();
-        }        
+        }
     }
 }

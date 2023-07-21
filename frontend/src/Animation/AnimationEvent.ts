@@ -1,4 +1,4 @@
-export class AnimationEvent extends Event {
+export default class AnimationEvent extends Event {
     readonly progress: number;
     readonly values: any;
 

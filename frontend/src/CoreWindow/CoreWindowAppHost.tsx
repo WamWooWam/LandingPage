@@ -1,35 +1,29 @@
 import { Component } from "preact";
-import { AppInstance, AppInstanceManager } from "../Data/AppInstanceManager";
-import { CoreWindowInfo } from "../Data/CoreWindowInfo";
+import AppInstance from "../Data/AppInstance";
+import CoreWindow from "../Data/CoreWindow";
+import CoreWindowManager from "../Data/CoreWindowManager";
+import CoreWindowState from "../Data/CoreWindowState";
 
 interface CoreWindowAppHostProps {
-    instance: AppInstance;
-    window: CoreWindowInfo;
-    onLoaded: () => void;
+    window: CoreWindow;
 }
 
-interface CoreWindowAppHostState {
-
-};
-
-export class CoreWindowAppHost extends Component<CoreWindowAppHostProps, CoreWindowAppHostState> {
+export default class CoreWindowAppHost extends Component<CoreWindowAppHostProps, {}> {
     shouldComponentUpdate(): boolean {
         return false;
     }
 
     async componentDidMount(): Promise<void> {
         this.base.appendChild(this.props.window.view);
-
-        if (!this.props.window.view.querySelector(`#${this.props.window.id}`)) {
-            let app = this.props.instance.packageApplication;
-            let instance = await app.load();
-            instance.default(this.props.window.view);
-            this.props.onLoaded();
-        }
+        await this.props.window.load();
     }
 
     componentWillUnmount(): void {
-        this.base.removeChild(this.props.window.view);
+        try {
+            this.base.removeChild(this.props.window.view);
+        } catch (e) {
+            this.props.window.view.remove();
+        }
     }
 
     render() {

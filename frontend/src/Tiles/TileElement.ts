@@ -1,4 +1,4 @@
-export interface TileElement {
+export default interface TileElement {
     id: number;
     type: "image" | "text";
     content: string;

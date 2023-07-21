@@ -1,6 +1,6 @@
-import { TileElement } from "./TileElement";
-import { TileSize } from "landing-page-shared";
-import { TileVisual } from "./TileVisual";
+import  TileElement  from "./TileElement";
+import  TileVisual  from "./TileVisual";
+import { TileSize } from "shared/TileSize";
 import { EXT_XMLNS } from "../Util";
 
 const TileTemplateComponentMap: Map<string, string[]> = new Map([
@@ -73,7 +73,7 @@ export function getVisuals(doc: Document, size: TileSize): TileVisual[] {
         }
     }
 
-    console.log(`got ${visuals.length} visuals for size ${TileSize[size]}`)
+    // console.log(`got ${visuals.length} visuals for size ${TileSize[size]}`)
 
     return visuals;
 }

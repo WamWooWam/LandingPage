@@ -92,6 +92,10 @@
     text-decoration: none;
 }
 
+.tile-container,
+.fence-tile-container {
+}
+
 .tile-container.text-light {
     color: white;
 }
@@ -205,9 +209,18 @@
     height: 100%;
 }
 
+.wide310x150 {
+    aspect-ratio: 31/15;
+}
+
+.square310x310,
+.square150x150,
+.square70x70 {
+    aspect-ratio: 1/1;
+}
+
 .tile-container.wide310x150 {
     grid-column-end: span 2;
-    aspect-ratio: 31/15;
 }
 
 .tile-container.square310x310 {
@@ -462,4 +475,16 @@
     text-overflow: ellipsis;
     overflow-wrap: break-word;
     justify-self: flex-end;
+}
+
+@keyframes start-entrance-animation {
+    0% {
+        opacity: 0;
+        transform: scale(0.8);
+    }
+
+    100% {
+        opacity: 1;
+        transform: scale(1);
+    }
 }

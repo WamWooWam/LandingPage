@@ -13,7 +13,7 @@ export interface TileeBackgroundState {
     height: number;
 }
 
-export class TileBackgroundRenderer extends Component<TileBackgroundProps, TileeBackgroundState> {
+export default class TileBackgroundRenderer extends Component<TileBackgroundProps, TileeBackgroundState> {
 
     element: RefObject<HTMLDivElement>;
 

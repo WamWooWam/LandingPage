@@ -1,5 +1,5 @@
-import { TileBinding } from "./TileBinding";
+import TileBinding from "./TileBinding";
 
-export interface TileVisual {
+export default interface TileVisual {
     bindings: TileBinding[];
 }

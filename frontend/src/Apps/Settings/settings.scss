@@ -118,4 +118,21 @@
     a {
         color: #140044;
     }
+
+    .main-view {
+        margin: 42px 60px;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;   
+         height: 100%;
+    }
+    
+    .section-header {
+        color: #140044;
+        margin-bottom: 12px;
+    }
+    
+    .hidden {
+        display: none;
+    }
 }

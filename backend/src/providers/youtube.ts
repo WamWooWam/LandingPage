@@ -9,16 +9,12 @@ export namespace YouTube {
     const apiKey = process.env.YOUTUBE_API_KEY;
 
     export const recentVideos = async (req, res) => {
-        const url = `${rootUrl}/search?part=snippet&channelId=${channelId}&maxResults=10&order=date&type=video&key=${apiKey}`
-        const resp = await fetch(url, {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-            }
-        })
-
-        const json = await resp.json()
-        const items = json.items;
+        // fetch most recent 10 videos without using the search endpoint
+        // https://developers.google.com/youtube/v3/docs/playlistItems/list
+        let url = `${rootUrl}/playlistItems?part=snippet&maxResults=10&playlistId=${channelId}&key=${apiKey}`;
+        let resp = await fetch(url);
+        let json = await resp.json();
+        let items = json.items;
 
         let root = createRoot();
         let rootElement = root.documentElement;

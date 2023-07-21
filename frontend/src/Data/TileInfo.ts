@@ -1,7 +1,9 @@
-import { Package, PackageApplication, TileSize } from "landing-page-shared";
-import { TileVisual } from "../Tiles/TileVisual";
+import { Package } from "shared/Package"
+import { PackageApplication } from "shared/PackageApplication"
+import { TileSize } from "shared/TileSize";
+import TileVisual from "../Tiles/TileVisual";
 
-export interface TileInfo {
+export default interface TileInfo {
     pack: Package;
     app: PackageApplication;
     size: TileSize;

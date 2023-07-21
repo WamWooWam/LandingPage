@@ -1,6 +1,7 @@
 const path = require('path');
 const fs = require('fs');
 const { PackageReader } = require('landing-page-shared');
+const DOMParser = require('xmldom').DOMParser;
 const minify = require('minify-xml').minify;
 
 module.exports = function (source) {
@@ -9,7 +10,7 @@ module.exports = function (source) {
     // set as cacheable
     this.cacheable(true);
 
-    const reader = new PackageReader(source);
+    const reader = new PackageReader(source, new DOMParser());
 
     const addFile = (file) => {
         if (!file) return;
@@ -61,13 +62,13 @@ module.exports = function (source) {
 
             addFile(map.get(visualElements.square150x150Logo));
             addFile(map.get(visualElements.square30x30Logo));
-            addFile(map.get(visualElements.wide310x150Logo));
             addFile(map.get(visualElements.defaultTile.square70x70Logo));
+            addFile(map.get(visualElements.defaultTile.square310x310Logo));
             addFile(map.get(visualElements.defaultTile.wide310x150Logo));
             addFile(map.get(visualElements.splashScreen.image));
 
-            if (!application.startPage.startsWith("http")) {
-                modules.push(`${name}.applications['${id}'].load = (async () => await import("../../frontend/src/${application.startPage}"))`);
+            if (application.entryPoint) {
+                modules.push(`${name}.applications['${id}'].load = (async () => await import("../../frontend/src/${application.entryPoint}"))`);
             }
         }
 

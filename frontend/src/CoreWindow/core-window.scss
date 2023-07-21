@@ -1,0 +1,165 @@
+.core-window-container {
+    border: none;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 1000;
+    overflow: hidden;
+}
+
+.core-window {
+    position: absolute;
+    pointer-events: all;
+    width: 100%;
+    height: 100%;
+    background: white;
+}
+
+.core-window-app-host {
+    border: none;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+
+    >div {
+        border: none;
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+    }
+}
+
+.core-window-titlebar {
+    position: absolute;
+    width: 100%;
+    height: 40px;
+    pointer-events: all;
+    transition: transform 0.10s cubic-bezier(0.1, 0.25, 0.75, 0.9);
+    overflow: hidden;
+}
+
+.core-window-titlebar-content {
+    height: 30px;
+    width: 100%;
+    background: #111111;
+    display: flex;
+}
+
+.core-window-titlebar.hidden {
+    opacity: 1;
+    display: flex;
+    transition-delay: 0.35s;
+    transform: translateY(-30px);
+}
+
+.core-window-icon-container {
+    margin: 3px;
+}
+
+.core-window-icon {
+    width: 24px;
+    height: 24px;
+}
+
+.core-window-title {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.core-window-minimise {
+    -webkit-appearance: none;
+    appearance: none;
+    border: 0;
+    background: transparent;
+    color: white;
+    font-size: 12px;
+    width: 30px;
+    height: 30px;
+    min-width: 0;
+    padding: 0;
+    border: none;
+}
+
+.core-window-minimise:hover {
+    background: #3665b3;
+    border: none;
+}
+
+.core-window-minimise:active {
+    opacity: 0.8;
+    border: none;
+}
+
+.core-window-close {
+    -webkit-appearance: none;
+    appearance: none;
+    border: 0;
+    background: transparent;
+    font-family: "Segoe UI Symbol";
+    color: white;
+    font-size: 12px;
+    width: 30px;
+    height: 30px;
+    min-width: 0;
+    padding: 0;
+    border: none;
+}
+
+.core-window-close:hover {
+    background: #e04343;
+    border: none;
+}
+
+.core-window-close:active {
+    opacity: 0.8;
+    border: none;
+}
+
+.core-window-imposter {
+    position: absolute;
+    transform-origin: center;
+    transform-style: preserve-3d;
+
+    >.front,
+    >.back {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        -webkit-backface-visibility: hidden;
+        /* Safari */
+        backface-visibility: hidden;
+        overflow: hidden;
+        box-sizing: border-box;
+
+        >* {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+        }
+    }
+
+    >.back {
+        transform: rotateY(180deg);
+    }
+}
+
+.core-window-layout-separator {
+    position: absolute;
+    width: 22px;
+    background-color: #111111;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    pointer-events: all;
+    cursor: ew-resize;
+}

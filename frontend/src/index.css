@@ -6,8 +6,6 @@ body {
   margin: 0;    
   width: 100vw;
   height: 100vh;
-  perspective: 1600px;
-  transform-style: preserve-3d;
   user-select: none;
   -webkit-user-select: none; /* lick my entire ass */
 }

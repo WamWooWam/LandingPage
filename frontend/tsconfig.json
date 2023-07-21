@@ -1,16 +1,19 @@
 {
   "compileOnSave": true,
   "compilerOptions": {
-    "module": "ES2020",
-    "experimentalDecorators": true,
-    "noImplicitAny": true,
-    "sourceMap": true,
-    "lib": [ "ES2020", "DOM", "DOM.Iterable" ],
+    "module": "ES2022",
     "target": "ES2017",
+    "lib": [ "ES2020", "DOM", "DOM.Iterable" ],
     "moduleResolution": "node",
+    "sourceMap": true,
     "resolveJsonModule": true,
+    "noImplicitAny": true,
     "outDir": "./dist",
     "jsx": "react-jsx",
-    "jsxImportSource": "preact"
+    "jsxImportSource": "preact",
+    "paths": {
+      "shared/*": [ "../shared/src/*" ],
+      "winjs/*": [ "./winjs/*" ],
+    }
   }
 }

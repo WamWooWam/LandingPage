@@ -20,12 +20,12 @@
         <Resource Language="en-GB" />
     </Resources>
     <Applications>       
-        <Application Id="S4E1" StartPage="https://wamwoowam.github.io/sonic4">
+        <Application Id="S4E1" EntryPoint="Apps/S4E1">
             <wb:VisualElements DisplayName="Sonic 4 - Episode I" Description="The sequel fans have waited 16 years for is finally here - Sonic the Hedgehog 4 Episode I! Featuring enhanced gameplay elements, including the classic Sonic Spin Dash, and the versatile Homing Attack, Sonic the Hedgehog 4 Episode I picks up right where Sonic and Knuckles™ left off." ForegroundText="light"
                 BackgroundColor="#FFFFFF" Square150x150Logo="images/s4e1-square150x150.webp"
                 Square30x30Logo="images/s4e1-square30x30.webp" ToastCapable="true">
                 <wb:DefaultTile Square70x70Logo="images/s4e1-square70x70.webp"/>
-                <wb:SplashScreen BackgroundColor="#FF0000" Image="images/s4e1-splash.webp" />
+                <wb:SplashScreen BackgroundColor="#FFFFFF" Image="images/s4e1-splash.webp" />
             </wb:VisualElements>
         </Application>
     </Applications>

@@ -2,7 +2,7 @@ interface CoreWindowMinimizeButtonProps {
     onClick: () => void;
 }
 
-export const CoreWindowMinimizeButton = (props: CoreWindowMinimizeButtonProps) => {
+const CoreWindowMinimizeButton = (props: CoreWindowMinimizeButtonProps) => {
     return (
         <button class="core-window-minimise" onClick={props.onClick}>
             <svg viewBox="71 603 883 172" width="12px" xmlns="http://www.w3.org/2000/svg">
@@ -11,3 +11,5 @@ export const CoreWindowMinimizeButton = (props: CoreWindowMinimizeButtonProps) =
         </button>
     );
 }
+
+export default CoreWindowMinimizeButton;

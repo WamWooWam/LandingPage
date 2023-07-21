@@ -23,14 +23,14 @@ module.exports = [
                 {
                     test: /\.css$/i,
                     use: [
-                        "style-loader",
+                        MiniCssExtractPlugin.loader,
                         "css-loader"
                     ]
                 },
                 {
                     test: /\.scss$/i,
                     use: [
-                        "style-loader",
+                        MiniCssExtractPlugin.loader,
                         "css-loader",
                         "sass-loader",
                     ],
@@ -71,14 +71,23 @@ module.exports = [
         },
         resolve: {
             extensions: ['.tsx', '.ts', '.js'],
-            fallback: { "crypto": false, "xmldom": false }
+            fallback: { "crypto": false, "xmldom": false },
+            alias: {
+                "winjs": path.resolve(__dirname, './winjs'),
+                "shared": path.resolve(__dirname, '../shared/src'),
+                "static": path.resolve(__dirname, './static'),
+            }
         },
-        plugins: [new HtmlWebpackPlugin({
-            inject: true,
-            template: "./src/index.html"
-        })],
+        plugins: [
+            new MiniCssExtractPlugin({
+                filename: env.NODE_ENV === 'production' ? "[name].[chunkhash].css" : "[name].bundle.css",
+                chunkFilename: env.NODE_ENV === 'production' ? "[id].bundle.[chunkhash].css" : "[id].bundle.css"
+            }),
+            new HtmlWebpackPlugin({ inject: true, template: "./src/index.html" })
+        ],
         output: {
-            filename: '[name].bundle.js',
+            filename: env.NODE_ENV === 'production' ? '[name].[chunkhash].js' : '[name].bundle.js',
+            chunkFilename: env.NODE_ENV === 'production' ? '[id].bundle.[chunkhash].js' : '[id].bundle.js',
             path: path.resolve(__dirname, 'dist'),
         }
     }];

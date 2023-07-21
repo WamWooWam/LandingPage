@@ -1,4 +1,4 @@
-export const DownArrow = (props: { width: number, height: number }) => {
+const DownArrow = (props: { width: number, height: number }) => {
     return (
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="2.5 7 15 15" width={props.width} height={props.height}>
             <g id="layer0">
@@ -14,3 +14,5 @@ export const DownArrow = (props: { width: number, height: number }) => {
         </svg>
     );
 };
+
+export default DownArrow;

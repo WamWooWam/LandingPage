@@ -1,5 +1,5 @@
 import { Component } from "preact";
-import "./splash-screen.css"
+import "./core-window-splash-screen.scss"
 
 interface CoreWindowSplashScreenProps {
     backgroundColour: string;
@@ -10,14 +10,14 @@ interface CoreWindowSplashScreenProps {
 // 
 // Represents a CoreWindow's splash screen
 //
-export class CoreWindowSplashScreen extends Component<CoreWindowSplashScreenProps> {
-    render() {
-        return (
-            <div class={"splash-screen" + (this.props.visible ? " visible" : "")} style={{ background: this.props.backgroundColour }}>
-                <div class="splash-screen-container">
-                    <img class="splash-screen-image" src={this.props.splashImageUrl} />
-                </div>
+const CoreWindowSplashScreen = (props: CoreWindowSplashScreenProps) => {
+    return (
+        <div class={"splash-screen" + (props.visible ? " visible" : "")} style={{ background: props.backgroundColour }}>
+            <div class="splash-screen-container">
+                <img class="splash-screen-image" src={props.splashImageUrl} />
             </div>
-        );
-    }
+        </div>
+    );
 }
+
+export default CoreWindowSplashScreen;

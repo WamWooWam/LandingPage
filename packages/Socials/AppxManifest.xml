@@ -21,7 +21,7 @@
         <Resource Language="en-GB" />
     </Resources>
     <Applications>
-        <Application Id="AboutMe" StartPage="Apps/AboutMe">
+        <Application Id="AboutMe" EntryPoint="Apps/AboutMe">
             <m2:VisualElements DisplayName="About Me"
                 Square150x150Logo="images/people.png"
                 Square30x30Logo="images/peoplesmall.png"

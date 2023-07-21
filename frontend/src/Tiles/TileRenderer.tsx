@@ -1,19 +1,21 @@
 import { Component, Ref, RefObject, createRef } from "preact";
 import { useContext } from "preact/hooks";
-import { PackageRegistry } from "../Data/PackageRegistry";
-import { TileVisual } from "./TileVisual";
-import { TileVisualRenderer } from "./TileVisualRenderer";
-import { MobileContext, WebPContext } from "../Root";
-import { TileBackgroundRenderer } from "./TileBackgroundRenderer";
-import { TileUpdateManager } from "./TileUpdateManager";
+import { WebPContext } from "../Root";
 import { fixupUrl } from "../Util";
-import { getVisuals } from "./TileToast"
-import { TileSize, lightenDarkenColour2, PackageApplication, Package } from "landing-page-shared";
-import { AppLaunchRequestedEvent, Events } from "../Events";
 import { getTileSize } from "./TileUtils";
-
-
+import { TileSize } from "shared/TileSize";
+import { Package } from "shared/Package";
+import { PackageApplication } from "shared/PackageApplication";
+import { lightenDarkenColour2 } from "shared/ColourUtils";
+import PackageRegistry from "../Data/PackageRegistry";
+import TileVisual from "./TileVisual";
+import TileVisualRenderer from "./TileVisualRenderer";
+import TileUpdateManager from "./TileUpdateManager";
+import TileDefaultVisual from "./TileDefaultVisual";
+import Events from "../Events";
+import AppLaunchRequestedEvent from "../Events/AppLaunchRequestedEvent";
 import "./tile.css"
+
 export interface TileProps {
     packageName?: string;
     appId: string;
@@ -22,6 +24,7 @@ export interface TileProps {
     row?: number,
     column?: number;
     key?: string;
+    animColumn?: number;
 }
 
 interface TileState {
@@ -40,9 +43,7 @@ interface TileState {
     interval?: any;
 }
 
-export const DefaultVisual: TileVisual = {} as TileVisual;
-
-export class TileRenderer extends Component<TileProps, TileState> {
+export default class TileRenderer extends Component<TileProps, TileState> {
 
     private root: RefObject<HTMLAnchorElement>;
 
@@ -53,7 +54,7 @@ export class TileRenderer extends Component<TileProps, TileState> {
             app,
             pack,
             pressState: "none",
-            visuals: [DefaultVisual],
+            visuals: [TileDefaultVisual],
             visualIdx: 0,
             swapping: false,
             clicked: false,
@@ -69,7 +70,7 @@ export class TileRenderer extends Component<TileProps, TileState> {
 
             clearInterval(this.state.interval);
 
-            this.setState({ pack, app, visualIdx: 0, visuals: [DefaultVisual], nextVisualIdx: undefined });
+            this.setState({ pack, app, visualIdx: 0, visuals: [TileDefaultVisual], nextVisualIdx: undefined });
         }
     }
 
@@ -84,7 +85,7 @@ export class TileRenderer extends Component<TileProps, TileState> {
     }
 
     didGetVisuals(visuals: Map<TileSize, TileVisual[]>) {
-        let tileVisuals = [DefaultVisual, ...visuals.get(this.props.size)];
+        let tileVisuals = [TileDefaultVisual, ...visuals.get(this.props.size)];
         if (tileVisuals.length > 1) {
             if (this.state.interval)
                 clearInterval(this.state.interval);
@@ -121,7 +122,7 @@ export class TileRenderer extends Component<TileProps, TileState> {
         this.setState((s) => {
             let visuals = [...s.visuals];
             let visualIdx = s.visualIdx;
-            if (visuals[0] === DefaultVisual) {
+            if (visuals[0] === TileDefaultVisual) {
                 visuals = visuals.slice(1);
             }
             else {
@@ -146,7 +147,7 @@ export class TileRenderer extends Component<TileProps, TileState> {
     onTransitionEnd(e: TransitionEvent) {
         if (this.state.clicked) {
             this.setState({ clicked: false, visible: false });
-            
+
             const bounds = this.root.current.getBoundingClientRect();
             const event = new AppLaunchRequestedEvent(this.state.pack, this.state.app, {
                 tileX: bounds.x,
@@ -158,16 +159,24 @@ export class TileRenderer extends Component<TileProps, TileState> {
             });
 
             Events.getInstance().dispatchEvent(event);
+
+            setTimeout(() => {
+                this.setState({ visible: true });
+            }, 1000);
         }
     }
 
     render(props: TileProps, state: TileState) {
         let hasWebP = useContext(WebPContext);
 
-        let containerStyle = {
+        let containerStyle: any = {
             gridRowStart: props.row !== undefined ? props.row + 2 : undefined,
             gridColumnStart: props.column !== undefined ? props.column + 1 : undefined,
-            opacity: state.visible ? 1 : 0,
+            display: state.visible ? undefined : "none"
+        }
+
+        if (props.animColumn) {
+            containerStyle["animation-delay"] = `${(props.animColumn - 1) * 0.1}s`;
         }
 
         let tileColour = state.app?.visualElements.backgroundColor ?? "#4617b4";
@@ -224,7 +233,7 @@ export class TileRenderer extends Component<TileProps, TileState> {
                                 <TileVisualRenderer app={state.app} visual={nextVisual} size={props.size} />
                             </div>
                         }
-                        <div className={"tile-toast-footer" + (!visual || visual === DefaultVisual ? " hidden" : "")}>
+                        <div className={"tile-toast-footer" + (!visual || visual === TileDefaultVisual ? " hidden" : "")}>
                             <img className="tile-badge-icon" src={fixupUrl(state.app.visualElements.square30x30Logo, hasWebP)} alt={""} />
                         </div>
                     </div>

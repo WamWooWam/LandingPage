@@ -1,43 +1,83 @@
 import { Component } from "preact";
-import { AppLaunchRequestedEvent, Events } from "../Events";
-import { AppInstance, AppInstanceManager } from "../Data/AppInstanceManager";
-import { CoreWindowLayout } from "./CoreWindowLayout";
-import { CoreWindowLaunchAnimation } from "./Animations/CoreWindowLaunchAnimation";
-import { CoreWindow } from "./CoreWindow";
-import { CoreWindowInfo } from "../Data/CoreWindowInfo";
-import { TileInfo } from "../Data/TileInfo";
-import { Position, Size } from "../Util";
-import "./core-window.css"
+import Events from "../Events";
+import AppLaunchRequestedEvent from "../Events/AppLaunchRequestedEvent";
+import AppInstanceManager from "../Data/AppInstanceManager";
+import CoreWindowLayout from "./CoreWindowLayout";
+import CoreWindowLaunchAnimationFromTile from "./Animations/CoreWindowLaunchAnimationFromTile";
+import CoreWindowLaunchAnimation from "./Animations/CoreWindowLaunchAnimation";
+import CoreWindowLaunchParams from "../Data/CoreWindowLaunchParams";
+import CoreWindowLayoutManager from "../Data/CoreWindowLayoutManager";
+import CoreWindowManager from "../Data/CoreWindowManager";
 
+import "./core-window.scss"
+import ViewSizePreference from "../Data/ViewSizePreference";
+import CoreWindowEvent from "../Events/CoreWindowEvent";
+import CoreWindowCloseAnimation from "./Animations/CoreWindowCloseAnimation";
 
-interface LaunchParams {
-    instance: AppInstance,
-    window: CoreWindowInfo,
-    tile: TileInfo,
-
-    position: Position,
-    size: Size,
-    targetPosition: Position,
-    targetSize: Size,
+interface CoreWindowAnimation {
+    params: CoreWindowLaunchParams;
+    onAnimationComplete: () => void;
 }
+
+const CoreWindowLaunchAnimationContainer = (props: CoreWindowAnimation) => {
+    if (!props.params) return null;
+
+    if (props.params.origin?.tile) {
+        return (<CoreWindowLaunchAnimationFromTile
+            windowId={props.params.window.id}
+            tile={props.params.origin.tile} visible={true}
+            initialPosition={props.params.origin.position}
+            initialSize={props.params.origin.size}
+            targetPosition={props.params.targetPosition}
+            targetSize={props.params.targetSize}
+            onAnimationComplete={props.onAnimationComplete} />)
+    }
+    else {
+        return (<CoreWindowLaunchAnimation
+            windowId={props.params.window.id} visible={true}
+            targetPosition={props.params.targetPosition}
+            targetSize={props.params.targetSize}
+            onAnimationComplete={props.onAnimationComplete} />)
+    }
+}
+
 
 interface CoreWindowContainerProps {
 
 }
 
 interface CoreWindowContainerState {
-    launchParams: LaunchParams;
-    instance: AppInstance;
+    launchParams: CoreWindowAnimation[];
+    closeParams: CoreWindowAnimation[];
 }
 
-export class CoreWindowContainer extends Component<CoreWindowContainerProps, CoreWindowContainerState> {
+export default class CoreWindowContainer extends Component<CoreWindowContainerProps, CoreWindowContainerState> {
     constructor(props: CoreWindowContainerProps) {
         super(props);
-        this.state = { launchParams: null, instance: null };
+        this.state = { launchParams: [], closeParams: [] };
     }
 
     componentDidMount(): void {
         Events.getInstance().addEventListener("app-launch-requested", this.onAppLaunchRequested.bind(this));
+        Events.getInstance().addEventListener("core-window-closed", (e: CoreWindowEvent) => {
+            const animation = {
+                params: {
+                    window: e.detail,
+                    targetPosition: e.detail.position,
+                    targetSize: e.detail.size
+                } as CoreWindowLaunchParams,
+                onAnimationComplete: () => {
+                    e.detail.visible = false;
+                    this.setState((state) => ({
+                        closeParams: state.closeParams.filter((p) => p !== animation)
+                    }));
+                }
+            } as CoreWindowAnimation;
+
+            this.setState((state) => ({
+                closeParams: [...state.closeParams, animation]
+            }));
+        });
     }
 
     componentWillUnmount(): void {
@@ -48,58 +88,74 @@ export class CoreWindowContainer extends Component<CoreWindowContainerProps, Cor
         const instance = AppInstanceManager.launchInstance(e.package, e.packageApplication);
         console.log(instance);
 
-        const launchParams = {
-            instance: instance,
+        CoreWindowLayoutManager.getInstance()
+            .addWindowToLayout(instance.mainWindow, ViewSizePreference.useHalf);
+
+        let launchParams: CoreWindowLaunchParams = {
             window: instance.mainWindow,
-            tile: {
-                app: instance.packageApplication,
-                pack: instance.package,
-                size: e.params.tileSize,
-                visual: e.params.tileVisual,
-            },
-            position: {
-                x: e.params.tileX,
-                y: e.params.tileY
-            },
-            size: {
-                width: e.params.tileWidth,
-                height: e.params.tileHeight
-            },
-            targetPosition: {
-                x: (window.innerWidth / 2),
-                y: window.innerHeight / 2
-            },
-            targetSize: {
-                width: window.innerWidth,
-                height: window.innerHeight
-            }
-        };
+            targetPosition: instance.mainWindow.position,
+            targetSize: instance.mainWindow.size
+        } as CoreWindowLaunchParams;
+
+        if (e.params) {
+            Object.assign(launchParams, {
+                origin: {
+                    tile: {
+                        app: instance.packageApplication,
+                        pack: instance.package,
+                        size: e.params.tileSize,
+                        visual: e.params.tileVisual,
+                    },
+                    position: {
+                        x: e.params.tileX,
+                        y: e.params.tileY
+                    },
+                    size: {
+                        width: e.params.tileWidth,
+                        height: e.params.tileHeight
+                    }
+                }
+            });
+        }
 
         console.log(launchParams);
 
-        this.setState({
-            launchParams: launchParams
-        });
-    }
+        const animation = {
+            params: launchParams,
+            onAnimationComplete: () => {
+                launchParams.window.visible = true;
+                launchParams.window.focus();
 
-    onAnimationComplete() {
-        this.setState((state) => ({ launchParams: null, instance: state.launchParams.instance }));
+                if (e.params?.tileVisual) {
+                    // reset the tile
+                }
+
+                this.setState((state) => ({
+                    launchParams: state.launchParams.filter((p) => p !== animation)
+                }));
+            }
+        } as CoreWindowAnimation;
+
+        this.setState((state) => ({ launchParams: [animation, ...state.launchParams] }));
     }
 
     render() {
         return (
             <div className="core-window-container">
-                {this.state.instance && <CoreWindowLayout windows={[this.state.instance?.mainWindow]} />}
-
-                {this.state.launchParams &&
-                    <CoreWindowLaunchAnimation windowId={this.state.launchParams?.window.id}
-                        tile={this.state.launchParams?.tile} visible={true}
-                        initialPosition={this.state.launchParams.position}
-                        initialSize={this.state.launchParams.size}
-                        targetPosition={this.state.launchParams.targetPosition}
-                        targetSize={this.state.launchParams.targetSize}
-                        onAnimationComplete={this.onAnimationComplete.bind(this)} />
-                }
+                <CoreWindowLayout />
+                {this.state.launchParams?.map((animation) => (
+                    <CoreWindowLaunchAnimationContainer
+                        params={animation.params}
+                        onAnimationComplete={animation.onAnimationComplete} />
+                ))}
+                {this.state.closeParams?.map((animation) => (
+                    <CoreWindowCloseAnimation
+                        initialPosition={animation.params.window.position}
+                        initialSize={animation.params.window.size}
+                        windowId={animation.params.window.id}
+                        visible={true}
+                        onAnimationComplete={animation.onAnimationComplete} />
+                ))}
             </div>
         );
     }

@@ -1,7 +1,7 @@
-import { Animation } from "./Animation";
-import { AnimationEvent } from "./AnimationEvent";
+import Animation from "./Animation";
+import AnimationEvent from "./AnimationEvent";
 
-export class AnimationRunner {
+export default class AnimationRunner {
     private animation: Animation;
     private startTime: number | null;
     private animationFrame: number | null;
@@ -9,7 +9,6 @@ export class AnimationRunner {
     private timeScalar: number;
 
     private eventTarget: EventTarget = document.createElement('div');
-
 
     constructor(animation: Animation, timeScalar: number = 1.0) {
         this.animation = animation;
