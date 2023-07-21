@@ -45,13 +45,7 @@ export default class CoreWindowLaunchAnimationFromTile extends Component<CoreWin
     constructor(props: CoreWindowImposterProps) {
         super(props);
         this.rootRef = createRef();
-    }
 
-    shouldComponentUpdate(nextProps: Readonly<CoreWindowImposterProps>, nextState: Readonly<CoreWindowImposterState>, nextContext: any): boolean {
-        return nextState.isAnimating;
-    }
-
-    componentWillMount(): void {
         const initialX = this.props.initialPosition.x - (this.props.targetSize.width / 2) + (this.props.initialSize.width / 2);
         const initialY = this.props.initialPosition.y - (this.props.targetSize.height / 2) + (this.props.initialSize.height / 2);
         const initialScaleX = this.props.initialSize.width / this.props.targetSize.width;
@@ -59,7 +53,7 @@ export default class CoreWindowLaunchAnimationFromTile extends Component<CoreWin
 
         const targetX = this.props.targetPosition.x;
         const targetY = this.props.targetPosition.y
-        this.setState({
+        this.state = {
             initialX: initialX,
             initialY: initialY,
             targetX: targetX,
@@ -67,7 +61,11 @@ export default class CoreWindowLaunchAnimationFromTile extends Component<CoreWin
             initialScaleX: initialScaleX,
             initialScaleY: initialScaleY,
             isAnimating: true
-        });
+        };
+    }
+
+    shouldComponentUpdate(nextProps: Readonly<CoreWindowImposterProps>, nextState: Readonly<CoreWindowImposterState>, nextContext: any): boolean {
+        return nextState.isAnimating;
     }
 
     componentDidMount(): void {
@@ -102,7 +100,7 @@ export default class CoreWindowLaunchAnimationFromTile extends Component<CoreWin
         let tileColour = this.props.tile.app.visualElements.backgroundColor ?? "#4617b4";
         let tileColourLight = lightenDarkenColour2(tileColour, 0.05);
         let frontStyle = { background: `linear-gradient(to right, ${tileColour}, ${tileColourLight})` }
-        let classList = ["tile-container", TileSize[this.props.tile.size]]; 
+        let classList = ["tile-container", TileSize[this.props.tile.size]];
 
         let tileBounds = getTileSize(this.props.tile.size);
 
@@ -126,17 +124,17 @@ export default class CoreWindowLaunchAnimationFromTile extends Component<CoreWin
                 <div class="front">
                     {/* <svg xmlns="http://www.w3.org/2000/svg" viewBox={`0 0 ${tileSize.width} ${tileSize.height}`} preserveAspectRatio="none">
                         <foreignObject width={tileSize.width + "px"} height={tileSize.height + "px"}> */}
-                            <div className={classList.join(" ")} style={tileStyle}>
-                                <div class="tile" style={frontStyle}>
-                                    <TileVisualRenderer app={this.props.tile.app} size={this.props.tile.size} visual={this.props.tile.visual} />
-                                    <div className={"tile-toast-footer" + (!this.props.tile.visual || this.props.tile.visual === TileDefaultVisual as TileVisual ? " hidden" : "")}>
-                                        <img className="tile-badge-icon" src={this.props.tile.app.visualElements.square30x30Logo} alt={""} />
-                                    </div>
-                                </div>
-                                <div className="tile-border"
-                                    style={{ border: '1px solid rgba(255,255,255,0.1)' }} />
+                    <div className={classList.join(" ")} style={tileStyle}>
+                        <div class="tile" style={frontStyle}>
+                            <TileVisualRenderer app={this.props.tile.app} size={this.props.tile.size} visual={this.props.tile.visual} />
+                            <div className={"tile-toast-footer" + (!this.props.tile.visual || this.props.tile.visual === TileDefaultVisual as TileVisual ? " hidden" : "")}>
+                                <img className="tile-badge-icon" src={this.props.tile.app.visualElements.square30x30Logo} alt={""} />
                             </div>
-                        {/* </foreignObject>
+                        </div>
+                        <div className="tile-border"
+                            style={{ border: '1px solid rgba(255,255,255,0.1)' }} />
+                    </div>
+                    {/* </foreignObject>
                     </svg> */}
                 </div>
                 <div class="back">

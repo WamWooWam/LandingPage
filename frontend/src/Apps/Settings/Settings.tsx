@@ -1,8 +1,8 @@
 import { Component, render } from "preact";
 import { useState } from "preact/hooks";
-import WinJS from "winjs/light";
 import "./settings.scss"
 import MainView from "./pages/mainview";
+import WinJS from "winjs/light";
 
 const Items = [
     {

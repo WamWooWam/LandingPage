@@ -17,8 +17,6 @@ interface CoreWindowImposterProps {
 }
 
 interface CoreWindowImposterState {
-    initialX: number;
-    initialY: number;
     isAnimating: boolean;
 }
 
@@ -35,15 +33,9 @@ export default class CoreWindowCloseAnimation extends Component<CoreWindowImpost
         return nextState.isAnimating;
     }
 
-    componentWillMount(): void {
-        this.setState({
-            initialX: this.props.initialPosition.x - (this.props.initialSize.width / 2),
-            initialY: this.props.initialPosition.y - (this.props.initialSize.height / 2),
-            isAnimating: true
-        });
-    }
-
     componentDidMount(): void {
+        this.setState({ isAnimating: true });
+
         // todo: there's multiple scenarios here, we need to handle them all
         const animation = new Storyboard()
             .addLayer("scale", 1.0, 0.94, 0.0, 0.947, EASE_APPLAUNCHFASTIN)

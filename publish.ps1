@@ -1,25 +1,33 @@
 Remove-Item -Force -Recurse .\publish
+Remove-Item -Force -Recurse .\frontend\dist
+Remove-Item -Force -Recurse .\backend\dist
+
+New-Item -ItemType Directory -Path .\publish\backend\dist
+New-Item -ItemType Directory -Path .\publish\frontend\dist
+New-Item -ItemType Directory -Path .\publish\frontend\dist\og-image
+New-Item -ItemType Directory -Path .\publish\shared
 
 $env:NODE_ENV="production"
 
-Set-Location -Path .\backend
-
-yarn --production=false
-yarn build
-
-Set-Location -Path ..\frontend
+Set-Location -Path .\frontend
 
 yarn --production=false
 yarn webpack
 
-Set-Location -Path ..\
+Set-Location -Path ..\backend
 
-New-Item -ItemType Directory -Path .\publish\backend\dist
-New-Item -ItemType Directory -Path .\publish\frontend\dist
-New-Item -ItemType Directory -Path .\publish\shared
+yarn --production=false
+yarn build
+yarn run build-images
+
+& 'C:\Program Files\Inkscape\bin\inkscape.exe' --export-png=images\og-image.png --export-width=1280 --export-height=800 images\og-image.svg
+
+
+Set-Location -Path ..\
 
 Copy-Item -Path .\backend\dist\* -Destination .\publish\backend\dist -Recurse
 Copy-Item -Path .\backend\fonts -Destination .\publish\backend -Recurse
+Copy-Item -Path .\backend\images -Destination .\publish\backend -Recurse
 Copy-Item -Path .\backend\package.json -Destination .\publish\backend
 Copy-Item -Path .\backend\yarn.lock -Destination .\publish\backend
 Copy-Item -Path .\backend\.env -Destination .\publish\backend

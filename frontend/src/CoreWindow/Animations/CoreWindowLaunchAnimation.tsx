@@ -35,14 +35,9 @@ export default class CoreWindowLaunchAnimation extends Component<CoreWindowImpos
 
     constructor(props: CoreWindowImposterProps) {
         super(props);
+        
         this.rootRef = createRef();
-    }
-
-    shouldComponentUpdate(nextProps: Readonly<CoreWindowImposterProps>, nextState: Readonly<CoreWindowImposterState>, nextContext: any): boolean {
-        return nextState.isAnimating;
-    }
-
-    componentWillMount(): void {
+        
         let initialSize = {
             width: this.props.targetSize.width * 0.9,
             height: this.props.targetSize.height * 0.9
@@ -56,7 +51,7 @@ export default class CoreWindowLaunchAnimation extends Component<CoreWindowImpos
 
         const initialRotation = 200;
 
-        this.setState({
+        this.state = {
             initialX: targetX + (this.props.targetPosition.x / 4),
             initialY: targetY,
             initialZ: -1200,
@@ -67,7 +62,11 @@ export default class CoreWindowLaunchAnimation extends Component<CoreWindowImpos
             initialScaleY: initialScaleY,
             initialRotation: initialRotation,
             isAnimating: true
-        });
+        };
+    }
+
+    shouldComponentUpdate(nextProps: Readonly<CoreWindowImposterProps>, nextState: Readonly<CoreWindowImposterState>, nextContext: any): boolean {
+        return nextState.isAnimating;
     }
 
     componentDidMount(): void {

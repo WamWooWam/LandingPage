@@ -22,8 +22,12 @@ const app = express();
     app.get('/api/live-tiles/youtube/recent-videos.xml', apicache.middleware('15 minutes'), YouTube.recentVideos);
     app.get('/api/live-tiles/github/recent-activity.xml', apicache.middleware('15 minutes'), GitHub.recentActivity);
 
-    app.get('/api/media/og-image.svg', apicache.middleware('30 days'), Thumbnail.generateThumbnailSvg);
-    app.get('/api/media/og-image.png', apicache.middleware('30 days'), Thumbnail.generateThumbnailPng);
+    app.get('/api/media/og-image.svg', apicache.middleware('30 days'), (req, res) => {
+        res.sendFile(path.join(process.cwd(), "images/og-image.svg"));
+    });
+    app.get('/api/media/og-image.png', apicache.middleware('30 days'), (req, res) => {
+        res.sendFile(path.join(process.cwd(), "images/og-image.png"));
+    });
 
     app.use(express.static(path.join(process.cwd(), "..", "frontend", "dist")))
     app.get('/', (req, res) => {

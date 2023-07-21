@@ -35,8 +35,9 @@ interface StartState {
 
 export default class Start extends Component<{}, StartState> {
 
-    componentWillMount() {
-        this.setState({ tileGroups: parseLayout(StartLayout) });
+    constructor() {
+        super();
+        this.state = { tileGroups: parseLayout(StartLayout) };
     }
 
     onStartTitleClick = () => {

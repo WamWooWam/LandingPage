@@ -27,6 +27,7 @@
   "scripts": {
     "prestart": "tsc",
     "build": "tsc",
-    "start": "node ./dist/index.js"
+    "start": "node ./dist/index.js",
+    "build-images": "node ./dist/build-images.js"
   }
 }
