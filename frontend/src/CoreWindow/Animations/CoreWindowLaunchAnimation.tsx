@@ -1,6 +1,6 @@
 import { Component, RefObject, createRef } from "preact";
 import { Position, Size } from "../../Util";
-import { EASE_APPLAUNCHFASTIN, EASE_APPLAUNCHROTATE, EASE_APPLAUNCHSCALE } from "./AnimationCommon";
+import { AnimationSlowed, EASE_APPLAUNCHFASTIN, EASE_APPLAUNCHROTATE, EASE_APPLAUNCHSCALE } from "./AnimationCommon";
 import Storyboard from "../../Animation/Storyboard";
 import AnimationRunner from "../../Animation/AnimationRunner";
 import AnimationEvent from "../../Animation/AnimationEvent";
@@ -35,7 +35,7 @@ export default class CoreWindowLaunchAnimation extends Component<CoreWindowImpos
 
     constructor(props: CoreWindowImposterProps) {
         super(props);
-        
+
         this.rootRef = createRef();
         
         let initialSize = {
@@ -80,7 +80,7 @@ export default class CoreWindowLaunchAnimation extends Component<CoreWindowImpos
             .addLayer("angle", this.state.initialRotation, 180, 0.0, 1, EASE_APPLAUNCHROTATE)
             .createAnimation();
 
-        const runner = new AnimationRunner(animation, (1 / 3));
+        const runner = new AnimationRunner(animation, (1 / 3)* (AnimationSlowed ? 20 : 1));
         runner.addEventListener("tick", (e: AnimationEvent) => {
             const values = e.values;
             const transform = `perspective(4000px) translate3d(${values.x}px, ${values.y}px, 0px) scale(${values.width}, ${values.height}) translate3d(0,0,${values.z}px) rotate3d(0,1,0,${values.angle}deg)`;

@@ -138,6 +138,7 @@ export default class CoreWindowRenderer extends Component<CoreWindowRenderProps,
                     splashImageUrl={splashUrl}
                     visible={this.state.splashScreenVisible} />
                 <CoreWindowTitleBar title={this.state.title}
+                    displayName={app.visualElements.displayName}
                     isVisible={this.state.titleBarVisible}
                     primaryColour={primaryColour}
                     iconUrl={iconUrl}

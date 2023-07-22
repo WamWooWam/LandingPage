@@ -3,7 +3,7 @@ import { getTileSize } from "../../Tiles/TileUtils";
 import { TileSize } from "shared/TileSize";
 import { lightenDarkenColour2 } from "shared/ColourUtils";
 import { Position, Size } from "../../Util";
-import { EASE_APPLAUNCHDRIFT, EASE_APPLAUNCHFASTIN, EASE_APPLAUNCHROTATE, EASE_APPLAUNCHSCALE, EASE_LINEAR } from "./AnimationCommon";
+import { AnimationSlowed, EASE_APPLAUNCHDRIFT, EASE_APPLAUNCHFASTIN, EASE_APPLAUNCHROTATE, EASE_APPLAUNCHROTATEBOUNCE, EASE_APPLAUNCHSCALE, EASE_LINEAR } from "./AnimationCommon";
 import TileVisual from "../../Tiles/TileVisual";
 import TileVisualRenderer from "../../Tiles/TileVisualRenderer";
 import TileInfo from "../../Data/TileInfo";
@@ -79,10 +79,10 @@ export default class CoreWindowLaunchAnimationFromTile extends Component<CoreWin
             .addLayer("flip", 0, 1, 0, 0.5, EASE_LINEAR)
             .createAnimation();
 
-        const runner = new AnimationRunner(animation, (2 / 3));
+        const runner = new AnimationRunner(animation, (2 / 3)* (AnimationSlowed ? 20 : 1));
         runner.addEventListener("tick", (e: AnimationEvent) => {
             const values = e.values;
-            const transform = `perspective(4000px) translate(${values.x}px, ${values.y}px) scale(${values.width}, ${values.height}) rotate3d(0,1,0,${values.angle}deg)`;
+            const transform = `perspective(4000px) translate3d(${values.x}px, ${values.y}px, 0px) scale(${values.width}, ${values.height}) rotate3d(0,1,0,${values.angle}deg)`;
 
             this.rootRef.current.style.transform = transform;
         });
@@ -109,7 +109,7 @@ export default class CoreWindowLaunchAnimationFromTile extends Component<CoreWin
             top: "0px",
             width: this.props.targetSize.width + "px",
             height: this.props.targetSize.height + "px",
-            transform: `perspective(4000px) translate(${this.state.initialX}px, ${this.state.initialY}px) scale(${this.state.initialScaleX}, ${this.state.initialScaleY}) rotateY(0deg)`
+            transform: `perspective(4000px) translate3d(${this.state.initialX}px, ${this.state.initialY}px, 0px) scale(${this.state.initialScaleX}, ${this.state.initialScaleY}) rotateY(0deg)`
         }
 
         let tileStyle = {

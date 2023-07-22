@@ -1,6 +1,6 @@
 import { Component } from "preact";
 import TileRenderer, { TileProps } from "./TileRenderer";
-import "./tile.css"
+import "./tile.scss"
 
 export interface FenceTileProps {
     apps: TileProps[]

@@ -59,29 +59,12 @@ export default class CoreWindowContainer extends Component<CoreWindowContainerPr
 
     componentDidMount(): void {
         Events.getInstance().addEventListener("app-launch-requested", this.onAppLaunchRequested.bind(this));
-        Events.getInstance().addEventListener("core-window-closed", (e: CoreWindowEvent) => {
-            const animation = {
-                params: {
-                    window: e.detail,
-                    targetPosition: e.detail.position,
-                    targetSize: e.detail.size
-                } as CoreWindowLaunchParams,
-                onAnimationComplete: () => {
-                    e.detail.visible = false;
-                    this.setState((state) => ({
-                        closeParams: state.closeParams.filter((p) => p !== animation)
-                    }));
-                }
-            } as CoreWindowAnimation;
-
-            this.setState((state) => ({
-                closeParams: [...state.closeParams, animation]
-            }));
-        });
+        Events.getInstance().addEventListener("core-window-closed", this.onWindowClosed.bind(this));
     }
 
     componentWillUnmount(): void {
         Events.getInstance().removeEventListener("app-launch-requested", this.onAppLaunchRequested.bind(this));
+        Events.getInstance().removeEventListener("core-window-closed", this.onWindowClosed.bind(this));
     }
 
     onAppLaunchRequested(e: AppLaunchRequestedEvent) {
@@ -138,6 +121,26 @@ export default class CoreWindowContainer extends Component<CoreWindowContainerPr
 
         this.setState((state) => ({ launchParams: [animation, ...state.launchParams] }));
     }
+
+    onWindowClosed(e: CoreWindowEvent) {
+        const animation = {
+            params: {
+                window: e.detail,
+                targetPosition: e.detail.position,
+                targetSize: e.detail.size
+            } as CoreWindowLaunchParams,
+            onAnimationComplete: () => {
+                e.detail.visible = false;
+                this.setState((state) => ({
+                    closeParams: state.closeParams.filter((p) => p !== animation)
+                }));
+            }
+        } as CoreWindowAnimation;
+
+        this.setState((state) => ({
+            closeParams: [...state.closeParams, animation]
+        }));
+    };
 
     render() {
         return (

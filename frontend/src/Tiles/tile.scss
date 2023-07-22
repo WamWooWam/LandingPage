@@ -93,8 +93,7 @@
 }
 
 .tile-container,
-.fence-tile-container {
-}
+.fence-tile-container {}
 
 .tile-container.text-light {
     color: white;
@@ -124,81 +123,28 @@
     transform-origin: initial;
 }
 
+@mixin tile-container-press($class, $x, $y) {
+    .tile-container.#{$class}.press-top:active {
+        transform: perspective(500px) rotateX(#{$x}deg);
+    }
 
-/* square310x310 */
+    .tile-container.#{$class}.press-bottom:active {
+        transform: perspective(500px) rotateX(-#{$x}deg);
+    }
 
-.tile-container.square310x310.press-top:active {
-    transform: perspective(500px) rotateX(3deg);
+    .tile-container.#{$class}.press-left:active {
+        transform: perspective(500px) rotateY(-#{$y}deg);
+    }
+
+    .tile-container.#{$class}.press-right:active {
+        transform: perspective(500px) rotateY(#{$y}deg);
+    }
 }
 
-.tile-container.square310x310.press-bottom:active {
-    transform: perspective(500px) rotateX(-3deg);
-}
-
-.tile-container.square310x310.press-left:active {
-    transform: perspective(500px) rotateY(-3deg);
-}
-
-.tile-container.square310x310.press-right:active {
-    transform: perspective(500px) rotateY(3deg);
-}
-
-
-/* wide310x150 */
-
-.tile-container.wide310x150.press-top:active {
-    transform: perspective(500px) rotateX(6deg);
-}
-
-.tile-container.wide310x150.press-bottom:active {
-    transform: perspective(500px) rotateX(-6deg);
-}
-
-.tile-container.wide310x150.press-left:active {
-    transform: perspective(500px) rotateY(-3deg);
-}
-
-.tile-container.wide310x150.press-right:active {
-    transform: perspective(500px) rotateY(3deg);
-}
-
-
-/* square150x150 */
-
-.tile-container.square150x150.press-top:active {
-    transform: perspective(500px) rotateX(6deg);
-}
-
-.tile-container.square150x150.press-bottom:active {
-    transform: perspective(500px) rotateX(-6deg);
-}
-
-.tile-container.square150x150.press-left:active {
-    transform: perspective(500px) rotateY(-6deg);
-}
-
-.tile-container.square150x150.press-right:active {
-    transform: perspective(500px) rotateY(6deg);
-}
-
-
-/* square70x70 */
-
-.tile-container.square70x70.press-top:active {
-    transform: perspective(500px) rotateX(16deg);
-}
-
-.tile-container.square70x70.press-bottom:active {
-    transform: perspective(500px) rotateX(-16deg);
-}
-
-.tile-container.square70x70.press-left:active {
-    transform: perspective(500px) rotateY(-16deg);
-}
-
-.tile-container.square70x70.press-right:active {
-    transform: perspective(500px) rotateY(16deg);
-}
+@include tile-container-press(square70x70, 16, 16);
+@include tile-container-press(square150x150, 6, 6);
+@include tile-container-press(square310x310, 3, 3);
+@include tile-container-press(wide310x150, 6, 3);
 
 .tile-container:active {
     transform: scale3d(0.975, 0.975, 0.975);
@@ -278,8 +224,8 @@
     position: absolute;
     top: 0px;
     left: 0px;
-    width: calc(100%);
-    height: calc(100%);
+    width: 100%;
+    height: 100%;
 }
 
 .tile-front-image-container {
@@ -337,8 +283,8 @@
     position: absolute;
     top: 0;
     left: 0;
-    width: calc(100%);
-    height: calc(100%);
+    width: 100%;
+    height: 100%;
     overflow: hidden;
     flex-direction: column;
 }

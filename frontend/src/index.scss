@@ -6,8 +6,10 @@ body {
   margin: 0;    
   width: 100vw;
   height: 100vh;
+  height: -webkit-fill-available;
   user-select: none;
   -webkit-user-select: none; /* lick my entire ass */
+  position: fixed;
 }
 
 code {

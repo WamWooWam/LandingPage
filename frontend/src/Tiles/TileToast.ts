@@ -73,8 +73,6 @@ export function getVisuals(doc: Document, size: TileSize): TileVisual[] {
         }
     }
 
-    // console.log(`got ${visuals.length} visuals for size ${TileSize[size]}`)
-
     return visuals;
 }
 

@@ -26,10 +26,18 @@ export default class CoreWindow {
         this._state = CoreWindowState.uninitialized;
         this._size = { width: 0, height: 0 };
         this._position = { x: 0, y: 0 };
-        this._title = instance.packageApplication.visualElements.displayName;
+        this._title = '';
         this._visible = false
         this._view = document.createElement("div");
         this._view.id = this._id;
+
+        this._view.addEventListener("click", () => {
+            this.focus();
+        });
+
+        this._view.addEventListener("contextmenu", (e) => {
+            e.preventDefault();
+        });
     }
 
     get id(): string {
@@ -57,13 +65,7 @@ export default class CoreWindow {
     }
 
     set title(newTitle: string) {
-        let t = newTitle.trim();
-        if (t === '') {
-            this._title = this.packageApplication.visualElements.displayName;
-        }
-        else {
-            this._title = `${t} - ${this.packageApplication.visualElements.displayName}`;
-        }
+        this._title = newTitle.trim();
 
         Events.getInstance()
             .dispatchEvent(new CoreWindowEvent("core-window-title-changed", this));

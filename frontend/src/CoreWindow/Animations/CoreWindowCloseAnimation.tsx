@@ -1,6 +1,6 @@
 import { Component, RefObject, createRef } from "preact";
 import { Position, Size } from "../../Util";
-import { EASE_APPLAUNCHFASTIN, EASE_APPLAUNCHROTATE, EASE_APPLAUNCHSCALE, EASE_LINEAR } from "./AnimationCommon";
+import { AnimationSlowed, EASE_APPLAUNCHFASTIN, EASE_APPLAUNCHROTATE, EASE_APPLAUNCHSCALE, EASE_LINEAR } from "./AnimationCommon";
 import Storyboard from "../../Animation/Storyboard";
 import AnimationRunner from "../../Animation/AnimationRunner";
 import AnimationEvent from "../../Animation/AnimationEvent";
@@ -42,7 +42,7 @@ export default class CoreWindowCloseAnimation extends Component<CoreWindowImpost
             .addLayer("opacity", 1.0, 0.0, 0.0, 0.947, EASE_APPLAUNCHFASTIN)
             .createAnimation();
 
-        const runner = new AnimationRunner(animation, (1 / 6));
+        const runner = new AnimationRunner(animation, (1 / 6) * (AnimationSlowed ? 20 : 1));
         runner.addEventListener("tick", (e: AnimationEvent) => {
             const values = e.values;
             const transform = `scale(${values.scale})`;

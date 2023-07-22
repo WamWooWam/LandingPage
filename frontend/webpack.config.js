@@ -3,6 +3,16 @@ const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const CssMinimizerPlugin = require("css-minimizer-webpack-plugin");
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const { env } = require('process');
+const { transform } = require('ts-transform-react-jsx-source')
+
+const PostCSSOptions = {
+    postcssOptions: {
+        plugins: [
+            "postcss-aspect-ratio-polyfill",
+            ["postcss-preset-env", { plugins: { autoprefixer: { flexbox: true } } }]
+        ],
+    },
+};
 
 module.exports = [
     {
@@ -13,7 +23,17 @@ module.exports = [
             rules: [
                 {
                     test: /\.tsx?$/,
-                    use: 'ts-loader',
+                    use: {
+                        loader: 'ts-loader',
+                        options: {
+                            getCustomTransformers() {
+                                return {
+                                    before: [transform()],
+                                };
+                            },
+                        },
+                    },
+
                     exclude: /node_modules/,
                 },
                 {
@@ -24,7 +44,7 @@ module.exports = [
                     test: /\.css$/i,
                     use: [
                         MiniCssExtractPlugin.loader,
-                        "css-loader"
+                        "css-loader",
                     ]
                 },
                 {
@@ -40,9 +60,7 @@ module.exports = [
                     use: [
                         {
                             loader: 'file-loader',
-                            options: {
-                                outputPath: 'static/'
-                            }
+                            options: { outputPath: 'static/' }
                         }
                     ]
                 },
@@ -51,13 +69,9 @@ module.exports = [
                     use: [
                         {
                             loader: 'file-loader',
-                            options: {
-                                outputPath: 'static/'
-                            }
+                            options: { outputPath: 'static/' }
                         },
-                        {
-                            loader: 'xml-loader'
-                        }
+                        'xml-loader'
                     ]
                 },
                 {

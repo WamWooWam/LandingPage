@@ -4,6 +4,7 @@ import CoreWindowCloseButton from "./CoreWindowCloseButton";
 
 interface CoreWindowTitleBarProps {
     title: string;
+    displayName: string;
     iconUrl: string;
     primaryColour: string;
     isVisible: boolean;
@@ -24,7 +25,7 @@ export default class CoreWindowTitleBar extends Component<CoreWindowTitleBarProp
                         <img class="core-window-icon" src={this.props.iconUrl} />
                     </div>
 
-                    <div class="core-window-title">{this.props.title}</div>
+                    <div class="core-window-title">{this.props.title ? `${this.props.title} - ${this.props.displayName}` : this.props.displayName}</div>
                     <CoreWindowMinimizeButton onClick={this.props.minimiseClicked} />
                     <CoreWindowCloseButton onClick={this.props.closeClicked} />
                 </div>

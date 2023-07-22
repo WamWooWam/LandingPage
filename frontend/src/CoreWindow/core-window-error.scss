@@ -79,9 +79,9 @@
         font-family: "Segoe UI", "verdana", "arial";
         font-size: 11pt;
         text-decoration: none;
-    }
 
-    a:hover {
-        text-decoration: underline;
+        &:hover {
+            text-decoration: underline;
+        }
     }
 }

@@ -1,6 +1,5 @@
-body {
+.start {
     color: white;
-    height: 100vh;
 }
 
 .start-content {
@@ -90,13 +89,11 @@ html {
 }
 
 @media screen and (min-width: 600px) {
-    html {
+    .start {
         background-color: #25079b;
         background-image: url(../../static/wallpaper/the-cliffs.jpg);
-
         background-image: image-set("../../static/wallpaper/the-cliffs.webp" type("image/webp"),
                 "../../static/wallpaper/the-cliffs.jpg" type("image/jpeg"));
-
         background-size: cover;
         background-position: center;
     }
@@ -107,13 +104,13 @@ html {
         height: 100vh;
         top: 0;
         left: 0;
-        background: rgba(0, 0, 0, 0.33);
         /* z-index: 2147483645; */
         /* :) */
     }
 
     .start-content {
         grid-template-rows: 120px 1fr;
+        background: rgba(0, 0, 0, 0.33);
     }
 
     .start-main-header {
@@ -149,15 +146,15 @@ html {
         padding: none;
         color: white;
         font-family: 'Segoe UI';
-    }
 
-    .start-header-button:hover {
-        background: #2B0680;
-    }
+        &:hover {
+            background: #2B0680;
+        }
 
-    .start-header-button:active {
-        background: #2B0680;
-        transform: scale3d(0.975, 0.975, 0.975);
+        &:active {
+            background: #2B0680;
+            transform: scale3d(0.975, 0.975, 0.975);
+        }
     }
 
     .start-header-user-button {
@@ -166,17 +163,23 @@ html {
         align-items: center;
         grid-template-columns: 1fr 60px;
         font-weight: 300;
-    }
 
-    .start-header-user-button>.username>p {
-        margin: 0;
-    }
+        >.username {
+            >p {
+                margin: 0;
+            }
 
-    .start-header-user-button>.username>.primary {
-        font-size: 27px;
-        line-height: 27px;
-    }
+            >.primary {
+                font-size: 27px;
+                line-height: 27px;
+            }
 
+            >.secondary {
+                font-size: 18px;
+                line-height: 18px;
+            }
+        }
+    }
     .start-header-user-picture {
         width: 40px;
         height: 40px;

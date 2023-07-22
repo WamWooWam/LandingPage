@@ -8,6 +8,7 @@
     pointer-events: none;
     z-index: 1000;
     overflow: hidden;
+    position: fixed;
 }
 
 .core-window {
@@ -27,7 +28,7 @@
     height: 100%;
     overflow: auto;
 
-    >div {
+    >* {
         border: none;
         position: absolute;
         top: 0;
@@ -43,7 +44,15 @@
     height: 40px;
     pointer-events: all;
     transition: transform 0.10s cubic-bezier(0.1, 0.25, 0.75, 0.9);
+    transform: translateY(0);
     overflow: hidden;
+    color: white;
+
+    &.hidden {
+        opacity: 1;
+        transition-delay: 0.35s;
+        transform: translateY(-30px);
+    }
 }
 
 .core-window-titlebar-content {
@@ -51,13 +60,6 @@
     width: 100%;
     background: #111111;
     display: flex;
-}
-
-.core-window-titlebar.hidden {
-    opacity: 1;
-    display: flex;
-    transition-delay: 0.35s;
-    transform: translateY(-30px);
 }
 
 .core-window-icon-container {
@@ -88,16 +90,16 @@
     min-width: 0;
     padding: 0;
     border: none;
-}
 
-.core-window-minimise:hover {
-    background: #3665b3;
-    border: none;
-}
+    &:hover {
+        background: #3665b3;
+        border: none;
+    }
 
-.core-window-minimise:active {
-    opacity: 0.8;
-    border: none;
+    &:active {
+        opacity: 0.8;
+        border: none;
+    }
 }
 
 .core-window-close {
@@ -113,16 +115,16 @@
     min-width: 0;
     padding: 0;
     border: none;
-}
 
-.core-window-close:hover {
-    background: #e04343;
-    border: none;
-}
+    &:hover {
+        background: #e04343;
+        border: none;
+    }
 
-.core-window-close:active {
-    opacity: 0.8;
-    border: none;
+    &:active {
+        opacity: 0.8;
+        border: none;
+    }
 }
 
 .core-window-imposter {

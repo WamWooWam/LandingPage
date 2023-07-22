@@ -1,8 +1,8 @@
 import "preact/debug"
 import "./polyfill";
 import "./Test"
-import './index.css';
-import './segoe.css';
+import './index.scss';
+import './segoe.scss';
 
 import { render } from "preact"
 import PackageRegistry from "./Data/PackageRegistry";

@@ -3185,6 +3185,8 @@ declare module WinJS.UI {
 
     }
 
+    type IItemGenerator<T> = (itemPromise: WinJS.Promise<WinJS.UI.IItem<T>>) => globalThis.Promise<HTMLElement> | WinJS.Promise<HTMLElement>
+
     /**
      * Provides access to a data source and enables you to bind, change, add, remove, and move items in that data source.
     **/
@@ -3841,7 +3843,7 @@ declare module WinJS.UI {
         /**
          * Gets or sets the icon of the AppBarCommand.
         **/
-        icon: string;
+        icon: string | AppBarIcon;
 
         /**
          * Gets the element identifier (ID) of the command.

@@ -75,6 +75,11 @@ export default class StartScrollContainer extends Component<StartScrollContainer
     }
 
     onWheel(e: WheelEvent) {
+        // make sure this isn't a horizontal scroll
+        if (Math.abs(e.deltaX) > Math.abs(e.deltaY)) {
+            return;
+        }
+        
         // invert the deltas so that scrolling vertically scrolls horizontally
         const deltaX = e.deltaY;
         const deltaY = e.deltaX;

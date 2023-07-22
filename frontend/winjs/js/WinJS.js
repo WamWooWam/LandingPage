@@ -1,7 +1,7 @@
+const Windows = require("../shims/index.ts").default;
 
 /*! Copyright (c) Microsoft Open Technologies, Inc.  All Rights Reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information. */
 (function (global) {
-
     (function (factory) {
         if (typeof define === 'function' && define.amd) {
             define([], factory);
@@ -111,6 +111,7 @@ define('WinJS/Core/_WinJS',{});
 (function (global) {
     "use strict";
 
+    // TODO: replace most of this
     define('WinJS/Core/_Global',globalThis);
 }(this));
 
@@ -564,7 +565,7 @@ define('WinJS/Core/_WinRT',[
         var leaf = {};
         leaf[parts[parts.length - 1]] = {
             get: function () {
-                return parts.reduce(function (current, part) { return current ? current[part] : null; }, _Global);
+                return parts.reduce(function (current, part) { return current ? current[part] : null; }, {Windows: Windows});
             }
         };
         _Base.Namespace.defineWithParent(exports, parts.slice(0, -1).join("."), leaf);
@@ -15348,7 +15349,7 @@ define('WinJS/Animations',[
                 element,
                 {
                     keyframe: offsetArray.keyframe,
-                    property: transformNames.cssName,
+                    property: 'transform',
                     delay: 0,
                     duration: 367,
                     timing: "cubic-bezier(0.1, 0.9, 0.2, 1)",
@@ -63577,7 +63578,10 @@ define('WinJS/Controls/Flyout/_Overlay',[
                     clickEatingDiv.setAttribute("aria-label", strings.closeOverlay);
                     // Prevent CED from removing any current selection
                     clickEatingDiv.setAttribute("unselectable", "on");
-                    _Global.document.body.appendChild(clickEatingDiv);
+                    // TOOD: there may be multiple roots
+                    let root = _Global.document.body.querySelector('.winjs-root')
+                    root.appendChild(clickEatingDiv);
+                    //_Global.document.body.appendChild(clickEatingDiv);
                     return clickEatingDiv;
                 },
 
@@ -64057,11 +64061,12 @@ define('WinJS/Controls/Flyout/_Overlay',[
                 },
 
                 _visualViewportSpace: function _visualViewportSpace() {
-                    var visualViewportSpace = _Global.document.body.querySelector("." + _Constants._visualViewportClass);
+                    let root = _Global.document.body.querySelector('.winjs-root')
+                    var visualViewportSpace = root.querySelector("." + _Constants._visualViewportClass);
                     if (!visualViewportSpace) {
                         visualViewportSpace = _Global.document.createElement("DIV");
                         visualViewportSpace.className = _Constants._visualViewportClass;
-                        _Global.document.body.appendChild(visualViewportSpace);
+                        root.appendChild(visualViewportSpace);
                     }
                     return visualViewportSpace.getBoundingClientRect();
                 },

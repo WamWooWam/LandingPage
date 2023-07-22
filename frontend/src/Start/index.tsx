@@ -12,7 +12,7 @@ import SearchIcon from "./SearchIcon";
 import StartLayout from '../../../packages/StartScreen.xml'
 import Avatar from "../../static/wam.webp"
 
-import "./start.css"
+import "./start.scss"
 import { StartTileGroup, parseLayout } from "shared/StartLayoutParser";
 
 type FullscreenDocument = Document & {

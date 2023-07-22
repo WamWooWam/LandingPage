@@ -14,7 +14,7 @@ import TileUpdateManager from "./TileUpdateManager";
 import TileDefaultVisual from "./TileDefaultVisual";
 import Events from "../Events";
 import AppLaunchRequestedEvent from "../Events/AppLaunchRequestedEvent";
-import "./tile.css"
+import "./tile.scss"
 
 export interface TileProps {
     packageName?: string;

@@ -1,0 +1,18 @@
+#settings-root {
+    .group {
+        display: flex;
+        margin-top: 6px;
+        margin-bottom: 6px;
+    }
+
+    .column-1 {
+        min-width: 120px;
+    }
+
+    .column-2 {}
+
+    .button-group {
+        margin-top: 4px;
+        margin-bottom: 16px;
+    }
+}

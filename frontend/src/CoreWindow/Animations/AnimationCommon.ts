@@ -8,3 +8,17 @@ export const EASE_APPLAUNCHROTATEBOUNCE = bezier(0.41, 0.52, 0.6, 1.4);
 export const EASE_APPLAUNCHDRIFT = bezier(0.41, 0.52, 0.0, 0.94);
 export const EASE_APPLAUNCHSCALE = bezier(0.42, 0.47, 0.3, 0.95);
 export const EASE_APPLAUNCHFASTIN = bezier(0.17, 0.55, 0.3, 0.95);
+
+export let AnimationSlowed = false;
+
+document.addEventListener('keydown', (e) => {
+    if (e.key === 'Shift') {
+        AnimationSlowed = true;
+    }
+});
+
+document.addEventListener('keyup', (e) => {
+    if (e.key === 'Shift') {
+        AnimationSlowed = false;
+    }
+});

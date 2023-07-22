@@ -2,7 +2,7 @@ import { Component, createRef, RefObject, } from "preact";
 import { TilePropsWithType } from "./TileUtils";
 import TileRenderer, { TileProps } from "./TileRenderer";
 import FenceTileRenderer, { FenceTileProps } from "./FenceTileRenderer";
-import "./tile.css"
+import "./tile.scss"
 
 interface TileGroupProps {
     title: string;
