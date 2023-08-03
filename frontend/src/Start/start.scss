@@ -5,8 +5,8 @@
 .start-content {
     display: grid;
     grid-template-columns: 0 1fr 64px;
-    height: 100vh;
-    padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
+    height: 100%;
+    height: -webkit-fill-available;
 }
 
 @keyframes start-content-hide {
@@ -53,6 +53,8 @@ html {
 
 .start-tiles-scroll-container {
     grid-column: 2;
+    overflow-x: hidden;
+    overflow-y: overlay;
 }
 
 .start-tile-group {
@@ -111,6 +113,8 @@ html {
     .start-content {
         grid-template-rows: 120px 1fr;
         background: rgba(0, 0, 0, 0.33);
+        height: 100vh;
+        padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
     }
 
     .start-main-header {
@@ -210,6 +214,7 @@ html {
         width: 100vw;
         height: 100vh;
         overflow-x: overlay;
+        overflow-y: hidden;
         grid-row: 2;
         -webkit-overflow-scrolling: touch;
         overscroll-behavior: contain;

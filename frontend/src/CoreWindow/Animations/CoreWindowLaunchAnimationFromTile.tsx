@@ -79,7 +79,7 @@ export default class CoreWindowLaunchAnimationFromTile extends Component<CoreWin
             .addLayer("flip", 0, 1, 0, 0.5, EASE_LINEAR)
             .createAnimation();
 
-        const runner = new AnimationRunner(animation, (2 / 3)* (AnimationSlowed ? 20 : 1));
+        const runner = new AnimationRunner(animation, (2 / 3) * (AnimationSlowed ? 20 : 1));
         runner.addEventListener("tick", (e: AnimationEvent) => {
             const values = e.values;
             const transform = `perspective(4000px) translate3d(${values.x}px, ${values.y}px, 0px) scale(${values.width}, ${values.height}) rotate3d(0,1,0,${values.angle}deg)`;
@@ -101,6 +101,9 @@ export default class CoreWindowLaunchAnimationFromTile extends Component<CoreWin
         let tileColourLight = lightenDarkenColour2(tileColour, 0.05);
         let frontStyle = { background: `linear-gradient(to right, ${tileColour}, ${tileColourLight})` }
         let classList = ["tile-container", TileSize[this.props.tile.size]];
+        if (this.props.tile.app.visualElements.foregroundText === "light") {
+            classList.push("text-light");
+        }
 
         let tileBounds = getTileSize(this.props.tile.size);
 
@@ -122,8 +125,6 @@ export default class CoreWindowLaunchAnimationFromTile extends Component<CoreWin
         return (
             <div ref={this.rootRef} class="core-window-imposter" style={style}>
                 <div class="front">
-                    {/* <svg xmlns="http://www.w3.org/2000/svg" viewBox={`0 0 ${tileSize.width} ${tileSize.height}`} preserveAspectRatio="none">
-                        <foreignObject width={tileSize.width + "px"} height={tileSize.height + "px"}> */}
                     <div className={classList.join(" ")} style={tileStyle}>
                         <div class="tile" style={frontStyle}>
                             <TileVisualRenderer app={this.props.tile.app} size={this.props.tile.size} visual={this.props.tile.visual} />
@@ -134,8 +135,6 @@ export default class CoreWindowLaunchAnimationFromTile extends Component<CoreWin
                         <div className="tile-border"
                             style={{ border: '1px solid rgba(255,255,255,0.1)' }} />
                     </div>
-                    {/* </foreignObject>
-                    </svg> */}
                 </div>
                 <div class="back">
                     <div class="back-content">

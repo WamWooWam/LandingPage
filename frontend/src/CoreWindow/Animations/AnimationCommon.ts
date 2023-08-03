@@ -11,14 +11,14 @@ export const EASE_APPLAUNCHFASTIN = bezier(0.17, 0.55, 0.3, 0.95);
 
 export let AnimationSlowed = false;
 
-document.addEventListener('keydown', (e) => {
-    if (e.key === 'Shift') {
-        AnimationSlowed = true;
-    }
-});
+// document.addEventListener('keydown', (e) => {
+//     if (e.key === 'Shift') {
+//         AnimationSlowed = true;
+//     }
+// });
 
-document.addEventListener('keyup', (e) => {
-    if (e.key === 'Shift') {
-        AnimationSlowed = false;
-    }
-});
+// document.addEventListener('keyup', (e) => {
+//     if (e.key === 'Shift') {
+//         AnimationSlowed = false;
+//     }
+// });

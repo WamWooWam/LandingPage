@@ -1,17 +1,15 @@
+// the layout has 2 possible states, one fullscreen window, or 2 windows side by side
+// when in split mode, the windows can be resized by dragging the divider between them
+
 import Events from "../Events";
-import CoreWindow from "./CoreWindow";
-import CoreWindowLaunchParams from "./CoreWindowLaunchParams";
-import CoreWindowLayoutParams from "./CoreWindowLayoutParams";
-import CoreWindowManager from "./CoreWindowManager";
 import LayoutUpdatedEvent from "../Events/LayoutUpdatedEvent";
+import CoreWindow from "./CoreWindow";
+import { CoreWindowSnapState } from "./CoreWindowSnapState";
 import ViewSizePreference from "./ViewSizePreference";
 
-// windows are stored in an array with a maximum of 4 windows depending on the screen size. 
-// width is the width of the window as a percentage of the screen width
-// if windowId is null, then this is empty space
-interface CoreWindowLayout {
-    windowId: string;
-    width: number;
+export enum CoreWindowLayoutKind {
+    fullScreen,
+    split
 }
 
 export default class CoreWindowLayoutManager {
@@ -24,161 +22,116 @@ export default class CoreWindowLayoutManager {
         return CoreWindowLayoutManager.instance;
     }
 
-    private layout: CoreWindowLayout[] = [];
-    private maxWindows = 2;
-
-    private constructor() {
-        Events.getInstance().addEventListener("layout-updated", (e: LayoutUpdatedEvent) => {
-            if (!e.detail.appendToHistory) return;
-            let snapshot = this.getLayoutSnapshot();
-
-            console.log("layout updated: %O", snapshot);
-            window.history.pushState(snapshot, null, null);
-        });
-
-        window.addEventListener("popstate", (e) => {
-            if (e.state && e.state.v === 1) {
-                this.setLayoutSnapshot(e.state);
-            }
-        });
-
+    constructor() {
+        // TODO: resizeobserver
         window.addEventListener("resize", () => {
             this.recalculateLayout();
         });
     }
 
-    public getVisibleWindows(): CoreWindow[] {
-        return this.layout.filter(l => l.windowId !== null).map(l => CoreWindowManager.getWindowById(l.windowId));
-    }
+    private state: CoreWindowLayoutKind = CoreWindowLayoutKind.fullScreen;
+    private splitRatio: number = 0.5;
 
-    // gets the target launch params for a window
-    public addWindowToLayout(window: CoreWindow, sizePreference: ViewSizePreference): void {
-        let layout = this.layout.find(l => l.windowId === window.id);
-        if (layout) {
-            return;
+    private leftWindow: CoreWindow | null = null;
+    private rightWindow: CoreWindow | null = null;
+
+    public addWindowToLayout(window: CoreWindow, sizePreference: ViewSizePreference): boolean {
+        if (this.leftWindow && this.rightWindow && sizePreference !== ViewSizePreference.default) {
+            return false;
         }
 
-        switch (sizePreference) {
-            case ViewSizePreference.default:
-                this.addWindowDefault(window, layout);
-                break;
-            case ViewSizePreference.useMore:
-            case ViewSizePreference.useLess:
-            case ViewSizePreference.useHalf:
-            case ViewSizePreference.useMinimum:
-                this.addWindowSplitScreen(window, layout, sizePreference);
-                break;
+        if (this.leftWindow === window || this.rightWindow === window) {
+            return false;
+        }
+
+        // full screen
+        if (sizePreference === ViewSizePreference.default) {
+            this.leftWindow = window;
+            this.rightWindow = null;
+            this.state = CoreWindowLayoutKind.fullScreen;
+        }
+        else {
+            if (this.leftWindow) {
+                this.rightWindow = window;
+                this.state = CoreWindowLayoutKind.split;
+            }
+            else if (this.rightWindow) {
+                this.leftWindow = window;
+                this.state = CoreWindowLayoutKind.split;
+            }
+            else {
+                this.leftWindow = window;
+                this.state = CoreWindowLayoutKind.fullScreen;
+            }
+        }
+
+        this.recalculateLayout();
+        return true;
+    }
+
+    public snapWindow(window: CoreWindow, snap: CoreWindowSnapState) {
+        if (snap === CoreWindowSnapState.none || snap === CoreWindowSnapState.full) {
+            this.leftWindow = window;
+            this.rightWindow = null;
+            this.state = CoreWindowLayoutKind.fullScreen;
+        }
+        else {
+            if (snap === CoreWindowSnapState.left) {
+                let temp = this.leftWindow;
+                this.leftWindow = window;
+                this.rightWindow = temp === window ? null : temp;
+            }
+            else {
+                let temp = this.rightWindow;
+                this.rightWindow = window;
+                this.leftWindow = temp === window ? null : temp;
+            }
+
+            this.state = CoreWindowLayoutKind.split;
         }
 
         this.recalculateLayout();
     }
 
-    private addWindowDefault(window: CoreWindow, layout: CoreWindowLayout) {
-        // if there is an empty space, use that
-        let index = this.layout.findIndex(l => l.windowId === null);
-        if (index >= 0) {
-            this.layout[index].windowId = window.id;
+    public removeWindowFromLayout(window: CoreWindow, doUnsnap: boolean = true): boolean {
+        if (this.leftWindow !== window && this.rightWindow !== window) {
+            return false;
+        }
+
+        if (this.leftWindow === window) {
+            this.leftWindow = null;
         }
         else {
-            // replace all windows with the new window
-            this.layout = [{ windowId: window.id, width: 1 }];
-        }
-    }
-
-    private addWindowSplitScreen(window: CoreWindow, layout: CoreWindowLayout, sizePreference: ViewSizePreference) {
-        if (this.layout.length >= this.maxWindows) {
-            // remove leftmost window
-            let window = CoreWindowManager.getWindowById(this.layout[0].windowId);
-            if (window) {
-                window.close();
-            }
-            this.layout.shift();
+            this.rightWindow = null;
         }
 
-        let index = this.layout.findIndex(l => l.windowId === null);
-        if (index >= 0) {
-            // there is an empty space, use that
-            this.layout[index].windowId = window.id;
-        }
-        else {
-            index = this.layout.length;
-            // resize all other windows to fit
-            let totalWidth = 1
-            let newWidth = 1 / (this.layout.length + 1);
-            for (let i = 0; i < this.layout.length; i++) {
-                this.layout[i].width = this.layout[i].width / totalWidth * (1 - newWidth);
-            }
-
-            this.layout.push({ windowId: window.id, width: newWidth });
-        }
-    }
-
-    public removeWindow(windowId: string): void {
-        let index = this.layout.findIndex(l => l.windowId === windowId);
-        if (index >= 0) {
-            this.layout[index].windowId = null;
-            this.recalculateLayout();
-        }
-    }
-    
-    // return an object that can be used to restore the layout
-    private getLayoutSnapshot(): any {
-        let snapshot = [];
-        for (const layoutWindow of this.layout) {
-            let window = CoreWindowManager.getWindowById(layoutWindow.windowId);
-            if (window) {
-                snapshot.push({
-                    window: {
-                        packageId: window.package.identity.packageFamilyName,
-                        appId: window.packageApplication.id,
-                        instanceId: window.instance.id,
-                        id: window.id,
-                        visible: window.visible
-                    },
-                    width: layoutWindow.width
-                });
-            }
-            else {
-                snapshot.push({ width: layoutWindow.width });
-            }
-        }
-
-        return { v: 1, layout: snapshot };
-    }
-
-    // restore the layout from a snapshot
-    private setLayoutSnapshot(snapshot: any): void {
-        const layout = snapshot.layout;
-        this.layout = [];
-        for (const layoutWindow of layout) {
-            // TODO: we may need to recreate the window here
-            let window = CoreWindowManager.getWindowById(layoutWindow.window.id);
-            if (window) {
-                this.layout.push({
-                    windowId: window.id,
-                    width: layoutWindow.width
-                });
-            }
-            else {
-                this.layout.push({ width: layoutWindow.width, windowId: null });
-            }
+        if (doUnsnap || (this.leftWindow === null && this.rightWindow === null)) {
+            this.state = CoreWindowLayoutKind.fullScreen;
         }
 
         this.recalculateLayout();
+    }
+
+    public getLayoutInfo(): { state: CoreWindowLayoutKind, windows: CoreWindow[] } {
+        return { state: this.state, windows: (this.state === CoreWindowLayoutKind.fullScreen ? [this.leftWindow] : [this.leftWindow, this.rightWindow]) };
     }
 
     private recalculateLayout(): void {
-        let totalWidth = globalThis.innerWidth - (22 * (this.layout.length - 1));
-        let totalHeight = globalThis.innerHeight;
-
-        let leftWidth = 0;
-        for (let i = 0; i < this.layout.length; i++) {
-            let window = CoreWindowManager.getWindowById(this.layout[i].windowId);
-            if (window) {
-                window.setBounds({ x: totalWidth * leftWidth + (22 * (i)), y: 0, width: totalWidth * this.layout[i].width, height: totalHeight });
+        if (this.state === CoreWindowLayoutKind.fullScreen) {
+            if (!this.leftWindow && this.rightWindow) {
+                this.leftWindow = this.rightWindow;
+                this.rightWindow = null;
             }
 
-            leftWidth += this.layout[i].width
+            this.leftWindow?.setBounds({ x: 0, y: 0, width: window.innerWidth, height: window.innerHeight });
+        }
+        else {
+            let totalWidth = window.innerWidth - 22;
+            let leftWidth = Math.floor(totalWidth * this.splitRatio);
+            let rightWidth = totalWidth - leftWidth;
+
+            this.leftWindow?.setBounds({ x: 0, y: 0, width: leftWidth, height: window.innerHeight });
+            this.rightWindow?.setBounds({ x: leftWidth + 22, y: 0, width: rightWidth, height: window.innerHeight });
         }
 
         Events.getInstance().dispatchEvent(new LayoutUpdatedEvent());

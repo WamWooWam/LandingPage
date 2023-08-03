@@ -20,9 +20,9 @@
 
   <Applications>
     <Application Id="microsoft.windows.immersivecontrolpanel" EntryPoint="Apps/Settings">
-      <wb:VisualElements DisplayName="PC settings" Description="Change settings and customise how you use your computer." Square150x150Logo="images/tilesmall.png" Square30x30Logo="images/logo.png" ForegroundText="light" BackgroundColor="#5133AB">
+      <wb:VisualElements DisplayName="Settings" Description="Change settings and customise how you use your computer." Square150x150Logo="images/tilesmall.png" Square30x30Logo="images/logo.png" ForegroundText="light" BackgroundColor="#5133AB">
         <wb:SplashScreen Image="images/splashscreen.png" BackgroundColor="#5133AB" />
-        <wb:DefaultTile DefaultSize="square150x150Logo" ShortName="PC settings" Square70x70Logo="images/tinytile.png">
+        <wb:DefaultTile DefaultSize="square150x150Logo" ShortName="Settings" Square70x70Logo="images/tinytile.png">
           <wb:ShowNameOnTiles>
             <wb:ShowOn Tile="square150x150Logo" />
           </wb:ShowNameOnTiles>

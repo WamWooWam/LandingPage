@@ -1,6 +1,7 @@
 import { Component } from "preact";
 import CoreWindowMinimizeButton from "./CoreWindowMinimizeButton";
 import CoreWindowCloseButton from "./CoreWindowCloseButton";
+import { Position } from "../Util";
 
 interface CoreWindowTitleBarProps {
     title: string;
@@ -9,25 +10,73 @@ interface CoreWindowTitleBarProps {
     primaryColour: string;
     isVisible: boolean;
 
-    minimiseClicked?: () => void;
-    closeClicked?: () => void;
+    onMinimiseClicked?: () => void;
+    onCloseClicked?: () => void;
+    onDragStart?: (e: PointerEvent) => void;
 }
 
 // 
 // Represents a CoreWindow's title bar
 //
 export default class CoreWindowTitleBar extends Component<CoreWindowTitleBarProps> {
+
+    onMinimiseClicked(e: MouseEvent) {
+        e.stopPropagation();
+        if (this.props.onMinimiseClicked) this.props.onMinimiseClicked();
+    }
+
+    onCloseClicked(e: MouseEvent) {
+        e.stopPropagation();
+        if (this.props.onCloseClicked) this.props.onCloseClicked();
+    }
+
+    // we need to handle pointer down events on the title bar so that we can initiate a window drag after a few pixels
+
+    private pointerDownPosition: { x: number, y: number } = null;
+
+    onPointerDown(e: PointerEvent) {
+        this.pointerDownPosition = { x: e.clientX, y: e.clientY };
+        
+        const target = e.target as HTMLElement;
+        target.setPointerCapture(e.pointerId);
+        target.addEventListener("pointermove", this.onPointerMove.bind(this));
+        target.addEventListener("pointerup", this.onPointerUp.bind(this));
+    }
+
+    onPointerMove(e: PointerEvent) {
+        if (this.pointerDownPosition) {
+            const dy = e.clientY - this.pointerDownPosition.y;
+            if (Math.abs(dy) > 5) {
+                this.pointerDownPosition = null;
+                e.target.removeEventListener("pointermove", this.onPointerMove.bind(this));
+                e.target.removeEventListener("pointerup", this.onPointerUp.bind(this));
+
+                if (this.props.onDragStart)
+                    this.props.onDragStart(e);
+            }
+        }
+    }
+
+    onPointerUp(e: PointerEvent) {
+        this.pointerDownPosition = null;
+        e.target.removeEventListener("pointermove", this.onPointerMove.bind(this));
+        e.target.removeEventListener("pointerup", this.onPointerUp.bind(this));
+    }
+
     render() {
         return (
             <div class={"core-window-titlebar " + (!this.props.isVisible ? "hidden" : "")}>
-                <div class="core-window-titlebar-content">
+                <div class="core-window-titlebar-content"
+                    onPointerDown={this.onPointerDown.bind(this)}>
+                    {/* TODO: icon has a context menu */}
                     <div class="core-window-icon-container" style={{ background: this.props.primaryColour }}>
-                        <img class="core-window-icon" src={this.props.iconUrl} />
+                        <img class="core-window-icon" src={this.props.iconUrl} alt={`${this.props.displayName} icon`} />
                     </div>
 
                     <div class="core-window-title">{this.props.title ? `${this.props.title} - ${this.props.displayName}` : this.props.displayName}</div>
-                    <CoreWindowMinimizeButton onClick={this.props.minimiseClicked} />
-                    <CoreWindowCloseButton onClick={this.props.closeClicked} />
+
+                    <CoreWindowMinimizeButton onClick={this.onMinimiseClicked.bind(this)} />
+                    <CoreWindowCloseButton onClick={this.onCloseClicked.bind(this)} />
                 </div>
             </div>
         );

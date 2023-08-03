@@ -13,6 +13,7 @@ interface StartScrollContainerProps {
 interface StartScrollContainerState {
     observer: ResizeObserver;
     availableHeight: number;
+    visible: boolean;
 }
 
 export default class StartScrollContainer extends Component<StartScrollContainerProps, StartScrollContainerState> {
@@ -27,10 +28,11 @@ export default class StartScrollContainer extends Component<StartScrollContainer
     }
 
     componentDidMount() {
-        this.scrollContainer.current.addEventListener("wheel", this.onWheel, { passive: true });
+        this.setState({ visible: true });
+        // this.scrollContainer.current.addEventListener("wheel", this.onWheel, { passive: true });
 
         let startTilesContainer = this.startTilesContainer.current;
-        if (window.ResizeObserver) {
+        if (typeof ResizeObserver !== "undefined") {
             let resizeObserver = new ResizeObserver((entries) => {
                 for (const entry of entries) {
                     if (entry.target === startTilesContainer) {
@@ -79,7 +81,7 @@ export default class StartScrollContainer extends Component<StartScrollContainer
         if (Math.abs(e.deltaX) > Math.abs(e.deltaY)) {
             return;
         }
-        
+
         // invert the deltas so that scrolling vertically scrolls horizontally
         const deltaX = e.deltaY;
         const deltaY = e.deltaX;
@@ -103,7 +105,7 @@ export default class StartScrollContainer extends Component<StartScrollContainer
 
         return (
             <div ref={this.scrollContainer} class="start-tiles-scroll-container" >
-                <div ref={this.startTilesContainer} class="start-tiles">
+                <div ref={this.startTilesContainer} class="start-tiles" style={{ visibility: this.state.visible ? "visible" : "hidden" }}>
                     {tileGroups.map(m => <TileGroup {...m} />)}
                 </div>
             </div>

@@ -1,13 +1,14 @@
-import { Component, ComponentChild, RenderableProps } from "preact";
+import { Component, ComponentChild, RefObject, RenderableProps, createRef } from "preact";
+import Events from "../Events";
 import CoreWindow from "../Data/CoreWindow";
 import CoreWindowManager from "../Data/CoreWindowManager";
 import CoreWindowAppHost from "./CoreWindowAppHost";
 import CoreWindowSplashScreen from "./CoreWindowSplashScreen";
 import CoreWindowTitleBar from "./CoreWindowTitleBar";
 import CoreWindowErrorBoundary from "./CoreWindowErrorBoundary";
-import Events from "../Events";
 import CoreWindowEvent from "../Events/CoreWindowEvent";
 import CoreWindowStateEnum from "../Data/CoreWindowState";
+import CoreWindowDragContainer from "./CoreWindowDragContainer";
 
 interface CoreWindowRenderProps {
     id: string;
@@ -17,6 +18,7 @@ interface CoreWindowRenderProps {
     y?: number;
     width?: number;
     height?: number;
+    visible?: boolean;
 };
 
 interface CoreWindowRenderState {
@@ -29,9 +31,13 @@ interface CoreWindowRenderState {
 };
 
 export default class CoreWindowRenderer extends Component<CoreWindowRenderProps, CoreWindowRenderState> {
+
+    ref: RefObject<CoreWindowDragContainer> = null;
+
     constructor(props: CoreWindowRenderProps) {
         super(props);
         this.state = { window: null, title: null };
+        this.ref = createRef();
     }
 
     static getDerivedStateFromProps(props: CoreWindowRenderProps, state: CoreWindowRenderState): Partial<CoreWindowRenderState> {
@@ -42,7 +48,7 @@ export default class CoreWindowRenderer extends Component<CoreWindowRenderProps,
     componentDidMount() {
         this.setState({
             splashScreenVisible: this.state.window.state == CoreWindowStateEnum.loading,
-            titleBarVisible: true
+            titleBarVisible: !CoreWindowManager.isStandalone()
         });
 
         Events.getInstance()
@@ -86,10 +92,11 @@ export default class CoreWindowRenderer extends Component<CoreWindowRenderProps,
     }
 
     onCloseClicked() {
-        this.state.window.close();
+        this.state.window.requestClose();
     }
 
     onMouseMoved(e: MouseEvent) {
+        if (CoreWindowManager.isStandalone()) return;
         let x = e.pageX;
         let y = e.pageY;
 
@@ -110,40 +117,47 @@ export default class CoreWindowRenderer extends Component<CoreWindowRenderProps,
         }
     }
 
+    onWindowDragStart(e: PointerEvent) {
+        const target = e.target as HTMLElement;
+        target.setPointerCapture(e.pointerId);
+
+        this.ref.current.startWindowDrag(this.state.window, e);
+    }
+
     render(props?: RenderableProps<CoreWindowRenderProps, any>, state?: Readonly<CoreWindowRenderState>, context?: any): ComponentChild {
         let app = state.window.packageApplication;
         let visualElements = app.visualElements;
         let primaryColour = visualElements.backgroundColor;
-        let splashColour =
-            visualElements.splashScreen.backgroundColor
-                && visualElements.splashScreen.backgroundColor != '' ?
-                visualElements.splashScreen.backgroundColor :
-                primaryColour;
         let iconUrl = visualElements.square30x30Logo;
-        let splashUrl = visualElements.splashScreen.image;
 
         let style = {
-            left: (props.x !== undefined ? props.x : state.window.position.x) + "px",
-            top: (props.y !== undefined ? props.y : state.window.position.y) + "px",
+            x: (props.x !== undefined ? props.x : state.window.position.x) + "px",
+            y: (props.y !== undefined ? props.y : state.window.position.y) + "px",
             width: (props.width !== undefined ? props.width : state.window.size.width) + "px",
             height: (props.height !== undefined ? props.height : state.window.size.height) + "px",
         }
 
+        if (props.visible !== undefined && !props.visible) {
+            return <></>
+        }
+
         return (
-            <div class="core-window" style={style} onMouseMove={this.onMouseMoved.bind(this)}>
+            <CoreWindowDragContainer ref={this.ref} onMouseMove={this.onMouseMoved.bind(this)} {...style}>
                 <CoreWindowErrorBoundary error={this.state.error}>
                     <CoreWindowAppHost window={this.state.window} />
                 </CoreWindowErrorBoundary>
-                <CoreWindowSplashScreen backgroundColour={splashColour}
-                    splashImageUrl={splashUrl}
+                <CoreWindowSplashScreen elements={app.visualElements}
                     visible={this.state.splashScreenVisible} />
-                <CoreWindowTitleBar title={this.state.title}
-                    displayName={app.visualElements.displayName}
-                    isVisible={this.state.titleBarVisible}
-                    primaryColour={primaryColour}
-                    iconUrl={iconUrl}
-                    closeClicked={this.onCloseClicked.bind(this)} />
-            </div>
+                {!CoreWindowManager.isStandalone() &&
+                    <CoreWindowTitleBar title={this.state.title}
+                        displayName={app.visualElements.displayName}
+                        isVisible={this.state.titleBarVisible}
+                        primaryColour={primaryColour}
+                        iconUrl={iconUrl}
+                        onCloseClicked={this.onCloseClicked.bind(this)}
+                        onDragStart={this.onWindowDragStart.bind(this)} />
+                }
+            </CoreWindowDragContainer>
         );
     }
 }

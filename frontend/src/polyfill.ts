@@ -1,3 +1,3 @@
-if (!("globalThis" in window)) {
-    window["globalThis"] = window;
+if (typeof globalThis === "undefined") {
+    (window["globalThis"] as any) = window;
 }

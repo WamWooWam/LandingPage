@@ -48,9 +48,19 @@ export default function TileVisualRenderer({ app, size, visual }: RenderableProp
     }
 
     let binding = visual.bindings.find(v => v.size === size);
+    if (!binding) {
+        console.error(`No binding found for size ${size}`);
+        return null;
+    }
+
+    const TileTemplate = TileTemplateMap.get(binding.template);
+    if (!TileTemplate) {
+        console.error(`Unknown tile template ${binding.template}`);
+        return null;
+    }
     return (
         <div class="tile-visual tile-visual-visible">
-            {TileTemplateMap.get(binding.template)({ app, size, visual }, binding)}
+            {TileTemplate({ app, size, visual }, binding)}
         </div>
     )
 }

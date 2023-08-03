@@ -1,20 +1,26 @@
 import { Component } from "preact";
 import "./core-window-splash-screen.scss"
+import { ApplicationVisualElements } from "shared/ApplicationVisualElements";
 
 interface CoreWindowSplashScreenProps {
-    backgroundColour: string;
-    splashImageUrl: string;
+    elements: ApplicationVisualElements
     visible: boolean;
 }
 
 // 
 // Represents a CoreWindow's splash screen
 //
-const CoreWindowSplashScreen = (props: CoreWindowSplashScreenProps) => {
+const CoreWindowSplashScreen = ({ elements, visible }: CoreWindowSplashScreenProps) => {
+    let primaryColour = elements.backgroundColor;
+    let splashColour = elements.splashScreen.backgroundColor
+        && elements.splashScreen.backgroundColor != '' ?
+        elements.splashScreen.backgroundColor :
+        primaryColour;
+
     return (
-        <div class={"splash-screen" + (props.visible ? " visible" : "")} style={{ background: props.backgroundColour }}>
+        <div class={"splash-screen" + (visible ? " visible" : "")} style={{ background: splashColour }}>
             <div class="splash-screen-container">
-                <img class="splash-screen-image" src={props.splashImageUrl} />
+                <img class="splash-screen-image" src={elements.splashScreen.image} alt={`${elements.displayName} splash screen`} />
             </div>
         </div>
     );

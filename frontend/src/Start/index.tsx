@@ -1,8 +1,8 @@
 import { Component, RefObject, createRef } from "preact";
 import { useContext } from "preact/hooks";
 import { LayoutStateContext } from "../Root";
+import { StartTileGroup, parseLayout } from "shared/StartLayoutParser";
 import LayoutState from "../LayoutState";
-
 import AllAppsButton from "./AllAppsButton";
 import StartScrollContainer from "./StartScrollContainer";
 import HeaderButton from "./HeaderButton";
@@ -10,10 +10,10 @@ import PowerIcon from "./PowerIcon";
 import SearchIcon from "./SearchIcon";
 
 import StartLayout from '../../../packages/StartScreen.xml'
+import StartLayoutMobile from "../../../packages/MobileStartScreen.xml"
 import Avatar from "../../static/wam.webp"
 
 import "./start.scss"
-import { StartTileGroup, parseLayout } from "shared/StartLayoutParser";
 
 type FullscreenDocument = Document & {
     webkitFullscreenElement?: Element,
@@ -37,33 +37,19 @@ export default class Start extends Component<{}, StartState> {
 
     constructor() {
         super();
-        this.state = { tileGroups: parseLayout(StartLayout) };
-    }
-
-    onStartTitleClick = () => {
-        // i hate web browsers
-        let doc = document as FullscreenDocument;
-        let root = document.documentElement as FullscreenElement;
-        let requestFullscreen = root.requestFullscreen || root.webkitRequestFullscreen || root.msRequestFullscreen || root.mozRequestFullScreen;
-        let exitFullscreen = doc.exitFullscreen || doc.webkitExitFullscreen || doc.msExitFullscreen || doc.mozCancelFullScreen;
-
-        if (doc.fullscreenElement || doc.webkitFullscreenElement || doc.msFullscreenElement || doc.mozFullScreenElement) {
-            exitFullscreen.call(doc);
-        }
-        else {
-            requestFullscreen.call(root);
-        }
+        this.state = { tileGroups: parseLayout(StartLayoutMobile) };
     }
 
     render() {
         const isMobile = useContext(LayoutStateContext) === LayoutState.windowsPhone81;
+        const tiles = parseLayout(isMobile ? StartLayoutMobile : StartLayout);
 
         return (
             <div class="start start-screen">
                 <div class="start-content">
                     {!isMobile &&
                         <div class="start-header start-main-header">
-                            <h1 class="start-title" role="button" onClick={this.onStartTitleClick}>Start</h1>
+                            <h1 class="start-title" role="button">Start</h1>
                             <div class="start-header-buttons">
                                 <HeaderButton primaryClass="start-header-user-button" label="User">
                                     <div class="username">
@@ -82,7 +68,7 @@ export default class Start extends Component<{}, StartState> {
                         </div>
                     }
 
-                    <StartScrollContainer tileGroups={this.state.tileGroups} />
+                    <StartScrollContainer tileGroups={tiles} />
 
                     <div class="start-footer">
                         <AllAppsButton />

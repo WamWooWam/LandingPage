@@ -25,6 +25,7 @@ export interface TileProps {
     column?: number;
     key?: string;
     animColumn?: number;
+    style?: any;
 }
 
 interface TileState {
@@ -41,10 +42,11 @@ interface TileState {
     clicked: boolean;
 
     interval?: any;
+    noStyle?: boolean;
 }
 
 export default class TileRenderer extends Component<TileProps, TileState> {
-
+    // todo: this should be possible without a ref
     private root: RefObject<HTMLAnchorElement>;
 
     constructor(props: TileProps) {
@@ -77,6 +79,10 @@ export default class TileRenderer extends Component<TileProps, TileState> {
     componentDidMount() {
         TileUpdateManager.getInstance()
             .registerVisualUpdateCallback(this.state.app, this.didGetVisuals.bind(this));
+
+        if (this.props.style?.entryDelay) {
+            setTimeout(() => this.setState({ noStyle: true }), this.props.style.entryDelay);
+        }
     }
 
     componentWillUnmount() {
@@ -101,23 +107,6 @@ export default class TileRenderer extends Component<TileProps, TileState> {
         this.setState({ swapping: true });
     }
 
-    pointerEntered(e: PointerEvent) {
-        this.updatePressState(e);
-    }
-
-    pointerExited(e: PointerEvent) {
-        this.setState({ pressState: "none" });
-    }
-
-    pointerMoved(e: PointerEvent) {
-        // if the current element is "active" then we dont want to change the state
-        if (e.buttons !== 0) {
-            return;
-        }
-
-        this.updatePressState(e);
-    }
-
     onAnimationEnded(e: AnimationEvent) {
         this.setState((s) => {
             let visuals = [...s.visuals];
@@ -137,15 +126,19 @@ export default class TileRenderer extends Component<TileProps, TileState> {
         });
     }
 
-    onClick(e: MouseEvent) {
-        if (this.state.app.load) {
-            e.preventDefault();
-            this.setState({ clicked: true });
-        }
+    // BUGBUG: these really should be pointer events, but they prevent scrolling on iOS 
+    onMouseDown(e: MouseEvent) {
+        this.updatePressState(e);
     }
 
-    onTransitionEnd(e: TransitionEvent) {
-        if (this.state.clicked) {
+    onMouseUp(e: MouseEvent) {
+        this.setState({ pressState: "none" });
+    }
+
+    onClick(e: MouseEvent) {
+        this.updatePressState(e);
+        if (this.state.app.load) {
+            e.preventDefault();
             this.setState({ clicked: false, visible: false });
 
             const bounds = this.root.current.getBoundingClientRect();
@@ -168,15 +161,12 @@ export default class TileRenderer extends Component<TileProps, TileState> {
 
     render(props: TileProps, state: TileState) {
         let hasWebP = useContext(WebPContext);
-
         let containerStyle: any = {
-            gridRowStart: props.row !== undefined ? props.row + 2 : undefined,
-            gridColumnStart: props.column !== undefined ? props.column + 1 : undefined,
-            display: state.visible ? undefined : "none"
-        }
-
-        if (props.animColumn) {
-            containerStyle["animation-delay"] = `${(props.animColumn - 1) * 0.1}s`;
+            'grid-row-start': props.row !== undefined ? (props.row + 2).toString() : undefined,
+            'grid-column-start': props.column !== undefined ? (props.column + 1).toString() : undefined,
+            visibility: state.visible ? undefined : "hidden",
+            opacity: "1",
+            ...((props.style) ? props.style : {})
         }
 
         let tileColour = state.app?.visualElements.backgroundColor ?? "#4617b4";
@@ -190,9 +180,9 @@ export default class TileRenderer extends Component<TileProps, TileState> {
         if (!state.pack || !state.app) {
             return (
                 <a class={classList.join(" ")}
-                    onPointerEnter={this.pointerEntered.bind(this)}
-                    onPointerLeave={this.pointerExited.bind(this)}
-                    onPointerMove={this.pointerMoved.bind(this)}
+                    onMouseDown={this.onMouseDown.bind(this)}
+                    onMouseUp={this.onMouseUp.bind(this)}
+                    onClick={this.onClick.bind(this)}
                     style={containerStyle}>
                     <div class="tile" style={frontStyle} />
                     <div className="tile-border"
@@ -210,20 +200,23 @@ export default class TileRenderer extends Component<TileProps, TileState> {
         let visual = state.visuals[state.visualIdx];
         let nextVisual = state.visuals[(state.visualIdx + 1) % state.visuals.length];
 
+        let href = state.app.startPage;
+        if (state.app.load) {
+            href = `/app/${state.pack.identity.packageFamilyName}/${state.app.id}`;
+        }
+
         //let size = this.getTileSize(props.size)
         return (
             <>
                 <a ref={this.root}
                     class={classList.join(" ")}
                     style={containerStyle}
-                    onPointerEnter={this.pointerEntered.bind(this)}
-                    onPointerLeave={this.pointerExited.bind(this)}
-                    onPointerMove={this.pointerMoved.bind(this)}
+                    onMouseDown={this.onMouseDown.bind(this)}
+                    onMouseUp={this.onMouseUp.bind(this)}
                     onClick={this.onClick.bind(this)}
-                    onTransitionEnd={this.onTransitionEnd.bind(this)}
                     title={state.app.visualElements.displayName}
                     aria-label={state.app.visualElements.displayName}
-                    href={state.app.startPage}>
+                    href={href}>
                     <div class="tile">
                         <div class="front" style={frontStyle}>
                             <TileVisualRenderer app={state.app} visual={visual} size={props.size} />
@@ -252,7 +245,7 @@ export default class TileRenderer extends Component<TileProps, TileState> {
         return { pack, app };
     }
 
-    private updatePressState(e: PointerEvent) {
+    private updatePressState(e: PointerEvent | MouseEvent) {
         const size = getTileSize(this.props.size);
         const offsetX = Math.max(0, Math.min(e.offsetX, size.width));
         const offsetY = Math.max(0, Math.min(e.offsetY, size.height));

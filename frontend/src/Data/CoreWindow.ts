@@ -3,10 +3,10 @@ import CoreWindowEvent from "../Events/CoreWindowEvent";
 import AppInstance from "./AppInstance";
 import CoreWindowManager from "./CoreWindowManager";
 import CoreWindowState from "./CoreWindowState";
+import CoreWindowLayoutManager from "./CoreWindowLayoutManager";
 import { Position, Size, newGuid } from "../Util";
 import { Package } from "shared/Package";
 import { PackageApplication } from "shared/PackageApplication";
-import CoreWindowLayoutManager from "./CoreWindowLayoutManager";
 
 export default class CoreWindow {
     error: Error | null;
@@ -113,10 +113,38 @@ export default class CoreWindow {
             .dispatchEvent(new CoreWindowEvent("core-window-state-changed", this));
     }
 
+    get left(): number {
+        return this._position.x;
+    }
+
+    get top(): number {
+        return this._position.y;
+    }
+
+    get right(): number {
+        return this._position.x + this._size.width;
+    }
+
+    get bottom(): number {
+        return this._position.y + this._size.height;
+    }
+
+    get width(): number {
+        return this._size.width;
+    }
+
+    get height(): number {
+        return this._size.height;
+    }
+
     async load(): Promise<void> {
         if (this.state != CoreWindowState.uninitialized) return;
         this.state = CoreWindowState.loading;
-        await new Promise((resolve) => setTimeout(resolve, 750));
+
+        // BUGBUG: hacky check for stnadarlone app mode
+        if (!window.location.pathname.match(/\/app\//)) {
+            await new Promise((resolve) => setTimeout(resolve, 750));
+        }
 
         try {
             let app = this.packageApplication;
@@ -149,6 +177,11 @@ export default class CoreWindow {
         this._position = { x: x, y: y };
         this._size = { width: width, height: height };
 
+        this._view.style.setProperty("--width", `${width}px`);
+        this._view.style.setProperty("--height", `${height}px`);
+        this._view.style.setProperty("--left", `${x}px`);
+        this._view.style.setProperty("--top", `${y}px`);
+
         Events.getInstance()
             .dispatchEvent(new CoreWindowEvent("core-window-bounds-changed", this));
     }
@@ -157,16 +190,25 @@ export default class CoreWindow {
         Events.getInstance()
             .dispatchEvent(new CoreWindowEvent("core-window-focus", this));
 
-        this.view.focus();
+        // this.view.focus();
     }
 
-    close() {
+    requestClose() {
         // this.state = CoreWindowState.closed;
         // this.view.remove();
         // CoreWindowManager.deleteWindowById(this.id);
 
-        CoreWindowLayoutManager.getInstance().removeWindow(this.id);
+        CoreWindowLayoutManager.getInstance().removeWindowFromLayout(this);
         this._visible = false;
+        Events.getInstance()
+            .dispatchEvent(new CoreWindowEvent("core-window-close-requested", this));
+    }
+
+    close() {
+        this.state = CoreWindowState.closed;
+        this.view.remove();
+        CoreWindowLayoutManager.getInstance().removeWindowFromLayout(this);
+        CoreWindowManager.deleteWindowById(this.id);
         Events.getInstance()
             .dispatchEvent(new CoreWindowEvent("core-window-closed", this));
     }

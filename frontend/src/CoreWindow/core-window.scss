@@ -17,6 +17,7 @@
     width: 100%;
     height: 100%;
     background: white;
+    overflow: hidden;
 }
 
 .core-window-app-host {
@@ -60,6 +61,8 @@
     width: 100%;
     background: #111111;
     display: flex;
+    touch-action: none;
+    pointer-events: all;
 }
 
 .core-window-icon-container {
@@ -137,8 +140,8 @@
         position: absolute;
         width: 100%;
         height: 100%;
-        -webkit-backface-visibility: hidden;
         /* Safari */
+        -webkit-backface-visibility: hidden;
         backface-visibility: hidden;
         overflow: hidden;
         box-sizing: border-box;
@@ -153,6 +156,12 @@
     >.back {
         transform: rotateY(180deg);
     }
+}
+
+.core-window-drag {
+    position: absolute;
+    transform-origin: center;
+    transform-style: preserve-3d;
 }
 
 .core-window-layout-separator {

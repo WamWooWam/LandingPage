@@ -5,12 +5,10 @@ interface StartHeaderButtonProps {
     label: string
 }
 
-const HeaderButton = (props: RenderableProps<StartHeaderButtonProps>) => {
+export default function HeaderButton(props: RenderableProps<StartHeaderButtonProps>) {
     return (
         <button class={"start-header-button " + props.primaryClass} aria-label={props.label}>
             {props.children}
         </button>
     )
 }
-
-export default HeaderButton;

@@ -11,6 +11,25 @@
     grid-column-end: span 1;
 }
 
+// @media screen and (max-width: 599px) {
+//     .tile-container,
+//     .fence-tile-container {
+//         opacity: 0;
+//         transition: transform 250ms cubic-bezier(0, 0.55, 0.45, 1), opacity 50ms ease-out;
+//     }
+
+//     .fence-tile-container>.tile-container {
+//         opacity: 1;
+//     }
+
+//     .start-tile-group {
+//         transform-style: preserve-3d;
+//         transform-origin: center;
+//         perspective: 800px;
+//         perspective-origin: center;
+//     }
+// }
+
 @media screen and (min-width: 600px) {
     .tile-group-tiles {
         grid-template-columns: 120px;
@@ -87,7 +106,6 @@
     text-align: left;
     font-family: 'Segoe UI';
     transform-style: preserve-3d;
-    transition: transform 0.05s ease-out;
     aspect-ratio: 1/1;
     text-decoration: none;
 }
@@ -148,6 +166,7 @@
 
 .tile-container:active {
     transform: scale3d(0.975, 0.975, 0.975);
+    touch-action: manipulation;
 }
 
 .moving>.tile {

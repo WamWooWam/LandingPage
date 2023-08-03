@@ -5,8 +5,6 @@ interface CoreWindowLayoutSeparatorProps {
     x: number;
     y: number;
     height: number;
-    left: CoreWindow;
-    right: CoreWindow;
 }
 
 export function CoreWindowLayoutSeparator(props: CoreWindowLayoutSeparatorProps) {

@@ -1,15 +1,15 @@
 body {
-  margin: 0;
+  position: fixed;
   font-family: 'Segoe UI';
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
   margin: 0;    
   width: 100vw;
   height: 100vh;
   height: -webkit-fill-available;
   user-select: none;
   -webkit-user-select: none; /* lick my entire ass */
-  position: fixed;
+  -webkit-text-size-adjust: 100%;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 code {

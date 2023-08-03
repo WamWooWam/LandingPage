@@ -15,6 +15,10 @@ import CoreWindowLayoutManager from "./CoreWindowLayoutManager";
 export default class CoreWindowManager {
     static coreWindowMap: Map<string, CoreWindow> = new Map();
 
+    static isStandalone(): boolean {
+        return !!window.location.pathname.match(/\/app\//);
+    }
+
     static createCoreWindowForApp(instance: AppInstance): CoreWindow {
         let info = new CoreWindow(instance);
         console.log(info.id, info);
@@ -34,7 +38,7 @@ export default class CoreWindowManager {
         if (!window) return;
 
         CoreWindowLayoutManager.getInstance()
-            .removeWindow(id);
+            .removeWindowFromLayout(window);
 
         Events.getInstance()
             .dispatchEvent(new CoreWindowEvent("core-window-destroyed", window));
@@ -46,7 +50,7 @@ export default class CoreWindowManager {
                 instance.windows.splice(index, 1);
             }
 
-            if (window === instance.mainWindow) {
+            if (instance.windows.length === 0) {
                 AppInstanceManager.terminateInstance(instance);
             }
 

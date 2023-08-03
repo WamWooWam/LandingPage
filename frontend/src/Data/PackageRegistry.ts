@@ -14,7 +14,8 @@ export default class PackageRegistry {
 
         for (const id in pack.applications) {
             const app = pack.applications[id];
-            if (app.load) {
+            // BUGBUG: hacky check for stnadarlone app mode
+            if (app.load && !window.location.pathname.match(/\/app\//)) {
                 // pre-cache some visual assets for slow connections
                 fetch(app.visualElements.square30x30Logo)
                     .then(resp => resp.blob())

@@ -10,15 +10,16 @@ interface AppLaunchEventParams {
     tileHeight: number;
     tileVisual: TileVisual;
     tileSize: TileSize;
+    noAnimation: boolean;
 };
 
 export default class AppLaunchRequestedEvent extends Event {
     readonly package: Package;
     readonly packageApplication: PackageApplication;
 
-    readonly params?: AppLaunchEventParams;
+    readonly params?: Partial<AppLaunchEventParams>;
 
-    constructor(pack: Package, app: PackageApplication, params?: AppLaunchEventParams) {
+    constructor(pack: Package, app: PackageApplication, params?: Partial<AppLaunchEventParams>) {
         super("app-launch-requested");
         this.package = pack;
         this.packageApplication = app;

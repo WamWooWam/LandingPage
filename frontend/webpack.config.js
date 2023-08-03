@@ -16,24 +16,17 @@ const PostCSSOptions = {
 
 module.exports = [
     {
-        entry: "./src/index.tsx",
+        entry: {
+            "index": "./src/index.tsx",
+            "standalone": "./src/standalone.tsx",
+        },
         mode: env.NODE_ENV || "development",
         devtool: 'source-map',
         module: {
             rules: [
                 {
                     test: /\.tsx?$/,
-                    use: {
-                        loader: 'ts-loader',
-                        options: {
-                            getCustomTransformers() {
-                                return {
-                                    before: [transform()],
-                                };
-                            },
-                        },
-                    },
-
+                    use: 'ts-loader',
                     exclude: /node_modules/,
                 },
                 {
@@ -56,7 +49,7 @@ module.exports = [
                     ],
                 },
                 {
-                    test: /\.(woff(2)?|ttf|eot|png|jpg|webp|avif)(\?v=\d+\.\d+\.\d+)?$/,
+                    test: /\.(woff(2)?|ttf|eot|png|jpg|webp|avif|wasm)(\?v=\d+\.\d+\.\d+)?$/i,
                     use: [
                         {
                             loader: 'file-loader',
@@ -90,6 +83,9 @@ module.exports = [
                 "winjs": path.resolve(__dirname, './winjs'),
                 "shared": path.resolve(__dirname, '../shared/src'),
                 "static": path.resolve(__dirname, './static'),
+                "~": path.resolve(__dirname, './src'),
+                react: 'preact/compat',
+                'react-dom': 'preact/compat'
             }
         },
         plugins: [
@@ -97,7 +93,8 @@ module.exports = [
                 filename: env.NODE_ENV === 'production' ? "[name].[chunkhash].css" : "[name].bundle.css",
                 chunkFilename: env.NODE_ENV === 'production' ? "[id].bundle.[chunkhash].css" : "[id].bundle.css"
             }),
-            new HtmlWebpackPlugin({ inject: true, template: "./src/index.html" })
+            new HtmlWebpackPlugin({ inject: true, template: "./src/index.html", chunks: ["index"], filename: "index.html", publicPath: "/"  }),
+            new HtmlWebpackPlugin({ inject: true, template: "./src/standalone.html", chunks: ["standalone"], filename: "standalone.html", publicPath: "/" }),
         ],
         output: {
             filename: env.NODE_ENV === 'production' ? '[name].[chunkhash].js' : '[name].bundle.js',

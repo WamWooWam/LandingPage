@@ -2,7 +2,7 @@ import PackageRegistry from "./Data/PackageRegistry";
 import Events from "./Events";
 import AppLaunchRequestedEvent from "./Events/AppLaunchRequestedEvent";
 
-class Launcher {
+export class Launcher {
     static launchApp(id: string): void {
         const parts = id.split("!");
         const packageId = parts[0];
@@ -22,4 +22,4 @@ class Launcher {
     }
 }
 
-(<any>window).Launcher = Launcher;
+(<any>globalThis).Launcher = Launcher;

@@ -22,18 +22,23 @@ export class ScrollStateProvider extends Component<{}, ScrollState> {
     }
 
     componentDidMount(): void {
-       // window.addEventListener("scroll", this.onScroll.bind(this), { passive: true });
-       // window.addEventListener("resize", this.onScroll.bind(this));
+        // window.addEventListener("scroll", this.onScroll.bind(this), { passive: true });
+        // window.addEventListener("resize", this.onScroll.bind(this));
 
         this.onScroll();
     }
 
     componentWillUnmount(): void {
-       // window.removeEventListener("scroll", this.onScroll.bind(this));
-       // window.removeEventListener("resize", this.onScroll.bind(this));
+        // window.removeEventListener("scroll", this.onScroll.bind(this));
+        // window.removeEventListener("resize", this.onScroll.bind(this));
     }
 
     private onScroll(): void {
+        if (typeof document === "undefined") {
+            this.setState({ totalWidth: 1024, totalHeight: 768, scrollHeight: 1024, scrollWidth: 768 });
+            return;
+        }
+
         let totalWidth = window.innerWidth;
         let totalHeight = Math.max(window.innerHeight, document.documentElement.scrollHeight);
         let scrollHeight = window.scrollY;

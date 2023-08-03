@@ -15,7 +15,7 @@ export default class CoreWindowErrorBoundary extends Component<CoreWindowErrorBo
 
     render() {
         if (this.props.error) {
-            const isConnectionError = this.props.error.message.match(/Failed to fetch/) || this.props.error.message.match(/Loading CSS chunk/) || !navigator.onLine;
+            const isConnectionError = (this.props.error.message && (this.props.error.message.match(/Failed to fetch/) || this.props.error.message.match(/Loading CSS chunk/))) || !navigator.onLine;
             return (
                 <div className="core-window-error">
                     <div id="contentContainer" class="mainContent">
@@ -38,6 +38,11 @@ export default class CoreWindowErrorBoundary extends Component<CoreWindowErrorBo
                                 </ul>
                             }
                         </div>
+
+                        <pre>
+                            {this.props.error?.message}
+                            {this.props.error?.stack}
+                        </pre>
                     </div>
                 </div>
             );
