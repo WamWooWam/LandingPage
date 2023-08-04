@@ -69,7 +69,6 @@ export default class CoreWindowLaunchAnimationFromTile extends Component<CoreWin
     }
 
     componentDidMount(): void {
-        // todo: there's multiple scenarios here, we need to handle them all
         const animation = new Storyboard()
             .addLayer("x", this.state.initialX, this.state.targetX, 0.0, 0.972, EASE_APPLAUNCHFASTIN)
             .addLayer("y", this.state.initialY, this.state.targetY, 0.0, 0.972, EASE_APPLAUNCHDRIFT)

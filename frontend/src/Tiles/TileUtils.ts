@@ -139,7 +139,7 @@ export function layoutDesktop(collapsedTiles: TilePropsWithType[], baseCol: numb
         lastHeight = tileHeight;
     }
 
-    // BUGBUG: used to fix an issue in safari where tile columns wouldn't be properly calculated automatically
+    // BUGBUG: fix for a webkit bug where the container size is not calculated correctly
     let totalColumns = tiles.reduce((prev, cur) => Math.max(prev, cur.column + tileSizeToColumns(cur.size)), 0);
 
     return { tiles, columns: totalColumns };
