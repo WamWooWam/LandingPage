@@ -17,7 +17,7 @@ import PackageRegistry from './PackageRegistry';
 import { Images } from './providers/images/tiles';
 import { Standalone } from './providers/standalone/manifest';
 
-globalThis.DOMParser = require('xmldom').DOMParser; // hacky fix to stop webpack including xmldom in the client bundle
+globalThis.DOMParser = require('xmldom').DOMParser; // BUGBUG: hacky fix to stop webpack including xmldom in the client bundle
 
 const app = express();
 

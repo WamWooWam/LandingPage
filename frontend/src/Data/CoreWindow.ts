@@ -140,9 +140,7 @@ export default class CoreWindow {
     async load(): Promise<void> {
         if (this.state != CoreWindowState.uninitialized) return;
         this.state = CoreWindowState.loading;
-
-        // BUGBUG: hacky check for stnadarlone app mode
-        if (!window.location.pathname.match(/\/app\//)) {
+        if (!CoreWindowManager.isStandalone()) {
             await new Promise((resolve) => setTimeout(resolve, 750));
         }
 

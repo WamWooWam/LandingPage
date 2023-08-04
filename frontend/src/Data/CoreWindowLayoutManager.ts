@@ -23,7 +23,7 @@ export default class CoreWindowLayoutManager {
     }
 
     constructor() {
-        // TODO: resizeobserver
+        // BUGBUG: should be using resizeobserver?
         window.addEventListener("resize", () => {
             this.recalculateLayout();
         });

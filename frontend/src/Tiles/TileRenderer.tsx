@@ -46,7 +46,7 @@ interface TileState {
 }
 
 export default class TileRenderer extends Component<TileProps, TileState> {
-    // todo: this should be possible without a ref
+    // BUGBUG: this should be possible without a ref
     private root: RefObject<HTMLAnchorElement>;
 
     constructor(props: TileProps) {

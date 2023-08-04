@@ -35,8 +35,6 @@ export default class CoreWindowCloseAnimation extends Component<CoreWindowImpost
 
     componentDidMount(): void {
         this.setState({ isAnimating: true });
-
-        // todo: there's multiple scenarios here, we need to handle them all
         const animation = new Storyboard()
             .addLayer("scale", 1.0, 0.94, 0.0, 0.947, EASE_APPLAUNCHFASTIN)
             .addLayer("opacity", 1.0, 0.0, 0.0, 0.947, EASE_APPLAUNCHFASTIN)

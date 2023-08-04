@@ -6,12 +6,13 @@ import { EXT_XMLNS, createRoot } from "./utils";
 export namespace YouTube {
     const rootUrl = 'https://www.googleapis.com/youtube/v3'
     const channelId = process.env.YOUTUBE_CHANNEL_ID;
+    const playlistId = process.env.YOUTUBE_PLAYLIST_ID;
     const apiKey = process.env.YOUTUBE_API_KEY;
 
     export const recentVideos = async (req, res) => {
         // fetch most recent 10 videos without using the search endpoint
         // https://developers.google.com/youtube/v3/docs/playlistItems/list
-        let url = `${rootUrl}/playlistItems?part=snippet&maxResults=10&playlistId=${channelId}&key=${apiKey}`;
+        let url = `${rootUrl}/playlistItems?part=snippet&maxResults=10&playlistId=${playlistId}&key=${apiKey}`;
         let resp = await fetch(url);
         let json = await resp.json();
         let items = json.items;

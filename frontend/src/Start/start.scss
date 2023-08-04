@@ -70,6 +70,63 @@ html {
 .start-show-all-button {
     top: 32px;
     position: fixed;
+    background: transparent;
+    padding: 0;
+    margin: 0;
+    border: 0;
+    appearance: none;
+}
+
+
+.start-show-all-icon {
+    width: 32px;
+    height: 32px;
+}
+
+.start-show-all-button #arrow {
+    fill: white;
+}
+
+.start-show-all-button #circle {
+    stroke: white;
+    fill: transparent;
+}
+
+.start-show-all-button:hover #circle {
+    fill: #2E00A5;
+}
+
+.start-show-all-button:active #circle {
+    fill: white;
+}
+
+.start-show-all-button:active #arrow {
+    fill: #180053;
+}
+
+.start-hide-all-button #arrow {
+    fill: black;
+}
+
+.start-hide-all-button #circle {
+    stroke: black;
+    fill: transparent;
+}
+
+.start-hide-all-button:hover #arrow {
+    fill: white;
+}
+
+.start-hide-all-button:hover #circle {
+    fill: #2E00A5;
+}
+
+.start-hide-all-button:active #circle {
+    fill: black;
+}
+
+.start-hide-all-button:active #arrow {
+    fill: #180053;
 }
 
 @media screen and (min-width: 350px) {
@@ -184,6 +241,7 @@ html {
             }
         }
     }
+
     .start-header-user-picture {
         width: 40px;
         height: 40px;
@@ -279,10 +337,6 @@ html {
 
     .start-show-all-button {
         transform: rotate(90deg);
-        background: transparent;
-        padding: 0;
-        margin: 0;
-        border: 0;
     }
 
     .start-hide-all-button {
@@ -295,57 +349,6 @@ html {
         display: flex;
         justify-self: flex-start;
         top: auto;
-    }
-
-    .start-show-all-icon {
-        width: 32px;
-        height: 32px;
-    }
-
-    .start-show-all-button #arrow {
-        fill: white;
-    }
-
-    .start-show-all-button #circle {
-        stroke: white;
-        fill: transparent;
-    }
-
-    .start-show-all-button:hover #circle {
-        fill: #2E00A5;
-    }
-
-    .start-show-all-button:active #circle {
-        fill: white;
-    }
-
-    .start-show-all-button:active #arrow {
-        fill: #180053;
-    }
-
-    .start-hide-all-button #arrow {
-        fill: black;
-    }
-
-    .start-hide-all-button #circle {
-        stroke: black;
-        fill: transparent;
-    }
-
-    .start-hide-all-button:hover #arrow {
-        fill: white;
-    }
-
-    .start-hide-all-button:hover #circle {
-        fill: #2E00A5;
-    }
-
-    .start-hide-all-button:active #circle {
-        fill: black;
-    }
-
-    .start-hide-all-button:active #arrow {
-        fill: #180053;
     }
 
     .all-apps-text {

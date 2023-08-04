@@ -132,18 +132,15 @@ export function layoutDesktop(collapsedTiles: TilePropsWithType[], baseCol: numb
             column = baseColumn;
         }
 
-
-        if (tile.type === 'fence') {
-            tiles.push({ row, column, ...tile, animColumn: baseCol + baseColumn });
-        }
-        else {
-            tiles.push({ row, column, ...tile, animColumn: baseCol + baseColumn });
-        }
+        tiles.push({ row, column, ...tile, animColumn: baseCol + baseColumn });
 
         column += tileWidth;
         lastWidth = tileWidth;
         lastHeight = tileHeight;
     }
 
-    return { tiles, columns: column };
+    // BUGBUG: used to fix an issue in safari where tile columns wouldn't be properly calculated automatically
+    let totalColumns = tiles.reduce((prev, cur) => Math.max(prev, cur.column + tileSizeToColumns(cur.size)), 0);
+
+    return { tiles, columns: totalColumns };
 }

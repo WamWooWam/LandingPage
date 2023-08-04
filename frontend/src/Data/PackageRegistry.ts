@@ -14,7 +14,7 @@ export default class PackageRegistry {
 
         for (const id in pack.applications) {
             const app = pack.applications[id];
-            // BUGBUG: hacky check for stnadarlone app mode
+            // BUGBUG: hacky check for standalone app mode, dont use CoreWindowManager to avoid bringing in the dependency
             if (app.load && !window.location.pathname.match(/\/app\//)) {
                 // pre-cache some visual assets for slow connections
                 fetch(app.visualElements.square30x30Logo)

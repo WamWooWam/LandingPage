@@ -10,7 +10,7 @@ import LayoutState from "./LayoutState";
 const CoreWindowContainer = lazy(() => import("./CoreWindow/CoreWindowContainer"));
 
 // The site is in a mobile context if the screen width is less than 600px and will update on resize
-export const LayoutStateContext = createContext(LayoutState.windows81);
+export const LayoutStateContext = createContext(LayoutState.windowsPhone81);
 export const WebPContext = createContext(false);
 
 
@@ -22,13 +22,13 @@ interface RootState {
 export default class Root extends Component<{}, RootState> {
     constructor(props: {}) {
         super(props);
-        this.state = { layoutState: LayoutState.windows81, webp: true };
+        this.state = { layoutState: LayoutState.windowsPhone81, webp: true };
     }
 
-    async componentDidMount() {
+    async componentWillMount() {
         window.addEventListener("resize", this.updateMobileContext);
-        this.setState({ webp: await hasWebP() });
         this.updateMobileContext();
+        this.setState({ webp: await hasWebP() });
     }
 
     componentWillUnmount() {
@@ -48,9 +48,7 @@ export default class Root extends Component<{}, RootState> {
                         <Start />
                     </ScrollStateProvider>
 
-                    <Suspense fallback={null}>
-                        <CoreWindowContainer />
-                    </Suspense>
+                    <Suspense fallback={null}><CoreWindowContainer /></Suspense>
                 </WebPContext.Provider>
             </LayoutStateContext.Provider>
         )

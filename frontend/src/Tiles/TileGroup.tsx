@@ -11,6 +11,7 @@ import { TileSize } from "shared/TileSize";
 interface TileGroupProps {
     title: string;
     tiles: TilePropsWithType[];
+    columns?: number;
 }
 
 // TODO: this implements the tile entry animation for mobile devices, need to find a better place for this
@@ -53,8 +54,16 @@ interface TileGroupProps {
 // }
 
 export default function TileGroup(props: TileGroupProps) {
+    let style = {};
+    // BUGBUG: fix for a webkit bug where the container size is not calculated correctly
+    if (props.columns !== undefined) {
+        style = {
+            gridTemplateColumns: "repeat(" + props.columns + ", 120px)"
+        }
+    }
+
     return (
-        <div class="start-tile-group">
+        <div class="start-tile-group" style={style}>
             <h2 class="tile-group-header">
                 {/* a non breaking space is inserted here to ensure the layout remains the same */}
                 {this.props.title && this.props.title !== "" ? this.props.title : "\u00A0"}

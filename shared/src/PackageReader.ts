@@ -190,6 +190,8 @@ export class PackageReader {
     }
 
     private fixupUrl(relativeUrl: string | null | undefined): string | null {
+        relativeUrl = relativeUrl?.replace(/\\/g, "/");
+
         if (relativeUrl)
             return `/packages/${this.identity.packageFamilyName}/${relativeUrl}`;
         return null;

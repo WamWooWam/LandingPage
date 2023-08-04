@@ -85,7 +85,7 @@ export default class CoreWindowContainer extends Component<CoreWindowContainerPr
             .addWindowToLayout(instance.mainWindow, ViewSizePreference.useHalf))
             return;
 
-        if (e.params.noAnimation) {
+        if (e.params?.noAnimation) {
             instance.mainWindow.visible = true;
             instance.mainWindow.focus();
             return;

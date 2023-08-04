@@ -29,7 +29,7 @@ export default class StartScrollContainer extends Component<StartScrollContainer
 
     componentDidMount() {
         this.setState({ visible: true });
-        // this.scrollContainer.current.addEventListener("wheel", this.onWheel, { passive: true });
+        this.scrollContainer.current.addEventListener("wheel", this.onWheel, { passive: true });
 
         let startTilesContainer = this.startTilesContainer.current;
         if (typeof ResizeObserver !== "undefined") {
@@ -48,6 +48,8 @@ export default class StartScrollContainer extends Component<StartScrollContainer
             // fallback to window resize event
             window.addEventListener("resize", this.onResize.bind(this));
         }
+
+        this.setHeight();
     }
 
     componentWillUnmount() {
@@ -97,10 +99,11 @@ export default class StartScrollContainer extends Component<StartScrollContainer
         let layoutState = useContext(LayoutStateContext);
         let cols = 0;
 
+        // BUGBUG: this is horrible
         let tileGroups = this.props.tileGroups.map(m => {
             let { tiles, columns } = calculateLayout(m.tiles, this.state.availableHeight, cols, layoutState === LayoutState.windowsPhone81);
             cols += columns;
-            return { ...m, tiles };
+            return { ...m, tiles, columns: (layoutState === LayoutState.windows81 ? columns : undefined) };
         });
 
         return (

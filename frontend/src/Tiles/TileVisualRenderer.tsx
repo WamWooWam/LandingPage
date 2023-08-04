@@ -6,6 +6,7 @@ import { TileSize } from "shared/TileSize";
 import { useContext } from "preact/hooks";
 import TileBinding from "./TileBinding";
 import TileVisual from "./TileVisual";
+import { getTileSize } from "./TileUtils";
 
 interface TileVisualRendererProps {
     app: PackageApplication,
@@ -37,10 +38,12 @@ export default function TileVisualRenderer({ app, size, visual }: RenderableProp
             tileVisualText = <p class={"tile-front-text" + (visualElements.foregroundText == "dark" ? " black" : "")}>{visualElements.displayName}</p>
         }
 
+        const { width, height } = getTileSize(size);
+
         return (
             <div class="tile-visual tile-visual-visible">
                 <div class="tile-front-image-container">
-                    <img draggable={false} alt={`${app.visualElements.displayName} Icon`} src={tileImageUrl} class={"tile-front-image " + TileSize[size]} />
+                    <img draggable={false} alt={`${app.visualElements.displayName} Icon`} src={tileImageUrl} class={"tile-front-image " + TileSize[size]} width={width} height={height} />
                 </div>
                 {tileVisualText}
             </div>

@@ -68,7 +68,7 @@ export namespace Twitch {
         if (json.data?.length > 0) {
             let stream = json.data[0];
             let content = TileUpdateManager.getTemplateContent(TileTemplateType.tileSquarePeekImageAndText04);
-            content.getElementsByTagName("image")[0].setAttribute("src", stream.thumbnail_url.replace('{width}', '1280').replace('{height}', '720'));
+            content.getElementsByTagName("image")[0].setAttribute("src", stream.thumbnail_url.replace('{width}', '267').replace('{height}', '150'));
             content.getElementsByTagName("image")[0].setAttributeNS(EXT_XMLNS, "ext:alt", "Thumbnail for " + stream.title);
 
             content.getElementsByTagName("text")[0].textContent = "🔴 LIVE: " + stream.title;
@@ -97,7 +97,7 @@ export namespace Twitch {
     
             for (const video of json.data) {
                 let content = TileUpdateManager.getTemplateContent(TileTemplateType.tileSquarePeekImageAndText04);
-                content.getElementsByTagName("image")[0].setAttribute("src", video.thumbnail_url.replace('%{width}', '1280').replace('%{height}', '720'));
+                content.getElementsByTagName("image")[0].setAttribute("src", video.thumbnail_url.replace('%{width}', '267').replace('%{height}', '150'));
                 content.getElementsByTagName("image")[0].setAttributeNS(EXT_XMLNS, "ext:alt", "Thumbnail for " + video.title);
                 content.getElementsByTagName("text")[0].textContent = "📺 " + video.title;
     

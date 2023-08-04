@@ -7,6 +7,15 @@ import { EXT_XMLNS, createBindingFromTemplate, createRoot, createVisual, } from 
 let userCache = null;
 
 export namespace Twitter {
+    // remove the file extension, add the query ?format=webp&name=thumb, except for ext_tw_video_thumb, then we append :thumb
+    const fixupTwitterImage = (url: string) => {
+        if (!url) return null;
+        if (url.match(/\/ext_tw_video_thumb\//)) {
+            return url + ":thumb";
+        }
+        return url.replace(/\.[^/.]+$/, "") + "?format=webp&name=thumb";
+    }
+
     export const latestTweets = async (req, res) => {
         try {
             if (!userCache) {
@@ -14,8 +23,10 @@ export namespace Twitter {
             }
 
             let root = createRoot();
-            let timeline = await getGraphUserTweets(userCache["id_str"], TimelineType.Tweets, 10);
+            let timeline = await getGraphUserTweets(userCache["id_str"], TimelineType.Tweets, 15);
             let tweets = timeline["data"]["user_result"]["result"]["timeline_response"]["timeline"]["instructions"][2]["entries"];
+            if (tweets.length > 15)
+                tweets = tweets.slice(0, 15);
 
             for (const tweetContainer of tweets) {
                 if (!tweetContainer?.content?.content?.tweetResult?.result?.legacy) continue;
@@ -25,13 +36,13 @@ export namespace Twitter {
                 if (tweet?.extended_entities?.media?.length > 0) {
                     {
                         let content = createBindingFromTemplate(root, visual, TileTemplateType.tileSquarePeekImageAndText04);
-                        content.getElementsByTagName("image")[0].setAttribute("src", tweet["extended_entities"]["media"][0]["media_url_https"]);
+                        content.getElementsByTagName("image")[0].setAttribute("src", fixupTwitterImage(tweet["extended_entities"]["media"][0]["media_url_https"]));
                         content.getElementsByTagName("text")[0].textContent = tweet["full_text"];
                     }
 
                     {
                         let content = createBindingFromTemplate(root, visual, TileTemplateType.tileWidePeekImage05);
-                        content.getElementsByTagName("image")[0].setAttribute("src", tweet["extended_entities"]["media"][0]["media_url_https"]);
+                        content.getElementsByTagName("image")[0].setAttribute("src", fixupTwitterImage(tweet["extended_entities"]["media"][0]["media_url_https"]));
                         content.getElementsByTagName("image")[1].setAttribute("src", userCache["profile_image_url_https"]);
                         content.getElementsByTagName("image")[1].setAttributeNS(EXT_XMLNS, "ext:alt", userCache["name"] + " profile picture");
                         content.getElementsByTagName("text")[1].textContent = tweet["full_text"];
