@@ -9,10 +9,13 @@ export namespace YouTube {
     const playlistId = process.env.YOUTUBE_PLAYLIST_ID;
     const apiKey = process.env.YOUTUBE_API_KEY;
 
+    //    
+    // for some reason, they removed the ability to get the channel's uploads playlist directly
+    // so this pulls from a specific playlist instead
+    //
     export const recentVideos = async (req, res) => {
-        // fetch most recent 10 videos without using the search endpoint
         // https://developers.google.com/youtube/v3/docs/playlistItems/list
-        let url = `${rootUrl}/playlistItems?part=snippet&maxResults=10&playlistId=${playlistId}&key=${apiKey}`;
+        let url = `${rootUrl}/playlistItems?part=snippet&maxResults=15&playlistId=${playlistId}&key=${apiKey}`;
         let resp = await fetch(url);
         let json = await resp.json();
         let items = json.items;

@@ -8,6 +8,7 @@ import { PackageIdentity } from "./PackageIdentity";
 import { PackageProperties } from "./PackageProperties";
 
 import * as base32 from "base32.js"
+import { PackageCapability } from "./PackageCapability";
 
 const AppX2010ManifestNS = "http://schemas.microsoft.com/appx/2010/manifest";
 const AppX2013ManifestNS = "http://schemas.microsoft.com/appx/2013/manifest";
@@ -60,6 +61,14 @@ export class PackageReader {
         }
 
         pack.path = "/packages/" + this.identity.packageFamilyName + "/";
+
+        const capabilitiesElement = manifestDocument.getElementsByTagNameNS(AppX2010ManifestNS, "Capabilities")[0];
+        if (capabilitiesElement) {
+            pack.capabilities = this.readCapabilities(capabilitiesElement);
+        }
+        else {
+            pack.capabilities = [];
+        }
 
         return pack;
     }
@@ -187,6 +196,36 @@ export class PackageReader {
         }
 
         return <ApplicationDefaultTile>defaultTile;
+    }
+
+    private readCapabilities(element: Element): PackageCapability[] {
+        const capabilities: PackageCapability[] = [];
+        const capabilitiesElements = element.childNodes;
+        for (let i = 0; i < capabilitiesElements.length; i++) {
+            const capabilityElement = capabilitiesElements[i];
+            if (capabilityElement.nodeType == 1) {
+                const capability = this.readCapability(capabilityElement as Element);
+                capabilities.push(capability);
+            }
+        }
+
+        return capabilities;
+    }
+
+    private readCapability(element: Element): PackageCapability {
+        const capability: Partial<PackageCapability> = {};
+        capability.ns = element.namespaceURI!;
+        capability.type = element.tagName;
+        capability.name = element.getAttribute("Name")!;
+        capability.values = {};
+        for (let i = 0; i < element.attributes.length; i++) {
+            const attribute = element.attributes[i];
+            if (attribute.name != "Name") {
+                capability.values[attribute.name] = attribute.value;
+            }
+        }
+
+        return <PackageCapability>capability;
     }
 
     private fixupUrl(relativeUrl: string | null | undefined): string | null {

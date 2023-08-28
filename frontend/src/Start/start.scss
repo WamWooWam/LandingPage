@@ -9,7 +9,21 @@
     height: -webkit-fill-available;
 }
 
-@keyframes start-content-hide {
+@keyframes start-hide {
+    0% {
+        opacity: 1;
+    }
+
+    25% {
+        opacity: 1;
+    }
+
+    100% {
+        opacity: 0;
+    }
+}
+
+@keyframes start-tiles-hide {
     0% {
         transform: scale3d(1, 1, 1);
     }
@@ -19,13 +33,36 @@
     }
 }
 
-@keyframes start-hide {
-    25% {
+
+@keyframes start-show {
+    0% {
+        opacity: 0;
+    }
+
+    75% {
         opacity: 1;
     }
 
     100% {
-        opacity: 0;
+        opacity: 1;
+    }
+}
+
+@keyframes start-tiles-show {
+    0% {
+        transform: translateX(10px);
+    }
+
+    100% {
+        transform: translateX(0px)
+    }
+}
+
+.start.hiding {
+    animation: start-hide 0.25s forwards;
+
+    .start-tiles-scroll-container {
+        animation: start-tiles-hide 0.25s forwards;
     }
 }
 
@@ -40,6 +77,19 @@
 
 html {
     background: black;
+}
+
+.start {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0a;
+    z-index: 2000;
+}
+
+.start.hiding {
+    z-index: 500;
 }
 
 .start-tiles {
@@ -148,7 +198,7 @@ html {
 }
 
 @media screen and (min-width: 600px) {
-    .start {
+    body {
         background-color: #25079b;
         background-image: url(../../static/wallpaper/the-cliffs.jpg);
         background-image: image-set("../../static/wallpaper/the-cliffs.webp" type("image/webp"),
@@ -157,19 +207,31 @@ html {
         background-position: center;
     }
 
-    .start-screen {
+    .start {
         position: absolute;
         width: 100vw;
         height: 100vh;
         top: 0;
         left: 0;
-        /* z-index: 2147483645; */
-        /* :) */
+        background-color: #25079b;
+        background-image: url(../../static/wallpaper/the-cliffs.jpg);
+        background-image: image-set("../../static/wallpaper/the-cliffs.webp" type("image/webp"),
+                "../../static/wallpaper/the-cliffs.jpg" type("image/jpeg"));
+        background-size: cover;
+        background-position: center;
+        animation: start-show 0.25s forwards;
+    }
+
+    .start-screen {
+        background: rgba(0, 0, 0, 0.33);
+
+        .start-tiles-scroll-container {
+            animation: start-tiles-show 0.25s forwards ease-out;
+        }
     }
 
     .start-content {
         grid-template-rows: 120px 1fr;
-        background: rgba(0, 0, 0, 0.33);
         height: 100vh;
         padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
     }

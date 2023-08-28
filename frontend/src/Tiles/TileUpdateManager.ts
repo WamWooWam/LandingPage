@@ -1,8 +1,8 @@
-import TileVisual from "./TileVisual";
-import { getVisuals } from "./TileToast";
 import { Package } from "shared/Package"
 import { PackageApplication } from "shared/PackageApplication"
 import { TileSize } from "shared/TileSize";
+import TileVisual from "./TileVisual";
+import { getVisuals } from "./TileToast";
 
 export type TileUpdateCallback = (visuals: Map<TileSize, TileVisual[]>) => void;
 
@@ -22,6 +22,7 @@ export default class TileUpdateManager {
     private _initialUpdate: number = 0;
 
     private constructor() {
+        if (typeof window === 'undefined') return;
         this._updateTimeout = window.setInterval(() => this.updateAllTiles(), 10 * 60 * 1000); // 10 minutes
         this._initialUpdate = window.setTimeout(() => this.updateAllTiles(), 2000); // kinda hacky? but it works
     }

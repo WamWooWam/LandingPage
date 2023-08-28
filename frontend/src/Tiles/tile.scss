@@ -110,9 +110,6 @@
     text-decoration: none;
 }
 
-.tile-container,
-.fence-tile-container {}
-
 .tile-container.text-light {
     color: white;
 }
@@ -167,6 +164,36 @@
 .tile-container:active {
     transform: scale3d(0.975, 0.975, 0.975);
     touch-action: manipulation;
+}
+
+.tile-badge {
+    position: absolute;
+    display: block;
+    right: 0;
+    bottom: 0;
+    width: 44px;
+    height: 24px;
+
+    &.error {
+        background-size: contain;
+        background-repeat: no-repeat;
+        background-position: center;
+        background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABwAAAAYCAYAAADpnJ2CAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAACxEAAAsRAX9kX5EAAADQSURBVEhL7ZRBDoMgEEUHl71H93qHrr2MJ4Jz9CY9BKxcls4fMCFRCtqGFS+ZDILDQ1Go0zmLirkK7/2N04PjLh1EL46nUmoNl2WqhCzCfe9wlWVgsY/tLEVhpWyjKB1i/obIjDE0TRM556QToI0+jEVqF3YM9oxDGMcRK5dsrZVI+xKwz9fg4jnM4XeCtI2xhFmKr8DFS5gjkEoRBzKwSHGGmj1sB6+2+Stt+9GAOInXWu+eZpNibCOWZWn+4xeFoFL6n6MthcU/H96dzkmIPupPGNaHz8XHAAAAAElFTkSuQmCC);
+    }
+}
+
+@media only screen and (-moz-min-device-pixel-ratio: 2), 
+       only screen and (-o-min-device-pixel-ratio: 2/1), 
+       only screen and (-webkit-min-device-pixel-ratio: 2), 
+       only screen and (min-device-pixel-ratio: 2),
+       (resolution >= 2dppx) {
+    .tile-badge.error {
+        background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADEAAAAqCAYAAAAajbNEAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAGrSURBVGhD7ZhfToNAEMbBp/bJUt+qnsMrqY3xUe2rB4ETmJjWOxiNgSvYqneoL/h97BgopS1/mgXj/JIvCzvTnZkNYYc6iqIoiqL8R+I4PoTOoUfoHfqGltAcmkFjaCju3QKJ9aAbqCz07cnP2wfJjKBnZlaRF2gky9TGlbE2ksSnuavNseu6X3JdmQMZa4EC+Dg0LYA8yFq1aFQEuJYxIYoix/M8JwgCmVmHNvrQN8MZdGsuLYKdG0IrDAaDmCbK932ZTeHcr52+BRzBZg8EvDRxU7JJUtlCttkyjGGzBwJOTdxVipItWQCZwm4PBOThVUg+6ay2FEDm8LEHAvIU3khRITsKIEv4VabJ26nxGdM62DX2RYX8pceJDd4a+QJ4XzS3gRns9kDACxM3ZVuyJQux/or1TNyUPRx29lt0BL0zsQ1hGCbJbdjlBNroQ98cE1nWLgjMb4jXJIVmvEF9WbYy+2jFTzAszF1tTtGKf8h1O7AQ2c2q8KOIm9ANkEwfmjCzktxD3fk8zYLE2KKzw2WDyP6K7Qn/LFhAT9AVZLflVhRFURSldRznByoWMQrQKQaCAAAAAElFTkSuQmCC);
+    }
+}
+
+.square70x70 .tile-badge {
+    width: 28px;
 }
 
 .moving>.tile {
@@ -258,8 +285,6 @@
 .tile-front-image {
     object-fit: contain;
     aspect-ratio: 1/1;
-    width: 100%;
-    height: 100%;
 }
 
 .tile-front-image.wide310x150 {
@@ -268,7 +293,7 @@
 
 .tile-front-text {
     padding: 0;
-    margin: 8px 12px;
+    margin: 5px 16px;
     font-size: 12px;
     position: absolute;
     bottom: 0;
@@ -318,6 +343,8 @@
     width: 64px;
     height: 64px;
     margin: 16px;
+    aspect-ratio: 1/1;
+    object-fit: fill;
 }
 
 .tile-wide-peak-image {

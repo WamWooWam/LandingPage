@@ -1,12 +1,14 @@
-import { Component, RefObject, createRef } from "preact";
-import { Position } from "../Util";
-import CoreWindow from "../Data/CoreWindow";
-import AnimationRunner from "../Animation/AnimationRunner";
-import Storyboard from "../Animation/Storyboard";
-import AnimationEvent from "../Animation/AnimationEvent";
 import * as bezier from "bezier-easing";
+
+import { Component, RefObject, createRef } from "preact";
+
+import AnimationEvent from "../Animation/AnimationEvent";
+import AnimationRunner from "../Animation/AnimationRunner";
+import CoreWindow from "../Data/CoreWindow";
 import CoreWindowLayoutManager from "../Data/CoreWindowLayoutManager";
-import { CoreWindowSnapState } from "../Data/CoreWindowSnapState";
+import CoreWindowSnapState from "../Data/CoreWindowSnapState";
+import { Position } from "../Util";
+import Storyboard from "../Animation/Storyboard";
 
 interface CoreWindowDragContainerState {
     window: CoreWindow;
@@ -245,8 +247,6 @@ export default class CoreWindowDragContainer extends Component<CoreWindowDragCon
 
     render() {
         let style = {};
-        let className = "core-window"
-
         if (this.state.dragState === CoreWindowDragState.none) {
             style = {
                 left: this.props.x,
@@ -269,7 +269,7 @@ export default class CoreWindowDragContainer extends Component<CoreWindowDragCon
         }
 
         return (
-            <div ref={this.rootRef} class={className} style={style} onMouseMove={(e) => this.props.onMouseMove(e)}>
+            <div ref={this.rootRef} class="core-window" style={style} onMouseMove={(e) => this.props.onMouseMove(e)} onClick={(e) => e.stopPropagation()}>
                 {this.props.children}
             </div>
         )

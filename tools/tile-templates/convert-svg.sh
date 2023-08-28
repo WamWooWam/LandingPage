@@ -12,7 +12,7 @@ else
     file="$1"
 fi
 
-content=$(base64 < "$file")
+content=$(base64 -w 0 < "$file")
 url="data:$mimetype;base64,$content"
 
 cat square30x30.svg | sed "s|image.png|$url|g" > out/$2-square30x30.svg

@@ -9,7 +9,7 @@ export interface ScrollState {
     scrollWidth: number;
 }
 
-export class ScrollStateProvider extends Component<{}, ScrollState> {
+export default class ScrollStateProvider extends Component<{}, ScrollState> {
     constructor(props: {}) {
         super(props);
 
@@ -34,7 +34,7 @@ export class ScrollStateProvider extends Component<{}, ScrollState> {
     }
 
     private onScroll(): void {
-        if (typeof document === "undefined") {
+        if (typeof window === "undefined") {
             this.setState({ totalWidth: 1024, totalHeight: 768, scrollHeight: 1024, scrollWidth: 768 });
             return;
         }

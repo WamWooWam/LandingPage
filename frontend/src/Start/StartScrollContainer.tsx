@@ -1,10 +1,11 @@
 import { Component, RefObject, createRef } from "preact";
-import { useContext } from "preact/hooks";
-import { LayoutStateContext } from "../Root";
-import { calculateLayout } from "../Tiles/TileUtils";
-import TileGroup from "../Tiles/TileGroup";
+
 import LayoutState from "../LayoutState";
+import { LayoutStateContext } from "../Root";
 import { StartTileGroup } from "shared/StartLayoutParser";
+import TileGroup from "../Tiles/TileGroup";
+import { calculateLayout } from "../Tiles/TileUtils";
+import { useContext } from "preact/hooks";
 
 interface StartScrollContainerProps {
     tileGroups: StartTileGroup[];
@@ -29,8 +30,8 @@ export default class StartScrollContainer extends Component<StartScrollContainer
 
     componentDidMount() {
         this.setState({ visible: true });
-        this.scrollContainer.current.addEventListener("wheel", this.onWheel, { passive: true });
 
+        this.scrollContainer.current.addEventListener("wheel", this.onWheel, { passive: true });
         let startTilesContainer = this.startTilesContainer.current;
         if (typeof ResizeObserver !== "undefined") {
             let resizeObserver = new ResizeObserver((entries) => {

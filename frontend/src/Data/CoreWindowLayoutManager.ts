@@ -1,10 +1,10 @@
 // the layout has 2 possible states, one fullscreen window, or 2 windows side by side
 // when in split mode, the windows can be resized by dragging the divider between them
 
+import CoreWindow from "./CoreWindow";
+import CoreWindowSnapState from "./CoreWindowSnapState";
 import Events from "../Events";
 import LayoutUpdatedEvent from "../Events/LayoutUpdatedEvent";
-import CoreWindow from "./CoreWindow";
-import { CoreWindowSnapState } from "./CoreWindowSnapState";
 import ViewSizePreference from "./ViewSizePreference";
 
 export enum CoreWindowLayoutKind {

@@ -65,12 +65,8 @@ export namespace Twitter {
             res.contentType('application/xml')
                 .send(new XMLSerializer().serializeToString(root));
         }
-        catch (e) {
-            let root = TileUpdateManager.getTemplateContent(TileTemplateType.tileSquare150x150Text04);
-            let text = root.getElementsByTagName("text")[0];
-            text.textContent = "Hi! If you're seeing this text, it means Elongated Muskrat did something braindead again, I hope you're not surprised.";
-            res.contentType('application/xml')
-                .send(new XMLSerializer().serializeToString(root));
+        catch (e) {            
+            res.status(204).send();            
         }
 
     };

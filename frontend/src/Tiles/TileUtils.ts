@@ -1,7 +1,7 @@
-import { RawTileProps } from "shared/StartLayoutParser"
-import { TileSize } from "shared/TileSize";
-import { TileProps } from "./TileRenderer";
 import { FenceTileProps } from "./FenceTileRenderer";
+import { RawTileProps } from "shared/StartLayoutParser"
+import { TileProps } from "./TileRenderer";
+import { TileSize } from "shared/TileSize";
 
 export function getTileSize(size: TileSize) {
     switch (size) {
@@ -105,6 +105,7 @@ export function calculateLayout(tiles: RawTileProps[], availableHeight: number, 
     }
 }
 
+// TODO: use this to generate CSS directly
 export function layoutDesktop(collapsedTiles: TilePropsWithType[], baseCol: number, availableHeight: number): { tiles: Array<TilePropsWithType>, columns: number } {
     let maxRows = Math.floor(availableHeight / 128);
     // console.log(`available height: ${availableHeight}, maxRows: ${maxRows}`);

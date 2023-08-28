@@ -1,5 +1,5 @@
-import { Component } from "preact";
 import AppInstance from "../Data/AppInstance";
+import { Component } from "preact";
 import CoreWindow from "../Data/CoreWindow";
 import CoreWindowManager from "../Data/CoreWindowManager";
 import CoreWindowState from "../Data/CoreWindowState";

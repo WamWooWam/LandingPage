@@ -1,11 +1,9 @@
-import { RenderableProps } from "preact";
-import { WebPContext } from "../Root";
-import { fixupUrl } from "../Util";
 import { PackageApplication } from "shared/PackageApplication";
-import { TileSize } from "shared/TileSize";
-import { useContext } from "preact/hooks";
+import { RenderableProps } from "preact";
 import TileBinding from "./TileBinding";
+import { TileSize } from "shared/TileSize";
 import TileVisual from "./TileVisual";
+import { fixupUrl } from "../Util";
 import { getTileSize } from "./TileUtils";
 
 interface TileVisualRendererProps {
@@ -26,7 +24,7 @@ const TileTemplateMap: Map<string, Function>
     ]);
 
 export default function TileVisualRenderer({ app, size, visual }: RenderableProps<TileVisualRendererProps>) {
-    let hasWebP = useContext(WebPContext);
+    let hasWebP = true;
     let visualElements = app.visualElements;
 
     if (!visual || !visual.bindings || visual.bindings.length == 0) {

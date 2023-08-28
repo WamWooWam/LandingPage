@@ -6,6 +6,8 @@ import * as apicache from 'apicache'
 import * as fs from 'fs'
 import * as fsp from 'fs/promises'
 
+import PackageRegistry from './PackageRegistry';
+
 import { Twitter } from './providers/twitter';
 import { Snug } from './providers/snug';
 import { Twitch } from './providers/twitch';
@@ -13,16 +15,15 @@ import { YouTube } from './providers/youtube';
 import { GitHub } from './providers/github';
 import { Thumbnail } from './providers/thumbnail';
 import { PackageReader } from 'landing-page-shared';
-import PackageRegistry from './PackageRegistry';
 import { Images } from './providers/images/tiles';
 import { Standalone } from './providers/standalone/manifest';
+import { Configuration } from './providers/configuration';
 
 globalThis.DOMParser = require('xmldom').DOMParser; // BUGBUG: hacky fix to stop webpack including xmldom in the client bundle
 
 const app = express();
 
 (async () => {
-
     const packages = await fsp.readdir('../packages');
     for (let packageName of packages) {
         try {
@@ -34,10 +35,18 @@ const app = express();
         catch (e) {
         }
     }
-    app.use((req, res, next) => {
-        console.log(`${req.method} ${req.url}, ${req.headers['user-agent']}`);        
 
+    app.set('view engine', 'hbs');
+    app.set('views', path.join(process.cwd(), '../frontend/dist/views'));
+
+    app.use((req, res, next) => {
+        const time = performance.now();
         next();
+
+        res.on('finish', () => {
+            const responseTime = performance.now() - time;
+            console.log(`${req.method} ${req.url} => ${res.statusCode} ${res.statusMessage}, ${responseTime.toFixed(2)}ms, ${res.get('Content-Length') || 0} bytes, ${req.get('User-Agent')}`);
+        });
     });
 
     app.get('/api/live-tiles/twitter/latest-tweets.xml', apicache.middleware('1 hour'), Twitter.latestTweets);
@@ -57,9 +66,11 @@ const app = express();
     app.get('/api/manifest/:package/:app', apicache.middleware('14 days'), Standalone.Manifest.getManifest);
     app.get('/api/msapplication-config/:package/:app', apicache.middleware('14 days'), Standalone.Manifest.getApplicationConfig);
 
-    app.use(express.static(path.join(process.cwd(), "..", "frontend", "dist")))
+    app.get('/api/configuration', Configuration.getConfiguration);
+
+    app.use(express.static(path.join(process.cwd(), "..", "frontend", "dist"), { index: false, maxAge: '90d' }));
     app.get('/', (req, res) => {
-        res.sendFile(path.join(process.cwd(), "..", "frontend", "dist", "index.html"))
+        res.render('index');
     });
 
     app.get('/app/:package/:id', (req, res) => {
@@ -81,44 +92,46 @@ const app = express();
             return;
         }
 
-        // ensure the app is loadable
+        // if the app has a start page, redirect to it instead of showing the standalone page
         if (app.startPage && app.startPage.startsWith('http')) {
-            // redirect to the start page
             res.redirect(app.startPage);
             return;
         }
 
-        let file = path.join(process.cwd(), "..", "frontend", "dist", "standalone.html");
-        fs.readFile(file, 'utf8', (err, data) => {
-            if (err) {
-                console.error(err);
-                res.status(500).send('Something went wrong! Please try again later.');
-                return;
-            }
+        const plated = `/api/media/plated/${req.params.package}/${req.params.id}`;
+        const data = {
+            title: app.visualElements.displayName,
+            description: app.visualElements.description,
+            themeColor: app.visualElements.backgroundColor,
+            ogImage: `${plated}/splash`,
+            square30x30logo: `${plated}/square30x30logo`,
+            square70x70logo: `${plated}/square70x70logo`,
+            square150x150logo: `${plated}/square150x150logo`,
+            square310x310logo: `${plated}/square310x310logo`,
+            wide310x150logo: `${plated}/wide310x150logo`,
+            splashScreen: `${plated}/splash`,
+            appleTouchIcon: `${plated}/apple-touch-icon`,
+            manifest: `/api/manifest/${req.params.package}/${req.params.id}`,
+            applicationConfig: `/api/msapplication-config/${req.params.package}/${req.params.id}`
+        }
 
-            let result = data.replace(/{{title}}/g, app.visualElements.displayName)
-                .replace(/{{description}}/g, app.visualElements.description)
-                .replace(/{{theme-color}}/g, app.visualElements.backgroundColor)
-                .replace(/{{og-image}}/g, `/api/media/plated/${req.params.package}/${req.params.id}/splash`)
-                .replace(/{{square30x30logo}}/g, `/api/media/plated/${req.params.package}/${req.params.id}/square30x30logo`)
-                .replace(/{{square70x70logo}}/g, `/api/media/plated/${req.params.package}/${req.params.id}/square70x70logo`)
-                .replace(/{{square150x150logo}}/g, `/api/media/plated/${req.params.package}/${req.params.id}/square150x150logo`)
-                .replace(/{{square310x310logo}}/g, `/api/media/plated/${req.params.package}/${req.params.id}/square310x310logo`)
-                .replace(/{{wide310x150logo}}/g, `/api/media/plated/${req.params.package}/${req.params.id}/wide310x150logo`)
-                .replace(/{{apple-touch-icon}}/g, `/api/media/plated/${req.params.package}/${req.params.id}/apple-touch-icon`)
-                .replace(/{{manifest}}/g, `/api/manifest/${req.params.package}/${req.params.id}`)
-                .replace(/{{application-config}}/g, `/api/msapplication-config/${req.params.package}/${req.params.id}`);
-
-            res.contentType('text/html').send(result);
-        });
+        res.render('standalone', data);
     });
 
-    app.use((err, req, res, next) => {
-        console.error(err.stack)
+    app.use(async (err, req, res, next) => {
+        console.error(err)
         if (process.env.NODE_ENV === 'development') {
+            let error = err;
+            if (err instanceof Error) {
+                error = err.stack;
+            }
+            if (err.then) {
+                error = await Promise.resolve(err).catch(e => e.stack);
+            }
+
             res.status(500)
                 .contentType('text/plain')
-                .send(err.stack)
+                .send(`error: ${error}`)
         }
         else {
             res.status(500)

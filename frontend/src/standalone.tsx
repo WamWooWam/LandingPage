@@ -1,60 +1,49 @@
-// import "preact/debug"
+if (process.env.NODE_ENV === "development") {
+    require("preact/debug");
+}
 
 import "./polyfill";
-import "./Test"
 import './index.scss';
 import './segoe.scss';
+import "./Test"
 
-import { Component, hydrate, render } from "preact"
 import PackageRegistry from "./Data/PackageRegistry";
-import Root from "./Root";
-import CoreWindowContainer from "./CoreWindow/CoreWindowContainer";
-import { Launcher } from "./Test";
-import Events from "./Events";
-import AppLaunchRequestedEvent from "./Events/AppLaunchRequestedEvent";
+import StandaloneRoot from "./StandaloneRoot";
+import { hydrate } from "preact"
 
-export default Root;
-
-const packages = [
-    require('../../packages/Socials/AppxManifest.xml').default,
-    require('../../packages/Projects/AppxManifest.xml').default,
-    require('../../packages/Games/AppxManifest.xml').default,
-    require('../../packages/Settings/AppxManifest.xml').default,
-    require('../../packages/Calculator/AppxManifest.xml').default,
-];
-
-for (const pack of packages) {
-    PackageRegistry.registerPackage(pack);
+let url = new URL(window.location.href);
+let split = url.pathname.split("/");
+let appId = split[split.length - 1];
+let packageId = split[split.length - 2];
+const packages = {
+    "Socials_zfgz6xjnaz0ym": "Socials",
+    "Projects_zfgz6xjnaz0ym": "Projects",
+    "Games_zfgz6xjnaz0ym": "Games",
+    "windows.immersivecontrolpanel_cw5n1h2txyewy": "Settings",
+    "Microsoft.WindowsCalculator_8wekyb3d8bbwe": "Calculator",
 }
 
-class StandaloneRoot extends Component {
-    componentDidMount() {
-        let url = new URL(window.location.href);
-        let split = url.pathname.split("/");
-        let appId = split[split.length - 1];
-        let packageId = split[split.length - 2];
-        if (appId && packageId) {
-            let pack = PackageRegistry.getPackage(packageId);
-            if (!pack) {
-                throw new Error(`Package ${packageId} not found!`);
-            }
-
-            let app = pack.applications[appId];
-            if (!app) {
-                throw new Error(`Application ${appId} not found!`);
-            }
-
-            Events.getInstance().dispatchEvent(new AppLaunchRequestedEvent(pack, app, { noAnimation: true }));
-        }
-    }
-
-    render() {
-        return (<CoreWindowContainer />);
+async function loadPackage(packageId: string) {
+    switch (packages[packageId as keyof typeof packages] || packageId.split("_")[0]) {
+        case "Socials":
+            return (await import('../../packages/Socials/AppxManifest.xml')).default;
+        case "Projects":
+            return (await import('../../packages/Projects/AppxManifest.xml')).default;
+        case "Games":
+            return (await import('../../packages/Games/AppxManifest.xml')).default;
+        case "Settings":
+            return (await import('../../packages/Settings/AppxManifest.xml')).default;
+        case "Calculator":
+            return (await import('../../packages/Calculator/AppxManifest.xml')).default;
+        default:
+            throw new Error(`Package ${packageId} not found!`);
     }
 }
+
+PackageRegistry.registerPackage(await loadPackage(packageId));
 
 if (typeof document !== "undefined") {
-    document.addEventListener("DOMContentLoaded", async () => {
-        hydrate(<StandaloneRoot />, document.body);
-    })
+    hydrate(<StandaloneRoot appId={appId} packageId={packageId} />, document.body);
 }
+
+export default StandaloneRoot;

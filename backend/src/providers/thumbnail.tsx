@@ -123,14 +123,12 @@ export namespace Thumbnail {
         const startLayout = await fsp.readFile('../packages/StartScreen.xml', 'utf-8');
         const tileGroups = parseLayout(startLayout);
 
-
         if (PackageMap.size == 0) {
             const packages = await fsp.readdir('../packages');
             for (let packageName of packages) {
                 await loadPackage(packageName, PackageMap);
             }
         }
-
 
         let x = 58;
         let renderedTileGroups = [];

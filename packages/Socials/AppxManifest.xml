@@ -152,7 +152,7 @@
         </Application>
         <Application Id="hasthebig.gay" StartPage="https://hasthebig.gay/wamwoowam">
             <wb:VisualElements DisplayName="hasthebig.gay" Description="hasthebig.gay"
-                ForegroundText="light" BackgroundColor="#111725"
+                ForegroundText="light" BackgroundColor="#462D7B"
                 Square150x150Logo="images/hasthebig-gay-square150x150.svg"
                 Square30x30Logo="images/hasthebig-gay-square30x30.svg" ToastCapable="true">
                 <wb:DefaultTile Square70x70Logo="images/hasthebig-gay-square70x70.svg"
@@ -164,7 +164,7 @@
                         <wb:ShowOn Tile="square310x310Logo" />
                     </wb:ShowNameOnTiles>
                 </wb:DefaultTile>
-                <wb:SplashScreen BackgroundColor="#111725" Image="hasthebig-gay-splash.svg" />
+                <wb:SplashScreen BackgroundColor="#462D7B" Image="hasthebig-gay-splash.svg" />
             </wb:VisualElements>
         </Application>
 

@@ -12,3 +12,4 @@ export * from "./PackageReader";
 export * from "./StartLayout";
 export * from "./StartLayoutParser";
 export * from "./TileSize";
+export * from "./HRESULT";

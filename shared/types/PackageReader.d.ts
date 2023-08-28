@@ -12,6 +12,8 @@ export declare class PackageReader {
     private readVisualElements;
     private readSplashScreen;
     private readDefaultTile;
+    private readCapabilities;
+    private readCapability;
     private fixupUrl;
     private loadTextResources;
 }

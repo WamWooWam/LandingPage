@@ -1,18 +1,7 @@
 const path = require('path');
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
-const CssMinimizerPlugin = require("css-minimizer-webpack-plugin");
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const { env } = require('process');
-const { transform } = require('ts-transform-react-jsx-source')
-
-const PostCSSOptions = {
-    postcssOptions: {
-        plugins: [
-            "postcss-aspect-ratio-polyfill",
-            ["postcss-preset-env", { plugins: { autoprefixer: { flexbox: true } } }]
-        ],
-    },
-};
 
 module.exports = [
     {
@@ -20,13 +9,14 @@ module.exports = [
             "index": "./src/index.tsx",
             "standalone": "./src/standalone.tsx",
         },
+        target: "web",
         mode: env.NODE_ENV || "development",
         devtool: 'source-map',
         module: {
             rules: [
                 {
                     test: /\.tsx?$/,
-                    use: 'ts-loader',
+                    use: ['ts-loader'],
                     exclude: /node_modules/,
                 },
                 {
@@ -37,33 +27,29 @@ module.exports = [
                     test: /\.css$/i,
                     use: [
                         MiniCssExtractPlugin.loader,
-                        "css-loader",
+                        { loader: 'css-loader', options: { importLoaders: 1 } },
+                        "postcss-loader",
                     ]
                 },
                 {
                     test: /\.scss$/i,
                     use: [
                         MiniCssExtractPlugin.loader,
-                        "css-loader",
+                        { loader: 'css-loader', options: { importLoaders: 1 } },
+                        "postcss-loader",
                         "sass-loader",
                     ],
                 },
                 {
                     test: /\.(woff(2)?|ttf|eot|png|jpg|webp|avif|wasm)(\?v=\d+\.\d+\.\d+)?$/i,
                     use: [
-                        {
-                            loader: 'file-loader',
-                            options: { outputPath: 'static/' }
-                        }
+                        { loader: 'file-loader', options: { outputPath: 'static/' } }
                     ]
                 },
                 {
                     test: /\.svg$/i,
                     use: [
-                        {
-                            loader: 'file-loader',
-                            options: { outputPath: 'static/' }
-                        },
+                        { loader: 'file-loader', options: { outputPath: 'static/' } },
                         'xml-loader'
                     ]
                 },
@@ -84,8 +70,8 @@ module.exports = [
                 "shared": path.resolve(__dirname, '../shared/src'),
                 "static": path.resolve(__dirname, './static'),
                 "~": path.resolve(__dirname, './src'),
-                react: 'preact/compat',
-                'react-dom': 'preact/compat'
+                "react": 'preact/compat',
+                "react-dom": 'preact/compat',
             }
         },
         plugins: [
@@ -93,8 +79,8 @@ module.exports = [
                 filename: env.NODE_ENV === 'production' ? "[name].[chunkhash].css" : "[name].bundle.css",
                 chunkFilename: env.NODE_ENV === 'production' ? "[id].bundle.[chunkhash].css" : "[id].bundle.css"
             }),
-            new HtmlWebpackPlugin({ inject: true, template: "./src/index.html", chunks: ["index"], filename: "index.html", publicPath: "/"  }),
-            new HtmlWebpackPlugin({ inject: true, template: "./src/standalone.html", chunks: ["standalone"], filename: "standalone.html", publicPath: "/" }),
+            new HtmlWebpackPlugin({ inject: true, template: "./src/index.hbs", chunks: ["index"], filename: "views/index.hbs", publicPath: "/" }),
+            new HtmlWebpackPlugin({ inject: true, template: "./src/standalone.hbs", chunks: ["standalone"], filename: "views/standalone.hbs", publicPath: "/" }),
         ],
         output: {
             filename: env.NODE_ENV === 'production' ? '[name].[chunkhash].js' : '[name].bundle.js',

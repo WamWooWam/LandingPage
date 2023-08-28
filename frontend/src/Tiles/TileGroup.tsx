@@ -1,12 +1,9 @@
-import { Component, createRef, RefObject, } from "preact";
-import { TilePropsWithType } from "./TileUtils";
-import TileRenderer, { TileProps } from "./TileRenderer";
-import FenceTileRenderer, { FenceTileProps } from "./FenceTileRenderer";
 import "./tile.scss"
-import { useContext } from "preact/hooks";
-import { LayoutStateContext } from "../Root";
-import LayoutState from "../LayoutState";
-import { TileSize } from "shared/TileSize";
+
+import FenceTileRenderer, { FenceTileProps } from "./FenceTileRenderer";
+import TileRenderer, { TileProps } from "./TileRenderer";
+
+import { TilePropsWithType } from "./TileUtils";
 
 interface TileGroupProps {
     title: string;

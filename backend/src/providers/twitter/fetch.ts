@@ -69,7 +69,7 @@ export async function fetchRaw(url: string, params: any) {
     let response = await fetch(uri.toString(), { headers: headers });
 
     if(response.status != 200) {
-        throw `Twitter fetch failed: ${response.status} ${response.statusText}`;
+        throw new Error(`Twitter fetch failed: ${response.status} ${response.statusText}`);
     }
 
     return await response.json();

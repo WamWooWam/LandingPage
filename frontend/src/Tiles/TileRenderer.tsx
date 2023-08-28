@@ -1,20 +1,24 @@
+import "./tile.scss"
+
 import { Component, Ref, RefObject, createRef } from "preact";
-import { useContext } from "preact/hooks";
-import { WebPContext } from "../Root";
-import { fixupUrl } from "../Util";
-import { getTileSize } from "./TileUtils";
-import { TileSize } from "shared/TileSize";
+import ConfigurationManager, { AppStatus } from "../Data/ConfigurationManager";
+
+import AppLaunchRequestedEvent from "../Events/AppLaunchRequestedEvent";
+import Events from "../Events";
+import MessageDialog from "../Data/MessageDialog";
 import { Package } from "shared/Package";
 import { PackageApplication } from "shared/PackageApplication";
-import { lightenDarkenColour2 } from "shared/ColourUtils";
 import PackageRegistry from "../Data/PackageRegistry";
+import TileBadge from "./TileBadge";
+import TileDefaultVisual from "./TileDefaultVisual";
+import { TileSize } from "shared/TileSize";
+import TileUpdateManager from "./TileUpdateManager";
 import TileVisual from "./TileVisual";
 import TileVisualRenderer from "./TileVisualRenderer";
-import TileUpdateManager from "./TileUpdateManager";
-import TileDefaultVisual from "./TileDefaultVisual";
-import Events from "../Events";
-import AppLaunchRequestedEvent from "../Events/AppLaunchRequestedEvent";
-import "./tile.scss"
+import UICommand from "../Data/UICommand";
+import { fixupUrl } from "../Util";
+import { getTileSize } from "./TileUtils";
+import { lightenDarkenColour2 } from "shared/ColourUtils";
 
 export interface TileProps {
     packageName?: string;
@@ -31,6 +35,9 @@ export interface TileProps {
 interface TileState {
     pack: Package;
     app: PackageApplication;
+
+    appStatus?: AppStatus;
+
     pressState?: "none" | "top" | "bottom" | "left" | "right" | "center";
 
     visualIdx: number;
@@ -45,19 +52,24 @@ interface TileState {
     noStyle?: boolean;
 }
 
+// TODO: the ability to disable apps but better
+const isDisabled = (app: PackageApplication, pack: Package) =>
+    (app.id === "Twitter" && pack.identity.packageFamilyName === "Socials_zfgz6xjnaz0ym");
+
 export default class TileRenderer extends Component<TileProps, TileState> {
     // BUGBUG: this should be possible without a ref
     private root: RefObject<HTMLAnchorElement>;
 
     constructor(props: TileProps) {
         super(props);
+
         let { pack, app } = this.getAppAndPackage(props);
         this.state = {
             app,
             pack,
             pressState: "none",
-            visuals: [TileDefaultVisual],
-            visualIdx: 0,
+            visuals: [],
+            visualIdx: -1,
             swapping: false,
             clicked: false,
             visible: true
@@ -69,20 +81,27 @@ export default class TileRenderer extends Component<TileProps, TileState> {
     componentDidUpdate(previousProps: Readonly<TileProps>, previousState: Readonly<TileState>, snapshot: any): void {
         if (this.props.packageName !== previousProps.packageName || this.props.appId !== previousProps.appId) {
             let { pack, app } = this.getAppAndPackage();
-
             clearInterval(this.state.interval);
 
+            TileUpdateManager.getInstance()
+                .unregisterVisualUpdateCallback(this.state.app, this.didGetVisuals.bind(this));
+
             this.setState({ pack, app, visualIdx: 0, visuals: [TileDefaultVisual], nextVisualIdx: undefined });
+        }
+
+        if (!previousState.appStatus && this.state.appStatus) {
+            if (this.state.appStatus.statusCode === 0) {
+                TileUpdateManager.getInstance()
+                    .registerVisualUpdateCallback(this.state.app, this.didGetVisuals.bind(this));
+            }
         }
     }
 
     componentDidMount() {
-        TileUpdateManager.getInstance()
-            .registerVisualUpdateCallback(this.state.app, this.didGetVisuals.bind(this));
-
-        if (this.props.style?.entryDelay) {
-            setTimeout(() => this.setState({ noStyle: true }), this.props.style.entryDelay);
-        }
+        ConfigurationManager.getAppStatus(this.state.app, this.state.pack)
+            .then((status) => {
+                this.setState({ appStatus: status });
+            });
     }
 
     componentWillUnmount() {
@@ -91,13 +110,14 @@ export default class TileRenderer extends Component<TileProps, TileState> {
     }
 
     didGetVisuals(visuals: Map<TileSize, TileVisual[]>) {
-        let tileVisuals = [TileDefaultVisual, ...visuals.get(this.props.size)];
-        if (tileVisuals.length > 1) {
-            if (this.state.interval)
-                clearInterval(this.state.interval);
+        if (this.state.interval)
+            clearInterval(this.state.interval);
+
+        let tileVisuals = visuals.get(this.props.size);
+        if (tileVisuals.length > 0) {
             let interval = setInterval(() => this.updateBinding(), 10000 + (Math.random() * 5000));
 
-            this.setState({ visuals: tileVisuals, visualIdx: 0, interval });
+            this.setState({ visuals: tileVisuals, interval });
             this.updateBinding()
         }
     }
@@ -111,12 +131,7 @@ export default class TileRenderer extends Component<TileProps, TileState> {
         this.setState((s) => {
             let visuals = [...s.visuals];
             let visualIdx = s.visualIdx;
-            if (visuals[0] === TileDefaultVisual) {
-                visuals = visuals.slice(1);
-            }
-            else {
-                visualIdx = (visualIdx + 1) % visuals.length;
-            }
+            visualIdx = (visualIdx + 1) % visuals.length;
 
             return ({
                 visuals,
@@ -136,6 +151,19 @@ export default class TileRenderer extends Component<TileProps, TileState> {
     }
 
     onClick(e: MouseEvent) {
+        if (this.state.appStatus?.statusCode != 0) {
+            e.preventDefault();
+
+            let dialog = new MessageDialog(
+                `${this.state.app.visualElements.displayName} appears to have been corrupted. Running this app might put your PC at risk.\r\n<a target="_blank" href="https://www.sec.gov/Archives/edgar/data/1418091/000110465922048128/tm2213229d1_sc13da.htm">More info</a>`,
+                "Start protected your PC");
+
+            dialog.commands.push(new UICommand("Run anyway", () => { window.open(this.state.app.startPage, "_blank") }))
+            dialog.commands.push(new UICommand("Don't run"))
+            dialog.showAsync();
+            return;
+        }
+
         this.updatePressState(e);
         if (this.state.app.load) {
             e.preventDefault();
@@ -160,7 +188,6 @@ export default class TileRenderer extends Component<TileProps, TileState> {
     }
 
     render(props: TileProps, state: TileState) {
-        let hasWebP = useContext(WebPContext);
         let containerStyle: any = {
             'grid-row-start': props.row !== undefined ? (props.row + 2).toString() : undefined,
             'grid-column-start': props.column !== undefined ? (props.column + 1).toString() : undefined,
@@ -175,11 +202,19 @@ export default class TileRenderer extends Component<TileProps, TileState> {
             background: `linear-gradient(to right, ${tileColour}, ${tileColourLight})`
         }
 
-        let classList = ["tile-container", TileSize[props.size], "press-" + state.pressState];
+        let classList = ["tile-container", TileSize[props.size]];
+
+        if (this.state.appStatus?.statusCode === 0) {
+            classList.push("press-" + state.pressState);
+        }
+        else {
+            classList.push("disabled");
+        }
 
         if (!state.pack || !state.app) {
             return (
-                <a class={classList.join(" ")}
+                <a id={`${props.packageName}!${props.appId}`}
+                    class={classList.join(" ")}
                     onMouseDown={this.onMouseDown.bind(this)}
                     onMouseUp={this.onMouseUp.bind(this)}
                     onClick={this.onClick.bind(this)}
@@ -197,7 +232,7 @@ export default class TileRenderer extends Component<TileProps, TileState> {
         else
             classList.push("text-dark");
 
-        let visual = state.visuals[state.visualIdx];
+        let visual = state.visualIdx == -1 ? TileDefaultVisual : state.visuals[state.visualIdx];
         let nextVisual = state.visuals[(state.visualIdx + 1) % state.visuals.length];
 
         let href = state.app.startPage;
@@ -205,10 +240,14 @@ export default class TileRenderer extends Component<TileProps, TileState> {
             href = `/app/${state.pack.identity.packageFamilyName}/${state.app.id}`;
         }
 
+        let frontKey = state.visualIdx.toString();
+        let nextKey = ((state.visualIdx + 1) % state.visuals.length).toString();
+
         //let size = this.getTileSize(props.size)
         return (
             <>
                 <a ref={this.root}
+                    id={`${props.packageName}!${props.appId}`}
                     class={classList.join(" ")}
                     style={containerStyle}
                     onMouseDown={this.onMouseDown.bind(this)}
@@ -216,20 +255,24 @@ export default class TileRenderer extends Component<TileProps, TileState> {
                     onClick={this.onClick.bind(this)}
                     title={state.app.visualElements.displayName}
                     aria-label={state.app.visualElements.displayName}
-                    href={href}>
+                    href={href}
+                    target="_blank">
                     <div class="tile">
                         <div class="front" style={frontStyle}>
-                            <TileVisualRenderer app={state.app} visual={visual} size={props.size} />
+                            <TileVisualRenderer key={frontKey} app={state.app} visual={visual} size={props.size} />
                         </div>
                         {state.swapping &&
                             <div class="next" style={frontStyle} onAnimationEnd={this.onAnimationEnded.bind(this)}>
-                                <TileVisualRenderer app={state.app} visual={nextVisual} size={props.size} />
+                                <TileVisualRenderer key={nextKey} app={state.app} visual={nextVisual} size={props.size} />
                             </div>
                         }
                         <div className={"tile-toast-footer" + (!visual || visual === TileDefaultVisual ? " hidden" : "")}>
-                            <img className="tile-badge-icon" src={fixupUrl(state.app.visualElements.square30x30Logo, hasWebP)} alt={""} />
+                            <img className="tile-badge-icon" src={fixupUrl(state.app.visualElements.square30x30Logo, true)} alt={""} />
                         </div>
                     </div>
+
+                    <TileBadge isError={state.appStatus && state.appStatus.statusCode !== 0} />
+
                     <div className="tile-border"
                         style={{ border: '1px solid rgba(255,255,255,0.1)' }} />
                 </a>

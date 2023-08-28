@@ -1,7 +1,8 @@
 import { Position, Size } from "../Util";
-import TileInfo from "./TileInfo";
+
 import AppInstance from "./AppInstance";
 import CoreWindow from "./CoreWindow";
+import TileInfo from "./TileInfo";
 
 interface CoreWindowLaunchTileParams {
     tile: TileInfo;

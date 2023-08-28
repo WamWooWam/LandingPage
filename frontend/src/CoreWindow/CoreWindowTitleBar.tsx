@@ -1,11 +1,12 @@
 import { Component } from "preact";
-import CoreWindowMinimizeButton from "./CoreWindowMinimizeButton";
+import CoreWindow from "../Data/CoreWindow";
 import CoreWindowCloseButton from "./CoreWindowCloseButton";
+import CoreWindowMinimizeButton from "./CoreWindowMinimizeButton";
 import { Position } from "../Util";
+import { computed } from "@preact/signals";
 
 interface CoreWindowTitleBarProps {
-    title: string;
-    displayName: string;
+    window: CoreWindow;
     iconUrl: string;
     primaryColour: string;
     isVisible: boolean;
@@ -31,12 +32,11 @@ export default class CoreWindowTitleBar extends Component<CoreWindowTitleBarProp
     }
 
     // we need to handle pointer down events on the title bar so that we can initiate a window drag after a few pixels
-
-    private pointerDownPosition: { x: number, y: number } = null;
+    private pointerDownPosition: Position = null;
 
     onPointerDown(e: PointerEvent) {
         this.pointerDownPosition = { x: e.clientX, y: e.clientY };
-        
+
         const target = e.target as HTMLElement;
         target.setPointerCapture(e.pointerId);
         target.addEventListener("pointermove", this.onPointerMove.bind(this));
@@ -64,16 +64,21 @@ export default class CoreWindowTitleBar extends Component<CoreWindowTitleBarProp
     }
 
     render() {
+        const computedTitle = computed(() =>
+            this.props.window.signals.title.value === "" ?
+                this.props.window.packageApplication.visualElements.displayName :
+                `${this.props.window.signals.title} - ${this.props.window.packageApplication.visualElements.displayName}`);
+
         return (
             <div class={"core-window-titlebar " + (!this.props.isVisible ? "hidden" : "")}>
                 <div class="core-window-titlebar-content"
                     onPointerDown={this.onPointerDown.bind(this)}>
                     {/* TODO: icon has a context menu */}
                     <div class="core-window-icon-container" style={{ background: this.props.primaryColour }}>
-                        <img class="core-window-icon" src={this.props.iconUrl} alt={`${this.props.displayName} icon`} />
+                        <img class="core-window-icon" src={this.props.iconUrl} alt={computed(() => this.props.window.signals.title + " icon")} />
                     </div>
 
-                    <div class="core-window-title">{this.props.title ? `${this.props.title} - ${this.props.displayName}` : this.props.displayName}</div>
+                    <div class="core-window-title">{computedTitle}</div>
 
                     <CoreWindowMinimizeButton onClick={this.onMinimiseClicked.bind(this)} />
                     <CoreWindowCloseButton onClick={this.onCloseClicked.bind(this)} />

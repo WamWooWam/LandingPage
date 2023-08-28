@@ -1,7 +1,7 @@
-import { newGuid } from "../Util";
+import CoreWindow from "./CoreWindow";
 import { Package } from "shared/Package"
 import { PackageApplication } from "shared/PackageApplication"
-import CoreWindow from "./CoreWindow";
+import { newGuid } from "../Util";
 
 export default class AppInstance {
     readonly id: string;

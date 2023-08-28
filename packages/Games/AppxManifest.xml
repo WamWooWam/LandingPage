@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <Package IgnorableNamespaces="build" xmlns="http://schemas.microsoft.com/appx/2010/manifest"
     xmlns:wb="http://schemas.microsoft.com/appx/2013/manifest"
+    xmlns:wam="https://wamwoowam.co.uk/appx/2022"
     xmlns:build="http://schemas.microsoft.com/developer/appx/2012/build">
     <Identity Name="Games" ProcessorArchitecture="x86" Publisher="CN=Wan Kerr Co. Ltd."
         Version="2.6.672.0" />
@@ -30,6 +31,8 @@
         </Application>
     </Applications>
     <Capabilities></Capabilities>
-    <Dependencies></Dependencies>
+    <Dependencies>
+        <wam:FeatureDependency Name="WebAssembly" Features="Exceptions"/>
+    </Dependencies>
     <Extensions></Extensions>
 </Package>

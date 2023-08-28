@@ -1,7 +1,7 @@
 // singleton class to manage instances of apps
 
-import CoreWindowManager from "./CoreWindowManager";
 import AppInstance from "./AppInstance";
+import CoreWindowManager from "./CoreWindowManager";
 import { Package } from "shared/Package";
 import { PackageApplication } from "shared/PackageApplication";
 

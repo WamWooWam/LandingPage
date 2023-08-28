@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<Package xmlns="http://schemas.microsoft.com/appx/2010/manifest" xmlns:m2="http://schemas.microsoft.com/appx/2013/manifest">
+<Package xmlns="http://schemas.microsoft.com/appx/2010/manifest" xmlns:m2="http://schemas.microsoft.com/appx/2013/manifest" xmlns:wam="https://wamwoowam.co.uk/appx/2022">
 	<Identity Name="Microsoft.WindowsCalculator" Publisher="CN=Microsoft Corporation, O=Microsoft Corporation, L=Redmond, S=Washington, C=US" Version="6.3.9600.20278" ProcessorArchitecture="x64"/>
 	<Properties>
 		<DisplayName>Calculator</DisplayName>
@@ -30,6 +30,7 @@
 		</Application>
 	</Applications>
 	<Dependencies>
+        <wam:FeatureDependency Name="WebAssembly" Features="Exceptions"/>
 		<PackageDependency Name="Microsoft.VCLibs.120.00" Publisher="CN=Microsoft Corporation, O=Microsoft Corporation, L=Redmond, S=Washington, C=US" MinVersion="12.0.20501.1"/>
 	</Dependencies>
 	<Extensions>

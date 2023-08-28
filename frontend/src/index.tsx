@@ -1,11 +1,14 @@
-// import "preact/debug"
+if (process.env.NODE_ENV === "development") {
+    require("preact/debug");
+}
 
 import "./polyfill";
-import "./Test"
 import './index.scss';
 import './segoe.scss';
+import "./Test"
 
 import { hydrate, render } from "preact"
+
 import PackageRegistry from "./Data/PackageRegistry";
 import Root from "./Root";
 
@@ -22,7 +25,9 @@ for (const pack of packages) {
 }
 
 if (typeof document !== "undefined") {
-    document.addEventListener("DOMContentLoaded", async () => {
-        hydrate(<Root />, document.body);
-    })
+    // why the fuck is this a thing (iOS Safari)
+    document.addEventListener("touchstart", function () { }, true);
+    hydrate(<Root />, document.body);
 }
+
+export default Root;

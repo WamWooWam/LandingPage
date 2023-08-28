@@ -1,5 +1,5 @@
-import { Component } from "preact";
 import "./core-window-splash-screen.scss"
+
 import { ApplicationVisualElements } from "shared/ApplicationVisualElements";
 
 interface CoreWindowSplashScreenProps {

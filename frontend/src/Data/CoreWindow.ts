@@ -1,13 +1,27 @@
-import Events from "../Events";
-import CoreWindowEvent from "../Events/CoreWindowEvent";
+import { Position, Size, newGuid } from "../Util";
+
 import AppInstance from "./AppInstance";
+import CoreWindowEvent from "../Events/CoreWindowEvent";
+import CoreWindowLayoutManager from "./CoreWindowLayoutManager";
 import CoreWindowManager from "./CoreWindowManager";
 import CoreWindowState from "./CoreWindowState";
-import CoreWindowLayoutManager from "./CoreWindowLayoutManager";
-import { Position, Size, newGuid } from "../Util";
+import Events from "../Events";
 import { Package } from "shared/Package";
 import { PackageApplication } from "shared/PackageApplication";
+import { Signal } from "@preact/signals";
+import { ensureCapabilitiesAsync } from "./PackageCapabilities";
 
+class CoreWindowSignals {
+    title: Signal<string>;
+    isVisible: Signal<boolean>;
+
+    constructor() {
+        this.title = new Signal<string>();
+        this.isVisible = new Signal<boolean>();
+    }
+}
+
+// TODO: investigate using signals instead of events
 export default class CoreWindow {
     error: Error | null;
 
@@ -17,8 +31,7 @@ export default class CoreWindow {
     private _state: CoreWindowState;
     private _size: Size;
     private _position: Position;
-    private _title: string;
-    private _visible: boolean;
+    private _signals: CoreWindowSignals = new CoreWindowSignals();
 
     constructor(instance: AppInstance) {
         this._id = `CoreWindow_${newGuid()}`
@@ -26,18 +39,24 @@ export default class CoreWindow {
         this._state = CoreWindowState.uninitialized;
         this._size = { width: 0, height: 0 };
         this._position = { x: 0, y: 0 };
-        this._title = '';
-        this._visible = false
         this._view = document.createElement("div");
         this._view.id = this._id;
 
-        this._view.addEventListener("click", () => {
+        this.signals.title.value = "";
+        this.signals.isVisible.value = false;
+        
+        this._view.addEventListener("click", (e) => {
+            e.stopPropagation();
             this.focus();
         });
 
         this._view.addEventListener("contextmenu", (e) => {
             e.preventDefault();
         });
+    }
+
+    get signals(): CoreWindowSignals {
+        return this._signals;
     }
 
     get id(): string {
@@ -61,14 +80,11 @@ export default class CoreWindow {
     }
 
     get title(): string {
-        return this._title;
+        return this.signals.title.value;
     }
 
     set title(newTitle: string) {
-        this._title = newTitle.trim();
-
-        Events.getInstance()
-            .dispatchEvent(new CoreWindowEvent("core-window-title-changed", this));
+        this.signals.title.value = newTitle;
     }
 
     get size(): Size {
@@ -92,11 +108,11 @@ export default class CoreWindow {
     }
 
     get visible(): boolean {
-        return this._visible;
+        return this.signals.isVisible.value;
     }
 
     set visible(newVisible: boolean) {
-        this._visible = newVisible;
+        this.signals.isVisible.value = newVisible;
         Events.getInstance()
             .dispatchEvent(new CoreWindowEvent("core-window-visibility-changed", this));
     }
@@ -141,8 +157,10 @@ export default class CoreWindow {
         if (this.state != CoreWindowState.uninitialized) return;
         this.state = CoreWindowState.loading;
         if (!CoreWindowManager.isStandalone()) {
-            await new Promise((resolve) => setTimeout(resolve, 750));
+            await new Promise((resolve) => setTimeout(resolve, 500));
         }
+
+        await ensureCapabilitiesAsync(this.package);
 
         try {
             let app = this.packageApplication;
@@ -197,7 +215,7 @@ export default class CoreWindow {
         // CoreWindowManager.deleteWindowById(this.id);
 
         CoreWindowLayoutManager.getInstance().removeWindowFromLayout(this);
-        this._visible = false;
+        this.visible = false;
         Events.getInstance()
             .dispatchEvent(new CoreWindowEvent("core-window-close-requested", this));
     }

@@ -1,50 +1,22 @@
+import "./core-window.scss"
+
 import { Component, RefObject, createRef } from "preact";
-import Events from "../Events";
-import AppLaunchRequestedEvent from "../Events/AppLaunchRequestedEvent";
+
 import AppInstanceManager from "../Data/AppInstanceManager";
-import CoreWindowLayout from "./CoreWindowLayout";
-import CoreWindowLaunchAnimationFromTile from "./Animations/CoreWindowLaunchAnimationFromTile";
-import CoreWindowLaunchAnimation from "./Animations/CoreWindowLaunchAnimation";
-import CoreWindowLaunchParams from "../Data/CoreWindowLaunchParams";
-import CoreWindowLayoutManager from "../Data/CoreWindowLayoutManager";
-import CoreWindowEvent from "../Events/CoreWindowEvent";
+import AppLaunchRequestedEvent from "../Events/AppLaunchRequestedEvent";
 import CoreWindowCloseAnimation from "./Animations/CoreWindowCloseAnimation";
+import CoreWindowEvent from "../Events/CoreWindowEvent";
+import CoreWindowLaunchAnimationContainer from "./CoreWindowLaunchAnimationContainer";
+import CoreWindowLaunchParams from "../Data/CoreWindowLaunchParams";
+import CoreWindowLayout from "./CoreWindowLayout";
+import CoreWindowLayoutManager from "../Data/CoreWindowLayoutManager";
+import Events from "../Events";
 import ViewSizePreference from "../Data/ViewSizePreference";
 
-import "./core-window.scss"
-import { Launcher } from "../Test";
-
-interface CoreWindowAnimation {
+export interface CoreWindowAnimation {
     params: CoreWindowLaunchParams;
     onAnimationComplete: () => void;
 }
-
-const CoreWindowLaunchAnimationContainer = (props: CoreWindowAnimation) => {
-    if (!props.params) return null;
-
-    if (props.params.origin?.tile) {
-        return (
-            <CoreWindowLaunchAnimationFromTile
-                windowId={props.params.window.id}
-                tile={props.params.origin.tile} visible={true}
-                initialPosition={props.params.origin.position}
-                initialSize={props.params.origin.size}
-                targetPosition={props.params.targetPosition}
-                targetSize={props.params.targetSize}
-                onAnimationComplete={props.onAnimationComplete} />
-        )
-    }
-    else {
-        return (
-            <CoreWindowLaunchAnimation
-                windowId={props.params.window.id} visible={true}
-                targetPosition={props.params.targetPosition}
-                targetSize={props.params.targetSize}
-                onAnimationComplete={props.onAnimationComplete} />
-        )
-    }
-}
-
 
 interface CoreWindowContainerProps {
 
@@ -64,12 +36,6 @@ export default class CoreWindowContainer extends Component<CoreWindowContainerPr
     componentDidMount(): void {
         Events.getInstance().addEventListener("app-launch-requested", this.onAppLaunchRequested.bind(this));
         Events.getInstance().addEventListener("core-window-close-requested", this.onWindowCloseRequested.bind(this));
-
-        let location = new URL(window.location.href);
-        let app = location.searchParams.get("app");
-        if (app) {
-            Launcher.launchApp(app);
-        }
     }
 
     componentWillUnmount(): void {
@@ -137,6 +103,9 @@ export default class CoreWindowContainer extends Component<CoreWindowContainerPr
         } as CoreWindowAnimation;
 
         this.setState((state) => ({ launchParams: [animation, ...state.launchParams] }));
+
+        Events.getInstance()
+            .dispatchEvent(new CustomEvent("app-launch", { detail: launchParams }));
     }
 
     onWindowCloseRequested(e: CoreWindowEvent) {
@@ -146,12 +115,7 @@ export default class CoreWindowContainer extends Component<CoreWindowContainerPr
                 targetPosition: e.detail.position,
                 targetSize: e.detail.size
             } as CoreWindowLaunchParams,
-            onAnimationComplete: () => {
-                e.detail.visible = false;
-                this.setState((state) => ({
-                    closeParams: state.closeParams.filter((p) => p !== animation)
-                }));
-            }
+            onAnimationComplete: () => this.onWindowCloseAnimationComplete(e, animation)
         } as CoreWindowAnimation;
 
         this.setState((state) => ({
@@ -159,8 +123,17 @@ export default class CoreWindowContainer extends Component<CoreWindowContainerPr
         }));
     };
 
+    onWindowCloseAnimationComplete(e: CoreWindowEvent, animation: CoreWindowAnimation) {
+        e.detail.visible = false;
+        this.setState((state) => ({
+            closeParams: state.closeParams.filter((p) => p !== animation)
+        }));
+
+        Events.getInstance()
+            .dispatchEvent(new CoreWindowEvent("core-window-closed", e.detail));
+    }
+
     onWindowClosed(e: CoreWindowEvent) {
-        // CoreWindowLayoutManager.getInstance().removeWindowFromLayout(e.detail);
     }
 
     render() {

@@ -5,18 +5,18 @@
 // that window anywhere in the DOM
 //
 
-import Events from "../Events";
 import AppInstance from "./AppInstance";
-import CoreWindowEvent from "../Events/CoreWindowEvent";
-import CoreWindow from "./CoreWindow";
 import AppInstanceManager from "./AppInstanceManager";
+import CoreWindow from "./CoreWindow";
+import CoreWindowEvent from "../Events/CoreWindowEvent";
 import CoreWindowLayoutManager from "./CoreWindowLayoutManager";
+import Events from "../Events";
 
 export default class CoreWindowManager {
     static coreWindowMap: Map<string, CoreWindow> = new Map();
 
     static isStandalone(): boolean {
-        return !!window.location.pathname.match(/\/app\//);
+        return !!window?.location.pathname.match(/\/app\//);
     }
 
     static createCoreWindowForApp(instance: AppInstance): CoreWindow {

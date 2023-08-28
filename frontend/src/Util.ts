@@ -63,8 +63,11 @@ export async function hasWebP(): Promise<boolean> {
     });
 };
 
+let hasWebPCache: boolean | null = null;
 export const fixupUrl = (url: string, hasWebP: boolean) => {
-    if (hasWebP)
+    if (hasWebP) {
         return url;
+    }
+
     return url.replace(".webp", ".png");
 }

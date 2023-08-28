@@ -1,19 +1,19 @@
 import { Component, RefObject, createRef } from "preact";
-import { useContext } from "preact/hooks";
+
 import { ScrollStateContext } from "../Start/ScrollStateProvider";
-const WallpaperSize = 3840;
+import { useContext } from "preact/hooks";
 
 export interface TileBackgroundProps {
 
 }
 
-export interface TileeBackgroundState {
+export interface TileBackgroundState {
     tileX: number;
     tileY: number;
     height: number;
 }
 
-export default class TileBackgroundRenderer extends Component<TileBackgroundProps, TileeBackgroundState> {
+export default class TileBackgroundRenderer extends Component<TileBackgroundProps, TileBackgroundState> {
 
     element: RefObject<HTMLDivElement>;
 

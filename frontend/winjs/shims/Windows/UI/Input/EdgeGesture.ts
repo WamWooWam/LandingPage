@@ -23,7 +23,7 @@ export class EdgeGesture {
             if (ev.button == 2) {
                 var gesture = new EdgeGestureEventArgs();
                 gesture.kind = EdgeGestureKind.mouse;
-                InvokeEvent(this.#completed, "completed", gesture)
+                InvokeEvent(this.__completed, "completed", gesture)
             }
         })
 
@@ -31,39 +31,39 @@ export class EdgeGesture {
             if(ev.key == "k" && ev.ctrlKey) {
                 var gesture = new EdgeGestureEventArgs();
                 gesture.kind = EdgeGestureKind.keyboard;
-                InvokeEvent(this.#completed, "completed", gesture)
+                InvokeEvent(this.__completed, "completed", gesture)
             }
         })
     }
 
-    #canceled: Set<TypedEventHandler<EdgeGesture, EdgeGestureEventArgs>> = new Set();
+    __canceled: Set<TypedEventHandler<EdgeGesture, EdgeGestureEventArgs>> = new Set();
     @Enumerable(true)
     set oncanceled(handler: TypedEventHandler<EdgeGesture, EdgeGestureEventArgs>) {
-        this.#canceled.add(handler);
+        this.__canceled.add(handler);
     }
 
-    #completed: Set<TypedEventHandler<EdgeGesture, EdgeGestureEventArgs>> = new Set();
+    __completed: Set<TypedEventHandler<EdgeGesture, EdgeGestureEventArgs>> = new Set();
     @Enumerable(true)
     set oncompleted(handler: TypedEventHandler<EdgeGesture, EdgeGestureEventArgs>) {
-        this.#completed.add(handler);
+        this.__completed.add(handler);
     }
 
-    #starting: Set<TypedEventHandler<EdgeGesture, EdgeGestureEventArgs>> = new Set();
+    __starting: Set<TypedEventHandler<EdgeGesture, EdgeGestureEventArgs>> = new Set();
     @Enumerable(true)
     set onstarting(handler: TypedEventHandler<EdgeGesture, EdgeGestureEventArgs>) {
-        this.#starting.add(handler);
+        this.__starting.add(handler);
     }
 
     addEventListener(name: string, handler: any) {
         switch (name) {
             case 'canceled':
-                this.#canceled.add(handler);
+                this.__canceled.add(handler);
                 break;
             case 'completed':
-                this.#completed.add(handler);
+                this.__completed.add(handler);
                 break;
             case 'starting':
-                this.#starting.add(handler);
+                this.__starting.add(handler);
                 break;
         }
     }
@@ -71,13 +71,13 @@ export class EdgeGesture {
     removeEventListener(name: string, handler: any) {
         switch (name) {
             case 'canceled':
-                this.#canceled.delete(handler);
+                this.__canceled.delete(handler);
                 break;
             case 'completed':
-                this.#completed.delete(handler);
+                this.__completed.delete(handler);
                 break;
             case 'starting':
-                this.#starting.delete(handler);
+                this.__starting.delete(handler);
                 break;
         }
     }
