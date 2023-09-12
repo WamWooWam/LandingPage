@@ -179,6 +179,10 @@ html {
     fill: #180053;
 }
 
+.start-header {
+    display: none;
+}
+
 @media screen and (min-width: 350px) {
     .start-content {
         grid-template-columns: 0 1fr 0;
@@ -323,11 +327,6 @@ html {
         height: 57px;
     }
 
-    .mobile>.start-header,
-    .mobile>.start-footer {
-        display: none;
-    }
-
     .start-tiles-scroll-container {
         display: flex;
         position: absolute;
@@ -341,7 +340,7 @@ html {
     }
 
     .start-header {
-        margin-left: 72px;
+        margin-left: 124px;
         align-items: flex-end;
         font-weight: 300;
         z-index: 1;
@@ -372,29 +371,15 @@ html {
         margin-left: 136px;
     }
 
-    .start-header {
-        margin-left: 124px;
-    }
-
     .start-tile-group {
         display: grid;
-        grid-gap: 8px;
-        grid-template-columns: 120px;
+        grid-template-columns: 1fr;
         grid-template-rows: 32px repeat(auto-fill, 120px);
-        grid-auto-columns: 120px;
-        grid-auto-rows: 120px;
-        grid-auto-flow: none;
-
-        grid-template-areas:
-            "head"
-            "tiles";
-
-        /* display: flex;
-        align-self: flex-start; */
         margin-left: 56px;
         margin-bottom: 0;
         align-self: stretch;
         align-content: center;
+        column-gap: 0;
     }
 
     .start-show-all-button {

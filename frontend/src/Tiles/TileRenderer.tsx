@@ -189,8 +189,8 @@ export default class TileRenderer extends Component<TileProps, TileState> {
 
     render(props: TileProps, state: TileState) {
         let containerStyle: any = {
-            'grid-row-start': props.row !== undefined ? (props.row + 2).toString() : undefined,
-            'grid-column-start': props.column !== undefined ? (props.column + 1).toString() : undefined,
+            'grid-row-start': props.row !== undefined ? (props.row + 1).toString() : undefined,
+            'grid-column-start': props.column !== undefined ? ((props.column % 2) + 1).toString() : undefined,
             visibility: state.visible ? undefined : "hidden",
             opacity: "1",
             ...((props.style) ? props.style : {})

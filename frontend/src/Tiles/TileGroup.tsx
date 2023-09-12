@@ -51,24 +51,47 @@ interface TileGroupProps {
 // }
 
 export default function TileGroup(props: TileGroupProps) {
-    let style = {};
-    // BUGBUG: fix for a webkit bug where the container size is not calculated correctly
-    if (props.columns !== undefined) {
-        style = {
-            gridTemplateColumns: "repeat(" + props.columns + ", 120px)"
-        }
+    // let style = {
+    //     // BUGBUG: fix for a webkit bug where the container size is not calculated correctly
+    //     gridTemplateColumns: props.columns !== undefined ? "repeat(" + props.columns + ", 120px)" : undefined
+    // };
+
+    console.assert(props.columns !== undefined, "TileGroup: columns must be defined");
+
+    // split the tiles by column into groups of two
+    let groups: TilePropsWithType[][] = [];
+    for (let i = 0; i < Math.floor(props.columns / 2) + (props.columns % 2); i++) {
+        groups.push([]);
+    }
+
+    for (let i = 0; i < props.tiles.length; i++) {
+        let t = props.tiles[i];
+        groups[Math.floor(t.column / 2)].push(t);
     }
 
     return (
-        <div class="start-tile-group" style={style}>
+        <div class="start-tile-group">
             <h2 class="tile-group-header">
                 {/* a non breaking space is inserted here to ensure the layout remains the same */}
                 {this.props.title && this.props.title !== "" ? this.props.title : "\u00A0"}
             </h2>
-            {...props.tiles.map(t => t.type === "fence" ?
+            {/* {...props.tiles.map(t => t.type === "fence" ?
                 <FenceTileRenderer key={"Fence_" + t.key} {...t as FenceTileProps} /> :
                 <TileRenderer key={"Tile_" + t.key} {...t as TileProps} />)
-            }
+            } */}
+
+            <div class="tile-group-columns">
+                {groups.map((g, i) => {
+                    return (
+                        <div class="tile-group-column" style={{animationDelay: ((g[0].animColumn / 2) * 50) + "ms"}}>
+                            {g.map(t => t.type === "fence" ?
+                                <FenceTileRenderer key={"Fence_" + t.key} {...t as FenceTileProps} /> :
+                                <TileRenderer key={"Tile_" + t.key} {...t as TileProps} />)
+                            }
+                        </div>
+                    );
+                })}
+            </div>
         </div>
     )
 }
