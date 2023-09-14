@@ -1,13 +1,13 @@
 import { Component, ComponentChild, RenderableProps, createContext } from "preact";
 import { Suspense, lazy } from "preact/compat"
 
-import LayoutState from "./LayoutState";
-import ScrollStateProvider from "./Start/ScrollStateProvider";
-import Start from "./Start";
+import LayoutState from "./Data/LayoutState";
+import ScrollStateProvider from "./Immersive/Start/ScrollStateProvider";
+import Start from "./Immersive/Start";
 import { hasWebP } from "./Util";
 
-const CoreWindowContainer = lazy(() => import("./CoreWindow/CoreWindowContainer"));
-const MessageDialogRenderer = lazy(() => import("./MessageDialog/MessageDialogRenderer"));
+const CoreWindowContainer = lazy(() => import("./Immersive/CoreWindow/CoreWindowContainer"));
+const MessageDialogRenderer = lazy(() => import("./Immersive/MessageDialog/MessageDialogRenderer"));
 
 // The site is in a mobile context if the screen width is less than 600px and will update on resize
 export const LayoutStateContext = createContext(LayoutState.windowsPhone81);

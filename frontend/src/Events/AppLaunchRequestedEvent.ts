@@ -1,7 +1,7 @@
 import { Package } from "shared/Package"
 import { PackageApplication } from "shared/PackageApplication"
 import { TileSize } from "shared/TileSize";
-import TileVisual from "../Tiles/TileVisual";
+import TileVisual from "~/Data/TileVisual";
 
 interface AppLaunchEventParams {
     tileX: number;

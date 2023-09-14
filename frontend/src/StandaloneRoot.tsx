@@ -1,10 +1,10 @@
 import AppInstanceManager from "./Data/AppInstanceManager";
 import { Component } from "preact";
 import CoreWindowLayoutManager from "./Data/CoreWindowLayoutManager";
-import CoreWindowRenderer from "./CoreWindow/CoreWindowRenderer";
+import CoreWindowRenderer from "~/Immersive/CoreWindow/CoreWindowRenderer";
 import PackageRegistry from "./Data/PackageRegistry";
 import ViewSizePreference from "./Data/ViewSizePreference";
-import MessageDialogRenderer from "./MessageDialog/MessageDialogRenderer";
+import MessageDialogRenderer from "~/Immersive/MessageDialog/MessageDialogRenderer";
 
 interface StandaloneRootProps {
     appId: string;

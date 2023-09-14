@@ -67,9 +67,9 @@ module.exports = [
             extensions: ['.tsx', '.ts', '.js'],
             fallback: { "crypto": false, "xmldom": false },
             alias: {
-                "winjs": path.resolve(__dirname, './winjs'),
                 "shared": path.resolve(__dirname, '../shared/src'),
                 "static": path.resolve(__dirname, './static'),
+                "packages": path.resolve(__dirname, '../packages'),
                 "~": path.resolve(__dirname, './src'),
                 "react": 'preact/compat',
                 "react-dom": 'preact/compat',

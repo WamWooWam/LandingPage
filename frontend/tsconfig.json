@@ -13,8 +13,9 @@
     "jsx": "react-jsx",
     "jsxImportSource": "preact",
     "paths": {
-      "shared/*": [ "../shared/src/*" ],
-      "winjs/*": [ "./winjs/*" ],
+      "~/*": [ "./src/*" ],
+      "packages/*": [ "../packages/*" ],
+      "shared/*": [ "../shared/src/*" ]
     }
   }
 }
