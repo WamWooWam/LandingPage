@@ -245,38 +245,36 @@ export default class TileRenderer extends Component<TileProps, TileState> {
 
         //let size = this.getTileSize(props.size)
         return (
-            <>
-                <a ref={this.root}
-                    id={`${props.packageName}!${props.appId}`}
-                    class={classList.join(" ")}
-                    style={containerStyle}
-                    onMouseDown={this.onMouseDown.bind(this)}
-                    onMouseUp={this.onMouseUp.bind(this)}
-                    onClick={this.onClick.bind(this)}
-                    title={state.app.visualElements.displayName}
-                    aria-label={state.app.visualElements.displayName}
-                    href={href}
-                    target="_blank">
-                    <div class="tile">
-                        <div class="front" style={frontStyle}>
-                            <TileVisualRenderer key={frontKey} app={state.app} visual={visual} size={props.size} />
-                        </div>
-                        {state.swapping &&
-                            <div class="next" style={frontStyle} onAnimationEnd={this.onAnimationEnded.bind(this)}>
-                                <TileVisualRenderer key={nextKey} app={state.app} visual={nextVisual} size={props.size} />
-                            </div>
-                        }
-                        <div className={"tile-toast-footer" + (!visual || visual === TileDefaultVisual ? " hidden" : "")}>
-                            <img className="tile-badge-icon" src={fixupUrl(state.app.visualElements.square30x30Logo, true)} alt={""} />
-                        </div>
+            <a ref={this.root}
+                id={`${props.packageName}!${props.appId}`}
+                class={classList.join(" ")}
+                style={containerStyle}
+                onMouseDown={this.onMouseDown.bind(this)}
+                onMouseUp={this.onMouseUp.bind(this)}
+                onClick={this.onClick.bind(this)}
+                title={state.app.visualElements.displayName}
+                name={state.app.visualElements.displayName}
+                href={href}
+                target="_blank">
+                <div class="tile">
+                    <div class="front" style={frontStyle}>
+                        <TileVisualRenderer key={frontKey} app={state.app} visual={visual} size={props.size} />
                     </div>
+                    {state.swapping &&
+                        <div class="next" style={frontStyle} onAnimationEnd={this.onAnimationEnded.bind(this)}>
+                            <TileVisualRenderer key={nextKey} app={state.app} visual={nextVisual} size={props.size} />
+                        </div>
+                    }
+                    <div className={"tile-toast-footer" + (!visual || visual === TileDefaultVisual ? " hidden" : "")}>
+                        <img className="tile-badge-icon" src={fixupUrl(state.app.visualElements.square30x30Logo, true)} alt={""} />
+                    </div>
+                </div>
 
-                    <TileBadge isError={state.appStatus && state.appStatus.statusCode !== 0} />
+                <TileBadge isError={state.appStatus && state.appStatus.statusCode !== 0} />
 
-                    <div className="tile-border"
-                        style={{ border: '1px solid rgba(255,255,255,0.1)' }} />
-                </a>
-            </>
+                <div className="tile-border"
+                    style={{ border: '1px solid rgba(255,255,255,0.1)' }} />
+            </a>
         )
     }
 

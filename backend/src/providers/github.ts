@@ -16,7 +16,7 @@ export namespace GitHub {
                 textElement.textContent = `${event.actor.login} pushed ${event.payload.size} commits`;
                 break;
             case 'CreateEvent':
-                textElement.textContent = `${event.actor.login} created ${event.payload.ref_type}`;
+                textElement.textContent = `${event.actor.login} created ${event.payload.ref_type} ${event.payload.ref}`;
                 break;
             case 'DeleteEvent':
                 textElement.textContent = `${event.actor.login} deleted ${event.payload.ref_type} ${event.payload.ref}`;
@@ -60,7 +60,15 @@ export namespace GitHub {
 
     export const recentActivity = async (req, res) => {
         // fetch recent activity for a user
-        const url = `${rootUrl}/users/${username}/events`
+
+        let url = '';
+        if(req.params.project === 'recent-activity') {
+            url = `${rootUrl}/users/${username}/events`;
+        }
+        else {
+            url = `${rootUrl}/repos/${req.params.username ?? username}/${req.params.project}/events`;
+        }
+
         const resp = await fetch(url, {
             method: 'GET',
             headers: {
@@ -74,7 +82,7 @@ export namespace GitHub {
         let root = TileUpdateManager.getTemplateContent(TileTemplateType.tileWideSmallImageAndText03);
         let rootElement = root.getElementsByTagName("tile")[0];
         rootElement.removeChild(rootElement.getElementsByTagName("visual")[0]);
-        
+
         for (const event of json) {
             let visual = root.createElement("visual");
             rootElement.appendChild(visual);

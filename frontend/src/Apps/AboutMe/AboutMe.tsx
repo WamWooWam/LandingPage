@@ -1,10 +1,7 @@
 import { AboutMeContent } from './AboutMeContent';
-import WinJS from "winjs/light";
 import "./aboutme.scss"
 
 export const AboutMe = () => {
-    WinJS.UI.processAll();
-
     console.log("AboutMe app rendering")
     return (
         <div id="about-me-root" className="winjs-root">

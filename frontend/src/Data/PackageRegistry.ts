@@ -11,25 +11,5 @@ export default class PackageRegistry {
     static registerPackage(pack: Package) {
         console.log(`registering %O as ${pack.identity.packageFamilyName}`, pack);
         PackageRegistry.packages.set(pack.identity.packageFamilyName, pack);
-
-        for (const id in pack.applications) {
-            const app = pack.applications[id];
-            // BUGBUG: hacky check for standalone app mode, dont use CoreWindowManager to avoid bringing in the dependency
-            if (typeof window !== "undefined" && app.load && !window.location.pathname.match(/\/app\//)) {
-                // pre-cache some visual assets for slow connections
-                fetch(app.visualElements.square30x30Logo)
-                    .then(resp => resp.blob())
-                    .then(blob => {
-                        let url = URL.createObjectURL(blob);
-                        app.visualElements.square30x30Logo = url;
-                    });
-                fetch(app.visualElements.splashScreen.image)
-                    .then(resp => resp.blob())
-                    .then(blob => {
-                        let url = URL.createObjectURL(blob);
-                        app.visualElements.splashScreen.image = url;
-                    });
-            }
-        }
     }
 }

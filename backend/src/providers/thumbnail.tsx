@@ -15,7 +15,6 @@ import {
     layoutDesktop,
     lightenDarkenColour2,
     PackageReader,
-    PackageApplication,
     Package,
     TileSize
 } from "landing-page-shared";
@@ -32,9 +31,9 @@ export namespace Thumbnail {
             <text x={8}
                 y={props.height - 8}
                 font-size="7.5pt"
-                fill={props.textStyle === 'light' ? 'white' : 'black'} 
+                fill={props.textStyle === 'light' ? 'white' : 'black'}
                 style={`font-family: 'Segoe UI';`}>
-                    {props.text}
+                {props.text}
             </text>;
 
         let imageUrl = `../frontend/dist${props.image}`;

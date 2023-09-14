@@ -4,7 +4,7 @@ import { Component, RefObject, createRef } from "preact";
 import { StartTileGroup, parseLayout } from "shared/StartLayoutParser";
 
 import AllAppsButton from "./AllAppsButton";
-import Avatar from "../../static/wam.webp"
+import Avatar from "../../static/wam-circular.webp"
 import Events from "../Events";
 import HeaderButton from "./HeaderButton";
 import LayoutState from "../LayoutState";
@@ -14,20 +14,6 @@ import SearchIcon from "./SearchIcon";
 import StartLayout from '../../../packages/StartScreen.xml'
 import StartLayoutMobile from "../../../packages/MobileStartScreen.xml"
 import StartScrollContainer from "./StartScrollContainer";
-
-type FullscreenDocument = Document & {
-    webkitFullscreenElement?: Element,
-    msFullscreenElement?: Element,
-    mozFullScreenElement?: Element,
-    webkitExitFullscreen?: Function,
-    msExitFullscreen?: Function,
-    mozCancelFullScreen?: Function
-};
-type FullscreenElement = HTMLElement & {
-    webkitRequestFullscreen?: Function,
-    msRequestFullscreen?: Function,
-    mozRequestFullScreen?: Function
-};
 
 interface StartState {
     tileGroups: Array<StartTileGroup>
@@ -74,7 +60,7 @@ export default class Start extends Component<{}, StartState> {
                                 <div class="start-content">
                                     {!isMobile &&
                                         <div class="start-header start-main-header">
-                                            <h1 class="start-title" role="button">Start</h1>
+                                            <h1 class="start-title">Start</h1>
                                             <div class="start-header-buttons">
                                                 <HeaderButton primaryClass="start-header-user-button" label="User">
                                                     <div class="username">

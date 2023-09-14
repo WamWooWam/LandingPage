@@ -176,6 +176,8 @@
                 <wb:DefaultTile Square70x70Logo="images/bsky-square70x70.webp"
                     Wide310x150Logo="images/bsky-wide310x150.webp"
                     Square310x310Logo="images/bsky-square310x310.webp">
+                    <wb:TileUpdate Recurrence="halfHour"
+                        UriTemplate="/api/live-tiles/bluesky/latest-posts.xml" />
                     <wb:ShowNameOnTiles>
                         <wb:ShowOn Tile="square150x150Logo" />
                         <wb:ShowOn Tile="wide310x150Logo" />

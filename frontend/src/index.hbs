@@ -17,7 +17,7 @@
     <link rel="me" href="https://twitter.com/da_wamwoowam">
     <link rel="me" href="https://snug.moe/@wamwoowam">
 
-    <meta name="theme-color" content="#000000">
+    <meta name="theme-color" content="#25079b">
     <meta name="description"
         content="Welcome to Wam's Site! Here you'll find info about me as well as links to where to find me elsewhere on the internet.">
 
@@ -41,8 +41,10 @@
     <meta name="twitter:creator:id" content="2909863037">
 
     <!-- preload -->
-    <link rel="preload" fetchpriority="high" as="image" href="/packages/Socials_zfgz6xjnaz0ym/images/peoplelarge.png" type="image/png">
-    <link rel="preload" fetchpriority="high" as="image" href="/packages/Socials_zfgz6xjnaz0ym/images/snug-wide310x150.webp" type="image/webp">
+    <link rel="preload" as="fetch" href="/api/configuration">
+    {{#each preload}}
+    <link rel="prefetch" as="image" href="{{this}}" >
+    {{/each}}
 </head>
 
 <body>

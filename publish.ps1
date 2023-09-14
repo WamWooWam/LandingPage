@@ -1,3 +1,5 @@
+#!/usr/bin/env pwsh
+
 Remove-Item -Force -Recurse .\publish
 Remove-Item -Force -Recurse .\frontend\dist
 Remove-Item -Force -Recurse .\backend\dist
@@ -7,7 +9,7 @@ New-Item -ItemType Directory -Path .\publish\frontend\dist
 New-Item -ItemType Directory -Path .\publish\frontend\dist\og-image
 New-Item -ItemType Directory -Path .\publish\shared
 
-$env:NODE_ENV="production"
+$env:NODE_ENV = "production"
 
 Set-Location -Path .\frontend
 
@@ -20,8 +22,15 @@ yarn --production=false
 yarn build
 yarn run build-images
 
-& 'C:\Program Files\Inkscape\bin\inkscape.exe' --export-png=images\og-image.png --export-width=1280 --export-height=800 images\og-image.svg
-
+if ($IsWindows) {
+    & 'C:\Program Files\Inkscape\bin\inkscape.exe' --export-png=images\og-image.png --export-width=1280 --export-height=800 images\og-image.svg
+}
+elseif ($IsMacOS) {
+    qlmanage -t -s 1200 -o images/og-image.png images/og-image.svg
+}
+else {
+    /usr/bin/inkscape --export-png=images/og-image.png --export-width=1280 --export-height=800 images/og-image.svg
+}
 
 Set-Location -Path ..\
 

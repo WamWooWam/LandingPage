@@ -2,12 +2,12 @@ import { Component, ComponentChild, RenderableProps, createContext } from "preac
 import { Suspense, lazy } from "preact/compat"
 
 import LayoutState from "./LayoutState";
-import MessageDialogRenderer from "./MessageDialog/MessageDialogRenderer";
 import ScrollStateProvider from "./Start/ScrollStateProvider";
 import Start from "./Start";
 import { hasWebP } from "./Util";
 
 const CoreWindowContainer = lazy(() => import("./CoreWindow/CoreWindowContainer"));
+const MessageDialogRenderer = lazy(() => import("./MessageDialog/MessageDialogRenderer"));
 
 // The site is in a mobile context if the screen width is less than 600px and will update on resize
 export const LayoutStateContext = createContext(LayoutState.windowsPhone81);
@@ -51,7 +51,7 @@ export default class Root extends Component<{}, RootState> {
                         <Start />
                     </ScrollStateProvider>
 
-                    <Suspense fallback={null}><CoreWindowContainer /></Suspense>
+                    <Suspense fallback={<div class="core-window-container" />}><CoreWindowContainer /></Suspense>
                     <Suspense fallback={null}><MessageDialogRenderer /></Suspense>
                 </WebPContext.Provider>
             </LayoutStateContext.Provider>

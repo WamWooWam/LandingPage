@@ -28,7 +28,7 @@
                     Wide310x150Logo="images/github-wide310x150.svg"
                     Square310x310Logo="images/github-square310x310.svg">
                     <wb:TileUpdate Recurrence="halfHour"
-                        UriTemplate="/api/live-tiles/github/recent-activity.xml" />
+                        UriTemplate="/api/live-tiles/github/wamwoowam/recent-activity.xml" />
                     <wb:ShowNameOnTiles>
                         <wb:ShowOn Tile="square150x150Logo" />
                         <wb:ShowOn Tile="wide310x150Logo" />
@@ -48,7 +48,7 @@
                     Wide310x150Logo="images/unicord-wide310x150.svg"
                     Square310x310Logo="images/unicord-square310x310.svg">
                     <wb:TileUpdate Recurrence="halfHour"
-                        UriTemplate="/api/live-tiles/unicord/recent-activity.xml" />
+                        UriTemplate="/api/live-tiles/github/unicorddev/unicord.xml" />
                     <wb:ShowNameOnTiles>
                         <wb:ShowOn Tile="square150x150Logo" />
                         <wb:ShowOn Tile="wide310x150Logo" />
@@ -56,6 +56,26 @@
                     </wb:ShowNameOnTiles>
                 </wb:DefaultTile>
                 <wb:SplashScreen BackgroundColor="#0078d7" Image="unicord-splash.svg" />
+            </wb:VisualElements>
+        </Application>
+
+
+        <Application Id="ReLiveWP" StartPage="https://github.com/ReLiveWP/ReLiveWP">
+            <wb:VisualElements DisplayName="ReLiveWP" Description="A project to revive Windows Live services for Windows Phone 7/8!" ForegroundText="light"
+                BackgroundColor="#e51400" Square150x150Logo="images/relivewp-square150x150.svg"
+                Square30x30Logo="images/relivewp-square30x30.svg" ToastCapable="true">
+                <wb:DefaultTile Square70x70Logo="images/relivewp-square70x70.svg"
+                    Wide310x150Logo="images/relivewp-wide310x150.svg"
+                    Square310x310Logo="images/relivewp-square310x310.svg">
+                    <wb:TileUpdate Recurrence="halfHour"
+                        UriTemplate="/api/live-tiles/github/relivewp/relivewp.xml" />
+                    <wb:ShowNameOnTiles>
+                        <wb:ShowOn Tile="square150x150Logo" />
+                        <wb:ShowOn Tile="wide310x150Logo" />
+                        <wb:ShowOn Tile="square310x310Logo" />
+                    </wb:ShowNameOnTiles>
+                </wb:DefaultTile>
+                <wb:SplashScreen BackgroundColor="#dd2f00" Image="relivewp-splash.svg" />
             </wb:VisualElements>
         </Application>
     </Applications>

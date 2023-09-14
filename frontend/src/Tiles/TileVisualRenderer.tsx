@@ -1,7 +1,7 @@
 import { PackageApplication } from "shared/PackageApplication";
+import { TileSize } from "shared/TileSize";
 import { RenderableProps } from "preact";
 import TileBinding from "./TileBinding";
-import { TileSize } from "shared/TileSize";
 import TileVisual from "./TileVisual";
 import { fixupUrl } from "../Util";
 import { getTileSize } from "./TileUtils";

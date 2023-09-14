@@ -1,6 +1,7 @@
 const path = require('path');
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const FaviconsWebpackPlugin = require('favicons-webpack-plugin')
 const { env } = require('process');
 
 module.exports = [
@@ -79,8 +80,26 @@ module.exports = [
                 filename: env.NODE_ENV === 'production' ? "[name].[chunkhash].css" : "[name].bundle.css",
                 chunkFilename: env.NODE_ENV === 'production' ? "[id].bundle.[chunkhash].css" : "[id].bundle.css"
             }),
-            new HtmlWebpackPlugin({ inject: true, template: "./src/index.hbs", chunks: ["index"], filename: "views/index.hbs", publicPath: "/" }),
-            new HtmlWebpackPlugin({ inject: true, template: "./src/standalone.hbs", chunks: ["standalone"], filename: "views/standalone.hbs", publicPath: "/" }),
+            new HtmlWebpackPlugin({
+                inject: true,
+                template: "./src/index.hbs",
+                chunks: ["index"],
+                filename: "views/index.hbs",
+                publicPath: "/"
+            }),
+            new HtmlWebpackPlugin({
+                inject: true,
+                template: "./src/standalone.hbs",
+                chunks: ["standalone"],
+                filename: "views/standalone.hbs",
+                publicPath: "/"
+            }),
+            new FaviconsWebpackPlugin({
+                logo: './static/wam-circular.png',
+                favicons: {
+                    icons: { android: false, appleIcon: false, appleStartup: false, windows: false, yandex: false, }
+                }
+            })
         ],
         output: {
             filename: env.NODE_ENV === 'production' ? '[name].[chunkhash].js' : '[name].bundle.js',

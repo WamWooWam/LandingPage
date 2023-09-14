@@ -10,4 +10,4 @@ export interface RawTileProps {
     size: TileSize;
     fence: boolean;
 }
-export declare const parseLayout: (text: string) => any[];
+export declare const parseLayout: (text: string, parser?: typeof DOMParser) => any[];

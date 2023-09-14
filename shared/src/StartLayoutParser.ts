@@ -13,17 +13,15 @@ export interface RawTileProps {
     fence: boolean;
 }
 
-export const parseLayout = (text: string) => {
-    const DOMParser = globalThis.DOMParser;
-
-    let doc = new DOMParser().parseFromString(text, 'application/xml');
+export const parseLayout = (text: string, parser: typeof DOMParser = globalThis.DOMParser) => {
+    let doc = new parser().parseFromString(text, 'application/xml');
     let root = doc.getElementsByTagName("launcher")[0];
 
     if (root == null) {
         return;
     }
 
-    let tileGroups = [];
+    let tileGroups: StartTileGroup[] = [];
     let groups = root.getElementsByTagName("group");
     for (let i = 0; i < groups.length; i++) {
         let group = groups[i];

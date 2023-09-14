@@ -1,25 +1,67 @@
 import 'dotenv/config'
 
-import * as express from 'express';
-import * as path from 'path'
-import * as apicache from 'apicache'
-import * as fs from 'fs'
-import * as fsp from 'fs/promises'
+const express = require('express');
+const path = require('path');
+const fsp = require('fs/promises');
+const apicache = require('apicache');
+const proxy = require('express-http-proxy');
 
 import PackageRegistry from './PackageRegistry';
+import { PackageReader, StartTileGroup, TileSize, parseLayout } from 'landing-page-shared';
 
 import { Twitter } from './providers/twitter';
 import { Snug } from './providers/snug';
 import { Twitch } from './providers/twitch';
 import { YouTube } from './providers/youtube';
 import { GitHub } from './providers/github';
-import { Thumbnail } from './providers/thumbnail';
-import { PackageReader } from 'landing-page-shared';
-import { Images } from './providers/images/tiles';
 import { Standalone } from './providers/standalone/manifest';
 import { Configuration } from './providers/configuration';
+import { Bluesky } from './providers/bluesky';
+import { render } from 'preact-render-to-string';
 
 globalThis.DOMParser = require('xmldom').DOMParser; // BUGBUG: hacky fix to stop webpack including xmldom in the client bundle
+
+const generatePreload = async () => {
+    const preloadUrls: string[] = [];
+
+    const startLayout = await fsp.readFile('../packages/StartScreen.xml', 'utf-8');
+    const layout = (parseLayout(startLayout, DOMParser) as StartTileGroup[]).flatMap(g => g.tiles);
+    for (let tile of layout) {
+        if (tile.packageName) {
+            const pack = PackageRegistry.getPackage(tile.packageName);
+            if (!pack) continue;
+
+            const app = pack.applications[tile.appId];
+            if (!app) continue;
+
+            switch (tile.size) {
+                case TileSize.square70x70:
+                    preloadUrls.push(app.visualElements.defaultTile.square70x70Logo);
+                    break;
+                case TileSize.wide310x150:
+                    preloadUrls.push(app.visualElements.defaultTile.wide310x150Logo);
+                    break;
+                case TileSize.square310x310:
+                    preloadUrls.push(app.visualElements.defaultTile.square310x310Logo);
+                    break;
+                default:
+                case TileSize.square150x150:
+                    preloadUrls.push(app.visualElements.square150x150Logo);
+                    break;
+            }
+
+            if (app.entryPoint) {
+                preloadUrls.push(app.visualElements.square30x30Logo);
+                preloadUrls.push(app.visualElements.splashScreen.image);
+            }
+            else if (app.visualElements.defaultTile.tileUpdateUrl) {
+                preloadUrls.push(app.visualElements.square30x30Logo);
+            }
+        }
+    }
+
+    return preloadUrls;
+}
 
 const app = express();
 
@@ -28,19 +70,24 @@ const app = express();
     for (let packageName of packages) {
         try {
             const appxManifest = await fsp.readFile(`../packages/${packageName}/AppxManifest.xml`, 'utf-8');
-            let parser = new PackageReader(appxManifest, new DOMParser());
-            let manifest = await parser.readPackage();
+            const parser = new PackageReader(appxManifest, new DOMParser());
+            const manifest = await parser.readPackage();
+
             PackageRegistry.registerPackage(manifest);
         }
         catch (e) {
         }
     }
 
+    await Bluesky.initialize();
+    const preload = await generatePreload();
+
     app.set('view engine', 'hbs');
     app.set('views', path.join(process.cwd(), '../frontend/dist/views'));
 
     app.use((req, res, next) => {
         const time = performance.now();
+        
         next();
 
         res.on('finish', () => {
@@ -53,7 +100,8 @@ const app = express();
     app.get('/api/live-tiles/snug/latest-notes.xml', apicache.middleware('15 minutes'), Snug.latestNotes);
     app.get('/api/live-tiles/twitch/is-live.xml', apicache.middleware('15 minutes'), Twitch.isLive);
     app.get('/api/live-tiles/youtube/recent-videos.xml', apicache.middleware('15 minutes'), YouTube.recentVideos);
-    app.get('/api/live-tiles/github/recent-activity.xml', apicache.middleware('15 minutes'), GitHub.recentActivity);
+    app.get('/api/live-tiles/github/:username/:project.xml', apicache.middleware('15 minutes'), GitHub.recentActivity);
+    app.get('/api/live-tiles/bluesky/latest-posts.xml', apicache.middleware('15 minutes'), Bluesky.latestPosts);
 
     app.get('/api/media/og-image.svg', apicache.middleware('14 days'), (req, res) => {
         res.sendFile(path.join(process.cwd(), "images/og-image.svg"));
@@ -62,7 +110,12 @@ const app = express();
         res.sendFile(path.join(process.cwd(), "images/og-image.png"));
     });
 
-    app.get('/api/media/:type/:package/:app/:size?', apicache.middleware('14 days'), Images.getImage);
+    if ('Bun' in globalThis) {
+        app.get('/api/media/:type/:package/:app/:size?', apicache.middleware('90 days'), proxy('http://localhost:5001'));
+    }
+    else {
+        app.get('/api/media/:type/:package/:app/:size?', apicache.middleware('90 days'), require('./providers/images/tiles').Images.getImage);
+    }
     app.get('/api/manifest/:package/:app', apicache.middleware('14 days'), Standalone.Manifest.getManifest);
     app.get('/api/msapplication-config/:package/:app', apicache.middleware('14 days'), Standalone.Manifest.getApplicationConfig);
 
@@ -70,7 +123,7 @@ const app = express();
 
     app.use(express.static(path.join(process.cwd(), "..", "frontend", "dist"), { index: false, maxAge: '90d' }));
     app.get('/', (req, res) => {
-        res.render('index');
+        res.render('index', { preload });
     });
 
     app.get('/app/:package/:id', (req, res) => {
@@ -112,7 +165,10 @@ const app = express();
             splashScreen: `${plated}/splash`,
             appleTouchIcon: `${plated}/apple-touch-icon`,
             manifest: `/api/manifest/${req.params.package}/${req.params.id}`,
-            applicationConfig: `/api/msapplication-config/${req.params.package}/${req.params.id}`
+            applicationConfig: `/api/msapplication-config/${req.params.package}/${req.params.id}`,
+            preload: [
+                app.visualElements.splashScreen.image
+            ]
         }
 
         res.render('standalone', data);

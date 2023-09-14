@@ -7,7 +7,7 @@ import './index.scss';
 import './segoe.scss';
 import "./Test"
 
-import { hydrate, render } from "preact"
+import { hydrate } from "preact"
 
 import PackageRegistry from "./Data/PackageRegistry";
 import Root from "./Root";

@@ -436,8 +436,10 @@
 
     background-size: cover;
     background-position: center;
-    background-color: #BBBBBB;
+    background-color: #888888;
     background-blend-mode: multiply;
+
+    filter: saturate(0.75);
 
     justify-content: space-between;
 }

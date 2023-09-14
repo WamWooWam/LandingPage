@@ -39,6 +39,13 @@
     <meta name="twitter:title" content="{{title}}">
     <meta name="twitter:creator" content="@da_wamwoowam">
     <meta name="twitter:creator:id" content="2909863037">
+
+    <!-- preload -->
+    {{#each preload}}
+    <link rel="preload" as="image" href="{{this}}">
+    {{/each}}
+
+    <style>:root {background-color: {{themeColor}};}</style>
 </head>
 
 <body>

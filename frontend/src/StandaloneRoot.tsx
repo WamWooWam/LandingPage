@@ -4,6 +4,7 @@ import CoreWindowLayoutManager from "./Data/CoreWindowLayoutManager";
 import CoreWindowRenderer from "./CoreWindow/CoreWindowRenderer";
 import PackageRegistry from "./Data/PackageRegistry";
 import ViewSizePreference from "./Data/ViewSizePreference";
+import MessageDialogRenderer from "./MessageDialog/MessageDialogRenderer";
 
 interface StandaloneRootProps {
     appId: string;
@@ -26,16 +27,19 @@ export default class StandaloneRoot extends Component<StandaloneRootProps, Stand
 
         const instance = AppInstanceManager.launchInstance(pack, app);
         CoreWindowLayoutManager.getInstance()
-            .addWindowToLayout(instance.mainWindow, ViewSizePreference.useHalf)
+            .addWindowToLayout(instance.mainWindow, ViewSizePreference.default)
 
         this.setState({ id: instance.mainWindow.id });
     }
 
     render() {
         return (
-            <div class="core-window-container">
-                <CoreWindowRenderer id={this.state.id} isLaunching={false} visible={true} />
-            </div>
+            <>
+                <div class="core-window-container">
+                    <CoreWindowRenderer id={this.state.id} isLaunching={false} visible={true} />
+                </div>
+                <MessageDialogRenderer />
+            </>
         );
     }
 }

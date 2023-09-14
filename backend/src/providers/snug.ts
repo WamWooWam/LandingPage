@@ -34,7 +34,6 @@ export namespace Snug {
         let notes = await usersNotes(userId)
 
         let root = createRoot();
-        let rootElement = root.documentElement;
 
         for (const note of notes) {
             if (note.visibility !== 'public') continue;
