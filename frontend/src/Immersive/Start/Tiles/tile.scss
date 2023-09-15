@@ -91,7 +91,7 @@
     left: -4px;
     right: -4px;
     bottom: -4px;
-    border: 3px solid rgba(43, 6, 128, 1);
+    border: 3px solid var(--accent-colour);
 }
 
 .tile-container {
@@ -178,17 +178,17 @@
         background-size: contain;
         background-repeat: no-repeat;
         background-position: center;
-        background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABwAAAAYCAYAAADpnJ2CAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAACxEAAAsRAX9kX5EAAADQSURBVEhL7ZRBDoMgEEUHl71H93qHrr2MJ4Jz9CY9BKxcls4fMCFRCtqGFS+ZDILDQ1Go0zmLirkK7/2N04PjLh1EL46nUmoNl2WqhCzCfe9wlWVgsY/tLEVhpWyjKB1i/obIjDE0TRM556QToI0+jEVqF3YM9oxDGMcRK5dsrZVI+xKwz9fg4jnM4XeCtI2xhFmKr8DFS5gjkEoRBzKwSHGGmj1sB6+2+Stt+9GAOInXWu+eZpNibCOWZWn+4xeFoFL6n6MthcU/H96dzkmIPupPGNaHz8XHAAAAAElFTkSuQmCC);
+        background-image: url(static/tiles/error-badge@1x.png);
     }
 }
 
-@media only screen and (-moz-min-device-pixel-ratio: 2), 
-       only screen and (-o-min-device-pixel-ratio: 2/1), 
-       only screen and (-webkit-min-device-pixel-ratio: 2), 
-       only screen and (min-device-pixel-ratio: 2),
-       (resolution >= 2dppx) {
+@media only screen and (-moz-min-device-pixel-ratio: 2),
+only screen and (-o-min-device-pixel-ratio: 2/1),
+only screen and (-webkit-min-device-pixel-ratio: 2),
+only screen and (min-device-pixel-ratio: 2),
+(resolution >=2dppx) {
     .tile-badge.error {
-        background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADEAAAAqCAYAAAAajbNEAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAGrSURBVGhD7ZhfToNAEMbBp/bJUt+qnsMrqY3xUe2rB4ETmJjWOxiNgSvYqneoL/h97BgopS1/mgXj/JIvCzvTnZkNYYc6iqIoiqL8R+I4PoTOoUfoHfqGltAcmkFjaCju3QKJ9aAbqCz07cnP2wfJjKBnZlaRF2gky9TGlbE2ksSnuavNseu6X3JdmQMZa4EC+Dg0LYA8yFq1aFQEuJYxIYoix/M8JwgCmVmHNvrQN8MZdGsuLYKdG0IrDAaDmCbK932ZTeHcr52+BRzBZg8EvDRxU7JJUtlCttkyjGGzBwJOTdxVipItWQCZwm4PBOThVUg+6ay2FEDm8LEHAvIU3khRITsKIEv4VabJ26nxGdM62DX2RYX8pceJDd4a+QJ4XzS3gRns9kDACxM3ZVuyJQux/or1TNyUPRx29lt0BL0zsQ1hGCbJbdjlBNroQ98cE1nWLgjMb4jXJIVmvEF9WbYy+2jFTzAszF1tTtGKf8h1O7AQ2c2q8KOIm9ANkEwfmjCzktxD3fk8zYLE2KKzw2WDyP6K7Qn/LFhAT9AVZLflVhRFURSldRznByoWMQrQKQaCAAAAAElFTkSuQmCC);
+        background-image: url(static/tiles/error-badge@2x.png);
     }
 }
 
@@ -390,33 +390,31 @@
 .tile-wide-header-and-text {
     display: flex;
     flex-direction: column;
-}
 
-.tile-square-header-and-text>h3,
-.tile-wide-header-and-text>h3 {
-    display: flex;
-    font-size: 16pt;
-    font-weight: 300;
-    margin: 8px 8px 0 14px;
-    overflow: hidden;
-    text-overflow: clip;
-    text-wrap: nowrap;
-    white-space: nowrap;
-    width: 100%;
-}
+    >h3 {
+        display: flex;
+        font-size: 16pt;
+        font-weight: 300;
+        margin: 8px 8px 0 14px;
+        overflow: hidden;
+        text-overflow: clip;
+        text-wrap: nowrap;
+        white-space: nowrap;
+        width: 100%;
+    }
 
-.tile-square-header-and-text>p,
-.tile-wide-header-and-text>p {
-    display: -webkit-box;
-    -webkit-line-clamp: 4;
-    -webkit-box-orient: vertical;
-    line-clamp: 4;
-    font-size: 9pt;
-    line-height: 16px;
-    margin: 4px 8px 8px 14px;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    overflow-wrap: break-word;
+    >p {
+        display: -webkit-box;
+        -webkit-line-clamp: 4;
+        -webkit-box-orient: vertical;
+        line-clamp: 4;
+        font-size: 9pt;
+        line-height: 16px;
+        margin: 4px 8px 8px 14px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        overflow-wrap: break-word;
+    }
 }
 
 .tile-background {
@@ -442,33 +440,33 @@
     filter: saturate(0.75);
 
     justify-content: space-between;
-}
 
-.tile-square-image-and-text-overlay-02>h3 {
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
-    line-clamp: 2;
-    font-size: 16pt;
-    font-weight: 300;
-    margin: 16px 16px 4px 16px;
-    overflow: hidden;
-    text-overflow: clip;
-    overflow-wrap: break-word;
-}
+    >h3 {
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        line-clamp: 2;
+        font-size: 16pt;
+        font-weight: 300;
+        margin: 16px 16px 4px 16px;
+        overflow: hidden;
+        text-overflow: clip;
+        overflow-wrap: break-word;
+    }
 
-.tile-square-image-and-text-overlay-02>p {
-    display: -webkit-box;
-    -webkit-line-clamp: 3;
-    -webkit-box-orient: vertical;
-    line-clamp: 3;
-    font-size: 9pt;
-    line-height: 16px;
-    margin: 4px 16px 36px 16px;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    overflow-wrap: break-word;
-    justify-self: flex-end;
+    >p {
+        display: -webkit-box;
+        -webkit-line-clamp: 3;
+        -webkit-box-orient: vertical;
+        line-clamp: 3;
+        font-size: 9pt;
+        line-height: 16px;
+        margin: 4px 16px 36px 16px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        overflow-wrap: break-word;
+        justify-self: flex-end;
+    }
 }
 
 @keyframes start-entrance-animation {

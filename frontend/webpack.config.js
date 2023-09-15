@@ -42,7 +42,13 @@ module.exports = [
                     ],
                 },
                 {
-                    test: /\.(woff(2)?|ttf|eot|png|jpg|webp|avif|wasm)(\?v=\d+\.\d+\.\d+)?$/i,
+                    test: /\.(png|jpg|gif|webp|avif)$/i,
+                    use: [
+                        { loader: 'url-loader', options: { limit: 4096, fallback: { loader: 'file-loader', options: { outputPath: 'static/' } } } },
+                    ],
+                },
+                {
+                    test: /\.(woff(2)?|ttf|eot|wasm)(\?v=\d+\.\d+\.\d+)?$/i,
                     use: [
                         { loader: 'file-loader', options: { outputPath: 'static/' } }
                     ]

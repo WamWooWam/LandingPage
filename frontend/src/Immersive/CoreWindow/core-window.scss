@@ -80,6 +80,9 @@
     align-items: center;
     justify-content: center;
     margin-left: 36px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .core-window-minimise {
@@ -187,5 +190,5 @@
 }
 
 .core-window-layout-separator::after {
-    content: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAYAAAAaCAYAAACU2C2oAAAAAXNSR0IArs4c6QAAAAZiS0dEAP8A/wD/oL2nkwAAAAlwSFlzAAALEwAACxMBAJqcGAAAAAd0SU1FB9sLFhYWOJq+rZUAAABQSURBVCjPzc+xDcAgDETRb4uGKajSsv8uVExyKUKEFYkuQrzSss86k5SBCyg8OtDSGFamCuBhMyrOgo/Mr56A9p7H5yZpGfUTO7I5G5zZ/AZOpyHlj4Z2JwAAAABJRU5ErkJggg==);
+    content: url(static/core-window/separator@1x.png);
 }

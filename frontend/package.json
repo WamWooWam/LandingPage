@@ -15,6 +15,8 @@
     "@types/node": "^20.4.3",
     "css-loader": "^5.2.1",
     "css-minimizer-webpack-plugin": "^5.0.1",
+    "favicons": "^7.1.4",
+    "favicons-webpack-plugin": "^6.0.1",
     "file-loader": "^6.2.0",
     "html-webpack-plugin": "^5.5.3",
     "manifest-loader": "../tools/manifest-loader",
@@ -33,12 +35,11 @@
     "ts-loader": "^8.1.0",
     "ts-transform-react-jsx-source": "^2.0.3",
     "typescript": "^5.1.6",
+    "url-loader": "^4.1.1",
     "webpack": "^5.31.2",
     "webpack-cli": "^5.1.4",
     "webpack-dev-server": "^4.15.1",
-    "xml-loader": "../tools/xml-loader",
-    "favicons": "^7.1.4",
-    "favicons-webpack-plugin": "^6.0.1"
+    "xml-loader": "../tools/xml-loader"
   },
   "scripts": {
     "start": "webpack serve --config ./webpack.config.js --mode development",

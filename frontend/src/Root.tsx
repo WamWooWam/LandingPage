@@ -8,6 +8,7 @@ import { hasWebP } from "./Util";
 
 const CoreWindowContainer = lazy(() => import("./Immersive/CoreWindow/CoreWindowContainer"));
 const MessageDialogRenderer = lazy(() => import("./Immersive/MessageDialog/MessageDialogRenderer"));
+const CharmsBarRenderer = lazy(() => import("./Immersive/Charms/CharmsBarRenderer"));
 
 // The site is in a mobile context if the screen width is less than 600px and will update on resize
 export const LayoutStateContext = createContext(LayoutState.windowsPhone81);
@@ -53,6 +54,8 @@ export default class Root extends Component<{}, RootState> {
 
                     <Suspense fallback={<div class="core-window-container" />}><CoreWindowContainer /></Suspense>
                     <Suspense fallback={null}><MessageDialogRenderer /></Suspense>
+
+                    {this.state.layoutState === LayoutState.windows81 && <Suspense fallback={null}><CharmsBarRenderer /></Suspense>}
                 </WebPContext.Provider>
             </LayoutStateContext.Provider>
         )

@@ -4,9 +4,13 @@
 
 .start-content {
     display: grid;
-    grid-template-columns: 0 1fr 64px;
+    grid-template-columns: 0 1fr 0;
     height: 100%;
     height: -webkit-fill-available;
+} 
+
+.start-tiles {
+    margin-right: 8px;
 }
 
 @keyframes start-hide {
@@ -80,11 +84,11 @@ html {
 }
 
 .start {
-    position: absolute;
+    position: fixed;
     top: 0;
     left: 0;
     right: 0;
-    bottom: 0a;
+    bottom: 0;
     z-index: 2000;
 }
 
@@ -97,14 +101,14 @@ html {
 }
 
 .start-footer {
-    display: flex;
-    justify-content: center;
+    display: none;
 }
 
 .start-tiles-scroll-container {
     grid-column: 2;
     overflow-x: hidden;
     overflow-y: overlay;
+    max-height: 100vh;
 }
 
 .start-tile-group {
@@ -178,6 +182,21 @@ html {
 .start-hide-all-button:active #arrow {
     fill: #180053;
 }
+@media screen and (min-width: 320px) {
+    .start-content {
+        grid-template-columns: 0 1fr 64px;
+    }
+
+    .start-footer {
+        display: flex;
+        justify-content: center;
+    }
+
+    .start-tiles {
+        margin-right: 0px;
+    }
+}
+
 
 @media screen and (min-width: 350px) {
     .start-content {
@@ -199,7 +218,7 @@ html {
 
 @media screen and (min-width: 600px) {
     body {
-        background-color: #25079b;
+        background-color: var(--background-colour);
         background-image: url(static/wallpaper/the-cliffs.jpg);
         background-image: image-set("static/wallpaper/the-cliffs.webp" type("image/webp"),
                 "static/wallpaper/the-cliffs.jpg" type("image/jpeg"));
@@ -213,7 +232,7 @@ html {
         height: 100vh;
         top: 0;
         left: 0;
-        background-color: #25079b;
+        background-color: var(--background-colour);
         background-image: url(static/wallpaper/the-cliffs.jpg);
         background-image: image-set("static/wallpaper/the-cliffs.webp" type("image/webp"),
                 "static/wallpaper/the-cliffs.jpg" type("image/jpeg"));
@@ -271,11 +290,11 @@ html {
         font-family: 'Segoe UI';
 
         &:hover {
-            background: #2B0680;
+            background: var(--accent-colour);
         }
 
         &:active {
-            background: #2B0680;
+            background: var(--accent-colour);
             transform: scale3d(0.975, 0.975, 0.975);
         }
     }
