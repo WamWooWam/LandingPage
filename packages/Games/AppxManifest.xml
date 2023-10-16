@@ -29,6 +29,18 @@
                 <wb:SplashScreen BackgroundColor="#FFFFFF" Image="images/s4e1-splash.webp" />
             </wb:VisualElements>
         </Application>
+        <Application Id="Sanicball" EntryPoint="Apps/Sanicball">
+            <wb:VisualElements DisplayName="Sanicball" Description="Sanicball is a stupid, silly racing game that throws away complex gameplay mechanics, character progression and microtransactions in favor of pure fast." ForegroundText="light"
+                BackgroundColor="#231F20" Square150x150Logo="images/sanicball-square150x150.webp"
+                Square30x30Logo="images/sanicball-square30x30.webp" ToastCapable="true">
+                <wb:DefaultTile Square70x70Logo="images/sanicball-square70x70.webp">
+                    <wb:ShowNameOnTiles>
+                        <wb:ShowOn Tile="square150x150Logo" />
+                    </wb:ShowNameOnTiles>                
+                </wb:DefaultTile>
+                <wb:SplashScreen BackgroundColor="#231F20" Image="images/sanicball-splash.webp" />
+            </wb:VisualElements>
+        </Application>
     </Applications>
     <Capabilities></Capabilities>
     <Dependencies>

@@ -82,25 +82,27 @@ export default class CharmsBarRenderer extends Component<{}, CharmsBarRendererSt
     }
 
     private showCharmsLightOverlay() {
-        this.setState((state) => ({ openState: (state.openState === CharmsBarOpenState.closed ? CharmsBarOpenState.lightDismiss : state.openState) }));
+        this.setState((state) => ({
+            openState: (state.openState === CharmsBarOpenState.closed ? CharmsBarOpenState.lightDismiss : state.openState)
+        }));
     }
 
     private showCharms() {
         console.log("show charms");
         this.endGesture();
 
-        this.setState((state) => ({ openState: CharmsBarOpenState.open }));
+        this.setState({ openState: CharmsBarOpenState.open });
     }
 
     private closeAll() {
         console.log("close charms");
 
-        this.setState((state) => ({ openState: CharmsBarOpenState.closing }));
+        this.setState({ openState: CharmsBarOpenState.closing });
     }
 
     private onTransitionEnd() {
         if (this.state.openState == CharmsBarOpenState.closing) {
-            this.setState((state) => ({ openState: CharmsBarOpenState.closed }));
+            this.setState({ openState: CharmsBarOpenState.closed });
         }
     }
 
