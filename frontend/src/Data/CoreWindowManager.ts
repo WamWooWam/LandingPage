@@ -24,7 +24,8 @@ export default class CoreWindowManager {
         console.log(info.id, info);
         CoreWindowManager.coreWindowMap.set(info.id, info);
 
-        Events.getInstance().dispatchEvent(new CoreWindowEvent("core-window-created", info));
+        Events.getInstance()
+            .dispatchEvent(new CoreWindowEvent("core-window-created", info));
 
         return info;
     }

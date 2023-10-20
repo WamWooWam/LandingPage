@@ -28,6 +28,8 @@ for (const pack of packages) {
 }
 
 if (typeof document !== "undefined") {
+    // why the fuck is this a thing (iOS Safari)
+    document.addEventListener("touchstart", function () { }, true);
     hydrate(<StandaloneRoot appId={appId} packageId={packageId} />, document.body);
 }
 

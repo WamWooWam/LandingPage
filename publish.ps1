@@ -23,7 +23,7 @@ yarn build
 yarn run build-images
 
 if (($IsWindows) -or ($PSVersionTable.PSVersion.Major -lt 6)) {
-    & 'C:\Program Files\Inkscape\inkscape.exe' --export-png=images\og-image.png --export-width=1280 --export-height=800 images\og-image.svg
+    & 'C:\Program Files\Inkscape\bin\inkscape.exe' --export-png=images\og-image.png --export-width=1280 --export-height=800 images\og-image.svg
 }
 elseif ($IsMacOS) {
     qlmanage -t -s 1200 -o images/og-image.png images/og-image.svg

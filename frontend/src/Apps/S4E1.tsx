@@ -5,8 +5,7 @@ import { hydrate } from "preact";
 export default (instance: AppInstance, window: CoreWindow) => {
     return new Promise<void>((resolve, reject) => {
         const frame = <iframe
-            src="/ball/"
-            allowFullScreen={true}
+            src="/sonic4/"
             style={{ width: "100%", height: "100%", border: "none", position: "absolute", top: "0", left: "0" }}
             onLoad={() => resolve()}
             onError={() => reject()}

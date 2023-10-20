@@ -1,12 +1,13 @@
-import { hydrate } from "preact";
-import { AppInstance, ApplicationRoot, CoreWindow } from "../Shared";
-import MainPage from "./MainPage";
 import "./calculator.scss"
+
+import { AppInstance, ApplicationRoot, CoreWindow } from "../Shared";
 
 import CalcManager from "./CalcManager/CalcManager"
 import CalcManagerModule from "./CalcManager/CalcManager.wasm"
 import CalculatorModel from "./CalculatorModel";
+import MainPage from "./MainPage";
 import { VisualStateManager } from "./VisualStateManager";
+import { hydrate } from "preact";
 
 export default async (instance: AppInstance, window: CoreWindow) => {
     const manager = await CalcManager({

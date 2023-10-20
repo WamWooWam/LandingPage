@@ -2,9 +2,10 @@ import AppInstanceManager from "./Data/AppInstanceManager";
 import { Component } from "preact";
 import CoreWindowLayoutManager from "./Data/CoreWindowLayoutManager";
 import CoreWindowRenderer from "~/Immersive/CoreWindow/CoreWindowRenderer";
+import Events from "./Events";
+import MessageDialogRenderer from "~/Immersive/MessageDialog/MessageDialogRenderer";
 import PackageRegistry from "./Data/PackageRegistry";
 import ViewSizePreference from "./Data/ViewSizePreference";
-import MessageDialogRenderer from "~/Immersive/MessageDialog/MessageDialogRenderer";
 
 interface StandaloneRootProps {
     appId: string;
@@ -28,6 +29,11 @@ export default class StandaloneRoot extends Component<StandaloneRootProps, Stand
         const instance = AppInstanceManager.launchInstance(pack, app);
         CoreWindowLayoutManager.getInstance()
             .addWindowToLayout(instance.mainWindow, ViewSizePreference.default)
+
+        Events.getInstance()
+            .addEventListener("layout-updated", () => {
+                this.forceUpdate(); // slight hack to force a re-render
+            });
 
         this.setState({ id: instance.mainWindow.id });
     }
