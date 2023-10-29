@@ -9,6 +9,8 @@
     "bezier-easing": "^2.1.0",
     "landing-page-shared": "../shared",
     "preact": "^10.15.1",
+    "preact-async-route": "^2.2.1",
+    "preact-router": "^4.1.2",
     "wasm-feature-detect": "^1.5.1"
   },
   "devDependencies": {

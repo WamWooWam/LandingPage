@@ -1,9 +1,9 @@
 import { PackageApplication } from "shared/PackageApplication";
-import { TileSize } from "shared/TileSize";
+import PackageImage from "../../../Util/PackageImage";
 import { RenderableProps } from "preact";
 import TileBinding from "../../../Data/TileBinding";
+import { TileSize } from "shared/TileSize";
 import TileVisual from "../../../Data/TileVisual";
-import { fixupUrl } from "~/Util";
 import { getTileSize } from "./TileUtils";
 
 interface TileVisualRendererProps {
@@ -24,11 +24,10 @@ const TileTemplateMap: Map<string, Function>
     ]);
 
 export default function TileVisualRenderer({ app, size, visual }: RenderableProps<TileVisualRendererProps>) {
-    let hasWebP = true;
     let visualElements = app.visualElements;
 
     if (!visual || !visual.bindings || visual.bindings.length == 0) {
-        let tileImageUrl = fixupUrl(getTileImageUrl(size, app), hasWebP);
+        let tileImageUrl = getTileImageUrl(size, app);
         let showTextSizes = visualElements.defaultTile.showNameOnTiles.map(v => TileSize[v as keyof typeof TileSize]);
 
         let tileVisualText = null;
@@ -41,7 +40,9 @@ export default function TileVisualRenderer({ app, size, visual }: RenderableProp
         return (
             <div class="tile-visual tile-visual-visible">
                 <div class="tile-front-image-container">
-                    <img draggable={false} alt={`${app.visualElements.displayName} Icon`} src={tileImageUrl} class={"tile-front-image " + TileSize[size]} width={width} height={height} />
+                    <PackageImage url={tileImageUrl}>
+                        {image => <img draggable={false} alt={`${app.visualElements.displayName} Icon`} src={image} class={"tile-front-image " + TileSize[size]} width={width} height={height} />}
+                    </PackageImage>
                 </div>
                 {tileVisualText}
             </div>

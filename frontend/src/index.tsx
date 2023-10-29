@@ -5,12 +5,11 @@ if (process.env.NODE_ENV === "development") {
 import "./polyfill";
 import './index.scss';
 import './segoe.scss';
-import "./Test"
 
-import { hydrate } from "preact"
-
+import AsyncRoute from "preact-async-route";
 import PackageRegistry from "./Data/PackageRegistry";
-import Root from "./Root";
+import Router from "preact-router";
+import { hydrate } from "preact"
 
 const packages = [
     require('../../packages/Socials/AppxManifest.xml').default,
@@ -24,10 +23,13 @@ for (const pack of packages) {
     PackageRegistry.registerPackage(pack);
 }
 
-if (typeof document !== "undefined") {
-    // why the fuck is this a thing (iOS Safari)
-    document.addEventListener("touchstart", function () { }, true);
-    hydrate(<Root />, document.body);
-}
+if (typeof window !== "undefined") {
+    const Main = () => (
+        <Router>
+            <AsyncRoute path="/" getComponent={() => import("./Root").then(m => m.default)} />
+            <AsyncRoute path="/app/:packageId/:appId" getComponent={() => import("./StandaloneRoot").then(m => m.default)} />
+        </Router>
+    )
 
-export default Root;
+    hydrate(<Main />, document.body);
+}

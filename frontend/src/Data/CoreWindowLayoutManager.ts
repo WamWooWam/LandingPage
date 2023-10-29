@@ -24,9 +24,12 @@ export default class CoreWindowLayoutManager {
 
     constructor() {
         // BUGBUG: should be using resizeobserver?
-        window.addEventListener("resize", () => {
-            this.recalculateLayout();
-        });
+        if ('ResizeObserver' in globalThis) {
+            new ResizeObserver(() => this.recalculateLayout()).observe(document.body);
+        }
+        else {
+            window.addEventListener('resize', () => this.recalculateLayout());
+        }
     }
 
     private state: CoreWindowLayoutKind = CoreWindowLayoutKind.fullScreen;

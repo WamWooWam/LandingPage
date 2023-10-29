@@ -8,7 +8,6 @@ module.exports = [
     {
         entry: {
             "index": "./src/index.tsx",
-            "standalone": "./src/standalone.tsx",
         },
         target: "web",
         mode: env.NODE_ENV || "development",
@@ -29,7 +28,7 @@ module.exports = [
                     use: [
                         MiniCssExtractPlugin.loader,
                         { loader: 'css-loader', options: { importLoaders: 1 } },
-                        "postcss-loader",
+                        'postcss-loader',
                     ]
                 },
                 {
@@ -68,6 +67,14 @@ module.exports = [
         },
         optimization: {
             usedExports: true,
+            runtimeChunk: 'single',
+            splitChunks: {
+                cacheGroups: {
+                    defaultVendors: {
+                        idHint: 'vendors',
+                    },
+                },
+            }
         },
         resolve: {
             extensions: ['.tsx', '.ts', '.js'],
@@ -96,7 +103,7 @@ module.exports = [
             new HtmlWebpackPlugin({
                 inject: true,
                 template: "./src/standalone.hbs",
-                chunks: ["standalone"],
+                chunks: ["index"],
                 filename: "views/standalone.hbs",
                 publicPath: "/"
             }),

@@ -3,20 +3,20 @@ import "./tile.scss"
 import { Component, Ref, RefObject, createRef } from "preact";
 import ConfigurationManager, { AppStatus } from "~/Data/ConfigurationManager";
 
-import Events from "~/Events";
 import AppLaunchRequestedEvent from "~/Events/AppLaunchRequestedEvent";
+import Events from "~/Events";
 import MessageDialog from "~/Data/MessageDialog";
+import { Package } from "shared/Package";
+import { PackageApplication } from "shared/PackageApplication";
+import PackageImage from "../../../Util/PackageImage";
 import PackageRegistry from "~/Data/PackageRegistry";
 import TileBadge from "./TileBadge";
 import TileDefaultVisual from "./TileDefaultVisual";
+import { TileSize } from "shared/TileSize";
 import TileUpdateManager from "./TileUpdateManager";
 import TileVisual from "../../../Data/TileVisual";
 import TileVisualRenderer from "./TileVisualRenderer";
 import UICommand from "~/Data/UICommand";
-import { Package } from "shared/Package";
-import { PackageApplication } from "shared/PackageApplication";
-import { TileSize } from "shared/TileSize";
-import { fixupUrl } from "~/Util";
 import { getTileSize } from "./TileUtils";
 import { lightenDarkenColour2 } from "shared/ColourUtils";
 
@@ -266,7 +266,9 @@ export default class TileRenderer extends Component<TileProps, TileState> {
                         </div>
                     }
                     <div className={"tile-toast-footer" + (!visual || visual === TileDefaultVisual ? " hidden" : "")}>
-                        <img className="tile-badge-icon" src={fixupUrl(state.app.visualElements.square30x30Logo, true)} alt={""} />
+                        <PackageImage url={state.app.visualElements.square30x30Logo}>
+                            {image => <img className="tile-badge-icon" src={image} alt={""} />}
+                        </PackageImage>
                     </div>
                 </div>
 

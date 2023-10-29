@@ -1,23 +1,25 @@
 import 'dotenv/config'
 
-const express = require('express');
-const path = require('path');
-const fsp = require('fs/promises');
-const apicache = require('apicache');
-const proxy = require('express-http-proxy');
-
-import PackageRegistry from './PackageRegistry';
+import { Handler, NextFunction, Request, Response } from 'express';
 import { PackageReader, StartTileGroup, TileSize, parseLayout } from 'landing-page-shared';
 
-import { Twitter } from './providers/twitter';
-import { Snug } from './providers/snug';
-import { Twitch } from './providers/twitch';
-import { YouTube } from './providers/youtube';
-import { GitHub } from './providers/github';
-import { Standalone } from './providers/standalone/manifest';
-import { Configuration } from './providers/configuration';
 import { Bluesky } from './providers/bluesky';
+import { Configuration } from './providers/configuration';
+import { GitHub } from './providers/github';
+import PackageRegistry from './PackageRegistry';
+import { Snug } from './providers/snug';
+import { Standalone } from './providers/standalone/manifest';
+import { Twitch } from './providers/twitch';
+import { Twitter } from './providers/twitter';
+import { YouTube } from './providers/youtube';
 import { render } from 'preact-render-to-string';
+import webp from './webp';
+
+import express = require('express');
+import path = require('path');
+import fsp = require('fs/promises');
+import apicache = require('apicache');
+import os = require('os');
 
 globalThis.DOMParser = require('xmldom').DOMParser; // BUGBUG: hacky fix to stop webpack including xmldom in the client bundle
 
@@ -80,6 +82,7 @@ const app = express();
     }
 
     await Bluesky.initialize();
+
     const preload = await generatePreload();
 
     app.set('view engine', 'hbs');
@@ -87,7 +90,7 @@ const app = express();
 
     app.use((req, res, next) => {
         const time = performance.now();
-        
+
         next();
 
         res.on('finish', () => {
@@ -103,46 +106,40 @@ const app = express();
     app.get('/api/live-tiles/github/:username/:project.xml', apicache.middleware('15 minutes'), GitHub.recentActivity);
     app.get('/api/live-tiles/bluesky/latest-posts.xml', apicache.middleware('15 minutes'), Bluesky.latestPosts);
 
-    app.get('/api/media/og-image.svg', apicache.middleware('14 days'), (req, res) => {
-        res.sendFile(path.join(process.cwd(), "images/og-image.svg"));
-    });
-    app.get('/api/media/og-image.png', apicache.middleware('14 days'), (req, res) => {
-        res.sendFile(path.join(process.cwd(), "images/og-image.png"));
-    });
+    app.get('/api/media/og-image.svg', apicache.middleware('14 days'), (req: Request, res: Response) => 
+        res.sendFile(path.join(process.cwd(), "images/og-image.svg")));
+    
+    app.get('/api/media/og-image.png', apicache.middleware('14 days'), (req: Request, res: Response) =>
+        res.sendFile(path.join(process.cwd(), "images/og-image.png")));
 
-    if ('Bun' in globalThis) {
-        app.get('/api/media/:type/:package/:app/:size?', apicache.middleware('90 days'), proxy('http://localhost:5001'));
-    }
-    else {
-        app.get('/api/media/:type/:package/:app/:size?', apicache.middleware('90 days'), require('./providers/images/tiles').Images.getImage);
-    }
+    app.get('/api/media/:type/:package/:app/:size?', apicache.middleware('90 days'), require('./providers/images/tiles').Images.getImage);
+
     app.get('/api/manifest/:package/:app', apicache.middleware('14 days'), Standalone.Manifest.getManifest);
     app.get('/api/msapplication-config/:package/:app', apicache.middleware('14 days'), Standalone.Manifest.getApplicationConfig);
 
     app.get('/api/configuration', Configuration.getConfiguration);
 
+    // some browsers dont support webp, so i want to serve pngs to them by converting them on the fly
     app.use(express.static(path.join(process.cwd(), "..", "frontend", "dist"), { index: false, maxAge: '90d' }));
+
     app.get('/', (req, res) => {
         res.render('index', { preload });
     });
 
-    app.get('/app/:package/:id', (req, res) => {
+    app.get('/app/:package/:id', (req: Request, res: Response, next: NextFunction) => {
         let pack = PackageRegistry.getPackage(req.params.package);
         if (!pack) {
-            res.status(404).send('Not found!');
-            return;
+            return next();
         }
 
         // make sure we're not doing prototype pollution
         if (req.params.id.startsWith('__proto__') || req.params.id.startsWith('constructor')) {
-            res.status(404).send('Not found!');
-            return;
+            return next();
         }
 
         let app = pack.applications[req.params.id];
         if (!app) {
-            res.status(404).send('Not found!');
-            return;
+            return next();
         }
 
         // if the app has a start page, redirect to it instead of showing the standalone page
@@ -174,14 +171,17 @@ const app = express();
         res.render('standalone', data);
     });
 
-    app.use(async (err, req, res, next) => {
+    app.use(async (err: Error | Promise<void>, req: Request, res: Response, next: NextFunction) => {
         console.error(err)
+
         if (process.env.NODE_ENV === 'development') {
-            let error = err;
+            let error = err?.toString();
+
             if (err instanceof Error) {
                 error = err.stack;
             }
-            if (err.then) {
+
+            if ('then' in err && err.then) {
                 error = await Promise.resolve(err).catch(e => e.stack);
             }
 

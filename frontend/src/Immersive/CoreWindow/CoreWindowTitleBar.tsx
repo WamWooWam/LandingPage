@@ -2,6 +2,7 @@ import { Component } from "preact";
 import CoreWindow from "~/Data/CoreWindow";
 import CoreWindowCloseButton from "./CoreWindowCloseButton";
 import CoreWindowMinimizeButton from "./CoreWindowMinimizeButton";
+import PackageImage from "~/Util/PackageImage";
 import { Position } from "~/Util";
 import { computed } from "@preact/signals";
 
@@ -75,7 +76,9 @@ export default class CoreWindowTitleBar extends Component<CoreWindowTitleBarProp
                     onPointerDown={this.onPointerDown.bind(this)}>
                     {/* TODO: icon has a context menu */}
                     <div class="core-window-icon-container" style={{ background: this.props.primaryColour }}>
-                        <img class="core-window-icon" src={this.props.iconUrl} alt={computed(() => this.props.window.signals.title + " icon")} />
+                        <PackageImage url={this.props.iconUrl}>
+                            {image => <img class="core-window-icon" src={image} alt={computed(() => this.props.window.signals.title + " icon")} />}
+                        </PackageImage>
                     </div>
 
                     <div class="core-window-title">{computedTitle}</div>

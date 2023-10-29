@@ -2,13 +2,16 @@ import "./start.scss"
 
 import { Component, RefObject, createRef } from "preact";
 import { StartTileGroup, parseLayout } from "shared/StartLayoutParser";
+import { Suspense, lazy } from "preact/compat"
 
 import AllAppsButton from "./AllAppsButton";
 import Avatar from "static/wam-circular.webp"
+import AvatarPng from "static/wam-circular.png"
 import Events from "~/Events";
 import HeaderButton from "./HeaderButton";
 import LayoutState from "~/Data/LayoutState";
 import { LayoutStateContext } from "~/Root";
+import PickImage from "~/Util/PickImage";
 import PowerIcon from "./PowerIcon";
 import SearchIcon from "./SearchIcon";
 import StartLayout from 'packages/StartScreen.xml'
@@ -19,6 +22,7 @@ interface StartState {
     tileGroups: Array<StartTileGroup>
     visible: boolean
 }
+
 
 export default class Start extends Component<{}, StartState> {
 
@@ -58,7 +62,7 @@ export default class Start extends Component<{}, StartState> {
                         <div class={"start" + (!this.state.visible ? " hiding" : "")}>
                             <div class={"start-screen"}>
                                 <div class="start-content">
-                                    {!isMobile &&
+                                    {!isMobile && (
                                         <div class="start-header start-main-header">
                                             <h1 class="start-title">Start</h1>
                                             <div class="start-header-buttons">
@@ -67,7 +71,9 @@ export default class Start extends Component<{}, StartState> {
                                                         <p class="primary">Thomas</p>
                                                         <p class="secondary">May</p>
                                                     </div>
-                                                    <img class="start-header-user-picture" src={Avatar} alt="Photo of Thomas May" />
+                                                    <PickImage webp={Avatar} png={AvatarPng}>
+                                                        {image => <img class="start-header-user-picture" src={image} alt="Photo of Thomas May" />}
+                                                    </PickImage>
                                                 </HeaderButton>
                                                 <HeaderButton primaryClass="start-header-power" label="Power">
                                                     <PowerIcon width={21} height={21} />
@@ -77,7 +83,7 @@ export default class Start extends Component<{}, StartState> {
                                                 </HeaderButton>
                                             </div>
                                         </div>
-                                    }
+                                    )}
 
                                     <StartScrollContainer tileGroups={tiles} />
 
