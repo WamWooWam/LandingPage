@@ -3,25 +3,17 @@ import PackageImage from "../../../Util/PackageImage";
 import { RenderableProps } from "preact";
 import TileBinding from "../../../Data/TileBinding";
 import { TileSize } from "shared/TileSize";
+import TileTemplates from "./TileTemplates";
 import TileVisual from "../../../Data/TileVisual";
 import { getTileSize } from "./TileUtils";
 
 interface TileVisualRendererProps {
     app: PackageApplication,
     size: TileSize,
-    visual: TileVisual
+    visual: TileVisual,
+    binding?: TileBinding
 }
 
-const TileTemplateMap: Map<string, Function>
-    = new Map([
-        ["TileWide310x150SmallImageAndText", TileWide310x150SmallImageAndText],
-        ["TileWide310x150PeekImage", TileWide310x150PeekImage],
-        ["TileWide310x150HeaderAndText", TileWide310x150HeaderAndText],
-        ["TileSquare150x150PeekImage", TileSquare150x150PeekImage],
-        ["TileSquare150x150Text", TileSquare150x150Text],
-        ["TileSquare150x150HeaderAndText", TileSquare150x150HeaderAndText],
-        ["TileSquare310x310ImageAndTextOverlay02", TileSquare310x310ImageAndTextOverlay02]
-    ]);
 
 export default function TileVisualRenderer({ app, size, visual }: RenderableProps<TileVisualRendererProps>) {
     let visualElements = app.visualElements;
@@ -55,14 +47,14 @@ export default function TileVisualRenderer({ app, size, visual }: RenderableProp
         return null;
     }
 
-    const TileTemplate = TileTemplateMap.get(binding.template);
+    const TileTemplate = TileTemplates[binding.template as keyof typeof TileTemplates]
     if (!TileTemplate) {
         console.error(`Unknown tile template ${binding.template}`);
         return null;
     }
     return (
         <div class="tile-visual tile-visual-visible">
-            {TileTemplate({ app, size, visual }, binding)}
+            <TileTemplate elements={binding.elements}  />
         </div>
     )
 }

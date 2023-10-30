@@ -1,7 +1,8 @@
-import { TileTemplateType } from "../TileTemplateType";
-import { TileUpdateManager } from "../TileUpdateManager";
 import { DOMParser, XMLSerializer } from 'xmldom'
 import { EXT_XMLNS, createBindingFromTemplate, createRoot, createVisual } from "./utils";
+
+import { TileTemplateType } from "../TileTemplateType";
+import { TileUpdateManager } from "../TileUpdateManager";
 
 export namespace Snug {
     const rootUrl = 'https://snug.moe/api'

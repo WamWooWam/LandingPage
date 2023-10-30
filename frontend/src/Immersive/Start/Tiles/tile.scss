@@ -30,6 +30,16 @@
 //     }
 // }
 
+.tile-visual {
+    img {
+        object-fit: cover;
+    }
+}
+
+.tile-headline-style {
+    font-weight: 100;
+}
+
 @media screen and (min-width: 600px) {
     .tile-group-tiles {
         grid-template-columns: 120px;
