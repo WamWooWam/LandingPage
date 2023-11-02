@@ -43,31 +43,54 @@ export namespace Snug {
             if (note.files && note.files.length > 0) {
                 let content = createBindingFromTemplate(root, visual, TileTemplateType.tileWidePeekImage05);
                 content.getElementsByTagName("image")[0].setAttribute("src", note.files[0].thumbnailUrl);
-                content.getElementsByTagName("image")[0].setAttributeNS(EXT_XMLNS, "ext:alt", note.files[0].comment ?? note.files[0].name);
+                content.getElementsByTagName("image")[0].setAttribute("alt", note.files[0].comment ?? note.files[0].name);
                 content.getElementsByTagName("image")[1].setAttribute("src", note.user.avatarUrl);
-                content.getElementsByTagName("image")[1].setAttributeNS(EXT_XMLNS, "ext:alt", note.user.name + " profile picture");
+                content.getElementsByTagName("image")[1].setAttribute("alt", note.user.name + " profile picture");
                 content.getElementsByTagName("text")[1].textContent = note.text;
             }
             else {
                 let content = createBindingFromTemplate(root, visual, TileTemplateType.tileWideSmallImageAndText03);
                 content.getElementsByTagName("image")[0].setAttribute("src", note.user.avatarUrl);
-                content.getElementsByTagName("image")[0].setAttributeNS(EXT_XMLNS, "ext:alt", note.user.name + " profile picture");
+                content.getElementsByTagName("image")[0].setAttribute("alt", note.user.name + " profile picture");
                 content.getElementsByTagName("text")[0].textContent = note.text;
             }
 
             {
-                let content = createBindingFromTemplate(root, visual, TileTemplateType.tileSquare310x310ImageAndTextOverlay02);
+                let content = null;
                 if (note.files && note.files.length > 0) {
-                    content.getElementsByTagName("image")[0].setAttribute("src", note.files[0].thumbnailUrl);
-                    content.getElementsByTagName("image")[0].setAttributeNS(EXT_XMLNS, "ext:alt", note.files[0].comment ?? note.files[0].name);
+                    if (note.files.length === 1) {
+                        content = createBindingFromTemplate(root, visual, TileTemplateType.tileSquare310x310ImageAndText01);
+                        content.getElementsByTagName("image")[0].setAttribute("src", note.files[0].thumbnailUrl);
+                        content.getElementsByTagName("image")[0].setAttribute("alt", note.files[0].comment ?? note.files[0].name);
+                        content.getElementsByTagName("text")[0].textContent = note.text;
+                    }
+                    else {
+                        content = createBindingFromTemplate(root, visual, TileTemplateType.tileSquare310x310ImageCollectionAndText01);
+                        content.getElementsByTagName("image")[0].setAttribute("src", note.files[0].thumbnailUrl);
+                        content.getElementsByTagName("image")[0].setAttribute("alt", note.files[0].comment ?? note.files[0].name);
+                        content.getElementsByTagName("text")[0].textContent = note.text
+
+                        const availableImages = [1, 2, 3, 4];
+                        for (let i = 1; i < Math.min(note.files.length, 5) && availableImages.length; i++) {
+                            const file = note.files[i];
+
+                            let imageIndex = availableImages[Math.floor(Math.random() * availableImages.length)];
+                            const image = content.getElementsByTagName("image")[imageIndex];
+                            image.setAttribute("src", file.thumbnailUrl);
+                            image.setAttribute("alt", file.comment ?? file.name);
+                            
+                            availableImages.splice(availableImages.indexOf(imageIndex), 1);
+                        }
+                    }
                 }
                 else {
+                    content = createBindingFromTemplate(root, visual, TileTemplateType.tileSquare310x310SmallImageAndText01);
                     content.getElementsByTagName("image")[0].setAttribute("src", note.user.avatarUrl);
-                    content.getElementsByTagName("image")[0].setAttributeNS(EXT_XMLNS, "ext:alt", note.user.name + " profile picture");
+                    content.getElementsByTagName("image")[0].setAttribute("alt", note.user.name + " profile picture");
+                    content.getElementsByTagName("text")[0].textContent = note.user.name;
+                    content.getElementsByTagName("text")[1].textContent = note.text;
                 }
 
-                content.getElementsByTagName("text")[0].textContent = note.user.name;
-                content.getElementsByTagName("text")[1].textContent = note.text;
             }
         }
 

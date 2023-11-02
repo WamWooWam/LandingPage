@@ -1,6 +1,6 @@
 import "./tile.scss"
 
-import { Component, Ref, RefObject, createRef } from "preact";
+import { Component, Ref, RefObject, createContext, createRef } from "preact";
 import ConfigurationManager, { AppStatus } from "~/Data/ConfigurationManager";
 
 import AppLaunchRequestedEvent from "~/Events/AppLaunchRequestedEvent";
@@ -51,6 +51,14 @@ interface TileState {
     interval?: any;
     noStyle?: boolean;
 }
+
+interface TileContextData {
+    pack: Package;
+    app: PackageApplication;
+    size: TileSize;
+}
+
+export const TileContext = createContext<TileContextData>(null);
 
 // TODO: the ability to disable apps but better
 const isDisabled = (app: PackageApplication, pack: Package) =>
@@ -115,7 +123,7 @@ export default class TileRenderer extends Component<TileProps, TileState> {
 
         let tileVisuals = visuals.get(this.props.size);
         if (tileVisuals.length > 0) {
-            let interval = setInterval(() => this.updateBinding(), 10000000 + (Math.random() * 5000));
+            let interval = setInterval(() => this.updateBinding(), 10000 + (Math.random() * 5000));
 
             this.setState({ visuals: tileVisuals, interval });
             this.updateBinding()
@@ -248,38 +256,40 @@ export default class TileRenderer extends Component<TileProps, TileState> {
 
         //let size = this.getTileSize(props.size)
         return (
-            <a ref={this.root}
-                id={`${props.packageName}!${props.appId}`}
-                class={classList.join(" ")}
-                style={containerStyle}
-                onMouseDown={this.onMouseDown.bind(this)}
-                onMouseUp={this.onMouseUp.bind(this)}
-                onClick={this.onClick.bind(this)}
-                title={state.app.visualElements.displayName}
-                name={state.app.visualElements.displayName}
-                href={href}
-                target="_blank">
-                <div class="tile">
-                    <div class="front" style={frontStyle} key={frontKey}>
-                        <TileVisualRenderer app={state.app} binding={frontBinding} size={props.size} />
-                    </div>
-                    {state.swapping &&
-                        <div class="next" key={nextKey} style={frontStyle} onAnimationEnd={this.onAnimationEnded.bind(this)}>
-                            <TileVisualRenderer app={state.app} binding={nextBinding} size={props.size} />
+            <TileContext.Provider value={{ pack: state.pack, app: state.app, size: props.size }}>
+                <a ref={this.root}
+                    id={`${props.packageName}!${props.appId}`}
+                    class={classList.join(" ")}
+                    style={containerStyle}
+                    onMouseDown={this.onMouseDown.bind(this)}
+                    onMouseUp={this.onMouseUp.bind(this)}
+                    onClick={this.onClick.bind(this)}
+                    title={state.app.visualElements.displayName}
+                    name={state.app.visualElements.displayName}
+                    href={href}
+                    target="_blank">
+                    <div class="tile">
+                        <div class="front" style={frontStyle} key={frontKey}>
+                            <TileVisualRenderer app={state.app} binding={frontBinding} size={props.size} />
                         </div>
-                    }
-                    <div className={"tile-toast-footer" + (!visual || visual === TileDefaultVisual ? " hidden" : "")}>
-                        <PackageImage url={state.app.visualElements.square30x30Logo}>
-                            {image => <img className="tile-badge-icon" src={image} alt={""} />}
-                        </PackageImage>
+                        {state.swapping &&
+                            <div class="next" key={nextKey} style={frontStyle} onAnimationEnd={this.onAnimationEnded.bind(this)}>
+                                <TileVisualRenderer app={state.app} binding={nextBinding} size={props.size} />
+                            </div>
+                        }
+                        <div className={"tile-toast-footer" + (!visual || visual === TileDefaultVisual ? " hidden" : "")}>
+                            <PackageImage url={state.app.visualElements.square30x30Logo}>
+                                {image => <img className="tile-badge-icon" src={image} alt={""} />}
+                            </PackageImage>
+                        </div>
                     </div>
-                </div>
 
-                <TileBadge isError={state.appStatus && state.appStatus.statusCode !== 0} />
+                    <TileBadge isError={state.appStatus && state.appStatus.statusCode !== 0} />
 
-                <div className="tile-border"
-                    style={{ border: '1px solid rgba(255,255,255,0.1)' }} />
-            </a>
+                    {/* <div className="tile-border"
+                    style={{ border: '1px solid rgba(255,255,255,0.1)' }} /> */}
+                </a>
+            </TileContext.Provider>
         )
     }
 

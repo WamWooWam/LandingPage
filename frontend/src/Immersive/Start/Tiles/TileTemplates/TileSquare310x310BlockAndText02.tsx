@@ -25,7 +25,7 @@ export default function TileSquare310x310BlockAndText02(props: TileTemplateProps
     const text1 = props.elements.find(b => b.id === 1 && b.type === 'text');
     
     return (
-        <TileNotificationBinding className="tile-square310x310-block-and-text02" forceBadgePlate={true} dynamicFormat={false}>
+        <TileNotificationBinding className="tile-square310x310-block-and-text02" forceBadgePlate={true} dynamicFormat={false} x={0} y={0} width={248} height={248}>
             <div className="images">
                 <TileImageBinding className="tile-image-style id-1" binding={image1} />
             </div>

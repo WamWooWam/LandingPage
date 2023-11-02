@@ -23,7 +23,7 @@ export default function TileSquare310x310SmallImagesAndTextList02(props: TileTem
     const text3 = props.elements.find(b => b.id === 3 && b.type === 'text');
     
     return (
-        <TileNotificationBinding className="tile-square310x310-small-images-and-text-list02" forceBadgePlate={true} dynamicFormat={false}>
+        <TileNotificationBinding className="tile-square310x310-small-images-and-text-list02" forceBadgePlate={true} dynamicFormat={false} x={0} y={0} width={248} height={248}>
             <div className="images">
                 <TileImageBinding className="tile-image-style id-1" binding={image1} />
                 <TileImageBinding className="tile-image-style id-2" binding={image2} />

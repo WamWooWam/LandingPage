@@ -9,6 +9,71 @@
 //------------------------------------------------------------------------------
 
 .tile-square310x310-image-collection-and-text02 {
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    width: 248px;
+    height: 248px;
+    &.logo {
+        .text-fields {
+            left: 0px;
+            top: 0px;
+            width: 248px;
+            height: 248px;
+            .id-1 {
+                left: 48px;
+                top: 208px;
+                width: 184px;
+                height: 20px;
+            }
+            .id-2 {
+                left: 48px;
+                top: 224px;
+                width: 184px;
+                height: 20px;
+            }
+        }
+    }
+    &.badge {
+        .text-fields {
+            left: 0px;
+            top: 0px;
+            width: 248px;
+            height: 248px;
+            .id-1 {
+                left: 16px;
+                top: 208px;
+                width: 196px;
+                height: 20px;
+            }
+            .id-2 {
+                left: 16px;
+                top: 224px;
+                width: 196px;
+                height: 20px;
+            }
+        }
+    }
+    &.logo.badge {
+        .text-fields {
+            left: 0px;
+            top: 0px;
+            width: 248px;
+            height: 248px;
+            .id-1 {
+                left: 48px;
+                top: 208px;
+                width: 164px;
+                height: 20px;
+            }
+            .id-2 {
+                left: 48px;
+                top: 224px;
+                width: 164px;
+                height: 20px;
+            }
+        }
+    }
     .images {
         position: absolute;
         left: 0px;

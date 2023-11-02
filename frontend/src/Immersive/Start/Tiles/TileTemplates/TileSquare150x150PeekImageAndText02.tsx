@@ -20,7 +20,7 @@ export default function TileSquare150x150PeekImageAndText02(props: TileTemplateP
     const text2 = props.elements.find(b => b.id === 2 && b.type === 'text');
     
     return (
-        <TileNotificationBinding className="tile-square150x150-peek-image-and-text02" forceBadgePlate={true} dynamicFormat={false}>
+        <TileNotificationBinding className="tile-square150x150-peek-image-and-text02" forceBadgePlate={true} dynamicFormat={false} x={0} y={0} width={120} height={240}>
             <div className="images">
                 <TileImageBinding className="tile-image-style id-1" binding={image1} />
             </div>

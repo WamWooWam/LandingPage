@@ -20,7 +20,7 @@ export default function TileWide310x150ImageAndText02(props: TileTemplateProps) 
     const text2 = props.elements.find(b => b.id === 2 && b.type === 'text');
     
     return (
-        <TileNotificationBinding className="tile-wide310x150-image-and-text02" forceBadgePlate={true} dynamicFormat={false} logoMargins={{left: 48, top: 80, right: 232, bottom: 116}} badgeMargins={{left: 16, top: 80, right: 212, bottom: 116}} logoAndBadgeMargins={{left: 48, top: 80, right: 212, bottom: 116}}>
+        <TileNotificationBinding className="tile-wide310x150-image-and-text02" forceBadgePlate={true} dynamicFormat={false} x={0} y={0} width={248} height={120}>
             <div className="images">
                 <TileImageBinding className="tile-image-style id-1" binding={image1} />
             </div>

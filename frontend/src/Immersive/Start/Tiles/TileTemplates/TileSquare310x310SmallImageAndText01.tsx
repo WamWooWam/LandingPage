@@ -21,7 +21,7 @@ export default function TileSquare310x310SmallImageAndText01(props: TileTemplate
     const text3 = props.elements.find(b => b.id === 3 && b.type === 'text');
     
     return (
-        <TileNotificationBinding className="tile-square310x310-small-image-and-text01">
+        <TileNotificationBinding className="tile-square310x310-small-image-and-text01" x={0} y={0} width={248} height={248}>
             <div className="images">
                 <TileImageBinding className="tile-image-style id-1" binding={image1} />
             </div>

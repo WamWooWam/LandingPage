@@ -18,7 +18,7 @@ export default function DesktopTileSquare150x150Image(props: TileTemplateProps) 
     const image1 = props.elements.find(b => b.id === 1 && b.type === 'image');
     
     return (
-        <TileNotificationBinding className="desktop-tile-square150x150-image" forceBadgePlate={true} dynamicFormat={false}>
+        <TileNotificationBinding className="desktop-tile-square150x150-image" forceBadgePlate={true} dynamicFormat={false} x={0} y={0} width={120} height={120}>
             <div className="images">
                 <TileImageBinding className="tile-image-style id-1" binding={image1} />
             </div>

@@ -20,7 +20,7 @@ export default function toastimageandtext03(props: TileTemplateProps) {
     const text2 = props.elements.find(b => b.id === 2 && b.type === 'text');
     
     return (
-        <TileNotificationBinding className="toastimageandtext03" dynamicFormat={false}>
+        <TileNotificationBinding className="toastimageandtext03" dynamicFormat={false} x={0} y={0} width={308} height={72}>
             <div className="images">
                 <TileImageBinding className="tile-image-style id-1" binding={image1} />
             </div>

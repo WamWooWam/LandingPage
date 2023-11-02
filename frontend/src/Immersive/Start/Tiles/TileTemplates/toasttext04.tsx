@@ -20,7 +20,7 @@ export default function toasttext04(props: TileTemplateProps) {
     const text3 = props.elements.find(b => b.id === 3 && b.type === 'text');
     
     return (
-        <TileNotificationBinding className="toasttext04" dynamicFormat={false}>
+        <TileNotificationBinding className="toasttext04" dynamicFormat={false} x={0} y={0} width={308} height={72}>
             <div className="images" />
             <div className="headlines">
                 <TileTextBinding className="toast-header-style id-1" binding={text1} />

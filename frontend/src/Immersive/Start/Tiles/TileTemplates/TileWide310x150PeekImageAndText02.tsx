@@ -23,7 +23,7 @@ export default function TileWide310x150PeekImageAndText02(props: TileTemplatePro
     const text5 = props.elements.find(b => b.id === 5 && b.type === 'text');
     
     return (
-        <TileNotificationBinding className="tile-wide310x150-peek-image-and-text02" forceBadgePlate={false} dynamicFormat={false} imagebounds={rect(0rp,0rp,310rp,100rp)} logoMargins={{left: 48, top: 80, right: 232, bottom: 164}} badgeMargins={{left: 16, top: 80, right: 212, bottom: 164}} logoAndBadgeMargins={{left: 48, top: 80, right: 212, bottom: 164}}>
+        <TileNotificationBinding className="tile-wide310x150-peek-image-and-text02" forceBadgePlate={false} dynamicFormat={false} x={0} y={0} width={248} height={180}>
             <div className="images">
                 <TileImageBinding className="tile-image-style id-1" binding={image1} />
             </div>

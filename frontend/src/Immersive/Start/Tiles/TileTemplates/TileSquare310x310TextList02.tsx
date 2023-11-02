@@ -20,7 +20,7 @@ export default function TileSquare310x310TextList02(props: TileTemplateProps) {
     const text3 = props.elements.find(b => b.id === 3 && b.type === 'text');
     
     return (
-        <TileNotificationBinding className="tile-square310x310-text-list02" forceBadgePlate={true} dynamicFormat={false}>
+        <TileNotificationBinding className="tile-square310x310-text-list02" forceBadgePlate={true} dynamicFormat={false} x={0} y={0} width={248} height={248}>
             <div className="images" />
             <div className="text-fields">
                 <TileTextBinding className="tile-body-text-style id-1" binding={text1} />

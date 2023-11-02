@@ -18,7 +18,7 @@ export default function TileSquare310x310NoAssetFallback(props: TileTemplateProp
     const image1 = props.elements.find(b => b.id === 1 && b.type === 'image');
     
     return (
-        <TileNotificationBinding className="tile-square310x310-no-asset-fallback" forceBadgePlate={true} dynamicFormat={false}>
+        <TileNotificationBinding className="tile-square310x310-no-asset-fallback" forceBadgePlate={true} dynamicFormat={false} x={0} y={0} width={248} height={248}>
             <div className="images">
                 <TileImageBinding className="tile-image-style id-1" binding={image1} />
             </div>

@@ -38,6 +38,7 @@
 
 .tile-headline-style {
     font-weight: 100;
+    text-wrap: nowrap;
 }
 
 @media screen and (min-width: 600px) {
@@ -243,6 +244,10 @@ only screen and (min-device-pixel-ratio: 2),
     flex-direction: column;
     transition: transform 0.8s cubic-bezier(0, 0.50, 0.1, 1);
     will-change: transform;
+}
+
+.tile-notification {
+    transition: transform 0.8s cubic-bezier(0, 0.50, 0.1, 1);
 }
 
 .tile-container .front>* {

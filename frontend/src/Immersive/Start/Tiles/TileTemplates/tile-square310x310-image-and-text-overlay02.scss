@@ -52,6 +52,12 @@
             top: 208px;
             width: 216px;
             height: 4px;
+
+            >span {
+                display: inline-block;
+                max-height: 52px;
+                overflow: hidden;
+            }
         }
     }
 }

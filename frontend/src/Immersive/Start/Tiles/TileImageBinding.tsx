@@ -6,5 +6,8 @@ type TileImageBindingProps = {
 }
 
 export default function TileImageBinding(props: TileImageBindingProps) {
-    return <img className={props.className} src={props.binding.content} alt={props.binding.alt} />
+    if (props.binding.content)
+        return <img className={props.className} src={props.binding.content} alt={props.binding.alt} />
+
+    return null;
 } 

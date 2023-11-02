@@ -22,7 +22,7 @@ export default function TileWide310x150ImageCollection(props: TileTemplateProps)
     const image5 = props.elements.find(b => b.id === 5 && b.type === 'image');
     
     return (
-        <TileNotificationBinding className="tile-wide310x150-image-collection" forceBadgePlate={true} dynamicFormat={false}>
+        <TileNotificationBinding className="tile-wide310x150-image-collection" forceBadgePlate={true} dynamicFormat={false} x={0} y={0} width={248} height={120}>
             <div className="images">
                 <TileImageBinding className="tile-image-style id-1" binding={image1} />
                 <TileImageBinding className="tile-small-image-top-style id-2" binding={image2} />

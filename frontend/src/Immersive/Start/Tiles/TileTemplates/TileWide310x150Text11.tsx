@@ -27,7 +27,7 @@ export default function TileWide310x150Text11(props: TileTemplateProps) {
     const text10 = props.elements.find(b => b.id === 10 && b.type === 'text');
     
     return (
-        <TileNotificationBinding className="tile-wide310x150-text11" forceBadgePlate={false}>
+        <TileNotificationBinding className="tile-wide310x150-text11" forceBadgePlate={false} x={0} y={0} width={248} height={120}>
             <div className="images" />
             <div className="text-fields">
                 <TileTextBinding className="tile-body-text-style id-1" binding={text1} />

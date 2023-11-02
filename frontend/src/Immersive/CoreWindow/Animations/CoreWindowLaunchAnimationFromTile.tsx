@@ -1,17 +1,18 @@
-import { Component, RefObject, createRef } from "preact";
-import { getTileSize } from "~/Immersive/Start/Tiles/TileUtils";
-import { TileSize } from "shared/TileSize";
-import { lightenDarkenColour2 } from "shared/ColourUtils";
-import { Position, Size } from "~/Util";
 import { AnimationSlowed, EASE_APPLAUNCHDRIFT, EASE_APPLAUNCHFASTIN, EASE_APPLAUNCHROTATE, EASE_APPLAUNCHROTATEBOUNCE, EASE_APPLAUNCHSCALE, EASE_LINEAR } from "./AnimationCommon";
+import { Component, RefObject, createRef } from "preact";
+import { Position, Size } from "~/Util";
+
+import AnimationEvent from "~/Animation/AnimationEvent";
+import AnimationRunner from "~/Animation/AnimationRunner";
+import CoreWindowRenderer from "../CoreWindowRenderer";
+import Storyboard from "~/Animation/Storyboard";
+import TileDefaultVisual from "~/Immersive/Start/Tiles/TileDefaultVisual";
+import TileInfo from "~/Data/TileInfo";
+import { TileSize } from "shared/TileSize";
 import TileVisual from "~/Data/TileVisual";
 import TileVisualRenderer from "~/Immersive/Start/Tiles/TileVisualRenderer";
-import TileInfo from "~/Data/TileInfo";
-import TileDefaultVisual from "~/Immersive/Start/Tiles/TileDefaultVisual";
-import Storyboard from "~/Animation/Storyboard";
-import AnimationRunner from "~/Animation/AnimationRunner";
-import AnimationEvent from "~/Animation/AnimationEvent";
-import CoreWindowRenderer from "../CoreWindowRenderer";
+import { getTileSize } from "~/Immersive/Start/Tiles/TileUtils";
+import { lightenDarkenColour2 } from "shared/ColourUtils";
 
 //
 // Provides a two sided element presenting both a tile and CoreWindow, used when animating between the two
@@ -127,9 +128,6 @@ export default class CoreWindowLaunchAnimationFromTile extends Component<CoreWin
                     <div className={classList.join(" ")} style={tileStyle}>
                         <div class="tile" style={frontStyle}>
                             <TileVisualRenderer app={this.props.tile.app} size={this.props.tile.size} visual={this.props.tile.visual} />
-                            <div className={"tile-toast-footer" + (!this.props.tile.visual || this.props.tile.visual === TileDefaultVisual as TileVisual ? " hidden" : "")}>
-                                <img className="tile-badge-icon" src={this.props.tile.app.visualElements.square30x30Logo} alt={""} />
-                            </div>
                         </div>
                         <div className="tile-border"
                             style={{ border: '1px solid rgba(255,255,255,0.1)' }} />
