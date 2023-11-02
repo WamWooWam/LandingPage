@@ -10,6 +10,7 @@
 
 import "./tile-square310x310-small-images-and-text-list01.scss"
 import TileTemplateProps from '../TileTemplateProps'
+import TileNotificationBinding from '../TileNotificationBinding'
 import TileImageBinding from '../TileImageBinding'
 import TileTextBinding from '../TileTextBinding'
 
@@ -28,7 +29,7 @@ export default function TileSquare310x310SmallImagesAndTextList01(props: TileTem
     const text9 = props.elements.find(b => b.id === 9 && b.type === 'text');
     
     return (
-        <div className="tile-square310x310-small-images-and-text-list01">
+        <TileNotificationBinding className="tile-square310x310-small-images-and-text-list01" forceBadgePlate={true} dynamicFormat={false}>
             <div className="images">
                 <TileImageBinding className="tile-image-style id-1" binding={image1} />
                 <TileImageBinding className="tile-image-style id-2" binding={image2} />
@@ -47,6 +48,6 @@ export default function TileSquare310x310SmallImagesAndTextList01(props: TileTem
                 <TileTextBinding className="tile-body-text-style id-8" binding={text8} />
                 <TileTextBinding className="tile-body-text-style id-9" binding={text9} />
             </div>
-        </div>
+        </TileNotificationBinding>
     );
 }

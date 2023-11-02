@@ -10,6 +10,7 @@
 
 import "./tile-square310x310-block-and-text01.scss"
 import TileTemplateProps from '../TileTemplateProps'
+import TileNotificationBinding from '../TileNotificationBinding'
 import TileImageBinding from '../TileImageBinding'
 import TileTextBinding from '../TileTextBinding'
 
@@ -25,7 +26,7 @@ export default function TileSquare310x310BlockAndText01(props: TileTemplateProps
     const text8 = props.elements.find(b => b.id === 8 && b.type === 'text');
     
     return (
-        <div className="tile-square310x310-block-and-text01">
+        <TileNotificationBinding className="tile-square310x310-block-and-text01" forceBadgePlate={true} dynamicFormat={false}>
             <div className="images" />
             <div className="headlines">
                 <TileTextBinding className="tile-headline-style id-1" binding={text1} />
@@ -42,6 +43,6 @@ export default function TileSquare310x310BlockAndText01(props: TileTemplateProps
             <div className="block-text-fields">
                 <TileTextBinding className="tile-block-text-style id-8" binding={text8} />
             </div>
-        </div>
+        </TileNotificationBinding>
     );
 }

@@ -10,6 +10,7 @@
 
 import "./tile-wide310x150-peek-image-and-text01.scss"
 import TileTemplateProps from '../TileTemplateProps'
+import TileNotificationBinding from '../TileNotificationBinding'
 import TileImageBinding from '../TileImageBinding'
 import TileTextBinding from '../TileTextBinding'
 
@@ -18,13 +19,13 @@ export default function TileWide310x150PeekImageAndText01(props: TileTemplatePro
     const text1 = props.elements.find(b => b.id === 1 && b.type === 'text');
     
     return (
-        <div className="tile-wide310x150-peek-image-and-text01">
+        <TileNotificationBinding className="tile-wide310x150-peek-image-and-text01" forceBadgePlate={false} dynamicFormat={false} imagebounds={rect(0rp,0rp,310rp,100rp)} logoMargins={{left: 44, top: 80, right: 232, bottom: 164}} badgeMargins={{left: 12, top: 80, right: 212, bottom: 164}} logoAndBadgeMargins={{left: 44, top: 80, right: 212, bottom: 164}}>
             <div className="images">
                 <TileImageBinding className="tile-image-style id-1" binding={image1} />
             </div>
             <div className="text-fields">
-                <TileTextBinding className="tile-body-text-style id-1" binding={text1} />
+                <TileTextBinding className="tile-body-text-style id-1" constrainlayout={normal} overhangoffset={5rp} binding={text1} />
             </div>
-        </div>
+        </TileNotificationBinding>
     );
 }

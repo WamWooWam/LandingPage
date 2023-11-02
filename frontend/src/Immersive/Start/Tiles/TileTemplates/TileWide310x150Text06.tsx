@@ -10,6 +10,7 @@
 
 import "./tile-wide310x150-text06.scss"
 import TileTemplateProps from '../TileTemplateProps'
+import TileNotificationBinding from '../TileNotificationBinding'
 import TileImageBinding from '../TileImageBinding'
 import TileTextBinding from '../TileTextBinding'
 
@@ -26,7 +27,7 @@ export default function TileWide310x150Text06(props: TileTemplateProps) {
     const text10 = props.elements.find(b => b.id === 10 && b.type === 'text');
     
     return (
-        <div className="tile-wide310x150-text06">
+        <TileNotificationBinding className="tile-wide310x150-text06" forceBadgePlate={false}>
             <div className="images" />
             <div className="text-fields">
                 <TileTextBinding className="tile-body-text-style id-1" binding={text1} />
@@ -40,6 +41,6 @@ export default function TileWide310x150Text06(props: TileTemplateProps) {
                 <TileTextBinding className="tile-body-text-style id-9" binding={text9} />
                 <TileTextBinding className="tile-body-text-style id-10" binding={text10} />
             </div>
-        </div>
+        </TileNotificationBinding>
     );
 }

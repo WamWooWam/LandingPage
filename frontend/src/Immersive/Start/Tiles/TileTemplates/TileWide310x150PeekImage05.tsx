@@ -10,6 +10,7 @@
 
 import "./tile-wide310x150-peek-image05.scss"
 import TileTemplateProps from '../TileTemplateProps'
+import TileNotificationBinding from '../TileNotificationBinding'
 import TileImageBinding from '../TileImageBinding'
 import TileTextBinding from '../TileTextBinding'
 
@@ -20,7 +21,7 @@ export default function TileWide310x150PeekImage05(props: TileTemplateProps) {
     const text2 = props.elements.find(b => b.id === 2 && b.type === 'text');
     
     return (
-        <div className="tile-wide310x150-peek-image05">
+        <TileNotificationBinding className="tile-wide310x150-peek-image05" forceBadgePlate={false} secondaryImageId={2}>
             <div className="images">
                 <TileImageBinding className="tile-image-style id-1" binding={image1} />
                 <TileImageBinding className="tile-image-style id-2" binding={image2} />
@@ -31,6 +32,6 @@ export default function TileWide310x150PeekImage05(props: TileTemplateProps) {
             <div className="text-fields">
                 <TileTextBinding className="tile-body-text-style id-2" binding={text2} />
             </div>
-        </div>
+        </TileNotificationBinding>
     );
 }

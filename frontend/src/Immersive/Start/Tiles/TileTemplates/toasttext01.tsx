@@ -10,6 +10,7 @@
 
 import "./toasttext01.scss"
 import TileTemplateProps from '../TileTemplateProps'
+import TileNotificationBinding from '../TileNotificationBinding'
 import TileImageBinding from '../TileImageBinding'
 import TileTextBinding from '../TileTextBinding'
 
@@ -17,11 +18,11 @@ export default function toasttext01(props: TileTemplateProps) {
     const text1 = props.elements.find(b => b.id === 1 && b.type === 'text');
     
     return (
-        <div className="toasttext01">
+        <TileNotificationBinding className="toasttext01" dynamicFormat={false}>
             <div className="images" />
             <div className="text-fields">
                 <TileTextBinding className="toast-body-text-style id-1" binding={text1} />
             </div>
-        </div>
+        </TileNotificationBinding>
     );
 }

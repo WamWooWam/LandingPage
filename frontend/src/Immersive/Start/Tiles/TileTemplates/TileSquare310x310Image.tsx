@@ -10,6 +10,7 @@
 
 import "./tile-square310x310-image.scss"
 import TileTemplateProps from '../TileTemplateProps'
+import TileNotificationBinding from '../TileNotificationBinding'
 import TileImageBinding from '../TileImageBinding'
 import TileTextBinding from '../TileTextBinding'
 
@@ -17,10 +18,10 @@ export default function TileSquare310x310Image(props: TileTemplateProps) {
     const image1 = props.elements.find(b => b.id === 1 && b.type === 'image');
     
     return (
-        <div className="tile-square310x310-image">
+        <TileNotificationBinding className="tile-square310x310-image" forceBadgePlate={true} dynamicFormat={false}>
             <div className="images">
                 <TileImageBinding className="tile-image-style id-1" binding={image1} />
             </div>
-        </div>
+        </TileNotificationBinding>
     );
 }

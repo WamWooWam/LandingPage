@@ -10,6 +10,7 @@
 
 import "./tile-square310x310-image-and-text-overlay02.scss"
 import TileTemplateProps from '../TileTemplateProps'
+import TileNotificationBinding from '../TileNotificationBinding'
 import TileImageBinding from '../TileImageBinding'
 import TileTextBinding from '../TileTextBinding'
 
@@ -19,7 +20,7 @@ export default function TileSquare310x310ImageAndTextOverlay02(props: TileTempla
     const text2 = props.elements.find(b => b.id === 2 && b.type === 'text');
     
     return (
-        <div className="tile-square310x310-image-and-text-overlay02">
+        <TileNotificationBinding className="tile-square310x310-image-and-text-overlay02" forceBadgePlate={true} dynamicFormat={false}>
             <div className="images">
                 <TileImageBinding className="tile-image-style id-1" binding={image1} />
             </div>
@@ -28,8 +29,8 @@ export default function TileSquare310x310ImageAndTextOverlay02(props: TileTempla
                 <TileTextBinding className="tile-headline-style id-1" binding={text1} />
             </div>
             <div className="text-fields">
-                <TileTextBinding className="tile-body-text-style id-2" binding={text2} isBottomUp={true} />
+                <TileTextBinding className="tile-body-text-style id-2" isBottomUp={true} binding={text2} />
             </div>
-        </div>
+        </TileNotificationBinding>
     );
 }

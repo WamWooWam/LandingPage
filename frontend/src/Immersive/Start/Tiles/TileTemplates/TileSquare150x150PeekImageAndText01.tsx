@@ -10,6 +10,7 @@
 
 import "./tile-square150x150-peek-image-and-text01.scss"
 import TileTemplateProps from '../TileTemplateProps'
+import TileNotificationBinding from '../TileNotificationBinding'
 import TileImageBinding from '../TileImageBinding'
 import TileTextBinding from '../TileTextBinding'
 
@@ -21,7 +22,7 @@ export default function TileSquare150x150PeekImageAndText01(props: TileTemplateP
     const text4 = props.elements.find(b => b.id === 4 && b.type === 'text');
     
     return (
-        <div className="tile-square150x150-peek-image-and-text01">
+        <TileNotificationBinding className="tile-square150x150-peek-image-and-text01" forceBadgePlate={true} dynamicFormat={false}>
             <div className="images">
                 <TileImageBinding className="tile-image-style id-1" binding={image1} />
             </div>
@@ -33,6 +34,6 @@ export default function TileSquare150x150PeekImageAndText01(props: TileTemplateP
                 <TileTextBinding className="tile-body-text-style id-3" binding={text3} />
                 <TileTextBinding className="tile-body-text-style id-4" binding={text4} />
             </div>
-        </div>
+        </TileNotificationBinding>
     );
 }

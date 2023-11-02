@@ -123,6 +123,7 @@ string ProcessFile(string file)
 
     Write($"import \"./{MakeCssName(rootId)}.scss\"");
     Write("import TileTemplateProps from '../TileTemplateProps'");
+    Write("import TileNotificationBinding from '../TileNotificationBinding'");
     Write("import TileImageBinding from '../TileImageBinding'");
     Write("import TileTextBinding from '../TileTextBinding'");
 
@@ -137,14 +138,7 @@ string ProcessFile(string file)
 
     Write("");
     WriteOpen($"return (");
-    WriteOpen($"<div className=\"{MakeCssName(rootId)}\">");
-
-    foreach (XmlElement containers in element.ChildNodes)
-    {
-        ProcessElement(containers, containers.GetAttribute("id")[5..^1], "");
-    }
-
-    WriteEnd("</div>");
+    ProcessElement(element, rootId, "");
     WriteEnd(");");
     WriteEnd();
 
@@ -199,11 +193,19 @@ string ProcessFile(string file)
         }
 
         var id = 0;
-        var name = element.GetAttribute("id")[5..^1];
-        if (name.All(char.IsNumber))
+        var name = element.GetAttribute("id");
+        if (!string.IsNullOrEmpty(name))
         {
-            id = int.Parse(name);
-            name = $"Id-{name}";
+            name = name[5..^1];
+            if (name?.All(char.IsNumber) == true)
+            {
+                id = int.Parse(name);
+                name = $"Id-{name}";
+            }
+        }
+        else
+        {
+            name = parentType;
         }
 
         var cssName = "";
@@ -217,9 +219,19 @@ string ProcessFile(string file)
 
         var htmlElement = type == "Images" ? "TileImageBinding" : GetHTMLElement(element.Name);
 
+        var props = new List<ReactProperty> { new ReactProperty("className", cssName, false) };
+        props.AddRange(GetJSProperties(element));
+
+        if (id != 0)
+        {
+            props.Add(new ReactProperty("binding", $"{(type == "Images" ? "image" : "text")}{id}", true));
+        }
+
+        var Props = string.Join(" ", props.Select(p => p.IsProp ? $"{p.Name}={{{p.Value}}}" : $"{p.Name}=\"{p.Value}\""));
+
         if (element.ChildNodes.Count != 0)
         {
-            WriteOpen($"<{htmlElement} className=\"{cssName}\">");
+            WriteOpen($"<{htmlElement} {Props}>");
             foreach (var child in element.ChildNodes)
             {
                 if (child is XmlText text)
@@ -235,12 +247,7 @@ string ProcessFile(string file)
         }
         else
         {
-            if (id == 0)
-                Write($"<{htmlElement} className=\"{cssName}\" />");
-            else if (element.GetAttribute("class") == "BottomUpText")
-                Write($"<{htmlElement} className=\"{cssName}\" binding={{{(type == "Images" ? "image" : "text")}{id}}} isBottomUp={{true}} />");
-            else
-                Write($"<{htmlElement} className=\"{cssName}\" binding={{{(type == "Images" ? "image" : "text")}{id}}} />");
+            Write($"<{htmlElement} {Props} />");
         }
     }
 
@@ -276,12 +283,87 @@ string ProcessFile(string file)
     }
 }
 
+IEnumerable<ReactProperty> GetJSProperties(XmlElement element)
+{
+    foreach (XmlAttribute attribute in element.Attributes!)
+    {
+        switch (attribute.Name)
+        {
+            // handled by CSS
+            case "width":
+            case "height":
+            case "x":
+            case "y":
+            case "layoutpos":
+            case "font":
+            case "linespacing":
+            case "alpha":
+            case "contentalign":
+            case "typography":
+            case "id":
+            case "sheet":
+            case "visible":
+            case "resid":
+            case "layout":
+            case "background":
+                break;
+
+            case "peekmargin":
+            case "logomargins":
+            case "badgemargins":
+            case "logoandbadgemargins":
+                {
+                    var match = RECT.Match(attribute.Value);
+                    var values = match.Groups.Values.Skip(1).Select(g => (int)(int.Parse(g.Value) * 0.8)).ToArray();
+                    if (match.Success)
+                    {
+                        yield return new(TransformDuiNameToJS(attribute.Name), $"{{left: {values[0]}, top: {values[1]}, right: {values[2]}, bottom: {values[3]}}}", true);
+                    }
+                    break;
+                }
+
+            case "forcebadgeplate":
+            case "dynamicformat":
+                yield return new(TransformDuiNameToJS(attribute.Name), attribute.Value.ToLowerInvariant() == "on" ? "true" : "false", true);
+                break;
+
+            case "singlelineyoffset":
+                yield return new(TransformDuiNameToJS(attribute.Name), ConvertRPtoPx(attribute.Value), false);
+                break;
+
+            case "class":
+                if (attribute.Value == "BottomUpText")
+                    yield return new("isBottomUp", "true", true);
+                break;
+            default:
+                yield return new(TransformDuiNameToJS(attribute.Name), attribute.Value, true);
+                break;
+        }
+    }
+}
+
+string TransformDuiNameToJS(string attributeName)
+{
+    return attributeName.ToLowerInvariant() switch
+    {
+        "dynamicformat" => "dynamicFormat",
+        "forcebadgeplate" => "forceBadgePlate",
+        "singlelineyoffset" => "singleLineYOffset",
+        "logomargins" => "logoMargins",
+        "badgemargins" => "badgeMargins",
+        "logoandbadgemargins" => "logoAndBadgeMargins",
+        "secondaryimageid" => "secondaryImageId",
+        "peekmargin" => "peekMargin",
+        _ => attributeName
+    };
+}
+
 
 IEnumerable<(string key, string value)> GetCssProperties(XmlElement element)
 {
     foreach (XmlAttribute attribute in element.Attributes!)
     {
-        foreach (var val in TransformDuiProperty(attribute.Name, attribute.Value))
+        foreach (var val in TransformDuiPropertyToCSS(attribute.Name, attribute.Value))
             yield return val;
     }
 }
@@ -290,12 +372,12 @@ IEnumerable<(string key, string value)> GetCssPropertiesForStyle(Style style)
 {
     foreach (var x in style.Properties)
     {
-        foreach (var val in TransformDuiProperty(x.Key, x.Value))
+        foreach (var val in TransformDuiPropertyToCSS(x.Key, x.Value))
             yield return val;
     }
 }
 
-IEnumerable<(string key, string value)> TransformDuiProperty(string name, string value)
+IEnumerable<(string key, string value)> TransformDuiPropertyToCSS(string name, string value)
 {
     switch (name)
     {
@@ -370,6 +452,8 @@ string GetHTMLElement(string element)
     {
         case "RichText":
             return "TileTextBinding";
+        case "NotificationElement":
+            return "TileNotificationBinding";
         case "element":
         default:
             return "div";
@@ -387,7 +471,7 @@ string ConvertRPtoPx(string rpValue)
 }
 string MakeCssName(string name)
 {
-    return Regex.Replace(name, "([A-Z])", "-$1").ToLower().Trim('-');
+    return CSS.Replace(name, "-$1").ToLower().Trim('-');
 }
 
 void Write(string line)
@@ -423,3 +507,16 @@ void WriteAutoGeneratedHeader()
 }
 
 record class Style(string ResId, string Type, Dictionary<string, string> Properties);
+
+record class ReactProperty(string Name, string Value, bool IsProp = false);
+
+partial class Program
+{
+    [GeneratedRegex(@"rect\(([0-9]+)rp,([0-9]+)rp,([0-9]+)rp,([0-9]+)rp\)")]
+    private static partial Regex _RECT();
+    [GeneratedRegex("([A-Z])")]
+    private static partial Regex _CSS();
+
+    public static Regex RECT => _RECT();
+    public static Regex CSS => _CSS();
+}

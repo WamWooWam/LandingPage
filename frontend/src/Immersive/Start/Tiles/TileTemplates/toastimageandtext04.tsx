@@ -10,6 +10,7 @@
 
 import "./toastimageandtext04.scss"
 import TileTemplateProps from '../TileTemplateProps'
+import TileNotificationBinding from '../TileNotificationBinding'
 import TileImageBinding from '../TileImageBinding'
 import TileTextBinding from '../TileTextBinding'
 
@@ -20,7 +21,7 @@ export default function toastimageandtext04(props: TileTemplateProps) {
     const text3 = props.elements.find(b => b.id === 3 && b.type === 'text');
     
     return (
-        <div className="toastimageandtext04">
+        <TileNotificationBinding className="toastimageandtext04" dynamicFormat={false}>
             <div className="images">
                 <TileImageBinding className="tile-image-style id-1" binding={image1} />
             </div>
@@ -31,6 +32,6 @@ export default function toastimageandtext04(props: TileTemplateProps) {
                 <TileTextBinding className="toast-body-text-style id-2" binding={text2} />
                 <TileTextBinding className="toast-body-text-style id-3" binding={text3} />
             </div>
-        </div>
+        </TileNotificationBinding>
     );
 }

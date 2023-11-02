@@ -10,6 +10,7 @@
 
 import "./tile-square310x310-image-collection.scss"
 import TileTemplateProps from '../TileTemplateProps'
+import TileNotificationBinding from '../TileNotificationBinding'
 import TileImageBinding from '../TileImageBinding'
 import TileTextBinding from '../TileTextBinding'
 
@@ -21,7 +22,7 @@ export default function TileSquare310x310ImageCollection(props: TileTemplateProp
     const image5 = props.elements.find(b => b.id === 5 && b.type === 'image');
     
     return (
-        <div className="tile-square310x310-image-collection">
+        <TileNotificationBinding className="tile-square310x310-image-collection" forceBadgePlate={true} dynamicFormat={false}>
             <div className="images">
                 <TileImageBinding className="tile-image-style id-1" binding={image1} />
                 <TileImageBinding className="tile-small-image-bottom-and-right-edge-style id-2" binding={image2} />
@@ -29,6 +30,6 @@ export default function TileSquare310x310ImageCollection(props: TileTemplateProp
                 <TileImageBinding className="tile-small-image-bottom-and-right-edge-style id-4" binding={image4} />
                 <TileImageBinding className="tile-small-image-bottom-edge-style id-5" binding={image5} />
             </div>
-        </div>
+        </TileNotificationBinding>
     );
 }

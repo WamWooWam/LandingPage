@@ -115,7 +115,7 @@ export default class TileRenderer extends Component<TileProps, TileState> {
 
         let tileVisuals = visuals.get(this.props.size);
         if (tileVisuals.length > 0) {
-            let interval = setInterval(() => this.updateBinding(), 10000 + (Math.random() * 5000));
+            let interval = setInterval(() => this.updateBinding(), 10000000 + (Math.random() * 5000));
 
             this.setState({ visuals: tileVisuals, interval });
             this.updateBinding()
@@ -235,6 +235,9 @@ export default class TileRenderer extends Component<TileProps, TileState> {
         let visual = state.visualIdx == -1 ? TileDefaultVisual : state.visuals[state.visualIdx];
         let nextVisual = state.visuals[(state.visualIdx + 1) % state.visuals.length];
 
+        let frontBinding = visual?.bindings?.find(f => f.size === props.size);
+        let nextBinding = nextVisual?.bindings?.find(f => f.size === props.size);
+
         let href = state.app.startPage;
         if (state.app.load) {
             href = `/app/${state.pack.identity.packageFamilyName}/${state.app.id}`;
@@ -257,12 +260,12 @@ export default class TileRenderer extends Component<TileProps, TileState> {
                 href={href}
                 target="_blank">
                 <div class="tile">
-                    <div class="front" style={frontStyle}>
-                        <TileVisualRenderer key={frontKey} app={state.app} visual={visual} size={props.size} />
+                    <div class="front" style={frontStyle} key={frontKey}>
+                        <TileVisualRenderer app={state.app} binding={frontBinding} size={props.size} />
                     </div>
                     {state.swapping &&
-                        <div class="next" style={frontStyle} onAnimationEnd={this.onAnimationEnded.bind(this)}>
-                            <TileVisualRenderer key={nextKey} app={state.app} visual={nextVisual} size={props.size} />
+                        <div class="next" key={nextKey} style={frontStyle} onAnimationEnd={this.onAnimationEnded.bind(this)}>
+                            <TileVisualRenderer app={state.app} binding={nextBinding} size={props.size} />
                         </div>
                     }
                     <div className={"tile-toast-footer" + (!visual || visual === TileDefaultVisual ? " hidden" : "")}>

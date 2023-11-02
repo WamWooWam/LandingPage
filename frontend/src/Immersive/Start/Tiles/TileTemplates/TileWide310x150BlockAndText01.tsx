@@ -10,6 +10,7 @@
 
 import "./tile-wide310x150-block-and-text01.scss"
 import TileTemplateProps from '../TileTemplateProps'
+import TileNotificationBinding from '../TileNotificationBinding'
 import TileImageBinding from '../TileImageBinding'
 import TileTextBinding from '../TileTextBinding'
 
@@ -22,7 +23,7 @@ export default function TileWide310x150BlockAndText01(props: TileTemplateProps) 
     const text5 = props.elements.find(b => b.id === 5 && b.type === 'text');
     
     return (
-        <div className="tile-wide310x150-block-and-text01">
+        <TileNotificationBinding className="tile-wide310x150-block-and-text01" forceBadgePlate={false}>
             <div className="images" />
             <div className="text-fields">
                 <TileTextBinding className="tile-body-text-style id-1" binding={text1} />
@@ -34,6 +35,6 @@ export default function TileWide310x150BlockAndText01(props: TileTemplateProps) 
             <div className="block-text-fields">
                 <TileTextBinding className="tile-block-text-style id-5" binding={text5} />
             </div>
-        </div>
+        </TileNotificationBinding>
     );
 }
