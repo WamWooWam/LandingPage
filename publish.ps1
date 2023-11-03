@@ -1,5 +1,8 @@
 #!/usr/bin/env pwsh
 
+# start time
+$startTime = Get-Date
+
 Remove-Item -Force -Recurse .\publish
 Remove-Item -Force -Recurse .\frontend\dist
 Remove-Item -Force -Recurse .\backend\dist
@@ -56,3 +59,9 @@ Copy-Item -Path .\readme.md -Destination .\publish
 # create zip file
 Compress-Archive -Path .\publish\* -DestinationPath .\publish.zip -Force
 Remove-Item -Force -Recurse .\publish
+
+# end time
+$endTime = Get-Date
+$elapsedTime = New-TimeSpan -Start $startTime -End $endTime
+
+Write-Host "Elapsed time: $($elapsedTime)"

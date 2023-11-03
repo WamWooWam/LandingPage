@@ -369,8 +369,6 @@ string ProcessFile(string file)
                 name = $"Id-{name}";
             }
 
-            var cssName = MakeCssName(name);
-            WriteOpen($".{cssName} {{");
 
             var textDui = new DuiElement(child, childStyle);
             var textHeight = textDui.Height;
@@ -395,48 +393,22 @@ string ProcessFile(string file)
                     }
                 }
 
+                var cssName = MakeCssName(name);
+                WriteOpen($".{cssName} {{");
                 if ((lineSpacing <= textIntersect.Bottom - textIntersect.Top) && (lineSpacing != 0))
                 {
-                    //local_60.rcElement.rect.left = textIntersect.left;
-                    //local_60.rcElement.rect.top = textIntersect.top;
-                    //local_60.rcElement.rect.right = textIntersect.right;
-                    //local_60.rcElement.rect.bottom = textIntersect.bottom;
-
                     Write($"left: {textIntersect.Left}px;");
                     Write($"top: {textIntersect.Top}px;");
                     Write($"width: {textIntersect.Width}px;");
                     Write($"height: {textIntersect.Height}px;");
-
-
-                    //local_60.cxParentWidth = iVar2;
-
-                    //layerX = GetSingleLineYOffset(currentElement);
-                    //layerY = SetElementRect((Element*)textChild, &local_60);
-                    //if (-1 < layerY)
-                    //{
-                    //    if ((layerX != 0) &&
-                    //       (uVar1 = DirectUI::RichText::GetLineCount(textChild), uVar1 == 1))
-                    //    {
-                    //        layerY = DirectUI::Element::GetY((Element*)textChild);
-                    //        layerY = DirectUI::Element::SetY((Element*)textChild, layerY + layerX);
-                    //    }
-                    //    if (-1 < layerY)
-                    //    {
-                    //        layerY = DirectUI::Element::SetDirection((Element*)textChild, layerSize.cy);
-                    //    }
-                    //}
                 }
                 else
                 {
                     Write("display: none;");
                 }
-            }
-            else
-            {
-                throw new Exception("textIntersect == Rectangle.Empty");
-            }
 
-            WriteClose();
+                WriteClose();
+            }
         }
 
 

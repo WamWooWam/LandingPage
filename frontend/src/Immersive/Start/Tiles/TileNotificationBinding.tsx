@@ -36,27 +36,39 @@ type TileNotificationBindingProps = {
 }
 
 export default function TileNotificationBinding(props: RenderableProps<TileNotificationBindingProps>) {
-    const ref = useRef<HTMLDivElement>(null);
+    const scaleRef = useRef<HTMLDivElement>(null);
     const tile = useContext(TileContext);
 
-    const [interval, setInterval] = useState<number>(null);
     const [subVisual, setSubVisual] = useState<number>(0);
+    const [scale, setScale] = useState<number>(1);
 
-    const tileSize = getTileSize(tile.size);
-
-    useLayoutEffect(() => {
-        if (!ref.current) return;
-
+    useEffect(() => {
+        const tileSize = getTileSize(tile.size);
         const subVisuals = Math.ceil(props.height / tileSize.height);
+        if (subVisuals <= 1) return;
+
         const interval = window.setInterval(() => {
             setSubVisual((subVisual) => (subVisual + 1) % subVisuals);
         }, 5000);
 
-        setInterval(interval);
-
         return () => window.clearInterval(interval);
-    }, [ref.current]);
+    });
 
+    useLayoutEffect(() => {
+        if (!scaleRef.current) return;
+
+        const observer = new ResizeObserver(() => {
+            const tileSize = getTileSize(tile.size);
+            const parentSize = scaleRef.current.parentElement.getBoundingClientRect();
+            const scale = Math.max(parentSize.width / tileSize.width, parentSize.height / tileSize.height);
+            setScale(scale);
+        });
+        observer.observe(scaleRef.current);
+
+        return () => observer.disconnect();
+    }, [scaleRef.current, props.width, props.height]);
+
+    const tileSize = getTileSize(tile.size);
     const style: CSSProperties = {
         width: tileSize.width,
         height: tileSize.height,
@@ -64,8 +76,10 @@ export default function TileNotificationBinding(props: RenderableProps<TileNotif
     }
 
     return (
-        <div ref={ref} className={`${props.className} tile-notification logo`} style={style}>
-            {props.children}
+        <div ref={scaleRef} className={'tile-scale-container'} style={{ transform: `scale(${scale})`, transformOrigin: 'top left' }}>
+            <div className={`${props.className} tile-notification logo`} style={style}>
+                {props.children}
+            </div>
         </div>
     )
 }
