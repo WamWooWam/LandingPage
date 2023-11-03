@@ -44,10 +44,10 @@ export namespace Bluesky {
 
                 let wideContent = null;
                 if (record.text.length) {
-                    wideContent = createBindingFromTemplate(root, visual, TileTemplateType.tileWide310x150PeekImage05);
+                    wideContent = createBindingFromTemplate(root, visual, TileTemplateType.tileWide310x150PeekImage07);
                     wideContent.getElementsByTagName("image")[1].setAttribute("src", author.avatar);
                     wideContent.getElementsByTagName("image")[1].setAttributeNS(EXT_XMLNS, "ext:alt", author.displayName + " profile picture");
-                    wideContent.getElementsByTagName("text")[1].textContent = record.text;
+                    wideContent.getElementsByTagName("text")[0].textContent = record.text;
                 }
                 else {
                     wideContent = createBindingFromTemplate(root, visual, TileTemplateType.tileWide310x150Image);

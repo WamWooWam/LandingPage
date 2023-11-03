@@ -9,6 +9,7 @@
 //------------------------------------------------------------------------------
 
 import './index.scss'
+
 import DesktopTileSquare150x150Image from './DesktopTileSquare150x150Image'
 import DesktopTileSquare310x310Image from './DesktopTileSquare310x310Image'
 import DesktopTileSquare70x70Image from './DesktopTileSquare70x70Image'
@@ -66,6 +67,7 @@ import TileWide310x150PeekImage03 from './TileWide310x150PeekImage03'
 import TileWide310x150PeekImage04 from './TileWide310x150PeekImage04'
 import TileWide310x150PeekImage05 from './TileWide310x150PeekImage05'
 import TileWide310x150PeekImage06 from './TileWide310x150PeekImage06'
+import TileWide310x150PeekImage07 from './TileWide310x150PeekImage07'
 import TileWide310x150PeekImageAndText01 from './TileWide310x150PeekImageAndText01'
 import TileWide310x150PeekImageAndText02 from './TileWide310x150PeekImageAndText02'
 import TileWide310x150PeekImageCollection01 from './TileWide310x150PeekImageCollection01'
@@ -157,6 +159,7 @@ const TileTemplates = {
     TileWide310x150PeekImage04,
     TileWide310x150PeekImage05,
     TileWide310x150PeekImage06,
+    TileWide310x150PeekImage07,
     TileWide310x150PeekImageAndText01,
     TileWide310x150PeekImageAndText02,
     TileWide310x150PeekImageCollection01,

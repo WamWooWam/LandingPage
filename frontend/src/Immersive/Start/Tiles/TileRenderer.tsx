@@ -1,9 +1,10 @@
 import "./tile.scss"
 
-import { Component, Ref, RefObject, createContext, createRef } from "preact";
+import { Component, ErrorInfo, Ref, RefObject, createContext, createRef } from "preact";
 import ConfigurationManager, { AppStatus } from "~/Data/ConfigurationManager";
 
 import AppLaunchRequestedEvent from "~/Events/AppLaunchRequestedEvent";
+import { E_UNEXPECTED } from "shared/HRESULT";
 import Events from "~/Events";
 import MessageDialog from "~/Data/MessageDialog";
 import { Package } from "shared/Package";
@@ -50,6 +51,8 @@ interface TileState {
 
     interval?: any;
     noStyle?: boolean;
+
+    error: string | null
 }
 
 interface TileContextData {
@@ -59,10 +62,6 @@ interface TileContextData {
 }
 
 export const TileContext = createContext<TileContextData>(null);
-
-// TODO: the ability to disable apps but better
-const isDisabled = (app: PackageApplication, pack: Package) =>
-    (app.id === "Twitter" && pack.identity.packageFamilyName === "Socials_zfgz6xjnaz0ym");
 
 export default class TileRenderer extends Component<TileProps, TileState> {
     // BUGBUG: this should be possible without a ref
@@ -80,7 +79,8 @@ export default class TileRenderer extends Component<TileProps, TileState> {
             visualIdx: -1,
             swapping: false,
             clicked: false,
-            visible: true
+            visible: true,
+            error: null
         };
 
         this.root = createRef();
@@ -110,6 +110,20 @@ export default class TileRenderer extends Component<TileProps, TileState> {
             .then((status) => {
                 this.setState({ appStatus: status });
             });
+    }
+
+    componentDidCatch(error: any, errorInfo: ErrorInfo): void {
+        console.error(error);
+
+        TileUpdateManager.getInstance()
+            .unregisterVisualUpdateCallback(this.state.app, this.didGetVisuals.bind(this));
+
+        this.setState(() => {
+            clearInterval(this.state.interval);
+
+            // tile safe mode, show the default visual
+            return { error: error.toString(), visuals: [TileDefaultVisual], nextVisualIdx: undefined, visualIdx: 0, swapping: false };
+        });
     }
 
     componentWillUnmount() {
@@ -286,8 +300,8 @@ export default class TileRenderer extends Component<TileProps, TileState> {
 
                     <TileBadge isError={state.appStatus && state.appStatus.statusCode !== 0} />
 
-                    {/* <div className="tile-border"
-                    style={{ border: '1px solid rgba(255,255,255,0.1)' }} /> */}
+                    <div className="tile-border"
+                        style={{ border: '1px solid rgba(255,255,255,0.1)' }} />
                 </a>
             </TileContext.Provider>
         )

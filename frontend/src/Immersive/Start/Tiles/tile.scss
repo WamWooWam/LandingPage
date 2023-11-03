@@ -33,6 +33,7 @@
 .tile-visual {
     img {
         object-fit: cover;
+        image-rendering: high-quality;
     }
 }
 
@@ -242,8 +243,6 @@ only screen and (min-device-pixel-ratio: 2),
     overflow: hidden;
     transform: translateY(0);
     flex-direction: column;
-    transition: transform 0.8s cubic-bezier(0, 0.50, 0.1, 1);
-    will-change: transform;
 }
 
 .tile-notification {

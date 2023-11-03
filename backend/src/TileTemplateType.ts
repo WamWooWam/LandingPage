@@ -127,6 +127,7 @@ export enum TileTemplateType {
     tileSquare310x310SmallImageAndText01 = 72,
     tileSquare310x310SmallImagesAndTextList05 = 73,
     tileSquare310x310Text09 = 74,
+    tileWide310x150PeekImage07 = 75,
     tileSquare99x99IconWithBadge = 1000,
     tileSquare210x210IconWithBadge = 1001,
     tileWide432x210IconWithBadgeAndText = 1002,
