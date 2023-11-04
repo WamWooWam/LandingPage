@@ -18,7 +18,6 @@ interface TileVisualRendererProps {
     binding?: TileBinding
 }
 
-
 export default function TileVisualRenderer({ app, size, binding }: RenderableProps<TileVisualRendererProps>) {
     let visualElements = app.visualElements;
 
@@ -32,7 +31,10 @@ export default function TileVisualRenderer({ app, size, binding }: RenderablePro
 function TileVisualBinding({ binding }: RenderableProps<TileVisualRendererProps>) {
     const [TileTemplate, setTileTemplate] = useState<FunctionalComponent<TileTemplateProps>>(null);
     useEffect(() => {
-        setTileTemplate(() => TileTemplates[binding.template as keyof typeof TileTemplates]);
+        TileTemplates[binding.template as keyof typeof TileTemplates]().then((template) => {
+            setTileTemplate(() => template.default);
+        });
+
         return () => setTileTemplate(null);
     }, [binding]);
 

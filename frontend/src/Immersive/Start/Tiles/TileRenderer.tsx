@@ -14,6 +14,7 @@ import PackageRegistry from "~/Data/PackageRegistry";
 import TileBadge from "./TileBadge";
 import TileDefaultVisual from "./TileDefaultVisual";
 import { TileSize } from "shared/TileSize";
+import TileTemplates from "./TileTemplates";
 import TileUpdateManager from "./TileUpdateManager";
 import TileVisual from "../../../Data/TileVisual";
 import TileVisualRenderer from "./TileVisualRenderer";
@@ -137,10 +138,13 @@ export default class TileRenderer extends Component<TileProps, TileState> {
 
         let tileVisuals = visuals.get(this.props.size);
         if (tileVisuals.length > 0) {
-            let interval = setInterval(() => this.updateBinding(), 10000 + (Math.random() * 5000));
+            Promise.race(tileVisuals.flatMap(f => f.bindings).map(s => TileTemplates[s.template as keyof typeof TileTemplates]()))
+                .then(() => {
+                    let interval = setInterval(() => this.updateBinding(), 10000 + (Math.random() * 5000));
 
-            this.setState({ visuals: tileVisuals, interval });
-            this.updateBinding()
+                    this.setState({ visuals: tileVisuals, interval });
+                    this.updateBinding()
+                })
         }
     }
 
@@ -201,11 +205,10 @@ export default class TileRenderer extends Component<TileProps, TileState> {
                 tileSize: this.props.size
             });
 
-            Events.getInstance().dispatchEvent(event);
+            Events.getInstance()
+                .dispatchEvent(event);
 
-            setTimeout(() => {
-                this.setState({ visible: true });
-            }, 1000);
+            setTimeout(() => this.setState({ visible: true }), 1000);
         }
     }
 
