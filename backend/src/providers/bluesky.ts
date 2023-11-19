@@ -42,11 +42,12 @@ export namespace Bluesky {
                 content.getElementsByTagName("image")[0].setAttributeNS(EXT_XMLNS, "ext:alt", embed.images[0].alt);
                 content.getElementsByTagName("text")[0].textContent = record.text;
 
-                let wideContent = createBindingFromTemplate(root, visual, TileTemplateType.tileWidePeekImage05);
+                let wideContent = null;
                 if (record.text.length) {
+                    wideContent = createBindingFromTemplate(root, visual, TileTemplateType.tileWide310x150PeekImage07);
                     wideContent.getElementsByTagName("image")[1].setAttribute("src", author.avatar);
                     wideContent.getElementsByTagName("image")[1].setAttributeNS(EXT_XMLNS, "ext:alt", author.displayName + " profile picture");
-                    wideContent.getElementsByTagName("text")[1].textContent = record.text;
+                    wideContent.getElementsByTagName("text")[0].textContent = record.text;
                 }
                 else {
                     wideContent = createBindingFromTemplate(root, visual, TileTemplateType.tileWide310x150Image);

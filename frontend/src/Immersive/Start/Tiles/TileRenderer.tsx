@@ -1,9 +1,10 @@
 import "./tile.scss"
 
-import { Component, Ref, RefObject, createRef } from "preact";
+import { Component, ErrorInfo, Ref, RefObject, createContext, createRef } from "preact";
 import ConfigurationManager, { AppStatus } from "~/Data/ConfigurationManager";
 
 import AppLaunchRequestedEvent from "~/Events/AppLaunchRequestedEvent";
+import { E_UNEXPECTED } from "shared/HRESULT";
 import Events from "~/Events";
 import MessageDialog from "~/Data/MessageDialog";
 import { Package } from "shared/Package";
@@ -13,6 +14,7 @@ import PackageRegistry from "~/Data/PackageRegistry";
 import TileBadge from "./TileBadge";
 import TileDefaultVisual from "./TileDefaultVisual";
 import { TileSize } from "shared/TileSize";
+import TileTemplates from "./TileTemplates";
 import TileUpdateManager from "./TileUpdateManager";
 import TileVisual from "../../../Data/TileVisual";
 import TileVisualRenderer from "./TileVisualRenderer";
@@ -50,11 +52,17 @@ interface TileState {
 
     interval?: any;
     noStyle?: boolean;
+
+    error: string | null
 }
 
-// TODO: the ability to disable apps but better
-const isDisabled = (app: PackageApplication, pack: Package) =>
-    (app.id === "Twitter" && pack.identity.packageFamilyName === "Socials_zfgz6xjnaz0ym");
+interface TileContextData {
+    pack: Package;
+    app: PackageApplication;
+    size: TileSize;
+}
+
+export const TileContext = createContext<TileContextData>(null);
 
 export default class TileRenderer extends Component<TileProps, TileState> {
     // BUGBUG: this should be possible without a ref
@@ -72,7 +80,8 @@ export default class TileRenderer extends Component<TileProps, TileState> {
             visualIdx: -1,
             swapping: false,
             clicked: false,
-            visible: true
+            visible: true,
+            error: null
         };
 
         this.root = createRef();
@@ -104,6 +113,20 @@ export default class TileRenderer extends Component<TileProps, TileState> {
             });
     }
 
+    componentDidCatch(error: any, errorInfo: ErrorInfo): void {
+        console.error(error);
+
+        TileUpdateManager.getInstance()
+            .unregisterVisualUpdateCallback(this.state.app, this.didGetVisuals.bind(this));
+
+        this.setState(() => {
+            clearInterval(this.state.interval);
+
+            // tile safe mode, show the default visual
+            return { error: error.toString(), visuals: [TileDefaultVisual], nextVisualIdx: undefined, visualIdx: 0, swapping: false };
+        });
+    }
+
     componentWillUnmount() {
         TileUpdateManager.getInstance()
             .unregisterVisualUpdateCallback(this.state.app, this.didGetVisuals.bind(this));
@@ -115,10 +138,13 @@ export default class TileRenderer extends Component<TileProps, TileState> {
 
         let tileVisuals = visuals.get(this.props.size);
         if (tileVisuals.length > 0) {
-            let interval = setInterval(() => this.updateBinding(), 10000 + (Math.random() * 5000));
+            Promise.race(tileVisuals.flatMap(f => f.bindings).map(s => TileTemplates[s.template as keyof typeof TileTemplates]()))
+                .then(() => {
+                    let interval = setInterval(() => this.updateBinding(), 10000 + (Math.random() * 5000));
 
-            this.setState({ visuals: tileVisuals, interval });
-            this.updateBinding()
+                    this.setState({ visuals: tileVisuals, interval });
+                    this.updateBinding()
+                })
         }
     }
 
@@ -179,11 +205,10 @@ export default class TileRenderer extends Component<TileProps, TileState> {
                 tileSize: this.props.size
             });
 
-            Events.getInstance().dispatchEvent(event);
+            Events.getInstance()
+                .dispatchEvent(event);
 
-            setTimeout(() => {
-                this.setState({ visible: true });
-            }, 1000);
+            setTimeout(() => this.setState({ visible: true }), 1000);
         }
     }
 
@@ -235,6 +260,9 @@ export default class TileRenderer extends Component<TileProps, TileState> {
         let visual = state.visualIdx == -1 ? TileDefaultVisual : state.visuals[state.visualIdx];
         let nextVisual = state.visuals[(state.visualIdx + 1) % state.visuals.length];
 
+        let frontBinding = visual?.bindings?.find(f => f.size === props.size);
+        let nextBinding = nextVisual?.bindings?.find(f => f.size === props.size);
+
         let href = state.app.startPage;
         if (state.app.load) {
             href = `/app/${state.pack.identity.packageFamilyName}/${state.app.id}`;
@@ -245,38 +273,40 @@ export default class TileRenderer extends Component<TileProps, TileState> {
 
         //let size = this.getTileSize(props.size)
         return (
-            <a ref={this.root}
-                id={`${props.packageName}!${props.appId}`}
-                class={classList.join(" ")}
-                style={containerStyle}
-                onMouseDown={this.onMouseDown.bind(this)}
-                onMouseUp={this.onMouseUp.bind(this)}
-                onClick={this.onClick.bind(this)}
-                title={state.app.visualElements.displayName}
-                name={state.app.visualElements.displayName}
-                href={href}
-                target="_blank">
-                <div class="tile">
-                    <div class="front" style={frontStyle}>
-                        <TileVisualRenderer key={frontKey} app={state.app} visual={visual} size={props.size} />
-                    </div>
-                    {state.swapping &&
-                        <div class="next" style={frontStyle} onAnimationEnd={this.onAnimationEnded.bind(this)}>
-                            <TileVisualRenderer key={nextKey} app={state.app} visual={nextVisual} size={props.size} />
+            <TileContext.Provider value={{ pack: state.pack, app: state.app, size: props.size }}>
+                <a ref={this.root}
+                    id={`${props.packageName}!${props.appId}`}
+                    class={classList.join(" ")}
+                    style={containerStyle}
+                    onMouseDown={this.onMouseDown.bind(this)}
+                    onMouseUp={this.onMouseUp.bind(this)}
+                    onClick={this.onClick.bind(this)}
+                    title={state.app.visualElements.displayName}
+                    name={state.app.visualElements.displayName}
+                    href={href}
+                    target="_blank">
+                    <div class="tile">
+                        <div class="front" style={frontStyle} key={frontKey}>
+                            <TileVisualRenderer app={state.app} binding={frontBinding} size={props.size} />
                         </div>
-                    }
-                    <div className={"tile-toast-footer" + (!visual || visual === TileDefaultVisual ? " hidden" : "")}>
-                        <PackageImage url={state.app.visualElements.square30x30Logo}>
-                            {image => <img className="tile-badge-icon" src={image} alt={""} />}
-                        </PackageImage>
+                        {state.swapping &&
+                            <div class="next" key={nextKey} style={frontStyle} onAnimationEnd={this.onAnimationEnded.bind(this)}>
+                                <TileVisualRenderer app={state.app} binding={nextBinding} size={props.size} />
+                            </div>
+                        }
+                        <div className={"tile-toast-footer" + (!visual || visual === TileDefaultVisual ? " hidden" : "")}>
+                            <PackageImage url={state.app.visualElements.square30x30Logo}>
+                                {image => <img className="tile-badge-icon" src={image} alt={""} />}
+                            </PackageImage>
+                        </div>
                     </div>
-                </div>
 
-                <TileBadge isError={state.appStatus && state.appStatus.statusCode !== 0} />
+                    <TileBadge isError={state.appStatus && state.appStatus.statusCode !== 0} />
 
-                <div className="tile-border"
-                    style={{ border: '1px solid rgba(255,255,255,0.1)' }} />
-            </a>
+                    <div className="tile-border"
+                        style={{ border: '1px solid rgba(255,255,255,0.1)' }} />
+                </a>
+            </TileContext.Provider>
         )
     }
 

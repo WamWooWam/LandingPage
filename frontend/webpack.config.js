@@ -67,14 +67,7 @@ module.exports = [
         },
         optimization: {
             usedExports: true,
-            runtimeChunk: 'single',
-            splitChunks: {
-                cacheGroups: {
-                    defaultVendors: {
-                        idHint: 'vendors',
-                    },
-                },
-            }
+            splitChunks: { chunks: "all" }
         },
         resolve: {
             extensions: ['.tsx', '.ts', '.js'],
