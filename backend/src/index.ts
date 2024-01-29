@@ -6,6 +6,7 @@ import { PackageReader, StartTileGroup, TileSize, parseLayout } from 'landing-pa
 import { Bluesky } from './providers/bluesky';
 import { Configuration } from './providers/configuration';
 import { GitHub } from './providers/github';
+import { Nitter } from './providers/nitter';
 import PackageRegistry from './PackageRegistry';
 import { Snug } from './providers/snug';
 import { Standalone } from './providers/standalone/manifest';
@@ -20,6 +21,7 @@ import path = require('path');
 import fsp = require('fs/promises');
 import apicache = require('apicache');
 import os = require('os');
+
 
 globalThis.DOMParser = require('xmldom').DOMParser; // BUGBUG: hacky fix to stop webpack including xmldom in the client bundle
 
@@ -99,16 +101,16 @@ const app = express();
         });
     });
 
-    app.get('/api/live-tiles/twitter/latest-tweets.xml', apicache.middleware('1 hour'), Twitter.latestTweets);
+    app.get('/api/live-tiles/twitter/latest-tweets.xml', apicache.middleware('1 hour'), Nitter.latestTweets);
     app.get('/api/live-tiles/snug/latest-notes.xml', apicache.middleware('15 minutes'), Snug.latestNotes);
     app.get('/api/live-tiles/twitch/is-live.xml', apicache.middleware('15 minutes'), Twitch.isLive);
     app.get('/api/live-tiles/youtube/recent-videos.xml', apicache.middleware('15 minutes'), YouTube.recentVideos);
     app.get('/api/live-tiles/github/:username/:project.xml', apicache.middleware('15 minutes'), GitHub.recentActivity);
     app.get('/api/live-tiles/bluesky/latest-posts.xml', apicache.middleware('15 minutes'), Bluesky.latestPosts);
 
-    app.get('/api/media/og-image.svg', apicache.middleware('14 days'), (req: Request, res: Response) => 
+    app.get('/api/media/og-image.svg', apicache.middleware('14 days'), (req: Request, res: Response) =>
         res.sendFile(path.join(process.cwd(), "images/og-image.svg")));
-    
+
     app.get('/api/media/og-image.png', apicache.middleware('14 days'), (req: Request, res: Response) =>
         res.sendFile(path.join(process.cwd(), "images/og-image.png")));
 
@@ -175,8 +177,7 @@ const app = express();
         console.error(err)
 
         if (process.env.NODE_ENV === 'development') {
-            let error = err?.toString();
-
+            let error: any = err;
             if (err instanceof Error) {
                 error = err.stack;
             }
@@ -184,6 +185,8 @@ const app = express();
             if ('then' in err && err.then) {
                 error = await Promise.resolve(err).catch(e => e.stack);
             }
+
+            if (typeof error !== 'string') error = JSON.stringify(error);
 
             res.status(500)
                 .contentType('text/plain')

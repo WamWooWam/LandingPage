@@ -14,22 +14,27 @@ export namespace Bluesky {
 
     export async function initialize() {
         try {
+            setInterval(async () => {
+                await agent.login({ identifier: bskyUsername, password: bskyPassword })
+                    .catch((e: XRPCError) => console.error(e));
+            }, 1000 * 60 * 60 * 24);
+
             await agent.login({ identifier: bskyUsername, password: bskyPassword });
+            return true;
         }
         catch (e) {
+            return false;
         }
     }
 
     export async function latestPosts(req: Request, res: Response) {
-        const feed = await agent.getAuthorFeed({ actor: bskyUsername });
-        if (!feed.success) {
-            res.status(204);
-        }
+        await initialize();
 
+        const feed = await agent.getAuthorFeed({ actor: bskyUsername });
         const root = createRoot();
 
-        // take the first 10 posts
-        const posts = feed.data.feed.slice(0, 10);
+        // take the first 25 posts
+        const posts = feed.data.feed.slice(0, 25);
         for (const data of posts) {
             const visual = createVisual(root);
             const author = data.post.author;
@@ -39,14 +44,14 @@ export namespace Bluesky {
                 const embed = data.post.embed as AppBskyEmbedImages.View;
                 const content = createBindingFromTemplate(root, visual, TileTemplateType.tileSquarePeekImageAndText04);
                 content.getElementsByTagName("image")[0].setAttribute("src", embed.images[0].thumb);
-                content.getElementsByTagName("image")[0].setAttributeNS(EXT_XMLNS, "ext:alt", embed.images[0].alt);
+                content.getElementsByTagName("image")[0].setAttribute("alt", embed.images[0].alt);
                 content.getElementsByTagName("text")[0].textContent = record.text;
 
                 let wideContent = null;
                 if (record.text.length) {
                     wideContent = createBindingFromTemplate(root, visual, TileTemplateType.tileWide310x150PeekImage07);
                     wideContent.getElementsByTagName("image")[1].setAttribute("src", author.avatar);
-                    wideContent.getElementsByTagName("image")[1].setAttributeNS(EXT_XMLNS, "ext:alt", author.displayName + " profile picture");
+                    wideContent.getElementsByTagName("image")[1].setAttribute("alt", author.displayName + " profile picture");
                     wideContent.getElementsByTagName("text")[0].textContent = record.text;
                 }
                 else {
@@ -54,7 +59,7 @@ export namespace Bluesky {
                 }
 
                 wideContent.getElementsByTagName("image")[0].setAttribute("src", embed.images[0].thumb);
-                wideContent.getElementsByTagName("image")[0].setAttributeNS(EXT_XMLNS, "ext:alt", embed.images[0].alt);
+                wideContent.getElementsByTagName("image")[0].setAttribute("alt", embed.images[0].alt);
             }
             else {
                 const content = createBindingFromTemplate(root, visual, TileTemplateType.tileSquare150x150Text04);
@@ -62,7 +67,7 @@ export namespace Bluesky {
 
                 const wideContent = createBindingFromTemplate(root, visual, TileTemplateType.tileWideSmallImageAndText03);
                 wideContent.getElementsByTagName("image")[0].setAttribute("src", author.avatar);
-                wideContent.getElementsByTagName("image")[0].setAttributeNS(EXT_XMLNS, "ext:alt", author.displayName + " profile picture");
+                wideContent.getElementsByTagName("image")[0].setAttribute("alt", author.displayName + " profile picture");
                 wideContent.getElementsByTagName("text")[0].textContent = record.text;
             }
         }
