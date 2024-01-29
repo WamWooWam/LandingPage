@@ -1,70 +1,71 @@
+import { FunctionalComponent, JSX, RenderableProps, VNode } from "preact";
+import { useEffect, useState } from "preact/hooks";
+
+import { ApplicationVisualElements } from "shared/ApplicationVisualElements";
 import { PackageApplication } from "shared/PackageApplication";
-import PackageImage from "../../../Util/PackageImage";
-import { RenderableProps } from "preact";
-import TileBinding from "../../../Data/TileBinding";
+import PackageImage from "~/Util/PackageImage";
+import TileBinding from "~/Data/TileBinding";
 import { TileSize } from "shared/TileSize";
-import TileVisual from "../../../Data/TileVisual";
+import TileTemplateProps from "./TileTemplateProps";
+import TileTemplates from "./TileTemplates";
+import TileVisual from "~/Data/TileVisual";
 import { getTileSize } from "./TileUtils";
 
 interface TileVisualRendererProps {
     app: PackageApplication,
     size: TileSize,
-    visual: TileVisual
+    visual?: TileVisual,
+    binding?: TileBinding
 }
 
-const TileTemplateMap: Map<string, Function>
-    = new Map([
-        ["TileWide310x150SmallImageAndText", TileWide310x150SmallImageAndText],
-        ["TileWide310x150PeekImage", TileWide310x150PeekImage],
-        ["TileWide310x150HeaderAndText", TileWide310x150HeaderAndText],
-        ["TileSquare150x150PeekImage", TileSquare150x150PeekImage],
-        ["TileSquare150x150Text", TileSquare150x150Text],
-        ["TileSquare150x150HeaderAndText", TileSquare150x150HeaderAndText],
-        ["TileSquare310x310ImageAndTextOverlay02", TileSquare310x310ImageAndTextOverlay02]
-    ]);
-
-export default function TileVisualRenderer({ app, size, visual }: RenderableProps<TileVisualRendererProps>) {
+export default function TileVisualRenderer({ app, size, binding }: RenderableProps<TileVisualRendererProps>) {
     let visualElements = app.visualElements;
 
-    if (!visual || !visual.bindings || visual.bindings.length == 0) {
-        let tileImageUrl = getTileImageUrl(size, app);
-        let showTextSizes = visualElements.defaultTile.showNameOnTiles.map(v => TileSize[v as keyof typeof TileSize]);
-
-        let tileVisualText = null;
-        if (size != TileSize.square70x70 && showTextSizes.includes(size)) {
-            tileVisualText = <p class={"tile-front-text" + (visualElements.foregroundText == "dark" ? " black" : "")}>{visualElements.displayName}</p>
-        }
-
-        const { width, height } = getTileSize(size);
-
-        return (
-            <div class="tile-visual tile-visual-visible">
-                <div class="tile-front-image-container">
-                    <PackageImage url={tileImageUrl}>
-                        {image => <img draggable={false} alt={`${app.visualElements.displayName} Icon`} src={image} class={"tile-front-image " + TileSize[size]} width={width} height={height} />}
-                    </PackageImage>
-                </div>
-                {tileVisualText}
-            </div>
-        )
-    }
-
-    let binding = visual.bindings.find(v => v.size === size);
     if (!binding) {
-        console.error(`No binding found for size ${size}`);
-        return null;
+        return <DefaultTileVisual size={size} app={app} visualElements={visualElements} />;
     }
 
-    const TileTemplate = TileTemplateMap.get(binding.template);
-    if (!TileTemplate) {
-        console.error(`Unknown tile template ${binding.template}`);
-        return null;
-    }
+    return <TileVisualBinding app={app} size={size} binding={binding} />;
+}
+
+function TileVisualBinding({ binding }: RenderableProps<TileVisualRendererProps>) {
+    const [TileTemplate, setTileTemplate] = useState<FunctionalComponent<TileTemplateProps>>(null);
+    useEffect(() => {
+        TileTemplates[binding.template as keyof typeof TileTemplates]().then((template) => {
+            setTileTemplate(() => template.default);
+        });
+
+        return () => setTileTemplate(null);
+    }, [binding]);
+
     return (
         <div class="tile-visual tile-visual-visible">
-            {TileTemplate({ app, size, visual }, binding)}
+            {(TileTemplate !== null && binding !== null) && <TileTemplate elements={binding.elements} />}
         </div>
     )
+}
+
+function DefaultTileVisual({ size, app, visualElements }: { size: TileSize, app: PackageApplication, visualElements: ApplicationVisualElements }) {
+    let tileImageUrl = getTileImageUrl(size, app);
+    let showTextSizes = visualElements.defaultTile.showNameOnTiles.map(v => TileSize[v as keyof typeof TileSize]);
+
+    let tileVisualText = null;
+    if (size != TileSize.square70x70 && showTextSizes.includes(size)) {
+        tileVisualText = <p class={"tile-front-text" + (visualElements.foregroundText == "dark" ? " black" : "")}>{visualElements.displayName}</p>;
+    }
+
+    const { width, height } = getTileSize(size);
+
+    return (
+        <div class="tile-visual tile-visual-visible">
+            <div class="tile-front-image-container">
+                <PackageImage url={tileImageUrl}>
+                    {image => <img draggable={false} alt={`${app.visualElements.displayName} Icon`} src={image} class={"tile-front-image " + TileSize[size]} width={width} height={height} />}
+                </PackageImage>
+            </div>
+            {tileVisualText}
+        </div>
+    );
 }
 
 function getTileImageUrl(size: TileSize, app: PackageApplication) {

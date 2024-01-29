@@ -1,17 +1,7 @@
-import  TileElement  from "~/Data/TileElement";
-import  TileVisual  from "~/Data/TileVisual";
+import TileElement from "~/Data/TileElement";
+import TileVisual from "~/Data/TileVisual";
 import { TileSize } from "shared/TileSize";
 import { EXT_XMLNS } from "~/Util";
-
-const TileTemplateComponentMap: Map<string, string[]> = new Map([
-    ["TileSquare310x310ImageAndTextOverlay02", ["TileSquare310x310ImageAndTextOverlay02"]],
-    ["TileWide310x150SmallImageAndText03", ["TileWide310x150SmallImageAndText"]],
-    ["TileWide310x150PeekImage05", ["TileWide310x150PeekImage", "TileWide310x150SmallImageAndText"]],
-    ["TileWide310x150Text09", ["TileWide310x150HeaderAndText"]],
-    ["TileSquare150x150PeekImageAndText04", ["TileSquare150x150PeekImage", "TileSquare150x150Text"]],
-    ["TileSquare150x150Text02", ["TileSquare150x150HeaderAndText"]],
-    ["TileSquare150x150Text04", ["TileSquare150x150Text"]],
-])
 
 export function getTileSizeForTemplate(template: string): TileSize {
     // Windows 8.1 types
@@ -48,30 +38,20 @@ export function getVisuals(doc: Document, size: TileSize): TileVisual[] {
             if (getTileSizeForTemplate(template) !== size || (fallback && getTileSizeForTemplate(fallback) !== size))
                 continue;
 
-            var components = TileTemplateComponentMap.get(template);
-            if (!components) {
-                components = fallback && TileTemplateComponentMap.get(fallback);
-                if (!components) {
-                    console.warn(`unknown template ${template} (${fallback}). out of date client?`);
-                    continue;
-                }
-            }
-
-            for (let i = 0; i < components.length; i++) {
-                let visual: TileVisual = { bindings: [] };
-                visual.bindings.push({
-                    id: i + 1,
-                    size: size,
-                    template: components[i],
-                    fallback: element.getAttribute("fallback"),
-                    elements: [...element.children].map(e => getElements(e))
-                })
+            let visual: TileVisual = { bindings: [] };
+            visual.bindings.push({
+                id: i + 1,
+                size: size,
+                template: template,
+                fallback: fallback,
+                elements: [...element.children].map(e => getElements(e))
+            })
 
 
-                visuals.push(visual);
-            }
+            visuals.push(visual);
         }
     }
+
 
     return visuals;
 }

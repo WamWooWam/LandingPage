@@ -1,7 +1,8 @@
+import { DOMParser, XMLSerializer } from 'xmldom'
+import { EXT_XMLNS, createBindingFromTemplate, createRoot } from "./utils";
+
 import { TileTemplateType } from "../TileTemplateType";
 import { TileUpdateManager } from "../TileUpdateManager";
-import { DOMParser, XMLSerializer } from 'xmldom'
-import { EXT_XMLNS } from "./utils";
 
 export namespace Twitch {
     const rootUrl = 'https://api.twitch.tv/helix'
@@ -54,6 +55,7 @@ export namespace Twitch {
     }
 
     export const isLive = async (req, res) => {
+
         const user = await getUser(twitchUsername);
         let url = `${rootUrl}/streams?user_id=${user.id}`
         let resp = await fetch(url, {

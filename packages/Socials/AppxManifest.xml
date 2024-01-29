@@ -171,11 +171,11 @@
         <!-- Bluesky -->
         <Application Id="Bluesky" StartPage="https://bsky.app/profile/wamwoowam.co.uk">
             <wb:VisualElements DisplayName="Bluesky" Description="Bluesky" ForegroundText="dark"
-                BackgroundColor="#1DA1F2" Square150x150Logo="images/bsky-square150x150.webp"
-                Square30x30Logo="images/bsky-square30x30.webp" ToastCapable="true">
-                <wb:DefaultTile Square70x70Logo="images/bsky-square70x70.webp"
-                    Wide310x150Logo="images/bsky-wide310x150.webp"
-                    Square310x310Logo="images/bsky-square310x310.webp">
+                BackgroundColor="#1DA1F2" Square150x150Logo="images/bsky-square150x150.svg"
+                Square30x30Logo="images/bsky-square30x30.svg" ToastCapable="true">
+                <wb:DefaultTile Square70x70Logo="images/bsky-square70x70.svg"
+                    Wide310x150Logo="images/bsky-wide310x150.svg"
+                    Square310x310Logo="images/bsky-square310x310.svg">
                     <wb:TileUpdate Recurrence="halfHour"
                         UriTemplate="/api/live-tiles/bluesky/latest-posts.xml" />
                     <wb:ShowNameOnTiles>

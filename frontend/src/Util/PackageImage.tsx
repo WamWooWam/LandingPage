@@ -39,7 +39,7 @@ const PackageImage = (props: PackageImageProps) => {
             // TODO: for some reason this always gets called
             unmounted.current = true;
         }
-    });
+    }, [props.url]);
 
     return <>
         {image ? props.children(image) : null}

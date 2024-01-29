@@ -9,7 +9,6 @@ export default class PackageRegistry {
     }
 
     static registerPackage(pack: Package) {
-        console.log(`registering %O as ${pack.identity.packageFamilyName}`, pack);
         PackageRegistry.packages.set(pack.identity.packageFamilyName, pack);
     }
 }

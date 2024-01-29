@@ -6,6 +6,8 @@ import "./polyfill";
 import './index.scss';
 import './segoe.scss';
 
+import { hasAvif, hasWebP } from "./Util";
+
 import AsyncRoute from "preact-async-route";
 import PackageRegistry from "./Data/PackageRegistry";
 import Router from "preact-router";
@@ -22,6 +24,8 @@ const packages = [
 for (const pack of packages) {
     PackageRegistry.registerPackage(pack);
 }
+
+Promise.all([hasWebP, hasAvif]);
 
 if (typeof window !== "undefined") {
     const Main = () => (
