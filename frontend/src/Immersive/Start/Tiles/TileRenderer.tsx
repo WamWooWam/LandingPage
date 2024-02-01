@@ -192,6 +192,11 @@ export default class TileRenderer extends Component<TileProps, TileState> {
 
         this.updatePressState(e);
         if (this.state.app.load) {
+            // hack to disable tile launch on mobile for now
+            if (window.matchMedia('(max-width: 600px)').matches) {
+                return;
+            }
+
             e.preventDefault();
             this.setState({ clicked: false, visible: false });
 

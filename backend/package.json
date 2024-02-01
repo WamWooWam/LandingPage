@@ -24,7 +24,7 @@
     "preact": "^10.15.1",
     "preact-render-to-string": "^6.1.0",
     "preact-ssr-prepass": "^1.2.0",
-    "sharp": "^0.33.0",
+    "sharp": "^0.33.2",
     "twitter-api-sdk": "^1.0.6",
     "xmldom": "^0.6.0"
   },

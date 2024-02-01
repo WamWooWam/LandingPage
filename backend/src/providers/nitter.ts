@@ -7,7 +7,7 @@ import { XMLSerializer } from "xmldom";
 
 export namespace Nitter {
     const NITTER_INSTANCES = [
-        "nitter.catsarch.com",
+        "nitter.esmailelbob.xyz",
     ]
 
     const TWITTER_USERNAME = process.env.TWITTER_USERNAME;
@@ -76,8 +76,35 @@ export namespace Nitter {
     }
 
     async function parseTweets(): Promise<Tweet[]> {
-        let domain = NITTER_INSTANCES[Math.floor(Math.random() * NITTER_INSTANCES.length)];
-        let response = await fetch(`https://${domain}/${TWITTER_USERNAME}`);
+        // so we need to failover to another instance if the first one fails
+        let tweets: Tweet[] = [];
+        for (const instance of NITTER_INSTANCES) {
+            try {
+                tweets = await parseTweetsFromInstance(instance);
+                break;
+            }
+            catch (e) {
+                console.error(e);
+            }
+        }
+
+        return tweets;
+    }
+
+    async function parseTweetsFromInstance(domain: string): Promise<Tweet[]> {
+        let response = await fetch(`https://${domain}/${TWITTER_USERNAME}`, {
+            headers: {
+                "User-Agent": "Mozilla/5.0 (Windows NT 10.0; rv:78.0) KHTML, like Gecko Chrome/83.0.4103.116 Safari/537.36",
+                "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+                "Accept-Language": "en-US,en;q=0.5",
+                "Accept-Encoding": "gzip, deflate, br",
+                "Upgrade-Insecure-Requests": "1",
+            }
+        });
+
+        if (!response.ok)
+            throw new Error(`Failed to fetch tweets from ${domain}: ${response.status} ${response.statusText}`);
+
         let html = await response.text();
 
         const document = new JSDOM(html).window.document;
@@ -146,7 +173,24 @@ export namespace Nitter {
                 return url;
             }
 
-            let mediaUrl = decodeURIComponent(url.substring(index));
+            let mediaUrl = '';
+            url = url.substring(index);
+            if (url.startsWith("/enc")) {
+                // the real url is after the second slash
+
+                index = url.indexOf("/", 1);
+                if (index === -1) {
+                    return url;
+                }
+
+                url = url.substring(index + 1);
+
+                mediaUrl = '/' + atob(url);
+            }
+            else {
+                mediaUrl = decodeURIComponent(url);
+            }
+
             return `https://pbs.twimg.com${mediaUrl}`;
         }
     }
