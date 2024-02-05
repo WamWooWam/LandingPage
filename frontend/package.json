@@ -7,7 +7,7 @@
     "auto-text-size": "^0.2.2",
     "base32.js": "^0.1.0",
     "bezier-easing": "^2.1.0",
-    "landing-page-shared": "../shared",
+    "landing-page-shared": "workspace:landing-page-shared",
     "preact": "^10.15.1",
     "preact-async-route": "^2.2.1",
     "preact-router": "^4.1.2",
@@ -21,7 +21,7 @@
     "favicons-webpack-plugin": "^6.0.1",
     "file-loader": "^6.2.0",
     "html-webpack-plugin": "^5.5.3",
-    "manifest-loader": "../tools/manifest-loader",
+    "manifest-loader": "workspace:manifest-loader",
     "mini-css-extract-plugin": "^2.7.6",
     "node-loader": "^2.0.0",
     "postcss": "^8.4.24",
@@ -41,7 +41,7 @@
     "webpack": "^5.31.2",
     "webpack-cli": "^5.1.4",
     "webpack-dev-server": "^4.15.1",
-    "xml-loader": "../tools/xml-loader",
+    "xml-loader": "workspace:xml-loader",
     "xmldom": "^0.6.0"
   },
   "scripts": {

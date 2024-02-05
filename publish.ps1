@@ -16,14 +16,13 @@ $env:NODE_ENV = "production"
 
 Set-Location -Path .\frontend
 
-yarn --production=false
-yarn webpack
+wsl -e bash -i -c "bun install"
+node .\node_modules\webpack-cli\bin\cli.js --config .\webpack.config.js
 
 Set-Location -Path ..\backend
 
-yarn --production=false
-yarn build
-yarn run build-images
+wsl -e bash -i -c "bun install"
+wsl -e bash -i -c "bun run node_modules/.bin/tsc"
 
 if (($IsWindows) -or ($PSVersionTable.PSVersion.Major -lt 6)) {
     & 'C:\Program Files\Inkscape\bin\inkscape.exe' --export-png=images\og-image.png --export-width=1280 --export-height=800 images\og-image.svg
@@ -41,7 +40,7 @@ Copy-Item -Path .\backend\dist\* -Destination .\publish\backend\dist -Recurse
 Copy-Item -Path .\backend\fonts -Destination .\publish\backend -Recurse
 Copy-Item -Path .\backend\images -Destination .\publish\backend -Recurse
 Copy-Item -Path .\backend\package.json -Destination .\publish\backend
-Copy-Item -Path .\backend\yarn.lock -Destination .\publish\backend
+Copy-Item -Path .\backend\bun.lockb -Destination .\publish\backend
 Copy-Item -Path .\backend\.env -Destination .\publish\backend
 
 Copy-Item -Path .\frontend\dist\* -Destination .\publish\frontend\dist -Recurse
@@ -50,7 +49,7 @@ Copy-Item -Path .\shared\dist -Destination .\publish\shared -Recurse
 Copy-Item -Path .\shared\src -Destination .\publish\shared -Recurse
 Copy-Item -Path .\shared\types -Destination .\publish\shared -Recurse
 Copy-Item -Path .\shared\package.json -Destination .\publish\shared
-Copy-Item -Path .\shared\yarn.lock -Destination .\publish\shared
+Copy-Item -Path .\shared\bun.lockb -Destination .\publish\shared
 Copy-Item -Path .\shared\tsconfig.json -Destination .\publish\shared
 
 Copy-Item -Path .\packages -Destination .\publish -Recurse

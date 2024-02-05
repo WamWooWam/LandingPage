@@ -1,0 +1,10 @@
+{
+  "private": true,
+  "workspaces": [
+    "backend",
+    "shared",
+    "frontend",
+    "tools/manifest-loader",
+    "tools/xml-loader"
+  ]
+}

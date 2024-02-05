@@ -14,6 +14,6 @@
     "xmldom": "^0.6.0"
   },
   "dependencies": {
-    "landing-page-shared": "../shared"
+    "landing-page-shared": "workspace:landing-page-shared"
   }
 }

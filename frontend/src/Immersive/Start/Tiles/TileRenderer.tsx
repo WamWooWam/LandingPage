@@ -4,7 +4,6 @@ import { Component, ErrorInfo, Ref, RefObject, createContext, createRef } from "
 import ConfigurationManager, { AppStatus } from "~/Data/ConfigurationManager";
 
 import AppLaunchRequestedEvent from "~/Events/AppLaunchRequestedEvent";
-import { E_UNEXPECTED } from "shared/HRESULT";
 import Events from "~/Events";
 import MessageDialog from "~/Data/MessageDialog";
 import { Package } from "shared/Package";
@@ -20,6 +19,7 @@ import TileVisual from "../../../Data/TileVisual";
 import TileVisualRenderer from "./TileVisualRenderer";
 import UICommand from "~/Data/UICommand";
 import { getTileSize } from "./TileUtils";
+import { isMobile } from "~/Util";
 import { lightenDarkenColour2 } from "shared/ColourUtils";
 
 export interface TileProps {
@@ -191,13 +191,10 @@ export default class TileRenderer extends Component<TileProps, TileState> {
         }
 
         this.updatePressState(e);
-        if (this.state.app.load) {
-            // hack to disable tile launch on mobile for now
-            if (window.matchMedia('(max-width: 600px)').matches) {
-                return;
-            }
-
+        // BUGBUG: Hack to prevent the tile from launching on mobile for now
+        if (this.state.app.load && !isMobile()) {
             e.preventDefault();
+
             this.setState({ clicked: false, visible: false });
 
             const bounds = this.root.current.getBoundingClientRect();

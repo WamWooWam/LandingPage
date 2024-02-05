@@ -1,5 +1,5 @@
 {
-  "name": "server",
+  "name": "landing-page-backend",
   "version": "1.0.0",
   "main": "dist/index.js",
   "license": "MIT",
@@ -8,6 +8,7 @@
     "@preact/compat": "^17.1.2",
     "@resvg/resvg-js": "^2.4.1",
     "@types/jsdom": "^21.1.6",
+    "@types/memory-cache": "^0.2.5",
     "apicache": "^1.6.3",
     "base32-encode": "^2.0.0",
     "base32.js": "^0.1.0",
@@ -17,7 +18,7 @@
     "express-requests-logger": "^4.0.0",
     "hbs": "^4.2.0",
     "jsdom": "^24.0.0",
-    "landing-page-shared": "../shared",
+    "landing-page-shared": "workspace:landing-page-shared",
     "memory-cache": "^0.2.0",
     "mime": "^3.0.0",
     "misskey-js": "0.0.16",

@@ -1,18 +1,21 @@
 import { DOMParser, XMLSerializer } from 'xmldom'
-import { EXT_XMLNS, createBindingFromTemplate, createRoot, createVisual } from "./utils";
+import { EXT_XMLNS, createBindingFromTemplate, createRoot, createVisual } from "../../utils";
+import { Request, Response, Router } from 'express';
 
 import { APIClient } from 'misskey-js/built/api';
 import { Note } from 'misskey-js/built/entities';
-import { TileTemplateType } from "../TileTemplateType";
-import { TileUpdateManager } from "../TileUpdateManager";
+import { TileTemplateType } from "../../TileTemplateType";
+import { TileUpdateManager } from "../../TileUpdateManager";
 
-export namespace Snug {
-    const rootUrl = 'https://snug.moe'
-    const userId = process.env.SNUG_USER_ID;
-    const client = new APIClient({ origin: rootUrl });
+class MisskeyTileProvider {
+    private client: APIClient;
 
-    export const latestNotes = async (req, res) => {
-        let notes = await usersNotes()
+    constructor(host: string, private userId: string) {
+        this.client = new APIClient({ origin: host, });
+    }
+
+    async lastestNotes(req: Request, res: Response) {
+        let notes = await this.usersNotes()
         let root = createRoot();
 
         for (let note of notes) {
@@ -23,21 +26,21 @@ export namespace Snug {
             }
 
             const visual = createVisual(root);
-            const displayName = getName(note);
+            const displayName = this.getName(note);
 
             visual.setAttribute("contentId", note.id);
 
-            addWide310x150Visual(note, root, visual);
-            addSquare310x310Visual(note, root, visual, displayName);
+            this.addWide310x150Visual(note, root, visual);
+            this.addSquare310x310Visual(note, root, visual, displayName);
         }
 
         res.contentType('application/xml')
             .send(new XMLSerializer().serializeToString(root));
     }
 
-    async function usersNotes(): Promise<Note[]> {
-        return await client.request('users/notes', {
-            userId,
+    private async usersNotes(): Promise<Note[]> {
+        return await this.client.request('users/notes', {
+            userId: this.userId,
             includeReplies: false,
             limit: 25,
             includeMyRenotes: false,
@@ -45,7 +48,7 @@ export namespace Snug {
         });
     }
 
-    function getName(note: Note): string {
+    private getName(note: Note): string {
         if (note.user.host) {
             return `@${note.user.username}@${note.user.host}`;
         }
@@ -53,7 +56,7 @@ export namespace Snug {
         return note.user.name;
     }
 
-    function getReactionsString(note: Note): string {
+    private getReactionsString(note: Note): string {
         let segments: string[] = [];
         if (note.renoteCount) segments.push(`🔁 ${note.renoteCount}`);
         if (note.repliesCount) segments.push(`↩️ ${note.repliesCount}`);
@@ -66,7 +69,7 @@ export namespace Snug {
         return segments.join(' - ');
     }
 
-    function addWide310x150Visual(note: Note, root: Document, visual: Element) {
+    private addWide310x150Visual(note: Note, root: Document, visual: Element) {
         if (note.files && note.files.length > 0) {
             const content = createBindingFromTemplate(root, visual, TileTemplateType.tileWide310x150PeekImage07);
             content.getElementsByTagName("image")[0].setAttribute("src", note.files[0].thumbnailUrl);
@@ -86,7 +89,7 @@ export namespace Snug {
         }
     }
 
-    function addSquare310x310Visual(note: Note, root: Document, visual: Element, displayName: string) {
+    private addSquare310x310Visual(note: Note, root: Document, visual: Element, displayName: string) {
         let files = note.files?.filter(f => f.thumbnailUrl) // only use files with thumbnails so we have something to show
 
         // if we dont have any files, use the small image and text template
@@ -97,7 +100,7 @@ export namespace Snug {
 
             content.getElementsByTagName("text")[0].textContent = displayName;
             content.getElementsByTagName("text")[1].textContent = note.text;
-            content.getElementsByTagName("text")[2].textContent = getReactionsString(note);
+            content.getElementsByTagName("text")[2].textContent = this.getReactionsString(note);
 
             return;
         }
@@ -139,4 +142,9 @@ export namespace Snug {
             image.setAttribute("alt", file.comment ?? file.name);
         }
     }
+}
+
+export default function registerRoutes(router: Router, name: string, origin: string, userId: string) {
+    const provider = new MisskeyTileProvider(origin, userId)
+    router.get(`/${name}/latest-notes.xml`, provider.lastestNotes.bind(provider));
 }
