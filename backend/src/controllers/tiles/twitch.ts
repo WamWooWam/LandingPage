@@ -70,7 +70,7 @@ const isLive = async (req: Request, res: Response) => {
         let stream = json.data[0];
         let content = TileUpdateManager.getTemplateContent(TileTemplateType.tileSquarePeekImageAndText04);
         content.getElementsByTagName("image")[0].setAttribute("src", stream.thumbnail_url.replace('{width}', '267').replace('{height}', '150'));
-        content.getElementsByTagName("image")[0].setAttributeNS(EXT_XMLNS, "ext:alt", "Thumbnail for " + stream.title);
+        content.getElementsByTagName("image")[0].setAttribute("alt", "Thumbnail for " + stream.title);
 
         content.getElementsByTagName("text")[0].textContent = "🔴 LIVE: " + stream.title;
 
@@ -98,7 +98,7 @@ const isLive = async (req: Request, res: Response) => {
         for (const video of json.data) {
             let content = TileUpdateManager.getTemplateContent(TileTemplateType.tileSquarePeekImageAndText04);
             content.getElementsByTagName("image")[0].setAttribute("src", video.thumbnail_url.replace('%{width}', '267').replace('%{height}', '150'));
-            content.getElementsByTagName("image")[0].setAttributeNS(EXT_XMLNS, "ext:alt", "Thumbnail for " + video.title);
+            content.getElementsByTagName("image")[0].setAttribute("alt", "Thumbnail for " + video.title);
             content.getElementsByTagName("text")[0].textContent = "📺 " + video.title;
 
             rootElement.appendChild(root.importNode(content.getElementsByTagName("visual")[0], true));

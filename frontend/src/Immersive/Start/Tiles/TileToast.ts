@@ -61,6 +61,6 @@ function getElements(node: Element): TileElement {
         id: parseInt(node.getAttribute("id")),
         type: <"image" | "text">node.tagName.toLowerCase(),
         content: node.tagName.toLowerCase() === "image" ? node.getAttribute("src") : node.textContent,
-        alt: node.getAttributeNS(EXT_XMLNS, "alt")
+        alt: node.getAttribute("alt")
     }
 }
