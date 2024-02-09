@@ -57,15 +57,24 @@ export default function TileNotificationBinding(props: RenderableProps<TileNotif
     useLayoutEffect(() => {
         if (!scaleRef.current) return;
 
-        const observer = new ResizeObserver(() => {
+        const onResize = () => {
             const tileSize = getTileSize(tile.size);
             const parentSize = scaleRef.current.parentElement.getBoundingClientRect();
             const scale = Math.max(parentSize.width / tileSize.width, parentSize.height / tileSize.height);
             setScale(scale);
-        });
-        observer.observe(scaleRef.current);
+        }
 
-        return () => observer.disconnect();
+        // if (typeof ResizeObserver !== 'undefined') {
+        //     const observer = new ResizeObserver(onResize);
+        //     observer.observe(scaleRef.current);
+        //     return () => observer.disconnect();
+        // }
+        // else {
+        // Fallback for browsers that don't support ResizeObserver
+        window.addEventListener('resize', onResize);
+        onResize();
+        // }
+
     }, [scaleRef.current, props.width, props.height]);
 
     const tileSize = getTileSize(tile.size);

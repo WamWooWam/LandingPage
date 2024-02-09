@@ -23,8 +23,7 @@ export default class CoreWindowLayoutManager {
     }
 
     constructor() {
-        // BUGBUG: should be using resizeobserver?
-        if ('ResizeObserver' in globalThis) {
+        if (typeof ResizeObserver !== 'undefined') {
             new ResizeObserver(() => this.recalculateLayout()).observe(document.body);
         }
         else {

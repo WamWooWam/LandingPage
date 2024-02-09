@@ -1,5 +1,6 @@
-import { RenderableProps } from "preact";
 import { useLayoutEffect, useRef, useState } from "preact/hooks";
+
+import { RenderableProps } from "preact";
 
 // implementation of a XAML ViewBox
 export default function ViewBox(props: RenderableProps<{}>) {

@@ -31,14 +31,22 @@ export default class Root extends Component<{}, RootState> {
         }
 
         let mediaQuery = window.matchMedia("(max-width: 600px)");
-        mediaQuery.addEventListener("change", this.updateMobileContext);
+        if (mediaQuery.addEventListener)
+            mediaQuery.addEventListener("change", this.updateMobileContext);
+        else
+            mediaQuery.addListener(this.updateMobileContext);
+
         this.setState({ layoutStateMediaQuery: mediaQuery });
         this.updateMobileContext();
     }
 
     componentWillUnmount() {
         if (this.state.layoutStateMediaQuery) {
-            this.state.layoutStateMediaQuery.removeEventListener("change", this.updateMobileContext);
+            const layoutStateMediaQuery = this.state.layoutStateMediaQuery;
+            if (layoutStateMediaQuery.removeEventListener)
+                layoutStateMediaQuery.removeEventListener("change", this.updateMobileContext);
+            else
+                layoutStateMediaQuery.removeListener(this.updateMobileContext);
         }
     }
 

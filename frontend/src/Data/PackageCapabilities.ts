@@ -20,9 +20,15 @@ async function ensureFeatureCapabilityAsync(feature: string, values: any): Promi
 
         if (!values && !values["Features"]) return;
         for (const feature of values["Features"].split(",")) {
-            if (!await ensureWebAssemblyFeatureAsync(feature)) {
-                throw new Error(`Missing WebAssembly feature: ${feature}`);
-            }
+            // weird, but trying to work around an odd issue in older versions of JSC that
+            // dont like the sytax if (!await x()) {}
+            // this includes the console.log, annoyingly            
+            const hasFeature = await ensureWebAssemblyFeatureAsync(feature);
+            console.log(`Package required feature ${feature} is ${hasFeature ? "supported" : "not supported"}`);
+            if (hasFeature)
+                continue;
+
+            throw new Error(`Missing WebAssembly feature: ${feature}`);
         }
     }
 }
