@@ -66,8 +66,19 @@ module.exports = [
             ],
         },
         optimization: {
+            runtimeChunk: 'single',
             usedExports: true,
-            splitChunks: { chunks: "all" }
+            splitChunks: {
+                chunks: "all",
+                minSize: 4096,
+                cacheGroups: {
+                    vendors: {
+                        test: /[\\/]node_modules[\\/]/,
+                        name: "vendors",
+                        chunks: "all"
+                    }
+                }
+            }
         },
         resolve: {
             extensions: ['.tsx', '.ts', '.js'],

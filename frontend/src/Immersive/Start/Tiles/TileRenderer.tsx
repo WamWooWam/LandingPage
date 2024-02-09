@@ -138,13 +138,13 @@ export default class TileRenderer extends Component<TileProps, TileState> {
 
         let tileVisuals = visuals.get(this.props.size);
         if (tileVisuals.length > 0) {
-            Promise.race(tileVisuals.flatMap(f => f.bindings).map(s => TileTemplates[s.template as keyof typeof TileTemplates]()))
-                .then(() => {
-                    let interval = setInterval(() => this.updateBinding(), 10000 + (Math.random() * 5000));
+            // Promise.race(tileVisuals.flatMap(f => f.bindings).map(s => TileTemplates[s.template as keyof typeof TileTemplates]()))
+            //     .then(() => {
+            let interval = setInterval(() => this.updateBinding(), 10000 + (Math.random() * 5000));
 
-                    this.setState({ visuals: tileVisuals, interval });
-                    this.updateBinding()
-                })
+            this.setState({ visuals: tileVisuals, interval });
+            this.updateBinding()
+            // })
         }
     }
 

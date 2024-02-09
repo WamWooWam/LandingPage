@@ -35,18 +35,64 @@ if (new DirectoryInfo(file).Exists)
 
     Write("");
     WriteOpen("const TileTemplates = {");
-    foreach (var name in list)
+
+    var templateGroups = list.GroupBy(x => RemoveNumbersFromEnd(x));
+    foreach (var group in templateGroups)
     {
-        Write($"{name}: () => import('./{name}'),");
+        if (group.Count() == 1)
+        {
+            Write($"{group.Key}: () => import('./{group.First()}').then(i => i.default),");
+        }
+        else
+        {
+            foreach (var template in group)
+            {
+                Write($"{template}: () =>  import('./{group.Key}').then(i => i.{template}),");
+            }
+        }
     }
+
+
     WriteClose("};");
 
     Write("export default TileTemplates;");
     CloseFile();
+
+    foreach (var group in templateGroups)
+    {
+        if (group.Count() == 1)
+            continue;
+
+        CreateFile($"TileTemplates/{group.Key}.tsx");
+
+        foreach (var template in group)
+        {
+            Write($"import {template} from './{template}'");
+        }
+
+        Write("");
+        WriteOpen($"export {{");
+        foreach (var template in group)
+        {
+            Write($"{template},");
+        }
+        WriteClose("};");
+        CloseFile();
+    }
 }
 else
 {
     ProcessFile(file);
+}
+
+string RemoveNumbersFromEnd(string name)
+{
+    while (name[^1] >= '0' && name[^1] <= '9')
+    {
+        name = name[..^1];
+    }
+
+    return name;
 }
 
 
@@ -356,7 +402,7 @@ string ProcessFile(string file)
                         do
                         {
                             layerX -= lineSpacing;
-                        } 
+                        }
                         while (textIntersect.Bottom - textIntersect.Top < layerX);
 
                         textIntersect = new Rectangle(textIntersect.X, textIntersect.Y, textIntersect.Width, layerX);

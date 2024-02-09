@@ -300,7 +300,7 @@ html {
         appearance: none;
         border: none;
         background: transparent;
-        padding: none;
+        padding: 0;
         color: white;
         font-family: 'Segoe UI';
 
@@ -315,13 +315,14 @@ html {
     }
 
     .start-header-user-button {
-        display: grid;
-        text-align: right;
+        display: flex;
         align-items: center;
-        grid-template-columns: 1fr 60px;
         font-weight: 300;
 
         >.username {
+            flex: 1;
+            text-align: right;
+
             >p {
                 margin: 0;
             }
@@ -336,14 +337,16 @@ html {
                 line-height: 18px;
             }
         }
+
+        >.start-header-user-picture {
+            width: 40px;
+            height: 40px;
+            align-self: center;
+            justify-self: center;
+            margin: 10px;
+        }
     }
 
-    .start-header-user-picture {
-        width: 40px;
-        height: 40px;
-        align-self: center;
-        justify-self: center;
-    }
 
     .start-header-power,
     .start-header-search {

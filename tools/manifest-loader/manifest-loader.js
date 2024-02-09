@@ -18,6 +18,7 @@ module.exports = function (source) {
         // if this is a webp, check if a png version exists and use that too
         if (file.endsWith(".webp")) {
             addFile(file.substring(0, file.length - 5) + ".png");
+            addFile(file.substring(0, file.length - 5) + ".avif");
         }
 
         if (file.startsWith("/") || file.startsWith("\\")) {

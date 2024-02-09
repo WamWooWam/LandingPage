@@ -90,12 +90,12 @@ export async function hasAvif(): Promise<boolean> {
 };
 
 export async function pickImage(types: { avif?: string, webp?: string, png: string }): Promise<string> {
-    if (types.webp && (webpSupported == true || await hasWebP())) {
-        return types.webp;
-    }
-
     if (types.avif && (avifSupported == true || await hasAvif())) {
         return types.avif;
+    }
+
+    if (types.webp && (webpSupported == true || await hasWebP())) {
+        return types.webp;
     }
 
     return types.png;

@@ -1,12 +1,12 @@
 import "./start.scss"
 
-import { Component, RefObject, createRef } from "preact";
 import { StartTileGroup, parseLayout } from "shared/StartLayoutParser";
-import { Suspense, lazy } from "preact/compat"
 
 import AllAppsButton from "./AllAppsButton";
 import Avatar from "static/wam-circular.webp"
+import AvatarAvif from "static/wam-circular.avif"
 import AvatarPng from "static/wam-circular.png"
+import { Component } from "preact";
 import Events from "~/Events";
 import HeaderButton from "./HeaderButton";
 import LayoutState from "~/Data/LayoutState";
@@ -71,7 +71,7 @@ export default class Start extends Component<{}, StartState> {
                                                         <p class="primary">Thomas</p>
                                                         <p class="secondary">May</p>
                                                     </div>
-                                                    <PickImage webp={Avatar} png={AvatarPng}>
+                                                    <PickImage webp={Avatar} png={AvatarPng} avif={AvatarAvif}>
                                                         {image => <img class="start-header-user-picture" src={image} alt="Photo of Thomas May" />}
                                                     </PickImage>
                                                 </HeaderButton>

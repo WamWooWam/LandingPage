@@ -58,6 +58,8 @@ export default function TileNotificationBinding(props: RenderableProps<TileNotif
         if (!scaleRef.current) return;
 
         const onResize = () => {
+            if (!scaleRef.current) return;
+
             const tileSize = getTileSize(tile.size);
             const parentSize = scaleRef.current.parentElement.getBoundingClientRect();
             const scale = Math.max(parentSize.width / tileSize.width, parentSize.height / tileSize.height);

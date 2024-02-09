@@ -28,13 +28,27 @@ export default function TileVisualRenderer({ app, size, binding }: RenderablePro
     return <TileVisualBinding app={app} size={size} binding={binding} />;
 }
 
+async function LoadTileTemplate(binding: TileBinding) {
+    try {
+        return await TileTemplates[binding.template as keyof typeof TileTemplates]();
+    }
+    catch (e) {
+        console.error(`Failed to load ${binding.template}`, binding);
+        try {
+            return await TileTemplates[binding.fallback as keyof typeof TileTemplates]();
+        }
+        catch (e) {
+            console.error(`Failed to load ${binding.fallback}`, binding);
+            return null;
+        }
+    }
+}
+
 function TileVisualBinding({ binding }: RenderableProps<TileVisualRendererProps>) {
     const [TileTemplate, setTileTemplate] = useState<FunctionalComponent<TileTemplateProps>>(null);
     useEffect(() => {
-        TileTemplates[binding.template as keyof typeof TileTemplates]().then((template) => {
-            setTileTemplate(() => template.default);
-        });
-
+        LoadTileTemplate(binding).then((template) => setTileTemplate(() => template));
+        
         return () => setTileTemplate(null);
     }, [binding]);
 
