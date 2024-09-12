@@ -1,7 +1,5 @@
 import { Component, RefObject, createRef } from "preact";
 
-import LayoutState from "~/Data/LayoutState";
-import { LayoutStateContext } from "~/Root";
 import { StartTileGroup } from "shared/StartLayoutParser";
 import TileGroup from "./Tiles/TileGroup";
 import { calculateLayout } from "./Tiles/TileUtils";
@@ -97,20 +95,21 @@ export default class StartScrollContainer extends Component<StartScrollContainer
     }
 
     render() {
-        let layoutState = useContext(LayoutStateContext);
         let cols = 0;
-
         // BUGBUG: this is horrible
         let tileGroups = this.props.tileGroups.map(m => {
-            let { tiles, columns } = calculateLayout(m.tiles, this.state.availableHeight, cols, layoutState === LayoutState.windowsPhone81);
-            cols += columns;
-            return { ...m, tiles, columns: (layoutState === LayoutState.windows81 ? columns : undefined) };
+            let colBase = cols;
+            let { tileColumns } = calculateLayout(m.tiles, this.state.availableHeight, false);
+            cols += tileColumns.length;
+            return { ...m, tileColumns, baseColumn: colBase };
         });
+
+        const maxRows = (Math.floor(this.state.availableHeight / 128) * 128) + 30;
 
         return (
             <div ref={this.scrollContainer} class="start-tiles-scroll-container" >
                 <div ref={this.startTilesContainer} class="start-tiles" style={{ visibility: this.state.visible ? "visible" : "hidden" }}>
-                    {tileGroups.map(m => <TileGroup {...m} />)}
+                    {tileGroups.map(m => <TileGroup {...m} height={maxRows} />)}
                 </div>
             </div>
         );

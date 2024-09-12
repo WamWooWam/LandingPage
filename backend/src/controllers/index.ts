@@ -101,6 +101,7 @@ const generatePreload = async () => {
 }
 
 export default function registerRoutes(router: Router) {
-    router.get('/', index);
     router.get('/app/:package/:id', standaloneApp);
+    router.get('/mobile', index);
+    router.get('/', index);
 }

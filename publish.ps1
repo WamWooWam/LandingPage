@@ -3,6 +3,8 @@
 # start time
 $startTime = Get-Date
 
+$env:NODE_ENV = "development"
+
 Remove-Item -Force -Recurse .\publish
 Remove-Item -Force -Recurse .\frontend\dist
 Remove-Item -Force -Recurse .\backend\dist
@@ -12,17 +14,19 @@ New-Item -ItemType Directory -Path .\publish\frontend\dist
 New-Item -ItemType Directory -Path .\publish\frontend\dist\og-image
 New-Item -ItemType Directory -Path .\publish\shared
 
+# pnpm install
+
 $env:NODE_ENV = "production"
 
 Set-Location -Path .\frontend
 
-wsl -e bash -i -c "bun install"
-node .\node_modules\webpack-cli\bin\cli.js --config .\webpack.config.js
+# wsl -e bash -i -c "bun install"
+pnpm run build
 
 Set-Location -Path ..\backend
 
-wsl -e bash -i -c "bun install"
-wsl -e bash -i -c "bun run node_modules/.bin/tsc"
+# wsl -e bash -i -c "bun install"
+pnpm run build
 
 if (($IsWindows) -or ($PSVersionTable.PSVersion.Major -lt 6)) {
     & 'C:\Program Files\Inkscape\bin\inkscape.exe' --export-png=images\og-image.png --export-width=1280 --export-height=800 images\og-image.svg

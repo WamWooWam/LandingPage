@@ -62,9 +62,6 @@
         font-size: 22px;
         font-weight: 300;
         white-space: nowrap;
-        opacity: 0.75;
-        grid-area: head;
-        grid-column-end: span 2;
     }
 
     .start-tile-group>.fence-tile-container {
@@ -333,6 +330,28 @@ only screen and (min-device-pixel-ratio: 2),
     left: 0;
     right: 0;
     transition: opacity 0.33s linear;
+
+    &.hidden {
+        opacity: 0;
+    }
+
+    &.visible {
+        opacity: 1;
+    }
+
+    &.new {
+        animation: new-tile-footer 0.33s forwards linear;
+    }
+}
+
+@keyframes new-tile-footer {
+    0% {
+        opacity: 0;
+    }
+
+    100% {
+        opacity: 1;
+    }
 }
 
 .tile-badge-icon {

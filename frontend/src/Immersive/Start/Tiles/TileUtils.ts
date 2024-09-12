@@ -92,17 +92,56 @@ export function tileSizeToRows(size: TileSize): number {
     }
 }
 
-export function calculateLayout(tiles: RawTileProps[], availableHeight: number, baseCol: number, isMobile: boolean): { tiles: Array<TilePropsWithType>, columns: number } {
+export function calculateLayout(tiles: RawTileProps[], availableHeight: number, isMobile: boolean): { tileColumns: TilePropsWithType[][] } {
     let collapsedTiles = collapseTiles(tiles);
+    return layoutDesktopNew(collapsedTiles, availableHeight);
+}
 
-    // if the window is below 600px wide, we use the mobile layout
-    if (isMobile) {
-        return { tiles: collapsedTiles, columns: 1 };
+export function layoutDesktopNew(collapseTiles: TilePropsWithType[], availableHeight: number): { tileColumns: TilePropsWithType[][] } {
+    let maxRows = Math.max(1, Math.floor(availableHeight / 128));
+    let row = 0;
+    let column = 0;
+
+    let lastWidth = 0;
+    let lastHeight = 0;
+
+    // a column is two tiles, or one wide tile wide (248px)
+    let tileColumns: TilePropsWithType[][] = [];
+    let currentColumn: TilePropsWithType[] = [];
+
+    for (const tile of collapseTiles) {
+        if (maxRows <= 1 && tile.size === TileSize.square310x310) {
+            tile.size = TileSize.wide310x150;
+        }
+
+        let tileWidth = tileSizeToColumns(tile.size);
+        let tileHeight = tileSizeToRows(tile.size);
+
+        if (column + tileWidth > 2) {
+            if (row + Math.max(lastHeight, tileHeight) >= maxRows) {
+                tileColumns.push(currentColumn);
+                currentColumn = [];
+                row = 0;
+            }
+            else {
+                row += lastHeight;
+            }
+
+            column = 0;
+        }
+
+        currentColumn.push({ row, column, ...tile, animColumn: 0 });
+
+        column += tileWidth;
+        lastWidth = tileWidth;
+        lastHeight = tileHeight;
     }
-    else {
-        // console.log("using desktop layout");
-        return layoutDesktop(collapsedTiles, baseCol, availableHeight);
-    }
+
+    tileColumns.push(currentColumn);
+
+    console.log(tileColumns);
+
+    return { tileColumns };
 }
 
 // TODO: use this to generate CSS directly
@@ -142,6 +181,8 @@ export function layoutDesktop(collapsedTiles: TilePropsWithType[], baseCol: numb
 
     // BUGBUG: fix for a webkit bug where the container size is not calculated correctly
     let totalColumns = tiles.reduce((prev, cur) => Math.max(prev, cur.column + tileSizeToColumns(cur.size)), 0);
+
+    console.log(tiles, totalColumns);
 
     return { tiles, columns: totalColumns };
 }

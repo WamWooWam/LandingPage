@@ -80,12 +80,12 @@ async function getImage(req: Request, res: Response) {
 
             img = bgImage;
         }
-
-        let png = img.png();
-        let buffer = await png.toBuffer();
-        res.set('Content-Type', 'image/png')
-            .send(buffer);
     }
+    
+    let png = img.png();
+    let buffer = await png.toBuffer();
+    res.set('Content-Type', 'image/png')
+        .send(buffer);
 }
 
 function parseSize(app: PackageApplication, size: string) {

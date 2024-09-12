@@ -8,7 +8,7 @@ StreamWriter? writer = null;
 
 var styles = new Dictionary<string, Style>();
 var usedStyles = new HashSet<string>();
-var file = args.Length > 0 ? args[0] : @"C:\Users\Thomas\Desktop\win8\twinui\.rsrc\TILETEMPLATE\";
+var file = args.Length > 0 ? args[0] : @".rsrc\TILETEMPLATE\";
 if (new DirectoryInfo(file).Exists)
 {
     var list = new List<string>();

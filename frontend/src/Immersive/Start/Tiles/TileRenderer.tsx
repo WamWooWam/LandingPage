@@ -11,6 +11,7 @@ import { PackageApplication } from "shared/PackageApplication";
 import PackageImage from "../../../Util/PackageImage";
 import PackageRegistry from "~/Data/PackageRegistry";
 import TileBadge from "./TileBadge";
+import { TileBranding } from "./TileBranding";
 import TileDefaultVisual from "./TileDefaultVisual";
 import { TileSize } from "shared/TileSize";
 import TileTemplates from "./TileTemplates";
@@ -216,7 +217,7 @@ export default class TileRenderer extends Component<TileProps, TileState> {
 
     render(props: TileProps, state: TileState) {
         let containerStyle: any = {
-            'grid-row-start': props.row !== undefined ? (props.row + 2).toString() : undefined,
+            'grid-row-start': props.row !== undefined ? (props.row + 1).toString() : undefined,
             'grid-column-start': props.column !== undefined ? (props.column + 1).toString() : undefined,
             visibility: state.visible ? undefined : "hidden",
             opacity: "1",
@@ -261,6 +262,7 @@ export default class TileRenderer extends Component<TileProps, TileState> {
 
         let visual = state.visualIdx == -1 ? TileDefaultVisual : state.visuals[state.visualIdx];
         let nextVisual = state.visuals[(state.visualIdx + 1) % state.visuals.length];
+        let previousVisual = state.visuals[(state.visualIdx - 1) % state.visuals.length] ?? TileDefaultVisual;
 
         let frontBinding = visual?.bindings?.find(f => f.size === props.size);
         let nextBinding = nextVisual?.bindings?.find(f => f.size === props.size);
@@ -272,6 +274,7 @@ export default class TileRenderer extends Component<TileProps, TileState> {
 
         let frontKey = state.visualIdx.toString();
         let nextKey = ((state.visualIdx + 1) % state.visuals.length).toString();
+
 
         //let size = this.getTileSize(props.size)
         return (
@@ -296,11 +299,13 @@ export default class TileRenderer extends Component<TileProps, TileState> {
                                 <TileVisualRenderer app={state.app} binding={nextBinding} size={props.size} />
                             </div>
                         }
-                        <div className={"tile-toast-footer" + (!visual || visual === TileDefaultVisual ? " hidden" : "")}>
-                            <PackageImage url={state.app.visualElements.square30x30Logo}>
-                                {image => <img className="tile-badge-icon" src={image} alt={""} />}
-                            </PackageImage>
-                        </div>
+
+                        {props.size !== TileSize.square70x70 &&
+                            <TileBranding branding={visual.branding}
+                                nextBranding={nextVisual?.branding}
+                                previousBranding={previousVisual?.branding}
+                                size={props.size}
+                                visualElements={state.app.visualElements}/>}
                     </div>
 
                     <TileBadge isError={state.appStatus && state.appStatus.statusCode !== 0} />

@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<Package IgnorableNamespaces="build" xmlns="http://schemas.microsoft.com/appx/2010/manifest"
+    xmlns:wb="http://schemas.microsoft.com/appx/2013/manifest"
+    xmlns:wam="https://wamwoowam.co.uk/appx/2022"
+    xmlns:build="http://schemas.microsoft.com/developer/appx/2012/build">
+    <Identity Name="Friends" ProcessorArchitecture="x86" Publisher="CN=Wan Kerr Co. Ltd."
+        Version="2.6.672.0" />
+    <Properties>
+        <DisplayName>Friends</DisplayName>
+        <PublisherDisplayName>Wan Kerr Co. Ltd.</PublisherDisplayName>
+        <Description>Cool People :)</Description>
+        <Logo>friends.png</Logo>
+    </Properties>
+    <Prerequisites>
+        <OSMinVersion>6.3.0</OSMinVersion>
+        <OSMaxVersionTested>6.3.0</OSMaxVersionTested>
+    </Prerequisites>
+    <Resources>
+        <Resource wb:Scale="100" />
+        <Resource Language="en-US" />
+        <Resource Language="en-GB" />
+    </Resources>
+    <Applications>
+        <Application Id="amyy54" StartPage="https://amyy.me/">
+            <wb:VisualElements DisplayName="Amy"
+                ForegroundText="light"
+                BackgroundColor="#696db8" Square150x150Logo="amyy54-square150x150.png"
+                Square30x30Logo="amyy54-square30x30.png" ToastCapable="true">
+                <wb:DefaultTile Square70x70Logo="amyy54-square70x70.png"
+                    Wide310x150Logo="amyy54-wide310x150.png"
+                    Square310x310Logo="amyy54-square310x310.png">
+                    <wb:ShowNameOnTiles>
+                        <wb:ShowOn Tile="square150x150Logo" />
+                        <wb:ShowOn Tile="wide310x150Logo" />
+                        <wb:ShowOn Tile="square310x310Logo" />
+                    </wb:ShowNameOnTiles>
+                </wb:DefaultTile>
+                <wb:SplashScreen BackgroundColor="#FFFFFF" Image="" />
+            </wb:VisualElements>
+        </Application>
+        <Application Id="aspyn" StartPage="https://aspyn.gay/">
+            <wb:VisualElements DisplayName="aspyn.gay"
+                ForegroundText="light"
+                BackgroundColor="#ff00ff" Square150x150Logo="aspyn-square150x150.png"
+                Square30x30Logo="aspyn-square30x30.png" ToastCapable="true">
+                <wb:DefaultTile Square70x70Logo="aspyn-square70x70.png">
+                    <wb:ShowNameOnTiles>
+                        <wb:ShowOn Tile="square150x150logo" />
+                    </wb:ShowNameOnTiles>
+                </wb:DefaultTile>
+                <wb:SplashScreen BackgroundColor="#FFFFFF" Image="" />
+            </wb:VisualElements>
+        </Application>
+        <Application Id="barra" StartPage="https://ocathain.ie/">
+            <wb:VisualElements DisplayName="ocathain.ie"
+                ForegroundText="light"
+                BackgroundColor="#008000" Square150x150Logo="barra-square150x150.png"
+                Square30x30Logo="barra-square30x30.png" ToastCapable="true">
+                <wb:DefaultTile Square70x70Logo="barra-square70x70.png">
+                    <wb:ShowNameOnTiles>
+                        <wb:ShowOn Tile="square150x150logo" />
+                    </wb:ShowNameOnTiles>
+                </wb:DefaultTile>
+                <wb:SplashScreen BackgroundColor="#FFFFFF" Image="" />
+            </wb:VisualElements>
+        </Application>
+        <Application Id="emma" StartPage="https://invoxiplaygames.uk/">
+            <wb:VisualElements DisplayName="InvoxiPlayGames"
+                ForegroundText="light"
+                BackgroundColor="#e3008c" Square150x150Logo="emma1-square150x150.png"
+                Square30x30Logo="emma-square30x30.png" ToastCapable="true">
+                <wb:DefaultTile Square70x70Logo="emma/emma-square70x70.png">
+                    <wb:TileUpdate Recurrence="halfHour"
+                        UriTemplate="/api/live-tiles/people/emma.xml" />
+                    <wb:ShowNameOnTiles>
+                        <wb:ShowOn Tile="square150x150logo" />
+                    </wb:ShowNameOnTiles>
+                </wb:DefaultTile>
+                <wb:SplashScreen BackgroundColor="#FFFFFF" Image="" />
+            </wb:VisualElements>
+        </Application>
+        <Application Id="lily" StartPage="https://lilykiwi.xyz/">
+            <wb:VisualElements DisplayName="lilykiwi"
+                ForegroundText="light"
+                BackgroundColor="#d8bfd8" Square150x150Logo="lily-square150x150.png"
+                Square30x30Logo="lily-square30x30.png" ToastCapable="true">
+                <wb:DefaultTile Square70x70Logo="lily-square70x70.png">
+                    <wb:ShowNameOnTiles>
+                        <wb:ShowOn Tile="square150x150logo" />
+                    </wb:ShowNameOnTiles>
+                </wb:DefaultTile>
+                <wb:SplashScreen BackgroundColor="#FFFFFF" Image="" />
+            </wb:VisualElements>
+        </Application>
+        <Application Id="xub" StartPage="https://xubiod.net/ ">
+            <wb:VisualElements DisplayName="xubiod"
+                ForegroundText="light"
+                BackgroundColor="#30006C" Square150x150Logo="xub-square150x150.png"
+                Square30x30Logo="xub-square30x30.png" ToastCapable="true">
+                <wb:DefaultTile Square70x70Logo="xub-square70x70.png">
+                    <wb:ShowNameOnTiles>
+                        <wb:ShowOn Tile="square150x150logo" />
+                    </wb:ShowNameOnTiles>
+                </wb:DefaultTile>
+                <wb:SplashScreen BackgroundColor="#FFFFFF" Image="" />
+            </wb:VisualElements>
+        </Application>
+        <Application Id="darrio" StartPage="https://linktr.ee/bigdarrio">
+            <wb:VisualElements DisplayName="bigdarrio"
+                ForegroundText="dark"
+                BackgroundColor="#ffac33" Square150x150Logo="darrio-square150x150.png"
+                Square30x30Logo="darrio-square30x30.png" ToastCapable="true">
+                <wb:DefaultTile Square70x70Logo="darrio-square70x70.png">
+                    <wb:ShowNameOnTiles>
+                        <wb:ShowOn Tile="square150x150logo" />
+                    </wb:ShowNameOnTiles>
+                </wb:DefaultTile>
+                <wb:SplashScreen BackgroundColor="#FFFFFF" Image="" />
+            </wb:VisualElements>
+        </Application>
+        <Application Id="eden8" StartPage="https://twitch.tv/eden8">
+            <wb:VisualElements DisplayName="eden8"
+                ForegroundText="dark"
+                BackgroundColor="#7dd7dd" Square150x150Logo="eden8-square150x150.png"
+                Square30x30Logo="eden8-square30x30.png" ToastCapable="true">
+                <wb:DefaultTile Square70x70Logo="eden8-square70x70.png">
+                    <wb:ShowNameOnTiles>
+                        <wb:ShowOn Tile="square150x150logo" />
+                    </wb:ShowNameOnTiles>
+                </wb:DefaultTile>
+                <wb:SplashScreen BackgroundColor="#FFFFFF" Image="" />
+            </wb:VisualElements>
+        </Application>        
+        <Application Id="ipicpp" StartPage="https://github.com/iProgramMC">
+            <wb:VisualElements DisplayName="iProgramInCpp"
+                ForegroundText="light"
+                BackgroundColor="#3A4A2B" Square150x150Logo="ipicpp-square150x150.png"
+                Square30x30Logo="ipicpp-square30x30.png" ToastCapable="true">
+                <wb:DefaultTile Square70x70Logo="ipicpp-square70x70.png">
+                    <wb:ShowNameOnTiles>
+                        <wb:ShowOn Tile="square150x150logo" />
+                    </wb:ShowNameOnTiles>
+                </wb:DefaultTile>
+                <wb:SplashScreen BackgroundColor="#FFFFFF" Image="" />
+            </wb:VisualElements>
+        </Application>
+        <!-- hack 4 emma -->
+        <Application Id="emma2" StartPage="https://invoxiplaygames.uk/">
+            <wb:VisualElements DisplayName="InvoxiPlayGames"
+                ForegroundText="light"
+                BackgroundColor="#e3008c" Square150x150Logo="emma2-square150x150.png"
+                Square30x30Logo="" ToastCapable="true">
+                <wb:DefaultTile Square70x70Logo="" />
+                <wb:SplashScreen BackgroundColor="#FFFFFF" Image="" />
+            </wb:VisualElements>
+        </Application>
+    </Applications>
+    <Capabilities></Capabilities>
+    <Dependencies></Dependencies>
+    <Extensions></Extensions>
+</Package>

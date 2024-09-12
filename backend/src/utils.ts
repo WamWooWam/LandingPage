@@ -49,7 +49,7 @@ export function getAppAndPackage(appId: string, packageId: string): { app: Packa
     }
 
     let pack = PackageRegistry.getPackage(packageId);
-    if (!pack) {
+    if (!pack) { 
         throw new HttpError(404, 'Not found!');
     }
 

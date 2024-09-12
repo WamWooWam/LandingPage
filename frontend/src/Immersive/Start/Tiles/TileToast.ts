@@ -27,6 +27,7 @@ export function getTileSizeForTemplate(template: string): TileSize {
 export function getVisuals(doc: Document, size: TileSize): TileVisual[] {
     let visuals = [];
     let visualElements = doc.getElementsByTagName("visual");
+    let branding = visualElements[0]?.getAttribute("branding");
     for (const visualElement of visualElements) {
         let bindingElements = visualElement.querySelectorAll("binding");
 
@@ -35,10 +36,11 @@ export function getVisuals(doc: Document, size: TileSize): TileVisual[] {
             let template = element.getAttribute("template");
             let fallback = element.getAttribute("fallback");
 
+
             if (getTileSizeForTemplate(template) !== size || (fallback && getTileSizeForTemplate(fallback) !== size))
                 continue;
 
-            let visual: TileVisual = { bindings: [] };
+            let visual: TileVisual = { bindings: [], branding: <any>branding || "logo" };
             visual.bindings.push({
                 id: i + 1,
                 size: size,
@@ -46,7 +48,6 @@ export function getVisuals(doc: Document, size: TileSize): TileVisual[] {
                 fallback: fallback,
                 elements: [...element.children].map(e => getElements(e))
             })
-
 
             visuals.push(visual);
         }

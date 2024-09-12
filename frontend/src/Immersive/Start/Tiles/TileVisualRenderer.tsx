@@ -61,12 +61,8 @@ function TileVisualBinding({ binding }: RenderableProps<TileVisualRendererProps>
 
 function DefaultTileVisual({ size, app, visualElements }: { size: TileSize, app: PackageApplication, visualElements: ApplicationVisualElements }) {
     let tileImageUrl = getTileImageUrl(size, app);
-    let showTextSizes = visualElements.defaultTile.showNameOnTiles.map(v => TileSize[v as keyof typeof TileSize]);
 
-    let tileVisualText = null;
-    if (size != TileSize.square70x70 && showTextSizes.includes(size)) {
-        tileVisualText = <p class={"tile-front-text" + (visualElements.foregroundText == "dark" ? " black" : "")}>{visualElements.displayName}</p>;
-    }
+
 
     const { width, height } = getTileSize(size);
 
@@ -77,7 +73,6 @@ function DefaultTileVisual({ size, app, visualElements }: { size: TileSize, app:
                     {image => <img draggable={false} alt={`${app.visualElements.displayName} Icon`} src={image} class={"tile-front-image " + TileSize[size]} width={width} height={height} />}
                 </PackageImage>
             </div>
-            {tileVisualText}
         </div>
     );
 }

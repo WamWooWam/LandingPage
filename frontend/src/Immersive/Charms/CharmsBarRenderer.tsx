@@ -1,6 +1,6 @@
-import CharmsBarClock from "./CharmsBarClock";
 import "./charms-bar.scss"
 
+import CharmsBarClock from "./CharmsBarClock";
 import { Component } from "preact";
 
 type CharmsBarRendererState = {
@@ -24,14 +24,15 @@ export default class CharmsBarRenderer extends Component<{}, CharmsBarRendererSt
     constructor(state: {}) {
         super({});
         this.state = { isInGesture: false, initialX: -1, initialY: -1, lightDismissTimeout: -1, openState: CharmsBarOpenState.closed };
+        this.onMouseMove = this.onMouseMove.bind(this);
     }
 
     componentDidMount(): void {
-        document.addEventListener("mousemove", this.onMouseMove.bind(this));
+        document.addEventListener("mousemove", this.onMouseMove);
     }
 
     componentWillUnmount(): void {
-        document.removeEventListener("mousemove", this.onMouseMove.bind(this));
+        document.removeEventListener("mousemove", this.onMouseMove);
     }
 
     onMouseMove(e: MouseEvent): void {

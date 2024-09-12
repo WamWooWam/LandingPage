@@ -1,0 +1,37 @@
+.mobile-error {
+    position: absolute;
+    width: 100vw;
+    height: 100vh;
+    background-color: #2067b2;
+
+    .background {
+        position: fixed;
+        top: -76px;
+        left: 0;
+        font-size: 72pt;
+        color: white;
+        opacity: 0.15;
+        margin: 32px 0 0 32px;
+        transform: scale(3);
+        transform-origin: top left;
+    }
+
+    .error {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: calc(100% - 32px);
+        height: calc(100% - 100px);
+        padding: 0 16px 100px 16px;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-end;
+        align-items: center;
+        color: white;
+        font-size: 15px;
+    }
+
+    h1 {
+        margin-bottom: 0.25em;
+    }
+}

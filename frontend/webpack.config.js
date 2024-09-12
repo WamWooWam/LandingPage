@@ -70,14 +70,7 @@ module.exports = [
             usedExports: true,
             splitChunks: {
                 chunks: "all",
-                minSize: 4096,
-                cacheGroups: {
-                    vendors: {
-                        test: /[\\/]node_modules[\\/]/,
-                        name: "vendors",
-                        chunks: "all"
-                    }
-                }
+                minSize: 4096
             }
         },
         resolve: {

@@ -12,13 +12,9 @@ export interface FenceTileProps {
 
 export default function FenceTileRenderer(props: FenceTileProps) {
     let style: any = {
-        'grid-row-start': props.row ? (props.row + 2).toString() : undefined,
+        'grid-row-start': props.row ? (props.row + 1).toString() : undefined,
         'grid-column-start': props.column ? (props.column + 1).toString() : undefined,
         ...(props.style ?? {})
-    }
-
-    if (props.animColumn) {
-        style["animation-delay"] = `${(props.animColumn - 1) * 0.1}s`;
     }
 
     return (

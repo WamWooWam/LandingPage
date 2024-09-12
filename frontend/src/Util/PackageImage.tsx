@@ -13,6 +13,8 @@ const PackageImage = (props: PackageImageProps) => {
     const [image, setImage] = useState<string>(null);
 
     useEffect(() => {
+        if(!props.url) return;
+
         if (!props.url.endsWith(".webp") && !props.url.endsWith(".avif")) {
             setImage(props.url);
             return;

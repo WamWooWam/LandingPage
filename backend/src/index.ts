@@ -9,6 +9,7 @@ import registerConfiguration from './controllers/tiles/configuration';
 import registerGithub from './controllers/tiles/github';
 import registerMisskeyInstance from './controllers/tiles/misskey';
 import registerOpenGraphImages from './controllers/images/opengraph';
+import registerPeopleTiles from './controllers/tiles/people';
 import registerRoutes from './controllers';
 import registerStandaloneManifests from './controllers/standalone/manifest';
 import registerTiles from './controllers/images/tiles';
@@ -21,6 +22,7 @@ import path = require('path');
 import fsp = require('fs/promises');
 import apicache = require('apicache');
 import xmldom = require('xmldom');
+
 
 const cache = (() => {
     return apicache.options({
@@ -75,6 +77,8 @@ const app = express();
     registerGithub(liveTilesRouter);
 
     registerMisskeyInstance(liveTilesRouter, process.env.SNUG_NAME, process.env.SNUG_BASE_URL, process.env.SNUG_USER_ID);
+
+    registerPeopleTiles(liveTilesRouter);
 
     const mediaRouter = express.Router({ mergeParams: true });
     apiRouter.use('/media', cache('90 days'), mediaRouter);

@@ -1,0 +1,6 @@
+packages:
+  - 'backend'
+  - 'frontend'
+  - 'shared'
+  - 'tools/manifest-loader'
+  - 'tools/xml-loader'
