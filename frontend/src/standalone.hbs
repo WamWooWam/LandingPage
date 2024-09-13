@@ -14,6 +14,8 @@
 
     <!-- manifest -->
     <link rel="manifest" href="{{manifest}}" />
+    
+    <link rel='preconnect' href='https://c.s-microsoft.com'>
 
     <!-- favicons -->
     <link rel="icon" type="image/png" href="{{square30x30logo}}">
@@ -46,6 +48,9 @@
     {{/each}}
 
     <style>:root {background-color: {{themeColor}};}</style>
+    {{#if UMAMI_ID}}
+    <script defer src="{{UMAMI_URL}}" data-website-id="{{UMAMI_ID}}"></script>
+    {{/if}}
 </head>
 
 <body>

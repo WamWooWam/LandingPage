@@ -22,15 +22,10 @@ export default class ScrollStateProvider extends Component<{}, ScrollState> {
     }
 
     componentDidMount(): void {
-        // window.addEventListener("scroll", this.onScroll.bind(this), { passive: true });
-        // window.addEventListener("resize", this.onScroll.bind(this));
-
         this.onScroll();
     }
 
     componentWillUnmount(): void {
-        // window.removeEventListener("scroll", this.onScroll.bind(this));
-        // window.removeEventListener("resize", this.onScroll.bind(this));
     }
 
     private onScroll(): void {

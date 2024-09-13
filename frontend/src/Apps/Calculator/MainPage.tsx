@@ -1,13 +1,13 @@
 import { Component, createContext } from "preact";
-import { CalculatorButton } from "./CalculatorButton";
-import { CalcManager } from "./CalcManager/CalcManager";
-import CalculatorModel from "./CalculatorModel";
-import { AutoTextSize } from 'auto-text-size'
-import ViewBox from "./ViewBox";
-import CalculatorNavBar from "./CalculatorNavBar";
-import Calculator from "./Calculator";
-import Memory from "./Memory";
 
+import { AutoTextSize } from 'auto-text-size'
+import { CalcManager } from "./CalcManager/CalcManager";
+import Calculator from "./Calculator";
+import { CalculatorButton } from "./CalculatorButton";
+import CalculatorModel from "./CalculatorModel";
+import CalculatorNavBar from "./CalculatorNavBar";
+import Memory from "./Memory";
+import ViewBox from "./ViewBox";
 
 type MainPageProps = {
     model: CalculatorModel;
@@ -16,13 +16,19 @@ type MainPageProps = {
 export const ViewModelContext = createContext<CalculatorModel>(null)
 
 export default class MainPage extends Component<MainPageProps, { result: string }> {
+
+    constructor(props: MainPageProps) {
+        super(props);
+        this.onKeyUp = this.onKeyUp.bind(this);
+    }
+
     componentDidMount(): void {
         this.props.model.reset();
-        document.addEventListener("keydown", this.onKeyUp.bind(this));
+        document.addEventListener("keydown", this.onKeyUp);
     }
 
     componentWillUnmount(): void {
-        document.removeEventListener("keydown", this.onKeyUp.bind(this));
+        document.removeEventListener("keydown", this.onKeyUp);
     }
 
     onKeyUp(e: KeyboardEvent): void {

@@ -1,14 +1,14 @@
 import { DOMParser, XMLSerializer } from 'xmldom'
+import { Request, Response, Router } from "express";
 
 import { HttpError } from '../../utils';
-import { Router } from "express";
 import { TileTemplateType } from "../../TileTemplateType";
 import { TileUpdateManager } from "../../TileUpdateManager";
 
 const rootUrl = 'https://api.github.com'
 const username = process.env.GITHUB_USERNAME;
 
-const recentActivity = async (req, res) => {
+const recentActivity = async (req: Request, res: Response) => {
     // fetch recent activity for a user
 
     let url = '';

@@ -24,6 +24,8 @@ export default class StartScrollContainer extends Component<StartScrollContainer
         super(props);
         this.scrollContainer = createRef();
         this.startTilesContainer = createRef();
+
+        this.onResize = this.onResize.bind(this);
     }
 
     componentDidMount() {
@@ -45,7 +47,7 @@ export default class StartScrollContainer extends Component<StartScrollContainer
         }
         else {
             // fallback to window resize event
-            window.addEventListener("resize", this.onResize.bind(this));
+            window.addEventListener("resize", this.onResize);
         }
 
         this.setHeight();
@@ -57,7 +59,7 @@ export default class StartScrollContainer extends Component<StartScrollContainer
             this.state.observer.disconnect();
         }
         else {
-            window.removeEventListener("resize", this.onResize.bind(this));
+            window.removeEventListener("resize", this.onResize);
         }
     }
 

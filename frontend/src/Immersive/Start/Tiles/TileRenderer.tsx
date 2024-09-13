@@ -86,6 +86,12 @@ export default class TileRenderer extends Component<TileProps, TileState> {
         };
 
         this.root = createRef();
+        this.didGetVisuals = this.didGetVisuals.bind(this);
+        this.onMouseDown = this.onMouseDown.bind(this);
+        this.onMouseUp = this.onMouseUp.bind(this);
+        this.onClick = this.onClick.bind(this);
+        this.updatePressState = this.updatePressState.bind(this);
+        this.onAnimationEnded = this.onAnimationEnded.bind(this);
     }
 
     componentDidUpdate(previousProps: Readonly<TileProps>, previousState: Readonly<TileState>, snapshot: any): void {
@@ -94,7 +100,7 @@ export default class TileRenderer extends Component<TileProps, TileState> {
             clearInterval(this.state.interval);
 
             TileUpdateManager.getInstance()
-                .unregisterVisualUpdateCallback(this.state.app, this.didGetVisuals.bind(this));
+                .unregisterVisualUpdateCallback(this.state.app, this.didGetVisuals);
 
             this.setState({ pack, app, visualIdx: 0, visuals: [TileDefaultVisual], nextVisualIdx: undefined });
         }
@@ -102,7 +108,7 @@ export default class TileRenderer extends Component<TileProps, TileState> {
         if (!previousState.appStatus && this.state.appStatus) {
             if (this.state.appStatus.statusCode === 0) {
                 TileUpdateManager.getInstance()
-                    .registerVisualUpdateCallback(this.state.app, this.didGetVisuals.bind(this));
+                    .registerVisualUpdateCallback(this.state.app, this.didGetVisuals);
             }
         }
     }
@@ -118,7 +124,7 @@ export default class TileRenderer extends Component<TileProps, TileState> {
         console.error(error);
 
         TileUpdateManager.getInstance()
-            .unregisterVisualUpdateCallback(this.state.app, this.didGetVisuals.bind(this));
+            .unregisterVisualUpdateCallback(this.state.app, this.didGetVisuals);
 
         this.setState(() => {
             clearInterval(this.state.interval);
@@ -130,7 +136,7 @@ export default class TileRenderer extends Component<TileProps, TileState> {
 
     componentWillUnmount() {
         TileUpdateManager.getInstance()
-            .unregisterVisualUpdateCallback(this.state.app, this.didGetVisuals.bind(this));
+            .unregisterVisualUpdateCallback(this.state.app, this.didGetVisuals);
     }
 
     didGetVisuals(visuals: Map<TileSize, TileVisual[]>) {
@@ -178,17 +184,29 @@ export default class TileRenderer extends Component<TileProps, TileState> {
     }
 
     onClick(e: MouseEvent) {
+        // todo: move this somewhere else
         if (this.state.appStatus?.statusCode != 0) {
             e.preventDefault();
 
-            let dialog = new MessageDialog(
-                `${this.state.app.visualElements.displayName} appears to have been corrupted. Running this app might put your PC at risk.\r\n<a target="_blank" href="https://www.sec.gov/Archives/edgar/data/1418091/000110465922048128/tm2213229d1_sc13da.htm">More info</a>`,
-                "Start protected your PC");
+            if (this.state.appStatus?.unavailable) {
+                let dialog = new MessageDialog(
+                    `There's a problem with ${this.state.app.visualElements.displayName}.`,
+                    "This app can't open");
 
-            dialog.commands.push(new UICommand("Run anyway", () => { window.open(this.state.app.startPage, "_blank") }))
-            dialog.commands.push(new UICommand("Don't run"))
-            dialog.showAsync();
-            return;
+                dialog.commands.push(new UICommand("Close"))
+                dialog.showAsync();
+                return
+            }
+            else {
+                let dialog = new MessageDialog(
+                    `${this.state.app.visualElements.displayName} appears to have been corrupted. Running this app might put your PC at risk.\r\n<a target="_blank" href="https://www.sec.gov/Archives/edgar/data/1418091/000110465922048128/tm2213229d1_sc13da.htm">More info</a>`,
+                    "Start protected your PC");
+
+                dialog.commands.push(new UICommand("Run anyway", () => { window.open(this.state.app.startPage, "_blank") }))
+                dialog.commands.push(new UICommand("Don't run"))
+                dialog.showAsync();
+                return;
+            }
         }
 
         this.updatePressState(e);
@@ -243,9 +261,9 @@ export default class TileRenderer extends Component<TileProps, TileState> {
             return (
                 <a id={`${props.packageName}!${props.appId}`}
                     class={classList.join(" ")}
-                    onMouseDown={this.onMouseDown.bind(this)}
-                    onMouseUp={this.onMouseUp.bind(this)}
-                    onClick={this.onClick.bind(this)}
+                    onMouseDown={this.onMouseDown}
+                    onMouseUp={this.onMouseUp}
+                    onClick={this.onClick}
                     style={containerStyle}>
                     <div class="tile" style={frontStyle} />
                     <div className="tile-border"
@@ -272,6 +290,10 @@ export default class TileRenderer extends Component<TileProps, TileState> {
             href = `/app/${state.pack.identity.packageFamilyName}/${state.app.id}`;
         }
 
+        if (this.state.appStatus?.statusCode !== 0 && this.state.appStatus?.unavailable) {
+            href = "#";
+        }
+
         let frontKey = state.visualIdx.toString();
         let nextKey = ((state.visualIdx + 1) % state.visuals.length).toString();
 
@@ -283,9 +305,9 @@ export default class TileRenderer extends Component<TileProps, TileState> {
                     id={`${props.packageName}!${props.appId}`}
                     class={classList.join(" ")}
                     style={containerStyle}
-                    onMouseDown={this.onMouseDown.bind(this)}
-                    onMouseUp={this.onMouseUp.bind(this)}
-                    onClick={this.onClick.bind(this)}
+                    onMouseDown={this.onMouseDown}
+                    onMouseUp={this.onMouseUp}
+                    onClick={this.onClick}
                     title={state.app.visualElements.displayName}
                     name={state.app.visualElements.displayName}
                     href={href}
@@ -295,7 +317,7 @@ export default class TileRenderer extends Component<TileProps, TileState> {
                             <TileVisualRenderer app={state.app} binding={frontBinding} size={props.size} />
                         </div>
                         {state.swapping &&
-                            <div class="next" key={nextKey} style={frontStyle} onAnimationEnd={this.onAnimationEnded.bind(this)}>
+                            <div class="next" key={nextKey} style={frontStyle} onAnimationEnd={this.onAnimationEnded}>
                                 <TileVisualRenderer app={state.app} binding={nextBinding} size={props.size} />
                             </div>
                         }
@@ -305,7 +327,7 @@ export default class TileRenderer extends Component<TileProps, TileState> {
                                 nextBranding={nextVisual?.branding}
                                 previousBranding={previousVisual?.branding}
                                 size={props.size}
-                                visualElements={state.app.visualElements}/>}
+                                visualElements={state.app.visualElements} />}
                     </div>
 
                     <TileBadge isError={state.appStatus && state.appStatus.statusCode !== 0} />

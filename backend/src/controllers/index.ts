@@ -7,8 +7,15 @@ import PackageRegistry from "../PackageRegistry";
 
 import xmldom = require("xmldom");
 
-const index = (req: Request, res: Response) => {
-    res.render('index');
+const index = async (req: Request, res: Response) => {
+    let data = {} as any;
+    if (process.env.NODE_ENV === 'production') {
+        data.UMAMI_URL = process.env.UMAMI_URL;
+        data.UMAMI_ID = process.env.UMAMI_ID
+        data.preload = await generatePreload();
+    }
+
+    res.render('index', data);
 }
 
 const standaloneApp = (req: Request, res: Response, next: NextFunction) => {
@@ -51,6 +58,11 @@ const standaloneApp = (req: Request, res: Response, next: NextFunction) => {
         preload: [
             app.visualElements.splashScreen.image
         ]
+    } as any;
+
+    if (process.env.NODE_ENV === 'production') {
+        data.UMAMI_URL = process.env.UMAMI_URL;
+        data.UMAMI_ID = process.env.UMAMI_ID
     }
 
     res.render('standalone', data);
@@ -87,11 +99,7 @@ const generatePreload = async () => {
                     break;
             }
 
-            if (app.entryPoint) {
-                preloadUrls.push(app.visualElements.square30x30Logo);
-                preloadUrls.push(app.visualElements.splashScreen.image);
-            }
-            else if (app.visualElements.defaultTile.tileUpdateUrl) {
+            if (app.visualElements.defaultTile.tileUpdateUrl) {
                 preloadUrls.push(app.visualElements.square30x30Logo);
             }
         }

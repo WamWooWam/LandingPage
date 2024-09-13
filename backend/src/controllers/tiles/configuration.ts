@@ -3,7 +3,12 @@ import { Router } from 'express';
 
 async function getConfiguration(req, resp) {
     const config = {
-        appStatus: {}
+        appStatus: {
+            "Socials_zfgz6xjnaz0ym!Discord": {
+                statusCode: 0x8000FFFF,
+                unavailable: true
+            }
+        }
     }
 
     resp.json(config);

@@ -31,16 +31,19 @@ export default class CoreWindowContainer extends Component<CoreWindowContainerPr
     constructor(props: CoreWindowContainerProps) {
         super(props);
         this.state = { launchParams: [], closeParams: [] };
+
+        this.onAppLaunchRequested = this.onAppLaunchRequested.bind(this);
+        this.onWindowCloseRequested = this.onWindowCloseRequested.bind(this);
     }
 
     componentDidMount(): void {
-        Events.getInstance().addEventListener("app-launch-requested", this.onAppLaunchRequested.bind(this));
-        Events.getInstance().addEventListener("core-window-close-requested", this.onWindowCloseRequested.bind(this));
+        Events.getInstance().addEventListener("app-launch-requested", this.onAppLaunchRequested);
+        Events.getInstance().addEventListener("core-window-close-requested", this.onWindowCloseRequested);
     }
 
     componentWillUnmount(): void {
-        Events.getInstance().removeEventListener("app-launch-requested", this.onAppLaunchRequested.bind(this));
-        Events.getInstance().removeEventListener("core-window-close-requested", this.onWindowCloseRequested.bind(this));
+        Events.getInstance().removeEventListener("app-launch-requested", this.onAppLaunchRequested);
+        Events.getInstance().removeEventListener("core-window-close-requested", this.onWindowCloseRequested);
     }
 
     onAppLaunchRequested(e: AppLaunchRequestedEvent) {

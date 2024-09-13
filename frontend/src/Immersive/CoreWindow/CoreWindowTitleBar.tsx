@@ -22,6 +22,16 @@ interface CoreWindowTitleBarProps {
 //
 export default class CoreWindowTitleBar extends Component<CoreWindowTitleBarProps> {
 
+    constructor(props: CoreWindowTitleBarProps) {
+        super(props);
+
+        this.onPointerDown = this.onPointerDown.bind(this);
+        this.onPointerMove = this.onPointerMove.bind(this);
+        this.onPointerUp = this.onPointerUp.bind(this);
+        this.onMinimiseClicked = this.onMinimiseClicked.bind(this);
+        this.onCloseClicked = this.onCloseClicked.bind(this);
+    }
+
     onMinimiseClicked(e: MouseEvent) {
         e.stopPropagation();
         if (this.props.onMinimiseClicked) this.props.onMinimiseClicked();
@@ -40,8 +50,8 @@ export default class CoreWindowTitleBar extends Component<CoreWindowTitleBarProp
 
         const target = e.target as HTMLElement;
         target.setPointerCapture(e.pointerId);
-        target.addEventListener("pointermove", this.onPointerMove.bind(this));
-        target.addEventListener("pointerup", this.onPointerUp.bind(this));
+        target.addEventListener("pointermove", this.onPointerMove);
+        target.addEventListener("pointerup", this.onPointerUp);
     }
 
     onPointerMove(e: PointerEvent) {
@@ -49,8 +59,8 @@ export default class CoreWindowTitleBar extends Component<CoreWindowTitleBarProp
             const dy = e.clientY - this.pointerDownPosition.y;
             if (Math.abs(dy) > 5) {
                 this.pointerDownPosition = null;
-                e.target.removeEventListener("pointermove", this.onPointerMove.bind(this));
-                e.target.removeEventListener("pointerup", this.onPointerUp.bind(this));
+                e.target.removeEventListener("pointermove", this.onPointerMove);
+                e.target.removeEventListener("pointerup", this.onPointerUp);
 
                 if (this.props.onDragStart)
                     this.props.onDragStart(e);
@@ -60,8 +70,8 @@ export default class CoreWindowTitleBar extends Component<CoreWindowTitleBarProp
 
     onPointerUp(e: PointerEvent) {
         this.pointerDownPosition = null;
-        e.target.removeEventListener("pointermove", this.onPointerMove.bind(this));
-        e.target.removeEventListener("pointerup", this.onPointerUp.bind(this));
+        e.target.removeEventListener("pointermove", this.onPointerMove);
+        e.target.removeEventListener("pointerup", this.onPointerUp);
     }
 
     render() {
@@ -73,7 +83,7 @@ export default class CoreWindowTitleBar extends Component<CoreWindowTitleBarProp
         return (
             <div class={"core-window-titlebar " + (!this.props.isVisible ? "hidden" : "")}>
                 <div class="core-window-titlebar-content"
-                    onPointerDown={this.onPointerDown.bind(this)}>
+                    onPointerDown={this.onPointerDown}>
                     {/* TODO: icon has a context menu */}
                     <div class="core-window-icon-container" style={{ background: this.props.primaryColour }}>
                         <PackageImage url={this.props.iconUrl}>
@@ -83,8 +93,8 @@ export default class CoreWindowTitleBar extends Component<CoreWindowTitleBarProp
 
                     <div class="core-window-title">{computedTitle}</div>
 
-                    <CoreWindowMinimizeButton onClick={this.onMinimiseClicked.bind(this)} />
-                    <CoreWindowCloseButton onClick={this.onCloseClicked.bind(this)} />
+                    <CoreWindowMinimizeButton onClick={this.onMinimiseClicked} />
+                    <CoreWindowCloseButton onClick={this.onCloseClicked} />
                 </div>
             </div>
         );

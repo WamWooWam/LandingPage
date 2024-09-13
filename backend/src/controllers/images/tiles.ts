@@ -1,5 +1,5 @@
 import { PackageApplication, lightenDarkenColour2 } from "landing-page-shared";
-import { Request, Response } from "express";
+import { Request, Response, Router } from "express";
 
 import { Resvg } from "@resvg/resvg-js"
 import { getAppAndPackage } from "../../utils";
@@ -142,6 +142,6 @@ function parseSize(app: PackageApplication, size: string) {
 }
 
 
-export default function registerRoutes(router) {
+export default function registerRoutes(router: Router) {
     router.get('/:type/:package/:app/:size', getImage);
 }

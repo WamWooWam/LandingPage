@@ -27,18 +27,22 @@ export default class Start extends Component<{}, StartState> {
     constructor() {
         super();
         this.state = { tileGroups: parseLayout(StartLayout), visible: true };
+        this.show = this.show.bind(this);
+        this.hide = this.hide.bind(this);
     }
 
     componentDidMount(): void {
         Events.getInstance()
-            .addEventListener("app-launch-requested", this.hide.bind(this));
-
+            .addEventListener("app-launch-requested", this.hide);
         Events.getInstance()
-            .addEventListener("start-show-requested", this.show.bind(this))
+            .addEventListener("start-show-requested", this.show)
     }
 
     componentWillUnmount(): void {
-
+        Events.getInstance()
+            .removeEventListener("app-launch-requested", this.hide);
+        Events.getInstance()
+            .removeEventListener("start-show-requested", this.show)
     }
 
     show() {

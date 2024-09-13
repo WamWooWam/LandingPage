@@ -1,4 +1,4 @@
-import 'dotenv/config'
+// import 'dotenv/config'
 
 import { PackageReader } from 'landing-page-shared';
 import PackageRegistry from './PackageRegistry';

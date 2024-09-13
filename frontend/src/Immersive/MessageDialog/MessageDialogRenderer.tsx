@@ -21,6 +21,7 @@ export default class MessageDialogRenderer extends Component<{}, MessageDialogRe
         super();
         this.state = { isVisible: false, isClosing: false, dialog: null };
         this.ref = createRef<HTMLDialogElement>();
+        this.onMessageDialogOpen = this.onMessageDialogOpen.bind(this);
     }
 
     componentDidMount() {
@@ -29,7 +30,7 @@ export default class MessageDialogRenderer extends Component<{}, MessageDialogRe
         }
 
         Events.getInstance()
-            .addEventListener("message-dialog-open", this.onMessageDialogOpen.bind(this))
+            .addEventListener("message-dialog-open", this.onMessageDialogOpen)
     }
 
     onMessageDialogOpen(e: MessageDialogEvent) {

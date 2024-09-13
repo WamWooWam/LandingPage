@@ -2,6 +2,7 @@ import "./charms-bar.scss"
 
 import CharmsBarClock from "./CharmsBarClock";
 import { Component } from "preact";
+import Events from "~/Events";
 
 type CharmsBarRendererState = {
     isInGesture: boolean;
@@ -107,6 +108,12 @@ export default class CharmsBarRenderer extends Component<{}, CharmsBarRendererSt
         }
     }
 
+    private onStartClicked(e: MouseEvent) {
+        e.preventDefault();
+        Events.getInstance()
+            .dispatchEvent(new CustomEvent("start-show-requested"));
+    }
+
     render() {
         let className = "";
 
@@ -134,25 +141,25 @@ export default class CharmsBarRenderer extends Component<{}, CharmsBarRendererSt
 
                 <div class={"charms-bar" + className} onTransitionEnd={this.onTransitionEnd.bind(this)}>
                     <ul class="charms-bar-items">
-                        <a role="listitem" class="charms-bar-item charms-bar-search">
+                        <a role="listitem" class="charms-bar-item charms-bar-search" href="#">
                             <div class="charms-bar-image"></div>
                             <p>Search</p>
                         </a>
-                        <a role="listitem" class="charms-bar-item charms-bar-share">
+                        <a role="listitem" class="charms-bar-item charms-bar-share" href="#">
                             <div class="charms-bar-image"></div>
                             <p>Share</p>
                         </a>
-                        <a role="listitem" class="charms-bar-item charms-bar-start">
+                        <a role="listitem" class="charms-bar-item charms-bar-start" href="#" onClick={this.onStartClicked.bind(this)}>
                             <div class="charms-bar-image">
                                 <div class="highlight-effect" />
                             </div>
                             <p>Start</p>
                         </a>
-                        <a role="listitem" class="charms-bar-item charms-bar-devices">
+                        <a role="listitem" class="charms-bar-item charms-bar-devices" href="#">
                             <div class="charms-bar-image"></div>
                             <p>Devices</p>
                         </a>
-                        <a role="listitem" class="charms-bar-item charms-bar-settings">
+                        <a role="listitem" class="charms-bar-item charms-bar-settings" href="#">
                             <div class="charms-bar-image"></div>
                             <p>Settings</p>
                         </a>

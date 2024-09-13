@@ -40,6 +40,7 @@ export default class CoreWindowRenderer extends Component<CoreWindowRenderProps,
         super(props);
         this.state = { window: null, title: null };
         this.ref = createRef();
+        this.onWindowStateChanged = this.onWindowStateChanged.bind(this);
     }
 
     static getDerivedStateFromProps(props: CoreWindowRenderProps, state: CoreWindowRenderState): Partial<CoreWindowRenderState> {
@@ -54,12 +55,12 @@ export default class CoreWindowRenderer extends Component<CoreWindowRenderProps,
         });
 
         Events.getInstance()
-            .addEventListener("core-window-state-changed", this.onWindowStateChanged.bind(this));
+            .addEventListener("core-window-state-changed", this.onWindowStateChanged);
     }
 
     componentWillUnmount() {
         Events.getInstance()
-            .removeEventListener("core-window-state-changed", this.onWindowStateChanged.bind(this));
+            .removeEventListener("core-window-state-changed", this.onWindowStateChanged);
     }
 
     onWindowStateChanged(e: CoreWindowEvent) {

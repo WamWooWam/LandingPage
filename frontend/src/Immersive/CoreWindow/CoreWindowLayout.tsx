@@ -19,16 +19,18 @@ export default class CoreWindowLayout extends Component<CoreWindowLayoutProps, C
     constructor(props: CoreWindowLayoutProps) {
         super(props);
         this.state = { windows: [], rawWindows: [], layout: CoreWindowLayoutKind.fullScreen };
+
+        this.onLayoutUpdated = this.onLayoutUpdated.bind(this);
     }
 
     componentDidMount(): void {
-        Events.getInstance().addEventListener("layout-updated", this.onLayoutUpdated.bind(this));
-        Events.getInstance().addEventListener("core-window-visibility-changed", this.onLayoutUpdated.bind(this));
+        Events.getInstance().addEventListener("layout-updated", this.onLayoutUpdated);
+        Events.getInstance().addEventListener("core-window-visibility-changed", this.onLayoutUpdated);
     }
 
     componentWillUnmount(): void {
-        Events.getInstance().removeEventListener("layout-updated", this.onLayoutUpdated.bind(this));
-        Events.getInstance().removeEventListener("core-window-visibility-changed", this.onLayoutUpdated.bind(this));
+        Events.getInstance().removeEventListener("layout-updated", this.onLayoutUpdated);
+        Events.getInstance().removeEventListener("core-window-visibility-changed", this.onLayoutUpdated);
     }
 
     onLayoutUpdated(): void {

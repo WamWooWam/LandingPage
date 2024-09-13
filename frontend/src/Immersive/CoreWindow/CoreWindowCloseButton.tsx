@@ -1,5 +1,5 @@
 interface CoreWindowCloseButtonProps {
-    onClick: () => void;
+    onClick: (e: MouseEvent) => void;
 }
 
 const CoreWindowCloseButton = (props: CoreWindowCloseButtonProps) => {

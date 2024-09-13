@@ -3,6 +3,7 @@ import { PackageApplication } from "shared/PackageApplication";
 
 export interface AppStatus {
     statusCode: number;
+    unavailable?: boolean;
 }
 
 interface Configuration {
