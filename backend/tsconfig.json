@@ -1,18 +1,14 @@
 {
     "compilerOptions": {
-        "module": "CommonJS",
-        "target": "es2022",
+        "target": "ESNext", 
+        "module": "NodeNext", 
+        "moduleResolution": "NodeNext", 
+        "esModuleInterop": true, 
         "noImplicitAny": false,
-        "moduleResolution": "node",
         "experimentalDecorators": true,
         "sourceMap": true,
         "outDir": "dist",
         "baseUrl": ".",
-        "paths": {
-            "*": [
-                "node_modules/*"
-            ]
-        },
         "lib": ["ESNext", "DOM"],
         "jsx": "react-jsx",
         "jsxImportSource": "preact"
