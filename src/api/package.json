@@ -1,14 +1,12 @@
 {
-  "name": "@landing-page/xml-loader",
+  "name": "@landing-page/api",
   "version": "1.0.0",
   "description": "",
-  "main": "xml-loader.js",
+  "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
+  "keywords": [],
   "author": "",
-  "license": "ISC",
-  "dependencies": {
-    "minify-xml": "^3.4.0"
-  }
+  "license": "ISC"
 }

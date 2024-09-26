@@ -1,5 +1,5 @@
 {
-  "name": "manifest-loader",
+  "name": "@landing-page/manifest-loader",
   "version": "1.0.0",
   "description": "",
   "main": "manifest-loader.js",
@@ -14,6 +14,6 @@
     "xmldom": "^0.6.0"
   },
   "dependencies": {
-    "landing-page-shared": "workspace:landing-page-shared"
+    "@landing-page/shared": "workspace:shared"
   }
 }

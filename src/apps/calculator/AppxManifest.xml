@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<Package xmlns="http://schemas.microsoft.com/appx/2010/manifest" xmlns:m2="http://schemas.microsoft.com/appx/2013/manifest" xmlns:wam="https://wamwoowam.co.uk/appx/2022">
+	<Identity Name="Microsoft.WindowsCalculator" Publisher="CN=Microsoft Corporation, O=Microsoft Corporation, L=Redmond, S=Washington, C=US" Version="6.3.9600.20278" ProcessorArchitecture="x64"/>
+	<Properties>
+		<DisplayName>Calculator</DisplayName>
+		<PublisherDisplayName>Microsoft Corporation</PublisherDisplayName>
+		<Logo>Assets\StoreLogo.png</Logo>
+	</Properties>
+	<Prerequisites>
+		<OSMinVersion>6.3.0</OSMinVersion>
+		<OSMaxVersionTested>6.3.0</OSMaxVersionTested>
+	</Prerequisites>
+	<Resources>
+		<Resource m2:Scale="100"/>
+		<Resource Language="en-us"/>
+		<Resource Language="en-gb"/>
+		
+	</Resources>
+	<Applications>
+		<Application Id="App" Executable="Numbers.exe" EntryPoint="Apps/Calculator">
+			<m2:VisualElements DisplayName="Calculator" Square150x150Logo="Assets/CalculateMedium.png" Square30x30Logo="Assets/SmallLogo.png" Description="Calculator" ForegroundText="light" BackgroundColor="#008A00">
+				<m2:DefaultTile ShortName="Calculator" Square70x70Logo="Assets/CalculateTiny.png">
+					<m2:ShowNameOnTiles>
+						<m2:ShowOn Tile="square150x150Logo"/>
+					</m2:ShowNameOnTiles>
+				</m2:DefaultTile>
+				<m2:SplashScreen Image="Assets/SplashScreen.png" BackgroundColor="#008A00"/>
+				<m2:ApplicationView MinWidth="width320"/>
+			</m2:VisualElements>
+		</Application>
+	</Applications>
+	<Dependencies>
+        <wam:FeatureDependency Name="WebAssembly" Features="Exceptions"/>
+		<PackageDependency Name="Microsoft.VCLibs.120.00" Publisher="CN=Microsoft Corporation, O=Microsoft Corporation, L=Redmond, S=Washington, C=US" MinVersion="12.0.20501.1"/>
+	</Dependencies>
+	<Extensions>
+		<Extension Category="windows.activatableClass.inProcessServer">
+			<InProcessServer>
+				<Path>microsoft.sqm.dll</Path>
+				<ActivatableClass ActivatableClassId="Microsoft.SQM.SQMSession" ThreadingModel="both"/>
+			</InProcessServer>
+		</Extension>
+		<Extension Category="windows.activatableClass.inProcessServer">
+			<InProcessServer>
+				<Path>Microsoft.PerfTrack.dll</Path>
+				<ActivatableClass ActivatableClassId="Microsoft.PerfTrack.PerfTrackLogger" ThreadingModel="both"/>
+			</InProcessServer>
+		</Extension>
+	</Extensions>
+</Package>

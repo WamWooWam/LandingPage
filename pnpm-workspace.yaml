@@ -1,6 +1,7 @@
 packages:
-  - 'backend'
-  - 'frontend'
-  - 'shared'
+  - 'src/api'
+  - 'src/server'
+  - 'src/shared'
+  - 'src/shell'
   - 'tools/manifest-loader'
   - 'tools/xml-loader'
