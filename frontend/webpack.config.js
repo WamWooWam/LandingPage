@@ -9,7 +9,7 @@ module.exports = [
         entry: {
             "index": "./src/index.tsx",
         },
-        target: "web",
+        target: "browserslist",
         mode: env.NODE_ENV || "development",
         devtool: 'source-map',
         module: {
