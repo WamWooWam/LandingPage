@@ -1,0 +1,42 @@
+#!/usr/bin/env node
+
+/**
+ * This script is used to rebuild the registry of installed apps on the server. This script will scan the packages
+ * directory and rebuild the registry.json file.
+ * 
+ * Usage: rebuild-registry
+ */
+
+const fs = require('fs').promises;
+const path = require('path');
+const { execSync } = require('child_process');
+const { DOMParser } = require('xmldom');
+const { PackageReader } = require("@landing-page/shared");
+
+(async () => {
+    const packagesPath = path.join(__dirname, '..', 'packages');
+    const registryPath = path.join(packagesPath, 'registry.json');
+
+    const registry = {};
+
+    // scan the packages directory
+    const files = await fs.readdir(packagesPath);
+    for (const file of files) {
+        try {
+            const packageDir = path.join(packagesPath, file);
+            const manifest = await fs.readFile(path.join(packageDir, 'AppxManifest.xml'), 'utf8');
+            const reader = new PackageReader(manifest, new DOMParser());
+            reader.fixupUrl = (url) => url;
+
+            const pack = await reader.readPackage();
+            pack.path = packageDir;
+            registry[pack.identity.packageFamilyName] = pack;
+        }
+        catch (e) {
+            console.warn(`Error reading package ${file}: ${e.message}`);
+        }
+    }
+
+    // write the registry
+    await fs.writeFile(registryPath, JSON.stringify(registry));
+})();

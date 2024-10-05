@@ -5,11 +5,19 @@
     "version": "0.2.0",
     "configurations": [
         {
+            "type": "bun",
+            "name": "Launch Server",
+            "request": "attach",
+            "url": "ws://127.0.0.1:5000/test",
+            "preLaunchTask": "Bun: Start Server",
+            "internalConsoleOptions": "openOnSessionStart"
+        },
+        {
             "type": "chrome",
             "request": "launch",
             "name": "Launch Chrome against localhost",
             "url": "http://localhost:5001",
-            "webRoot": "${workspaceFolder}/frontend"
+            "webRoot": "${workspaceFolder}/src/shell"
         }
     ]
 }

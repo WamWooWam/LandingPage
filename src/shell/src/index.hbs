@@ -43,6 +43,8 @@
 
     <!-- preload -->
     <link rel="preload" as="fetch" href="/api/configuration">
+    <link rel="preload" as="fetch" href="/api/start-screen.xml">
+    <link rel="preload" as="fetch" href="/api/packages.json">
     {{#each preload}}
     <link rel="prefetch" as="image" href="{{this}}">
     {{/each}}

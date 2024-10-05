@@ -1,4 +1,4 @@
-import { Package, PackageApplication } from "landing-page-shared";
+import { Package, PackageApplication } from "@landing-page/shared";
 
 import PackageRegistry from "./PackageRegistry";
 import { TileTemplateType } from "./TileTemplateType";

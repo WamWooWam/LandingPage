@@ -77,6 +77,8 @@ export class PackageReader {
         const name = element.getAttribute("Name")!;
         const publisher = element.getAttribute("Publisher")!;
         const version = element.getAttribute("Version")!;
+        const resourceId = element.getAttribute("ResourceId") ?? '';
+        const architecture = element.getAttribute("ProcessorArchitecture") ?? 'neutral';
 
         // compute the PackageFamilyName as base32 crockford of the first 8 bytes of the SHA256
         // hash of the Publisher field.
@@ -90,10 +92,12 @@ export class PackageReader {
         const crypto = globalThis.crypto ?? require("crypto");
         const hash = new Uint8Array(await crypto.subtle.digest('SHA-256', bufView));
         const encoder = new base32.Encoder({ type: "crockford", lc: true });
-        const str = encoder.write([...hash.slice(0, 8)]).finalize();
-        const packageFamilyName = name + "_" + str.toLowerCase();
+        const publisherHash = encoder.write([...hash.slice(0, 8)]).finalize().toLowerCase();
+        const packageFamilyName = name + "_" + publisherHash;
 
-        return { name, publisher, version, packageFamilyName };
+        const packageFullName = `${name}_${version}_${architecture}_${resourceId}_${publisherHash}`.toLowerCase();
+
+        return { name, publisher, version, packageFamilyName, packageFullName, resourceId, architecture };
     }
 
     private readProperties(element: Element): PackageProperties {
@@ -232,7 +236,7 @@ export class PackageReader {
         relativeUrl = relativeUrl?.replace(/\\/g, "/");
 
         if (relativeUrl)
-            return `/packages/${this.identity.packageFamilyName}/${relativeUrl}`;
+            return `/packages/${this.identity.packageFullName}/${relativeUrl}`;
         return null;
     }
 

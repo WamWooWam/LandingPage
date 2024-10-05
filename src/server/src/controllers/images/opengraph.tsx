@@ -15,7 +15,7 @@ import {
     layoutDesktop,
     lightenDarkenColour2,
     parseLayout
-} from "landing-page-shared";
+} from "@landing-page/shared";
 
 import PackageRegistry from '../../PackageRegistry';
 import { Resvg } from '@resvg/resvg-js';

@@ -80,9 +80,7 @@ module.exports = [
                 "shared": path.resolve(__dirname, '../shared/src'),
                 "static": path.resolve(__dirname, './static'),
                 "packages": path.resolve(__dirname, '../packages'),
-                "~": path.resolve(__dirname, './src'),
-                "react": 'preact/compat',
-                "react-dom": 'preact/compat',
+                "~": path.resolve(__dirname, './src')
             }
         },
         plugins: [
@@ -94,14 +92,14 @@ module.exports = [
                 inject: true,
                 template: "./src/index.hbs",
                 chunks: ["index"],
-                filename: "views/index.hbs",
+                filename: "index.hbs",
                 publicPath: "/"
             }),
             new HtmlWebpackPlugin({
                 inject: true,
                 template: "./src/standalone.hbs",
                 chunks: ["index"],
-                filename: "views/standalone.hbs",
+                filename: "standalone.hbs",
                 publicPath: "/"
             }),
             new FaviconsWebpackPlugin({

@@ -2,12 +2,12 @@
 <Package IgnorableNamespaces="build" xmlns="http://schemas.microsoft.com/appx/2010/manifest"
     xmlns:wb="http://schemas.microsoft.com/appx/2013/manifest"
     xmlns:build="http://schemas.microsoft.com/developer/appx/2012/build">
-    <Identity Name="Projects" ProcessorArchitecture="x86" Publisher="CN=Wan Kerr Co. Ltd."
+    <Identity Name="Projects" ProcessorArchitecture="neutral" Publisher="CN=Wan Kerr Co. Ltd."
         Version="2.6.672.0" />
     <Properties>
         <DisplayName>Projects</DisplayName>
         <PublisherDisplayName>Wan Kerr Co. Ltd.</PublisherDisplayName>
-        <Description>Social Media Links</Description>
+        <Description>All my projects live here!</Description>
         <Logo>twitter-logo-square.svg</Logo>
     </Properties>
     <Prerequisites>

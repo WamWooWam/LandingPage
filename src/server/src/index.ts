@@ -1,9 +1,9 @@
 import 'dotenv/config'
 
-import { PackageReader } from 'landing-page-shared';
 import PackageRegistry from './PackageRegistry';
 import error from './middleware/error';
 import logging from "./middleware/logging"
+import registerApps from './controllers/apps/shortlinks';
 import registerBlueSky from './controllers/tiles/bluesky';
 import registerConfiguration from './controllers/tiles/configuration';
 import registerGithub from './controllers/tiles/github';
@@ -12,6 +12,7 @@ import registerOpenGraphImages from './controllers/images/opengraph';
 import registerPeopleTiles from './controllers/tiles/people';
 import registerRoutes from './controllers';
 import registerStandaloneManifests from './controllers/standalone/manifest';
+import registerStart from './controllers/shell/start';
 import registerTiles from './controllers/images/tiles';
 import registerTwitch from './controllers/tiles/twitch';
 import registerTwitter from './controllers/tiles/nitter';
@@ -21,8 +22,6 @@ import express = require('express');
 import path = require('path');
 import fsp = require('fs/promises');
 import apicache = require('apicache');
-import xmldom = require('xmldom');
-
 
 const cache = (() => {
     return apicache.options({
@@ -39,33 +38,31 @@ const cache = (() => {
 const app = express();
 (async () => {
     // load all packages
-    const packages = await fsp.readdir('../packages');
-    for (let packageName of packages) {
-        // if this is a directory, it's a package
-        const stat = await fsp.stat(`../packages/${packageName}`);
-        if (!stat.isDirectory()) continue;
-
+    const packages = await fsp.readFile('./packages/registry.json', 'utf-8');
+    const manifest = JSON.parse(packages);
+    for (const key in manifest) {
         try {
-            const appxManifest = await fsp.readFile(`../packages/${packageName}/AppxManifest.xml`, 'utf-8');
-            const parser = new PackageReader(appxManifest, new xmldom.DOMParser);
-            const manifest = await parser.readPackage();
-
-            PackageRegistry.registerPackage(manifest);
+            PackageRegistry.registerPackage(manifest[key]);
         }
         catch (e) {
-            console.error(`Error reading package ${packageName}:`, e);
+            console.error(`Error reading package ${key}:`, e);
         }
     }
 
-    const staticDirectory = path.join(process.cwd(), '../frontend/dist');
+    const staticDirectory = path.dirname(require.resolve("@landing-page/shell"));
+    const packagesDirectory = path.join(__dirname, '..', 'packages');
+
+    const apiDirectory = path.dirname(require.resolve("@landing-page/api/dist/api.bundle.js"));
 
     app.set('view engine', 'hbs');
-    app.set('views', path.join(process.cwd(), '../frontend/dist/views'));
+    app.set('views', path.join(staticDirectory));
 
     app.use(logging);
 
     const apiRouter = express.Router();
     app.use('/api', apiRouter);
+
+    registerStart(apiRouter);
 
     const liveTilesRouter = express.Router({ mergeParams: true });
     apiRouter.use('/live-tiles', cache('1 hour'), liveTilesRouter);
@@ -89,7 +86,14 @@ const app = express();
     registerStandaloneManifests(apiRouter);
     registerConfiguration(apiRouter);
 
+    const packagesRouter = express.Router();
+    app.use('/packages', packagesRouter);
+    packagesRouter.use(express.static(packagesDirectory, { index: false, maxAge: '90d' }));
+
     app.use(express.static(staticDirectory, { index: false, maxAge: '90d' }));
+    app.use(express.static(apiDirectory, { index: false, maxAge: '90d' }));
+
+    registerApps(app);
 
     registerRoutes(app);
 

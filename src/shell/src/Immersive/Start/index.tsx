@@ -16,19 +16,29 @@ import SearchIcon from "./SearchIcon";
 import StartLayout from 'packages/StartScreen.xml'
 import StartScrollContainer from "./StartScrollContainer";
 
+interface StartProps { layoutString: string };
+
 interface StartState {
+    layoutString: string;
     tileGroups: Array<StartTileGroup>
     visible: boolean
 }
 
 
-export default class Start extends Component<{}, StartState> {
+export default class Start extends Component<StartProps, StartState> {
 
     constructor() {
         super();
-        this.state = { tileGroups: parseLayout(StartLayout), visible: true };
+        this.state = { layoutString: null, tileGroups: null, visible: true };
         this.show = this.show.bind(this);
         this.hide = this.hide.bind(this);
+    }
+
+    static getDerivedStateFromProps(props: StartProps, state: StartState) {
+        if (props.layoutString !== state.layoutString) {
+            return { tileGroups: parseLayout(props.layoutString), layoutString: state.layoutString };
+        }
+        return null;
     }
 
     componentDidMount(): void {

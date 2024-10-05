@@ -1,7 +1,7 @@
 import * as fs from "fs";
 
 import { NextFunction, Request, Response, Router } from "express";
-import { StartTileGroup, TileSize, parseLayout } from "landing-page-shared";
+import { StartTileGroup, TileSize, parseLayout } from "@landing-page/shared";
 
 import PackageRegistry from "../PackageRegistry";
 

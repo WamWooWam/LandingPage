@@ -1,6 +1,6 @@
 const path = require('path');
 const fs = require('fs');
-const { PackageReader } = require('landing-page-shared');
+const { PackageReader } = require('@landing-page/shared');
 const DOMParser = require('xmldom').DOMParser;
 const minify = require('minify-xml').minify;
 

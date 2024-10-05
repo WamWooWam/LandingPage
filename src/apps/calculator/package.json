@@ -1,0 +1,34 @@
+{
+  "name": "@landing-page/apps/calculator",
+  "version": "6.3.9600.20280",
+  "description": "",
+  "main": "index.js",
+  "files": [
+    "dist",
+    "assets",
+    "AppxManifest.xml"
+  ],
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "packageManager": "pnpm@9.10.0",
+  "dependencies": {
+    "@landing-page/api": "workspace:api",
+    "@preact/signals": "^1.1.5",
+    "auto-text-size": "^0.2.2",
+    "preact": "^10.15.1"
+  },
+  "devDependencies": {
+    "css-loader": "^7.1.2",
+    "file-loader": "^6.2.0",
+    "html-webpack-plugin": "^5.5.3",
+    "sass-loader": "^13.3.2",
+    "ts-loader": "^9.5.1",
+    "url-loader": "^4.1.1",
+    "webpack": "^5.31.2",
+    "webpack-cli": "^5.1.4"
+  },
+  "scripts": {
+    "build": "webpack --mode production"
+  }
+}

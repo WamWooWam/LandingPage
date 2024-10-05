@@ -3,5 +3,7 @@ packages:
   - 'src/server'
   - 'src/shared'
   - 'src/shell'
+  - 'src/config'
+  - 'src/apps/*'
   - 'tools/manifest-loader'
   - 'tools/xml-loader'

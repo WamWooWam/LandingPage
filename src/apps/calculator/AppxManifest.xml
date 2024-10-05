@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <Package xmlns="http://schemas.microsoft.com/appx/2010/manifest" xmlns:m2="http://schemas.microsoft.com/appx/2013/manifest" xmlns:wam="https://wamwoowam.co.uk/appx/2022">
-	<Identity Name="Microsoft.WindowsCalculator" Publisher="CN=Microsoft Corporation, O=Microsoft Corporation, L=Redmond, S=Washington, C=US" Version="6.3.9600.20278" ProcessorArchitecture="x64"/>
+	<Identity Name="Microsoft.WindowsCalculator" Publisher="CN=Microsoft Corporation, O=Microsoft Corporation, L=Redmond, S=Washington, C=US" Version="6.3.9600.20280" ProcessorArchitecture="neutral"/>
 	<Properties>
 		<DisplayName>Calculator</DisplayName>
 		<PublisherDisplayName>Microsoft Corporation</PublisherDisplayName>
@@ -17,7 +17,7 @@
 		
 	</Resources>
 	<Applications>
-		<Application Id="App" Executable="Numbers.exe" EntryPoint="Apps/Calculator">
+		<Application Id="App" Executable="Numbers.exe" EntryPoint="/apps/calculator" StartPage="/dist/index.html">
 			<m2:VisualElements DisplayName="Calculator" Square150x150Logo="Assets/CalculateMedium.png" Square30x30Logo="Assets/SmallLogo.png" Description="Calculator" ForegroundText="light" BackgroundColor="#008A00">
 				<m2:DefaultTile ShortName="Calculator" Square70x70Logo="Assets/CalculateTiny.png">
 					<m2:ShowNameOnTiles>

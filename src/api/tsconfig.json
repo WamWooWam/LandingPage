@@ -1,0 +1,19 @@
+{
+    "compilerOptions": {
+        "target": "ESNext", 
+        "module": "NodeNext", 
+        "moduleResolution": "NodeNext", 
+        "esModuleInterop": true, 
+        "noImplicitAny": false,
+        "experimentalDecorators": true,
+        "declaration": true,
+        "sourceMap": true,
+        "stripInternal": true,
+        "outDir": "dist",
+        "baseUrl": ".",
+        "lib": ["ESNext", "DOM"]
+    },
+    "include": [
+        "src/**/*"
+    ]
+}

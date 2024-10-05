@@ -2,11 +2,22 @@
   "name": "@landing-page/api",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "src/index.ts",
+  "types": "dist/index.d.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
+  "files": [
+    "dist"
+  ],
   "keywords": [],
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "packageManager": "pnpm@9.10.0",
+  "devDependencies": {
+    "css-loader": "^5.2.7",
+    "ts-loader": "^8.4.0",
+    "webpack": "^5.31.2",
+    "webpack-cli": "^5.1.4"
+  }
 }

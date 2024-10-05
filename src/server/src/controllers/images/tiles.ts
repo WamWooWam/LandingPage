@@ -1,4 +1,4 @@
-import { PackageApplication, lightenDarkenColour2 } from "landing-page-shared";
+import { PackageApplication, lightenDarkenColour2 } from "@landing-page/shared";
 import { Request, Response, Router } from "express";
 
 import { Resvg } from "@resvg/resvg-js"
@@ -12,7 +12,7 @@ import sharp = require('sharp');
 
 // api/images/:type/:package/:app/:size
 async function getImage(req: Request, res: Response) {
-    const { app, appId, packageId } = getAppAndPackage(req.params.app, req.params.package);
+    const { app, pack, appId, packageId } = getAppAndPackage(req.params.app, req.params.package);
 
     let rawSize = req.params.size?.toLowerCase();
     let type = req.params.type?.toLowerCase();
@@ -28,7 +28,7 @@ async function getImage(req: Request, res: Response) {
         return;
     }
 
-    let sourceImage = path.join(process.cwd(), "..", "frontend", "dist", image);
+    let sourceImage = path.join(pack.path, image);
     if (!fs.existsSync(sourceImage)) {
         res.status(404).send('Not found!');
         return;

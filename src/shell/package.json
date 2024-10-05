@@ -1,7 +1,7 @@
 {
   "name": "@landing-page/shell",
   "version": "0.1.0",
-  "private": true,
+  "main": "dist/index.hbs",
   "dependencies": {
     "@preact/signals": "^1.1.5",
     "@landing-page/shared": "workspace:shared",
