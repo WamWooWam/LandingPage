@@ -146,7 +146,7 @@
         </Application>
         <Application Id="tea" StartPage="https://sympathytea.neocities.org/">
             <wb:VisualElements DisplayName="SympathyTea"
-                ForegroundText="light"
+                ForegroundText="dark"
                 BackgroundColor="#9ccfd8" Square150x150Logo="tea-square150x150.png"
                 Square30x30Logo="tea-square30x30.png" ToastCapable="true">
                 <wb:DefaultTile Square70x70Logo="tea-square70x70.png">
