@@ -211,7 +211,7 @@ export default class TileRenderer extends Component<TileProps, TileState> {
 
         this.updatePressState(e);
         // BUGBUG: Hack to prevent the tile from launching on mobile for now
-        if (this.state.app.load && !isMobile()) {
+        if (this.state.app.entryPoint && !isMobile()) {
             e.preventDefault();
 
             this.setState({ clicked: false, visible: false });

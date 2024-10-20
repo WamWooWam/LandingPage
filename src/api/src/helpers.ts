@@ -4,6 +4,10 @@
 export function isHosted(): boolean {
     // a hosted app is one running in an iframe
 
+    if (typeof window === "undefined") {
+        return false;
+    }
+
     if (window.top == window.self) {
         return false;
     }
@@ -14,4 +18,15 @@ export function isHosted(): boolean {
     } catch (e) {
         return false;
     }
+}
+
+
+/**
+ * @internal
+ */
+export function uuidv4() {
+    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, (c) => {
+        var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
+        return v.toString(16);
+    });
 }

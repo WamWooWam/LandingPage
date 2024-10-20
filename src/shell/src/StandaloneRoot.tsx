@@ -1,5 +1,5 @@
-import AppInstanceManager from "./Data/AppInstanceManager";
 import { Component } from "preact";
+import CoreApplicationManager from "./Data/CoreApplicationManager";
 import CoreWindowLayoutManager from "./Data/CoreWindowLayoutManager";
 import CoreWindowRenderer from "~/Immersive/CoreWindow/CoreWindowRenderer";
 import Events from "./Events";
@@ -26,7 +26,7 @@ export default class StandaloneRoot extends Component<StandaloneRootProps, Stand
             throw new Error(`Application ${this.props.appId} not found!`);
         }
 
-        const instance = AppInstanceManager.launchInstance(pack, app);
+        const instance = CoreApplicationManager.launchInstance(pack, app);
         CoreWindowLayoutManager.getInstance()
             .addWindowToLayout(instance.mainWindow, ViewSizePreference.default)
 

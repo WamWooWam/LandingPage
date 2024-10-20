@@ -1,15 +1,15 @@
 export interface Message<T = any> {
-    subsystem: number;
-    type: number;
+    type: string,
     channel?: number;
     replyChannel?: number;
     data: T;
+    errored?: boolean;
 }
 
 /**
  * @internal
  */
-export type RawMessage<T> = Omit<Message<T>, "subsystem">;
+export type RawMessage<T> = Omit<Omit<Message<T>, "errored">, "subsystem">;
 
 /**
  * @internal
@@ -22,10 +22,19 @@ export interface Subsystem {
     getCallback(id: number): ((msg: Message) => void) | undefined;
 }
 
-export interface IDeferrableEvent extends Event {
-    getDeferral(): Deferral;
-}
 
 export interface Deferral {
     complete(): void;
+}
+
+export interface ActivatedOperation {
+    getDeferral(): Deferral;
+}
+
+export type LaunchActivatedEvent = CustomEvent<LaunchActivatedEventArgs>
+
+export interface LaunchActivatedEventArgs {
+    kind: "launch";
+    args: string[];
+    activatedOperation: ActivatedOperation;
 }

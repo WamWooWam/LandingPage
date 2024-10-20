@@ -13,7 +13,6 @@ import HeaderButton from "./HeaderButton";
 import PickImage from "~/Util/PickImage";
 import PowerIcon from "./PowerIcon";
 import SearchIcon from "./SearchIcon";
-import StartLayout from 'packages/StartScreen.xml'
 import StartScrollContainer from "./StartScrollContainer";
 
 interface StartProps { layoutString: string };
@@ -23,7 +22,6 @@ interface StartState {
     tileGroups: Array<StartTileGroup>
     visible: boolean
 }
-
 
 export default class Start extends Component<StartProps, StartState> {
 

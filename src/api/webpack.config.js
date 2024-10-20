@@ -9,18 +9,21 @@ module.exports = {
     devtool: 'source-map',
     module: {
         rules: [{
-                test: /\.tsx?$/,
-                loader: 'ts-loader'
-            },
-            {
-                test: /\.css$/i,
-                use: ["css-loader"],
-            },
+            test: /\.tsx?$/,
+            loader: 'ts-loader'
+        },
+        {
+            test: /\.css$/i,
+            use: ["css-loader"],
+        },
         ],
     },
     resolve: {
         extensions: ['.tsx', '.ts', '.js'],
-        modules: [path.resolve(__dirname, 'src'), 'node_modules']
+        modules: [path.resolve(__dirname, 'src'), 'node_modules'],
+        alias: {
+            "src": path.resolve(__dirname, './src')
+        }
     },
     target: "web",
     output: {

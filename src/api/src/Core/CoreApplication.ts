@@ -1,5 +1,7 @@
+import { AppLifecycleV1, CoreApplicationV1 } from "../subsystems";
 import { Message, RawMessage, Subsystem } from "../types";
 
+import { LaunchActivatedEventArgs } from "../ApplicationModel/Activation/LaunchActivatedEventArgs";
 import { isHosted } from "../helpers";
 
 /**
@@ -10,6 +12,10 @@ export class CoreApplication extends EventTarget {
      * @internal
      */
     private static _instance: CoreApplication | null = null;
+
+    public static get current(): CoreApplication | null {
+        return CoreApplication._instance;
+    }
 
     /**
      * Initializes the CoreApplication instance if the app is hosted, otherwise returns null
@@ -22,6 +28,8 @@ export class CoreApplication extends EventTarget {
             return null;
         }
 
+        console.log("Initializing CoreApplication");
+
         CoreApplication._instance = new CoreApplication();
         await CoreApplication._instance.initializeAsync();
 
@@ -31,7 +39,15 @@ export class CoreApplication extends EventTarget {
     /**
      * @internal
      */
-    private subsystems = new Map<number, SubsystemClass>();
+    private callbackId: number = 0;
+    /**
+     * @internal
+     */
+    private callbackMap: Map<number, (msg: Message) => any> = new Map();
+    /**
+     * @internal
+     */
+    private _port: MessagePort | null = null;
 
     /**
      * @internal
@@ -43,63 +59,55 @@ export class CoreApplication extends EventTarget {
             throw new Error("CoreApplication is a singleton class and cannot be instantiated more than once.");
         }
 
-        this.onMessage = this.onMessage.bind(this);
+        this.handleMessage = this.handleMessage.bind(this);
     }
 
     /**
      * Starts the application
      */
     public run(): void {
-        
-    }
-
-    /**
-     * @internal
-     */
-    public registerSubsystem(subsystem: number, handler: (message: Omit<Message, "subsystem">) => void): Subsystem {
-        const sub = new SubsystemClass(subsystem, handler);
-        this.subsystems.set(subsystem, sub);
-        return sub;
+        this.sendMessage({ type: CoreApplicationV1, data: { type: "initialized" } });
     }
 
     /**
      * @internal
      */
     private async initializeAsync(): Promise<void> {
-        this.addEventListener("message", this.onMessage);
+        if (!isHosted())
+            return;
+
+        window.addEventListener("message", this.handleMessage);
+        await new Promise<void>((resolve) => {
+            this.addEventListener("initialized", () => {
+                resolve();
+            });
+        });
     }
 
     /**
      * @internal
      */
-    private onMessage(event: MessageEvent): void {
-        const message = event.data as Message;
-        const subsystem = this.subsystems.get(message.subsystem);
-        if (subsystem) {
-            subsystem.handleMessage(message);
+    private async onMessage(e: Message) {
+        switch (e.type) {
+            case AppLifecycleV1:
+                switch (e.data.type) {
+                    case "activated": {
+                        let event = new CustomEvent<LaunchActivatedEventArgs>("activated", { detail: new LaunchActivatedEventArgs(e.data.kind) });
+                        this.dispatchEvent(event);
+                        break;
+                    }
+                }
+                break;
         }
     }
-}
 
-class SubsystemClass implements Subsystem {
-    public readonly id: number;
-
-    private handler: (msg: RawMessage<any>) => void;
-    private callbackMap = new Map<number, (msg: Message) => any | Promise<any>>();
-    private callbackId = 0x4000;
-
-    constructor(id: number, handler: (msg: RawMessage<any>) => void) {
-        this.id = id;
-        this.handler = handler;
-        window.addEventListener('message', (event) => this.handleMessage(event.data as Message));
-    }
-
+    /**
+     * @internal
+     */
     public async sendMessage<S = any, R = any>(msg: RawMessage<S>): Promise<Message<R>> {
-        // console.debug(`${this.name}:client sending message %s:%d, %O`, this.name, msg.nType, msg);
-
         return new Promise((resolve, reject) => {
             const channel = this.registerCallback((msg) => {
-                if (msg.type & 0x80000000) {
+                if (msg.errored) {
                     reject(msg.data);
                 }
                 else {
@@ -107,28 +115,46 @@ class SubsystemClass implements Subsystem {
                 }
             });
 
-            window.postMessage({
-                lpSubsystem: this.id,
-                nType: msg.type,
-                nChannel: msg.replyChannel ?? channel,
-                nReplyChannel: channel,
-                data: msg.data
+            this._port.postMessage({
+                type: msg.type,
+                channel: msg.replyChannel ?? channel,
+                replyChannel: channel,
+                data: msg.data,
+                errored: false
             });
         });
     }
 
+    /**
+     * @internal
+     */
     public async postMessage<S = any>(msg: RawMessage<S>): Promise<void> {
         // console.debug(`${this.name}:client sending message %s:%d, %O`, this.name, msg.nType, msg);
 
-        window.postMessage({
-            subsystem: this.id,
+        this._port.postMessage({
             type: msg.type,
             channel: msg.channel,
             replyChannel: msg.replyChannel,
-            data: msg.data
+            data: msg.data,
+            errored: (msg as any).errored ?? false
         });
     }
 
+    public async replyMessage<S = any>(msg: Message, data: S, errored: boolean = false): Promise<void> {
+        // console.debug(`${this.name}:client sending message %s:%d, %O`, this.name, msg.nType, msg);
+
+        this._port.postMessage({
+            type: msg.type,
+            channel: msg.replyChannel,
+            replyChannel: msg.channel,
+            data: data,
+            errored: errored
+        });
+    }
+
+    /**
+     * @internal
+     */
     public registerCallback(callback: (msg: Message) => any | Promise<any>, persist: boolean = false): number {
         const id = this.callbackId++;
         const handler = async (msg: Message) => {
@@ -141,6 +167,9 @@ class SubsystemClass implements Subsystem {
         return id;
     }
 
+    /**
+     * @internal
+     */
     public getCallback(id: number): ((msg: Message) => void) | undefined {
         return this.callbackMap.get(id);
     }
@@ -148,19 +177,38 @@ class SubsystemClass implements Subsystem {
     /**
      * @internal
      */
-    public async handleMessage(msg: Message): Promise<void> {
-        if (msg.subsystem !== this.id) return;
+    public async handleMessage(e: MessageEvent): Promise<void> {
+        const msg = e.data as Message;
+        console.log(`client recieved message %s:%d %O`, msg.type, msg.channel, msg);
 
-        // console.log(`${this.name}:client recieved message %s:%d -> %d, %O`, msg.lpSubsystem, msg.nType, msg.nChannel, msg);
+        if (msg.type === CoreApplicationV1 && msg.data.type === "initialized") {
+            window.removeEventListener("message", this.handleMessage);
+
+            this._port = e.ports[0];
+            this._port.onmessage = this.handleMessage;
+
+            this.dispatchEvent(new CustomEvent("initialized"));
+            return;
+        }
 
         const callback = msg.channel && this.callbackMap.get(msg.channel);
         if (callback) {
-            let ret = await callback(msg);
+            try {
+                let ret = await callback(msg);
+                if (msg.replyChannel) {
+                    await this.postMessage({ type: msg.type, channel: msg.replyChannel, data: ret });
+                }
+            }
+            catch (e) {
+                if (msg.replyChannel) {
+                    await this.postMessage({ type: msg.type, channel: msg.replyChannel, data: e, errored: true } as Message);
+                }
+            }
+        } else {
+            let ret = await this.onMessage(msg);
             if (msg.replyChannel) {
                 await this.postMessage({ type: msg.type, channel: msg.replyChannel, data: ret });
             }
-        } else {
-            return this.handler(msg);
         }
     }
 }

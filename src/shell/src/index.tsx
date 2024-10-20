@@ -13,19 +13,6 @@ import AsyncRoute from "preact-async-route";
 import { hydrate } from "preact"
 import { useEffect } from "preact/hooks";
 
-// const packages = [
-//     require('../../packages/Socials/AppxManifest.xml').default,
-//     require('../../packages/Projects/AppxManifest.xml').default,
-//     require('../../packages/Games/AppxManifest.xml').default,
-//     require('../../packages/Settings/AppxManifest.xml').default,
-//     require('../../packages/Calculator/AppxManifest.xml').default,
-//     require('../../packages/Friends/AppxManifest.xml').default,
-// ];
-
-// for (const pack of packages) {
-//     PackageRegistry.registerPackage(pack);
-// }
-
 Promise.all([hasWebP, hasAvif]);
 
 if (typeof window !== "undefined") {

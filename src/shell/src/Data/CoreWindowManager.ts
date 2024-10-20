@@ -5,8 +5,8 @@
 // that window anywhere in the DOM
 //
 
-import AppInstance from "./AppInstance";
-import AppInstanceManager from "./AppInstanceManager";
+import CoreApplication from "./CoreApplication";
+import CoreApplicationManager from "./CoreApplicationManager";
 import CoreWindow from "./CoreWindow";
 import CoreWindowEvent from "../Events/CoreWindowEvent";
 import CoreWindowLayoutManager from "./CoreWindowLayoutManager";
@@ -19,7 +19,7 @@ export default class CoreWindowManager {
         return !!window?.location.pathname.match(/\/app\//);
     }
 
-    static createCoreWindowForApp(instance: AppInstance): CoreWindow {
+    static createCoreWindowForApp(instance: CoreApplication): CoreWindow {
         let info = new CoreWindow(instance);
         console.log(info.id, info);
         CoreWindowManager.coreWindowMap.set(info.id, info);
@@ -52,7 +52,7 @@ export default class CoreWindowManager {
             }
 
             if (instance.windows.length === 0) {
-                AppInstanceManager.terminateInstance(instance);
+                CoreApplicationManager.terminateInstance(instance);
             }
 
             CoreWindowManager.coreWindowMap.delete(id);

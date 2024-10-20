@@ -21,7 +21,7 @@
         <Resource Language="en-GB" />
     </Resources>
     <Applications>       
-        <Application Id="S4E1" StartPage="https://wamwoowam.co.uk/sonic4/">
+        <Application Id="S4E1" EntryPoint="https://wamwoowam.co.uk/sonic4/">
             <wb:VisualElements DisplayName="Sonic 4 - Episode I" Description="The sequel fans have waited 16 years for is finally here - Sonic the Hedgehog 4 Episode I! Featuring enhanced gameplay elements, including the classic Sonic Spin Dash, and the versatile Homing Attack, Sonic the Hedgehog 4 Episode I picks up right where Sonic and Knuckles™ left off." ForegroundText="light"
                 BackgroundColor="#FFFFFF" Square150x150Logo="images/s4e1-square150x150.webp"
                 Square30x30Logo="images/s4e1-square30x30.webp" ToastCapable="true">
@@ -29,7 +29,7 @@
                 <wb:SplashScreen BackgroundColor="#FFFFFF" Image="images/s4e1-splash.webp" />
             </wb:VisualElements>
         </Application>
-        <Application Id="Sanicball" StartPage="https://wamwoowam.co.uk/ball/">
+        <Application Id="Sanicball" EntryPoint="https://wamwoowam.co.uk/ball/">
             <wb:VisualElements DisplayName="Sanicball" Description="Sanicball is a stupid, silly racing game that throws away complex gameplay mechanics, character progression and microtransactions in favor of pure fast." ForegroundText="light"
                 BackgroundColor="#231F20" Square150x150Logo="images/sanicball-square150x150.webp"
                 Square30x30Logo="images/sanicball-square30x30.webp" ToastCapable="true">

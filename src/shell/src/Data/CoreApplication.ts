@@ -3,7 +3,7 @@ import { Package } from "shared/Package"
 import { PackageApplication } from "shared/PackageApplication"
 import { newGuid } from "../Util";
 
-export default class AppInstance {
+export default class CoreApplication {
     readonly id: string;
     readonly package: Package;
     readonly packageApplication: PackageApplication;
@@ -15,7 +15,7 @@ export default class AppInstance {
     }
 
     constructor(pack: Package, packageApplication: PackageApplication) {
-        this.id = `AppInstance_${newGuid()}`;
+        this.id = `CoreApplication_${newGuid()}`;
         this.package = pack;
         this.packageApplication = packageApplication;
         this.windows = [];

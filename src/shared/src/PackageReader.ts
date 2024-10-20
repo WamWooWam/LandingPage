@@ -12,6 +12,7 @@ import { PackageCapability } from "./PackageCapability";
 
 const AppX2010ManifestNS = "http://schemas.microsoft.com/appx/2010/manifest";
 const AppX2013ManifestNS = "http://schemas.microsoft.com/appx/2013/manifest";
+const WamAppX2022NS = "https://wamwoowam.co.uk/appx/2022";
 
 export class PackageReader {
 
@@ -113,6 +114,7 @@ export class PackageReader {
         const id = element.getAttribute("Id")!;
         const startPage = element.getAttribute("StartPage")!;
         const entryPoint = element.getAttribute("EntryPoint")!;
+        const shortLink = element.getAttributeNS(WamAppX2022NS, "ShortLink") ?? null;
 
         const visualElementsElement = element.getElementsByTagNameNS(AppX2013ManifestNS, "VisualElements")[0]!;
         const visualElements = this.loadTextResources(this.readVisualElements(visualElementsElement));
@@ -121,7 +123,7 @@ export class PackageReader {
         // let extensionsElement = element.getElementsByTagNameNS(AppX2018ManifestNS, "Extensions")[0];
         // for (const extensionElement of extensionsElement.childNodes) {
         // }
-        return { id, startPage, entryPoint, visualElements, extensions: [] };
+        return { id, startPage, entryPoint, visualElements, extensions: [], shortLink };
     }
 
     private readVisualElements(element: Element): ApplicationVisualElements {

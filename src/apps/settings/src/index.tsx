@@ -1,5 +1,4 @@
-import { CoreApplication, IDeferrableEvent } from "@landing-page/api";
-
+import { CoreApplication } from "@landing-page/api";
 import { hydrate } from "preact";
 
 const main = () => {
@@ -14,7 +13,7 @@ const main = () => {
 
 (async () => {
     const application = await CoreApplication.initializeAsync();
-    
+
     if (application != null) {
         application.addEventListener("activated", () => {
             main();

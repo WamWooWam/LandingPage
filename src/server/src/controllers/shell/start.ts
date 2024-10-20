@@ -11,7 +11,14 @@ async function getStartScreen(req: Request, res: Response) {
 
 
 function fixupUrl(pack: Package, relativeUrl: string | null | undefined): string | null {
+    var url = new URL(relativeUrl, "http://localhost");
+    if (url.host !== "localhost")
+        return relativeUrl; // most likely wasn't a local path
+
     relativeUrl = relativeUrl?.replace(/\\/g, "/");
+    // remove leading slash
+    while (relativeUrl?.startsWith("/"))
+        relativeUrl = relativeUrl.substring(1);
 
     if (relativeUrl)
         return `/packages/${pack.identity.packageFullName}/${relativeUrl}`;
@@ -27,8 +34,7 @@ async function getPackages(req: Request, res: Response) {
         for (const id in copy.applications) {
             const app = copy.applications[id];
 
-            // app.entryPoint = fixupUrl(item, app.entryPoint);
-            // app.startPage = fixupUrl(item, app.startPage);
+            app.entryPoint = fixupUrl(item, app.entryPoint);
             app.visualElements.splashScreen.image = fixupUrl(item, app.visualElements.splashScreen.image);
             app.visualElements.square30x30Logo = fixupUrl(item, app.visualElements.square30x30Logo);
             app.visualElements.square150x150Logo = fixupUrl(item, app.visualElements.square150x150Logo);

@@ -16,79 +16,81 @@ const { DOMParser } = require('xmldom');
 const { PackageReader } = require("@landing-page/shared");
 
 (async () => {
-    const package = process.argv[2];
-    if (!package) {
+    const packages = process.argv.slice(2);
+    if (!packages.length) {
         console.error('Usage: install.js <package>.tgz');
         process.exit(1);
     }
 
-    const packagesPath = path.join(__dirname, '..', 'packages');
-    await fs.mkdir(packagesPath, { recursive: true });
+    for (const package of packages) {
+        const packagesPath = path.join(__dirname, '..', 'packages');
+        await fs.mkdir(packagesPath, { recursive: true });
 
-    const data = await fs.readFile(path.join(packagesPath, 'registry.json'), 'utf8')
-        .catch(() => null);
-    const registry = data ? JSON.parse(data) : {};
+        const data = await fs.readFile(path.join(packagesPath, 'registry.json'), 'utf8')
+            .catch(() => null);
+        const registry = data ? JSON.parse(data) : {};
 
-    // Unpack the package
-    const packageDir = path.join(packagesPath, 'staging', path.basename(package, '.tgz'));
-    await fs.mkdir(packageDir, { recursive: true });
+        // Unpack the package
+        const packageDir = path.join(packagesPath, 'staging', path.basename(package, '.tgz'));
+        await fs.mkdir(packageDir, { recursive: true });
 
-    process.on('exit', () => {
-        try {
-            fsSync.rmdirSync(packageDir, { recursive: true })
+        process.on('exit', () => {
+            try {
+                fsSync.rmdirSync(packageDir, { recursive: true })
+            }
+            catch (e) {
+            }
+        });
+
+        // note to self: Windows 10 1803+ has tar built-in
+        execSync(`tar -xzf ${package} -C ${packageDir}`);
+
+        // parse the AppxManifest.xml file
+        const manifest = await fs.readFile(path.join(packageDir, 'package', 'AppxManifest.xml'), 'utf8');
+        const reader = new PackageReader(manifest, new DOMParser());
+        reader.fixupUrl = (url) => url;
+
+        const pack = await reader.readPackage();
+
+        // check if the package is already installed
+        const installedPackage = registry[pack.identity.packageFamilyName];
+        if (installedPackage) {
+            const version = installedPackage.identity.version.split('.').map(Number);
+            const newVersion = pack.identity.version.split('.').map(Number);
+
+            // compare the version numbers, (major, minor, patch, revision)
+            if (newVersion[0] < version[0] ||
+                newVersion[0] === version[0] && newVersion[1] < version[1] ||
+                newVersion[0] === version[0] && newVersion[1] === version[1] && newVersion[2] < version[2] ||
+                newVersion[0] === version[0] && newVersion[1] === version[1] && newVersion[2] === version[2] && newVersion[3] <= version[3]) {
+                console.error(`A newer version of ${pack.identity.packageFamilyName} is already installed.`);
+                process.exit(1);
+            }
         }
-        catch (e) {
-        }
-    });
 
-    // note to self: Windows 10 1803+ has tar built-in
-    execSync(`tar -xzf ${package} -C ${packageDir}`);
-
-    // parse the AppxManifest.xml file
-    const manifest = await fs.readFile(path.join(packageDir, 'package', 'AppxManifest.xml'), 'utf8');
-    const reader = new PackageReader(manifest, new DOMParser());
-    reader.fixupUrl = (url) => url;
-
-    const pack = await reader.readPackage();
-
-    // check if the package is already installed
-    const installedPackage = registry[pack.identity.packageFamilyName];
-    if (installedPackage) {
-        const version = installedPackage.identity.version.split('.').map(Number);
-        const newVersion = pack.identity.version.split('.').map(Number);
-
-        // compare the version numbers, (major, minor, patch, revision)
-        if (newVersion[0] < version[0] ||
-            newVersion[0] === version[0] && newVersion[1] < version[1] ||
-            newVersion[0] === version[0] && newVersion[1] === version[1] && newVersion[2] < version[2] ||
-            newVersion[0] === version[0] && newVersion[1] === version[1] && newVersion[2] === version[2] && newVersion[3] <= version[3]) {
-            console.error(`A newer version of ${pack.identity.packageFamilyName} is already installed.`);
+        const packageFullName = pack.identity.packageFullName;
+        const packageFullPath = path.join(packagesPath, packageFullName);
+        if (await fs.stat(packageFullPath).catch(() => null)) {
+            console.error(`Package ${packageFullName} is already installed.`);
             process.exit(1);
         }
-    }
 
-    const packageFullName = pack.identity.packageFullName;
-    const packageFullPath = path.join(packagesPath, packageFullName);
-    if (await fs.stat(packageFullPath).catch(() => null)) {
-        console.error(`Package ${packageFullName} is already installed.`);
-        process.exit(1);
-    }
+        console.log(`Installing ${packageFullName}...`);
 
-    console.log(`Installing ${packageFullName}...`);
+        // install the package
+        await fs.rename(path.join(packageDir, 'package'), packageFullPath);
 
-    // install the package
-    await fs.rename(path.join(packageDir, 'package'), packageFullPath);
+        pack.path = packageFullPath;
 
-    pack.path = packageFullPath;
+        // register the app
+        registry[pack.identity.packageFamilyName] = pack;
 
-    // register the app
-    registry[pack.identity.packageFamilyName] = pack;
+        await fs.writeFile(path.join(packagesPath, 'registry.json'), JSON.stringify(registry));
+        await fs.rmdir(packageDir, { recursive: true });
 
-    await fs.writeFile(path.join(packagesPath, 'registry.json'), JSON.stringify(registry));
-    await fs.rmdir(packageDir, { recursive: true });
-
-    if (installedPackage) {
-        console.log(`Uninstalling previous version of ${installedPackage.identity.packageFamilyName}...`);
-        await fs.rmdir(path.join(packagesPath, installedPackage.identity.packageFullName), { recursive: true });
+        if (installedPackage) {
+            console.log(`Uninstalling previous version of ${installedPackage.identity.packageFamilyName}...`);
+            await fs.rmdir(path.join(packagesPath, installedPackage.identity.packageFullName), { recursive: true });
+        }
     }
 })();

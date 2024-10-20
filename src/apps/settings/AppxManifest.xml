@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Package xmlns="http://schemas.microsoft.com/appx/2010/manifest"
-    xmlns:wb="http://schemas.microsoft.com/appx/2013/manifest">
-  <Identity Name="windows.immersivecontrolpanel" Publisher="CN=Microsoft Windows, O=Microsoft Corporation, L=Redmond, S=Washington, C=US" Version="6.2.0.1" ResourceId="neutral" />
+    xmlns:wb="http://schemas.microsoft.com/appx/2013/manifest"
+    xmlns:wam="https://wamwoowam.co.uk/appx/2022">
+  <Identity Name="windows.immersivecontrolpanel" Publisher="CN=Microsoft Windows, O=Microsoft Corporation, L=Redmond, S=Washington, C=US" Version="6.2.0.2" ResourceId="neutral" />
   <Properties>
     <DisplayName>PC Settings</DisplayName>
     <Description>PC Settings</Description>
@@ -19,7 +20,7 @@
   </Resources>
 
   <Applications>
-    <Application Id="microsoft.windows.immersivecontrolpanel" StartPage="/dist/index.html">
+    <Application Id="microsoft.windows.immersivecontrolpanel" EntryPoint="/dist/index.html" wam:ShortLink="/apps/calculator">
       <wb:VisualElements DisplayName="Settings" Description="Change settings and customise how you use your computer." Square150x150Logo="images/tilesmall.png" Square30x30Logo="images/logo.png" ForegroundText="light" BackgroundColor="#5133AB">
         <wb:SplashScreen Image="images/splashscreen.png" BackgroundColor="#5133AB" />
         <wb:DefaultTile DefaultSize="square150x150Logo" ShortName="Settings" Square70x70Logo="images/tinytile.png">

@@ -2,8 +2,8 @@ import "./core-window.scss"
 
 import { Component, RefObject, createRef } from "preact";
 
-import AppInstanceManager from "~/Data/AppInstanceManager";
 import AppLaunchRequestedEvent from "~/Events/AppLaunchRequestedEvent";
+import CoreApplicationManager from "~/Data/CoreApplicationManager";
 import CoreWindowCloseAnimation from "./Animations/CoreWindowCloseAnimation";
 import CoreWindowEvent from "~/Events/CoreWindowEvent";
 import CoreWindowLaunchAnimationContainer from "./CoreWindowLaunchAnimationContainer";
@@ -47,7 +47,7 @@ export default class CoreWindowContainer extends Component<CoreWindowContainerPr
     }
 
     onAppLaunchRequested(e: AppLaunchRequestedEvent) {
-        const instance = AppInstanceManager.launchInstance(e.package, e.packageApplication);
+        const instance = CoreApplicationManager.launchInstance(e.package, e.packageApplication);
         console.log(instance);
 
         if (!CoreWindowLayoutManager.getInstance()

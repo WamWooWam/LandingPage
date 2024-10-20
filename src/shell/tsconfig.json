@@ -14,7 +14,6 @@
     "jsxImportSource": "preact",
     "paths": {
       "~/*": [ "./src/*" ],
-      "packages/*": [ "../packages/*" ],
       "shared/*": [ "../shared/src/*" ]
     }
   }

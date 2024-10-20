@@ -1,0 +1,18 @@
+export enum ActivationKind {
+    launch,
+    search,
+    shareTarget,
+    file,
+    protocol,
+    fileOpenPicker,
+    fileSavePicker,
+    cachedFileUpdater,
+    contactPicker,
+    device,
+    printTaskSettings,
+    cameraSettings,
+    restrictedLaunch,
+    appointmentsProvider,
+    contact,
+    lockScreenCall,
+}

@@ -1,6 +1,6 @@
 import "./calculator.scss"
 
-import { CoreApplication, IDeferrableEvent } from "@landing-page/api";
+import { CoreApplication, LaunchActivatedEvent } from "@landing-page/api";
 
 import CalcManager from "./CalcManager/CalcManager"
 import CalcManagerModule from "./CalcManager/CalcManager.wasm"
@@ -32,8 +32,8 @@ const main = async () => {
 (async () => {
     const application = await CoreApplication.initializeAsync();
     if (application != null) {
-        application.addEventListener("activated", async (e: IDeferrableEvent) => {
-            const deferral = e.getDeferral();
+        application.addEventListener("activated", async (e: LaunchActivatedEvent) => {
+            const deferral = e.detail.activatedOperation.getDeferral();
             await main();
 
             deferral.complete();

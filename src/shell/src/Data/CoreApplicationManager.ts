@@ -1,31 +1,31 @@
 // singleton class to manage instances of apps
 
-import AppInstance from "./AppInstance";
+import CoreApplication from "./CoreApplication";
 import CoreWindowManager from "./CoreWindowManager";
 import { Package } from "shared/Package";
 import { PackageApplication } from "shared/PackageApplication";
 
-export default class AppInstanceManager {
-    static instances: AppInstance[] = [];
+export default class CoreApplicationManager {
+    static instances: CoreApplication[] = [];
 
-    static launchInstance(pack: Package, packageApplication: PackageApplication): AppInstance {
-        for (let i = 0; i < AppInstanceManager.instances.length; i++) {
-            let instance = AppInstanceManager.instances[i];
+    static launchInstance(pack: Package, packageApplication: PackageApplication): CoreApplication {
+        for (let i = 0; i < CoreApplicationManager.instances.length; i++) {
+            let instance = CoreApplicationManager.instances[i];
             if (instance.package.identity.packageFamilyName === pack.identity.packageFamilyName && instance.packageApplication.id === packageApplication.id) {
                 return instance;
             }
         }
 
-        let instance = new AppInstance(pack, packageApplication);
+        let instance = new CoreApplication(pack, packageApplication);
         let mainWindow = CoreWindowManager.createCoreWindowForApp(instance);
         instance.windows.push(mainWindow);
 
-        AppInstanceManager.instances.push(instance);
+        CoreApplicationManager.instances.push(instance);
         return instance;
     }
 
-    static terminateInstance(instance: AppInstance): void {
-        let index = AppInstanceManager.instances.indexOf(instance);
+    static terminateInstance(instance: CoreApplication): void {
+        let index = CoreApplicationManager.instances.indexOf(instance);
         if (index > -1) {
             let windows = instance.windows.slice();
             for (let i = 0; i < windows.length; i++) {
@@ -33,7 +33,7 @@ export default class AppInstanceManager {
                 CoreWindowManager.deleteWindowById(window.id);
             }
 
-            AppInstanceManager.instances.splice(index, 1);
+            CoreApplicationManager.instances.splice(index, 1);
         }
     }
 }

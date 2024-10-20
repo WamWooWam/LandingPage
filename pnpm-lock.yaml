@@ -218,15 +218,15 @@ importers:
 
   src/shell:
     dependencies:
+      '@landing-page/api':
+        specifier: workspace:api
+        version: link:../api
       '@landing-page/shared':
         specifier: workspace:shared
         version: link:../shared
       '@preact/signals':
         specifier: ^1.1.5
         version: 1.3.0(preact@10.23.2)
-      auto-text-size:
-        specifier: ^0.2.2
-        version: 0.2.3(react@18.3.1)
       base32.js:
         specifier: ^0.1.0
         version: 0.1.0

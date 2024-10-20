@@ -1,6 +1,6 @@
 import { Position, Size } from "../Util";
 
-import AppInstance from "./AppInstance";
+import CoreApplication from "./CoreApplication";
 import CoreWindow from "./CoreWindow";
 import TileInfo from "./TileInfo";
 
@@ -11,7 +11,7 @@ interface CoreWindowLaunchTileParams {
 }
 
 export default interface CoreWindowLaunchParams {
-    instance: AppInstance;
+    instance: CoreApplication;
     window: CoreWindow;
     origin: CoreWindowLaunchTileParams;
 
