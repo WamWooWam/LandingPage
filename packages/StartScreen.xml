@@ -31,6 +31,7 @@
             <tile AppID="Friends_zfgz6xjnaz0ym!darrio" size="square150x150" FencePost="0" />
             <tile AppID="Friends_zfgz6xjnaz0ym!eden8" size="square150x150" FencePost="0" />
             <tile AppID="Friends_zfgz6xjnaz0ym!ipicpp" size="square150x150" FencePost="0" />
+            <tile AppID="Friends_zfgz6xjnaz0ym!tea" size="square150x150" FencePost="0" />
         </group>
     </view>
 </launcher>

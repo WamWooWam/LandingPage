@@ -144,6 +144,19 @@
                 <wb:SplashScreen BackgroundColor="#FFFFFF" Image="" />
             </wb:VisualElements>
         </Application>
+        <Application Id="tea" StartPage="https://sympathytea.neocities.org/">
+            <wb:VisualElements DisplayName="SympathyTea"
+                ForegroundText="light"
+                BackgroundColor="#9ccfd8" Square150x150Logo="tea-square150x150.png"
+                Square30x30Logo="tea-square30x30.png" ToastCapable="true">
+                <wb:DefaultTile Square70x70Logo="tea-square70x70.png">
+                    <wb:ShowNameOnTiles>
+                        <wb:ShowOn Tile="square150x150logo" />
+                    </wb:ShowNameOnTiles>
+                </wb:DefaultTile>
+                <wb:SplashScreen BackgroundColor="#FFFFFF" Image="" />
+            </wb:VisualElements>
+        </Application>
         <!-- hack 4 emma -->
         <Application Id="emma2" StartPage="https://invoxiplaygames.uk/">
             <wb:VisualElements DisplayName="InvoxiPlayGames"
