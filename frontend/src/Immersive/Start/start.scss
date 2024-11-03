@@ -400,7 +400,7 @@ html {
 
     .tile-group-content {
         display: flex;
-        margin-left: -8px;
+        margin-right: -8px;
     }
 
     .tile-column {
@@ -412,7 +412,7 @@ html {
         grid-auto-rows: 120px;
         grid-auto-flow: none;
 
-        margin-right: 8px;
+        margin-left: 8px;
 
         transform-origin: center;
         perspective-origin: center;
