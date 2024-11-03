@@ -400,7 +400,6 @@ html {
 
     .tile-group-content {
         display: flex;
-        margin-right: -8px;
     }
 
     .tile-column {
@@ -411,11 +410,13 @@ html {
         grid-auto-columns: 120px;
         grid-auto-rows: 120px;
         grid-auto-flow: none;
-
-        margin-left: 8px;
-
+        
         transform-origin: center;
         perspective-origin: center;
+
+        &:not(:first-child) {
+            margin-left: 8px;
+        }
     }
 
     .start-show-all-button {
@@ -460,7 +461,7 @@ html {
         opacity: 0;
     }
 }
-        
+
 @keyframes start-tile-group-header-show {
     0% {
         opacity: 0;
@@ -474,7 +475,7 @@ html {
 .start {
     &.animate-open-login {
         animation: fade-in 0.25s forwards cubic-bezier(0.16, 1, 0.3, 1);
-    
+
         .start-title {
             opacity: 0;
             animation: start-title-show-login 1.5s forwards cubic-bezier(0.16, 1, 0.3, 1) 0.5s;
@@ -484,77 +485,77 @@ html {
             opacity: 0;
             animation: start-tile-group-header-show 0.15s forwards linear 1.25s;
         }
-    
+
         .start-tiles-scroll-container {
             animation: start-tiles-show-login 1.5s forwards cubic-bezier(0.16, 1, 0.3, 1);
         }
-    
+
         .tile-column {
             opacity: 0;
             transform: perspective(1000px) scale(0.66) rotateY(10deg);
             animation: tile-column-show-login 0.85s forwards cubic-bezier(0.16, 1, 0.3, 1);
             animation-delay: calc(133ms * var(--column));
         }
-    
+
         .start-show-all-button {
             opacity: 0;
             animation: start-show-all-login 0.85s forwards cubic-bezier(0.16, 1, 0.3, 1) 1s;
         }
-    
+
         .start-header-buttons {
             opacity: 0;
             animation: start-header-buttons-show-login 0.85s forwards cubic-bezier(0.16, 1, 0.3, 1);
         }
-        
+
         @keyframes tile-column-show-login {
             0% {
                 opacity: 0;
                 transform: perspective(1000px) scale(0) rotateY(10deg);
             }
-    
+
             15% {
                 opacity: 0;
             }
-    
+
             100% {
                 opacity: 1;
                 transform: perspective(1000px) scale(1) rotateY(0deg);
             }
-        }       
+        }
 
         @keyframes start-tiles-show-login {
             10% {
                 transform: translateX(250px);
-            }    
-    
+            }
+
             100% {
                 transform: translateX(0px);
             }
         }
-    
+
         @keyframes start-title-show-login {
             0% {
                 opacity: 0;
                 transform: translateX(40px);
             }
-    
+
             100% {
                 opacity: 1;
                 transform: translateX(0px);
             }
         }
-    
-    
+
+
         @keyframes start-header-buttons-show-login {
             0% {
                 opacity: 0;
                 transform: translateX(-40px);
             }
-    
+
             20% {
                 opacity: 0;
             }
-    
+
             100% {
                 opacity: 1;
                 transform: translateX(0px);
@@ -564,11 +565,11 @@ html {
 
     &.animate-open {
         animation: fade-in 0.25s forwards cubic-bezier(0.16, 1, 0.3, 1);
-    
+
         .start-tiles-scroll-container {
             animation: start-tiles-show 1.25s forwards cubic-bezier(0.16, 1, 0.3, 1);
         }
-    
+
         .tile-column {
             opacity: 0;
             transform: perspective(1000px) scale(0.75) rotateY(10deg);
@@ -580,34 +581,34 @@ html {
             opacity: 0;
             animation: start-tile-group-header-show 0.15s forwards linear 0.66s;
         }
-    
+
         .start-show-all-button {
             opacity: 0;
             animation: fade-in 0.85s forwards cubic-bezier(0.16, 1, 0.3, 1) 1s;
         }
-        
+
         @keyframes tile-column-show {
             0% {
                 opacity: 0;
                 transform: perspective(1000px) scale(0.75) rotateY(10deg);
             }
-    
+
             15% {
                 opacity: 0;
             }
-    
+
             100% {
                 opacity: 1;
                 transform: perspective(1000px) scale(1) rotateY(0deg);
             }
         }
-    
+
         @keyframes start-tiles-show {
             10% {
                 transform: translateX(50px);
             }
-    
-    
+
+
             100% {
                 transform: translateX(0px);
             }
