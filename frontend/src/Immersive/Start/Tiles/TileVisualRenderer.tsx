@@ -48,7 +48,7 @@ function TileVisualBinding({ binding }: RenderableProps<TileVisualRendererProps>
     const [TileTemplate, setTileTemplate] = useState<FunctionalComponent<TileTemplateProps>>(null);
     useEffect(() => {
         LoadTileTemplate(binding).then((template) => setTileTemplate(() => template));
-        
+
         return () => setTileTemplate(null);
     }, [binding]);
 
@@ -61,8 +61,6 @@ function TileVisualBinding({ binding }: RenderableProps<TileVisualRendererProps>
 
 function DefaultTileVisual({ size, app, visualElements }: { size: TileSize, app: PackageApplication, visualElements: ApplicationVisualElements }) {
     let tileImageUrl = getTileImageUrl(size, app);
-
-
 
     const { width, height } = getTileSize(size);
 
