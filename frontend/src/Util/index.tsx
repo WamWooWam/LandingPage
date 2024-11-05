@@ -73,7 +73,7 @@ export async function hasWebP(): Promise<boolean> {
 
 export async function hasAvif(): Promise<boolean> {
     return new Promise((resolve, reject) => {
-        if(navigator.userAgent.includes("Safari") && !navigator.userAgent.includes("Chrome")) {
+        if(/**navigator.userAgent.includes("Safari") && !navigator.userAgent.includes("Chrome") */ true) {
             resolve(avifSupported = false); // Safari's avif support is broken :D
             return;
         }
