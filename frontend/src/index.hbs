@@ -44,7 +44,7 @@
     <!-- preload -->
     <link rel="preload" as="fetch" href="/api/configuration">
     {{#each preload}}
-    <link rel="prefetch" as="image" href="{{this}}">
+    <link rel="preload" as="image" href="{{this}}">
     {{/each}}
     {{#if UMAMI_ID}}
     <script defer src="{{UMAMI_URL}}" data-website-id="{{UMAMI_ID}}"></script>
