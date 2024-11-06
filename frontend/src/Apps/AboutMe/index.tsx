@@ -1,7 +1,7 @@
 import { AppInstance, ApplicationRoot, CoreWindow } from "../Shared";
 
 import { AboutMe } from "./AboutMe";
-import { hydrate } from "preact";
+import { render } from "preact";
 
 export default (instance: AppInstance, window: CoreWindow) => {
     const app = (
@@ -10,5 +10,5 @@ export default (instance: AppInstance, window: CoreWindow) => {
         </ApplicationRoot>
     );
     
-    hydrate(app, window.view)
+    render(app, window.view)
 };

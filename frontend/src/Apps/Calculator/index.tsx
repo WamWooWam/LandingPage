@@ -7,7 +7,7 @@ import CalcManagerModule from "./CalcManager/CalcManager.wasm"
 import CalculatorModel from "./CalculatorModel";
 import MainPage from "./MainPage";
 import { VisualStateManager } from "./VisualStateManager";
-import { hydrate } from "preact";
+import { render } from "preact";
 
 export default async (instance: AppInstance, window: CoreWindow) => {
     const manager = await CalcManager({
@@ -28,5 +28,5 @@ export default async (instance: AppInstance, window: CoreWindow) => {
         </ApplicationRoot>
     )
 
-    hydrate(root, window.view)
+    render(root, window.view)
 }

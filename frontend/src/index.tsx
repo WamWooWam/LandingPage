@@ -6,12 +6,11 @@ import "./polyfill";
 import './index.scss';
 import './segoe.scss';
 
-import Router, { route } from "preact-router";
+import { LocationProvider, Route, Router, lazy, useLocation } from "preact-iso";
 import { hasAvif, hasWebP } from "./Util";
+import { hydrate, render } from "preact"
 
-import AsyncRoute from "preact-async-route";
 import PackageRegistry from "./Data/PackageRegistry";
-import { hydrate } from "preact"
 import { useEffect } from "preact/hooks";
 
 const packages = [
@@ -29,38 +28,38 @@ for (const pack of packages) {
 
 Promise.all([hasWebP, hasAvif]);
 
-if (typeof window !== "undefined") {
-    const Main = () => {
-        useEffect(() => {
-            if (window.location.pathname.startsWith("/app"))
-                return;
+const Main = () => {
+    const route = useLocation();
 
-            const media = window.matchMedia("(max-width: 600px)");
-            const handler = ({ matches }: MediaQueryList | MediaQueryListEvent) => {
-                if (matches) {
-                    route("/mobile");
-                }
-                else {
-                    route("/");
-                }
+    useEffect(() => {
+        if (window.location.pathname.startsWith("/app"))
+            return;
+
+        const media = window.matchMedia("(max-width: 600px)");
+        const handler = ({ matches }: MediaQueryList | MediaQueryListEvent) => {
+            if (matches) {
+                route.route("/mobile");
             }
-
-            media.addEventListener("change", handler);
-            handler(media);
-
-            return () => {
-                media.removeEventListener("change", () => { });
+            else {
+                route.route("/");
             }
-        });
+        }
 
-        return (
-            <Router>
-                <AsyncRoute path="/" getComponent={() => import("./Root").then(m => m.default)} />
-                <AsyncRoute path="/mobile" getComponent={() => import("./MobileRoot").then(m => m.default)} />
-                <AsyncRoute path="/app/:packageId/:appId" getComponent={() => import("./StandaloneRoot").then(m => m.default)} />
-            </Router>
-        )
-    }
+        media.addEventListener("change", handler);
+        handler(media);
 
-    hydrate(<Main />, document.body);
+        return () => {
+            media.removeEventListener("change", () => { });
+        }
+    });
+
+    return (
+        <Router>
+            <Route path="/" component={lazy(() => import("./Root").then(m => m.default))} />
+            <Route path="/mobile" component={lazy(() => import("./MobileRoot").then(m => m.default))} />
+            <Route path="/app/:packageId/:appId" component={lazy(() => import("./StandaloneRoot").then(m => m.default))} />
+        </Router>
+    )
 }
+
+render(<LocationProvider><Main /></LocationProvider>, document.body);

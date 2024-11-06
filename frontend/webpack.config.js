@@ -3,6 +3,7 @@ const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const FaviconsWebpackPlugin = require('favicons-webpack-plugin')
 const { env } = require('process');
+const { transform } = require('ts-transform-react-jsx-source');
 
 module.exports = [
     {
@@ -16,7 +17,17 @@ module.exports = [
             rules: [
                 {
                     test: /\.tsx?$/,
-                    use: ['ts-loader'],
+                    // use: [{
+                    //     loader: 'ts-loader',
+                    //     options: {
+                    //         getCustomTransformers() {
+                    //             return {
+                    //                 before: [transform()],
+                    //             };
+                    //         },
+                    //     },
+                    // }],
+                    use: 'ts-loader',
                     exclude: /node_modules/,
                 },
                 {
@@ -80,9 +91,7 @@ module.exports = [
                 "shared": path.resolve(__dirname, '../shared/src'),
                 "static": path.resolve(__dirname, './static'),
                 "packages": path.resolve(__dirname, '../packages'),
-                "~": path.resolve(__dirname, './src'),
-                "react": 'preact/compat',
-                "react-dom": 'preact/compat',
+                "~": path.resolve(__dirname, './src')
             }
         },
         plugins: [

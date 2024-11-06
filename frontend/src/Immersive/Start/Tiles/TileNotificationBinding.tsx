@@ -1,7 +1,5 @@
 import { useContext, useEffect, useLayoutEffect, useRef, useState } from "preact/hooks";
 
-import { CSSProperties } from "preact/compat";
-import PackageImage from "~/Util/PackageImage";
 import { RenderableProps } from "preact";
 import { TileContext } from "./TileRenderer";
 import { getTileSize } from "./TileUtils";
@@ -52,9 +50,9 @@ export default function TileNotificationBinding(props: RenderableProps<TileNotif
     });
 
     const tileSize = getTileSize(tile.size);
-    const style: CSSProperties = {
-        width: tileSize.width,
-        height: tileSize.height,
+    const style = {
+        width: tileSize.width + 'px',
+        height: tileSize.height + 'px',
         transform: `translateY(${(-tileSize.height) * subVisual}px)`,
     }
 

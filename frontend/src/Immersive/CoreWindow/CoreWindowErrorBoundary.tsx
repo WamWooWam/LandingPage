@@ -1,22 +1,32 @@
 import "./core-window-error.scss"
 
-import { Component, createContext } from "preact"
+import { Component, ErrorInfo, createContext } from "preact"
 
 interface CoreWindowErrorBoundaryProps {
     error: Error
 }
 
-
 const CoreWindowErrorContext = createContext<((e: Error) => void)>(() => { });
 
-export default class CoreWindowErrorBoundary extends Component<CoreWindowErrorBoundaryProps, {}> {
+export default class CoreWindowErrorBoundary extends Component<CoreWindowErrorBoundaryProps, { error?: Error }> {
     constructor(props: CoreWindowErrorBoundaryProps) {
         super(props)
     }
 
+    static getDerivedStateFromError(error: Error): {} {
+        return { error }
+    }
+
+    static getDerivedStateFromProps(props: Readonly<CoreWindowErrorBoundaryProps>, state: Readonly<object>): object | null {
+        return { error: props.error }
+    }
+
     render() {
-        if (this.props.error) {
-            const isConnectionError = (this.props.error.message && (this.props.error.message.match(/Failed to fetch/) || this.props.error.message.match(/Loading CSS chunk/))) || !navigator.onLine;
+        if (this.state.error) {
+            const error = this.state.error;
+            const isConnectionError = (error.message &&
+                (error.message.match(/Failed to fetch/) || error.message.match(/Loading CSS chunk/)))
+                || !navigator.onLine;
             return (
                 <div className="core-window-error">
                     <div id="contentContainer" class="mainContent">
@@ -41,16 +51,14 @@ export default class CoreWindowErrorBoundary extends Component<CoreWindowErrorBo
                         </div>
 
                         <pre>
-                            {this.props.error?.message}
-                            {this.props.error?.stack}
+                            {error?.message}
+                            {error?.stack}
                         </pre>
                     </div>
                 </div>
             );
         }
 
-        return (
-            this.props.children
-        );
+        return <div>{this.props.children}</div>
     }
 }

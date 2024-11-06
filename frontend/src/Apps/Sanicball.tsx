@@ -1,6 +1,6 @@
 import { AppInstance, CoreWindow } from "./Shared";
 
-import { hydrate } from "preact";
+import { render } from "preact";
 
 export default (instance: AppInstance, window: CoreWindow) => {
     return new Promise<void>((resolve, reject) => {
@@ -12,6 +12,6 @@ export default (instance: AppInstance, window: CoreWindow) => {
             onError={() => reject()}
         />
 
-        hydrate(frame, window.view)
+        render(frame, window.view)
     });
 }
