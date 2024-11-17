@@ -3,7 +3,7 @@ export default class AnimationEvent extends Event {
     readonly values: any;
 
     constructor(progress: number, values: any) {
-        super("tick");
+        super('tick');
         this.progress = progress;
         this.values = values;
     }

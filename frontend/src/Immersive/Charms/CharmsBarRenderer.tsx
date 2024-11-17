@@ -1,8 +1,8 @@
-import "./charms-bar.scss"
+import './charms-bar.scss';
 
-import CharmsBarClock from "./CharmsBarClock";
-import { Component } from "preact";
-import Events from "~/Events";
+import CharmsBarClock from './CharmsBarClock';
+import { Component } from 'preact';
+import Events from '~/Events';
 
 type CharmsBarRendererState = {
     isInGesture: boolean;
@@ -10,30 +10,37 @@ type CharmsBarRendererState = {
     initialY: number;
     lightDismissTimeout: number;
     openState: CharmsBarOpenState;
-}
+};
 
 enum CharmsBarOpenState {
     closed,
     lightDismiss,
     open,
-    closing
+    closing,
 }
 
-
-export default class CharmsBarRenderer extends Component<{}, CharmsBarRendererState> {
-
+export default class CharmsBarRenderer extends Component<
+    {},
+    CharmsBarRendererState
+> {
     constructor(state: {}) {
         super({});
-        this.state = { isInGesture: false, initialX: -1, initialY: -1, lightDismissTimeout: -1, openState: CharmsBarOpenState.closed };
+        this.state = {
+            isInGesture: false,
+            initialX: -1,
+            initialY: -1,
+            lightDismissTimeout: -1,
+            openState: CharmsBarOpenState.closed,
+        };
         this.onMouseMove = this.onMouseMove.bind(this);
     }
 
     componentDidMount(): void {
-        document.addEventListener("mousemove", this.onMouseMove);
+        document.addEventListener('mousemove', this.onMouseMove);
     }
 
     componentWillUnmount(): void {
-        document.removeEventListener("mousemove", this.onMouseMove);
+        document.removeEventListener('mousemove', this.onMouseMove);
     }
 
     onMouseMove(e: MouseEvent): void {
@@ -44,14 +51,21 @@ export default class CharmsBarRenderer extends Component<{}, CharmsBarRendererSt
 
         if (this.state.openState != CharmsBarOpenState.open) {
             if (!this.state.isInGesture) {
-                if (x < pageWidth && x >= pageWidth - 20 && ((y > 0 && y <= 20) || (y > pageHeight - 20 && y <= pageHeight))) {
-                    // right side, charms bar 
-                    let timeout = window.setTimeout(this.showCharmsLightOverlay.bind(this), 1000);
+                if (
+                    x < pageWidth &&
+                    x >= pageWidth - 20 &&
+                    ((y > 0 && y <= 20) ||
+                        (y > pageHeight - 20 && y <= pageHeight))
+                ) {
+                    // right side, charms bar
+                    let timeout = window.setTimeout(
+                        this.showCharmsLightOverlay.bind(this),
+                        1000,
+                    );
                     this.setState({ lightDismissTimeout: timeout });
                     this.beginGesture(x, y);
                 }
-            }
-            else {
+            } else {
                 if (!(x < pageWidth && x >= pageWidth - 50)) {
                     this.endGesture();
                     this.closeAll();
@@ -62,8 +76,7 @@ export default class CharmsBarRenderer extends Component<{}, CharmsBarRendererSt
                     this.showCharms();
                 }
             }
-        }
-        else {
+        } else {
             if (!(x < pageWidth && x >= pageWidth - 100)) {
                 this.endGesture();
                 this.closeAll();
@@ -72,32 +85,40 @@ export default class CharmsBarRenderer extends Component<{}, CharmsBarRendererSt
     }
 
     private beginGesture(x: number, y: number) {
-        console.log("begin charms bar gesture");
+        console.log('begin charms bar gesture');
 
         this.setState({ isInGesture: true, initialX: x, initialY: y });
     }
 
     private endGesture() {
-        console.log("no gesture");
+        console.log('no gesture');
         window.clearTimeout(this.state.lightDismissTimeout);
-        this.setState({ isInGesture: false, initialX: -1, initialY: -1, lightDismissTimeout: -1 });
+        this.setState({
+            isInGesture: false,
+            initialX: -1,
+            initialY: -1,
+            lightDismissTimeout: -1,
+        });
     }
 
     private showCharmsLightOverlay() {
         this.setState((state) => ({
-            openState: (state.openState === CharmsBarOpenState.closed ? CharmsBarOpenState.lightDismiss : state.openState)
+            openState:
+                state.openState === CharmsBarOpenState.closed
+                    ? CharmsBarOpenState.lightDismiss
+                    : state.openState,
         }));
     }
 
     private showCharms() {
-        console.log("show charms");
+        console.log('show charms');
         this.endGesture();
 
         this.setState({ openState: CharmsBarOpenState.open });
     }
 
     private closeAll() {
-        console.log("close charms");
+        console.log('close charms');
 
         this.setState({ openState: CharmsBarOpenState.closing });
     }
@@ -110,27 +131,27 @@ export default class CharmsBarRenderer extends Component<{}, CharmsBarRendererSt
 
     private onStartClicked(e: MouseEvent) {
         e.preventDefault();
-        Events.getInstance()
-            .dispatchEvent(new CustomEvent("start-show-requested"));
+        Events.getInstance().dispatchEvent(
+            new CustomEvent('start-show-requested'),
+        );
     }
 
     render() {
-        let className = "";
+        let className = '';
 
         switch (this.state.openState) {
             case CharmsBarOpenState.open:
-                className += " open"; // intentional fallthrough
+                className += ' open'; // intentional fallthrough
             case CharmsBarOpenState.lightDismiss:
-                className += " visible";
+                className += ' visible';
                 break;
             case CharmsBarOpenState.closing:
-                className += " fade-out";
+                className += ' fade-out';
                 break;
         }
 
         return (
-            <div class={"charms-bar-container" + className}>
-
+            <div class={'charms-bar-container' + className}>
                 <div class="charms-bar-clock">
                     <div class="charms-bar-clock-icons">
                         {/* network icon, power icon, these dont really do anything */}
@@ -139,27 +160,45 @@ export default class CharmsBarRenderer extends Component<{}, CharmsBarRendererSt
                     <CharmsBarClock />
                 </div>
 
-                <div class={"charms-bar" + className} onTransitionEnd={this.onTransitionEnd.bind(this)}>
+                <div
+                    class={'charms-bar' + className}
+                    onTransitionEnd={this.onTransitionEnd.bind(this)}>
                     <ul class="charms-bar-items">
-                        <a role="listitem" class="charms-bar-item charms-bar-search" href="#">
+                        <a
+                            role="listitem"
+                            class="charms-bar-item charms-bar-search"
+                            href="#">
                             <div class="charms-bar-image"></div>
                             <p>Search</p>
                         </a>
-                        <a role="listitem" class="charms-bar-item charms-bar-share" href="#">
+                        <a
+                            role="listitem"
+                            class="charms-bar-item charms-bar-share"
+                            href="#">
                             <div class="charms-bar-image"></div>
                             <p>Share</p>
                         </a>
-                        <a role="listitem" class="charms-bar-item charms-bar-start" href="#" onClick={this.onStartClicked.bind(this)}>
+                        <a
+                            role="listitem"
+                            class="charms-bar-item charms-bar-start"
+                            href="#"
+                            onClick={this.onStartClicked.bind(this)}>
                             <div class="charms-bar-image">
                                 <div class="highlight-effect" />
                             </div>
                             <p>Start</p>
                         </a>
-                        <a role="listitem" class="charms-bar-item charms-bar-devices" href="#">
+                        <a
+                            role="listitem"
+                            class="charms-bar-item charms-bar-devices"
+                            href="#">
                             <div class="charms-bar-image"></div>
                             <p>Devices</p>
                         </a>
-                        <a role="listitem" class="charms-bar-item charms-bar-settings" href="#">
+                        <a
+                            role="listitem"
+                            class="charms-bar-item charms-bar-settings"
+                            href="#">
                             <div class="charms-bar-image"></div>
                             <p>Settings</p>
                         </a>

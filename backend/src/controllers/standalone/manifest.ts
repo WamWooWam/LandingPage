@@ -1,7 +1,7 @@
-import { Request, Response, Router } from "express";
+import { Request, Response, Router } from 'express';
 
-import PackageRegistry from "../../PackageRegistry";
-import { getAppAndPackage } from "../../utils";
+import PackageRegistry from '../../PackageRegistry';
+import { getAppAndPackage } from '../../utils';
 
 function getManifest(req: Request, res: Response) {
     const { app, pack } = getAppAndPackage(req.params.app, req.params.package);
@@ -9,45 +9,47 @@ function getManifest(req: Request, res: Response) {
     const appId = app.id;
 
     const manifest = {
-        "name": app.visualElements.displayName,
-        "short_name": app.visualElements.defaultTile.shortName ?? app.visualElements.displayName,
-        "description": app.visualElements.description,
-        "icons": [
+        name: app.visualElements.displayName,
+        short_name:
+            app.visualElements.defaultTile.shortName ??
+            app.visualElements.displayName,
+        description: app.visualElements.description,
+        icons: [
             {
-                "src": `/api/media/plated/${packageId}/${appId}/square30x30logo`,
-                "sizes": "30x30",
-                "type": "image/png"
+                src: `/api/media/plated/${packageId}/${appId}/square30x30logo`,
+                sizes: '30x30',
+                type: 'image/png',
             },
             {
-                "src": `/api/media/plated/${packageId}/${appId}/square70x70logo`,
-                "sizes": "70x70",
-                "type": "image/png"
+                src: `/api/media/plated/${packageId}/${appId}/square70x70logo`,
+                sizes: '70x70',
+                type: 'image/png',
             },
             {
-                "src": `/api/media/plated/${packageId}/${appId}/square150x150logo`,
-                "sizes": "150x150",
-                "type": "image/png"
+                src: `/api/media/plated/${packageId}/${appId}/square150x150logo`,
+                sizes: '150x150',
+                type: 'image/png',
             },
             {
-                "src": `/api/media/plated/${packageId}/${appId}/wide310x150logo`,
-                "sizes": "310x150",
-                "type": "image/png"
+                src: `/api/media/plated/${packageId}/${appId}/wide310x150logo`,
+                sizes: '310x150',
+                type: 'image/png',
             },
             {
-                "src": `/api/media/plated/${packageId}/${appId}/square310x310logo`,
-                "sizes": "310x310",
-                "type": "image/png"
+                src: `/api/media/plated/${packageId}/${appId}/square310x310logo`,
+                sizes: '310x310',
+                type: 'image/png',
             },
             {
-                "src": `/api/media/plated/${packageId}/${appId}/apple-touch-icon`,
-                "sizes": "120x120",
-                "type": "image/png"
-            }
+                src: `/api/media/plated/${packageId}/${appId}/apple-touch-icon`,
+                sizes: '120x120',
+                type: 'image/png',
+            },
         ],
-        "start_url": `/app/${packageId}/${appId}?source=pwa`,
-        "display": "standalone",
-        "background_color": app.visualElements.backgroundColor,
-        "theme_color": app.visualElements.backgroundColor
+        start_url: `/app/${packageId}/${appId}?source=pwa`,
+        display: 'standalone',
+        background_color: app.visualElements.backgroundColor,
+        theme_color: app.visualElements.backgroundColor,
     };
 
     res.json(manifest);
@@ -72,7 +74,7 @@ function getApplicationConfig(req: Request, res: Response) {
    </msapplication>
 </browserconfig>`;
 
-    res.set('Content-Type', 'application/xml')
+    res.set('Content-Type', 'application/xml');
     res.send(config);
 }
 

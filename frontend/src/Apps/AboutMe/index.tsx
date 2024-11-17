@@ -1,7 +1,7 @@
-import { AppInstance, ApplicationRoot, CoreWindow } from "../Shared";
+import { AppInstance, ApplicationRoot, CoreWindow } from '../Shared';
 
-import { AboutMe } from "./AboutMe";
-import { render } from "preact";
+import { AboutMe } from './AboutMe';
+import { render } from 'preact';
 
 export default (instance: AppInstance, window: CoreWindow) => {
     const app = (
@@ -9,6 +9,6 @@ export default (instance: AppInstance, window: CoreWindow) => {
             <AboutMe />
         </ApplicationRoot>
     );
-    
-    render(app, window.view)
+
+    render(app, window.view);
 };

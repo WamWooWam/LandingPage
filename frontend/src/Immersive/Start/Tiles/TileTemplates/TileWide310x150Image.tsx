@@ -8,19 +8,29 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-import "./tile-wide310x150-image.scss"
-import TileTemplateProps from '../TileTemplateProps'
-import TileNotificationBinding from '../TileNotificationBinding'
-import TileImageBinding from '../TileImageBinding'
-import TileTextBinding from '../TileTextBinding'
+import './tile-wide310x150-image.scss';
+import TileTemplateProps from '../TileTemplateProps';
+import TileNotificationBinding from '../TileNotificationBinding';
+import TileImageBinding from '../TileImageBinding';
+import TileTextBinding from '../TileTextBinding';
 
 export default function TileWide310x150Image(props: TileTemplateProps) {
-    const image1 = props.elements.find(b => b.id === 1 && b.type === 'image');
-    
+    const image1 = props.elements.find((b) => b.id === 1 && b.type === 'image');
+
     return (
-        <TileNotificationBinding className="tile-wide310x150-image" forceBadgePlate={true} dynamicFormat={false} x={0} y={0} width={248} height={120}>
+        <TileNotificationBinding
+            className="tile-wide310x150-image"
+            forceBadgePlate={true}
+            dynamicFormat={false}
+            x={0}
+            y={0}
+            width={248}
+            height={120}>
             <div className="images">
-                <TileImageBinding className="tile-image-style id-1" binding={image1} />
+                <TileImageBinding
+                    className="tile-image-style id-1"
+                    binding={image1}
+                />
             </div>
         </TileNotificationBinding>
     );

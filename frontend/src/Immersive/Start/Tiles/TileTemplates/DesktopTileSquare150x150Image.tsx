@@ -8,19 +8,31 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-import "./desktop-tile-square150x150-image.scss"
-import TileTemplateProps from '../TileTemplateProps'
-import TileNotificationBinding from '../TileNotificationBinding'
-import TileImageBinding from '../TileImageBinding'
-import TileTextBinding from '../TileTextBinding'
+import './desktop-tile-square150x150-image.scss';
+import TileTemplateProps from '../TileTemplateProps';
+import TileNotificationBinding from '../TileNotificationBinding';
+import TileImageBinding from '../TileImageBinding';
+import TileTextBinding from '../TileTextBinding';
 
-export default function DesktopTileSquare150x150Image(props: TileTemplateProps) {
-    const image1 = props.elements.find(b => b.id === 1 && b.type === 'image');
-    
+export default function DesktopTileSquare150x150Image(
+    props: TileTemplateProps,
+) {
+    const image1 = props.elements.find((b) => b.id === 1 && b.type === 'image');
+
     return (
-        <TileNotificationBinding className="desktop-tile-square150x150-image" forceBadgePlate={true} dynamicFormat={false} x={0} y={0} width={120} height={120}>
+        <TileNotificationBinding
+            className="desktop-tile-square150x150-image"
+            forceBadgePlate={true}
+            dynamicFormat={false}
+            x={0}
+            y={0}
+            width={120}
+            height={120}>
             <div className="images">
-                <TileImageBinding className="tile-image-style id-1" binding={image1} />
+                <TileImageBinding
+                    className="tile-image-style id-1"
+                    binding={image1}
+                />
             </div>
         </TileNotificationBinding>
     );

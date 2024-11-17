@@ -1,4 +1,4 @@
-import { AppInstance } from "./AppInstance";
+import { AppInstance } from './AppInstance';
 export interface CoreWindow {
     id: string;
     instance: AppInstance;

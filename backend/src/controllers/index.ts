@@ -1,22 +1,22 @@
-import * as fs from "fs";
+import * as fs from 'fs';
 
-import { NextFunction, Request, Response, Router } from "express";
-import { StartTileGroup, TileSize, parseLayout } from "landing-page-shared";
+import { NextFunction, Request, Response, Router } from 'express';
+import { StartTileGroup, TileSize, parseLayout } from 'landing-page-shared';
 
-import PackageRegistry from "../PackageRegistry";
+import PackageRegistry from '../PackageRegistry';
 
-import xmldom = require("xmldom");
+import xmldom = require('xmldom');
 
 const index = async (req: Request, res: Response) => {
     let data = {} as any;
     if (process.env.NODE_ENV === 'production') {
         data.UMAMI_URL = process.env.UMAMI_URL;
-        data.UMAMI_ID = process.env.UMAMI_ID
+        data.UMAMI_ID = process.env.UMAMI_ID;
         data.preload = await generatePreload();
     }
 
     res.render('index', data);
-}
+};
 
 const standaloneApp = (req: Request, res: Response, next: NextFunction) => {
     let pack = PackageRegistry.getPackage(req.params.package);
@@ -25,7 +25,10 @@ const standaloneApp = (req: Request, res: Response, next: NextFunction) => {
     }
 
     // make sure we're not doing prototype pollution
-    if (req.params.id.startsWith('__proto__') || req.params.id.startsWith('constructor')) {
+    if (
+        req.params.id.startsWith('__proto__') ||
+        req.params.id.startsWith('constructor')
+    ) {
         return next();
     }
 
@@ -55,25 +58,27 @@ const standaloneApp = (req: Request, res: Response, next: NextFunction) => {
         appleTouchIcon: `${plated}/apple-touch-icon`,
         manifest: `/api/manifest/${req.params.package}/${req.params.id}`,
         applicationConfig: `/api/msapplication-config/${req.params.package}/${req.params.id}`,
-        preload: [
-            app.visualElements.splashScreen.image
-        ]
+        preload: [app.visualElements.splashScreen.image],
     } as any;
 
     if (process.env.NODE_ENV === 'production') {
         data.UMAMI_URL = process.env.UMAMI_URL;
-        data.UMAMI_ID = process.env.UMAMI_ID
+        data.UMAMI_ID = process.env.UMAMI_ID;
     }
 
     res.render('standalone', data);
-}
+};
 
 const generatePreload = async () => {
     const preloadUrls: string[] = [];
 
-    const startLayout = await fs.promises.readFile('../packages/StartScreen.xml', 'utf-8');
-    const layout = parseLayout(startLayout, xmldom.DOMParser)
-        .flatMap(g => g.tiles);
+    const startLayout = await fs.promises.readFile(
+        '../packages/StartScreen.xml',
+        'utf-8',
+    );
+    const layout = parseLayout(startLayout, xmldom.DOMParser).flatMap(
+        (g) => g.tiles,
+    );
 
     for (let tile of layout) {
         if (tile.packageName) {
@@ -85,13 +90,19 @@ const generatePreload = async () => {
 
             switch (tile.size) {
                 case TileSize.square70x70:
-                    preloadUrls.push(app.visualElements.defaultTile.square70x70Logo);
+                    preloadUrls.push(
+                        app.visualElements.defaultTile.square70x70Logo,
+                    );
                     break;
                 case TileSize.wide310x150:
-                    preloadUrls.push(app.visualElements.defaultTile.wide310x150Logo);
+                    preloadUrls.push(
+                        app.visualElements.defaultTile.wide310x150Logo,
+                    );
                     break;
                 case TileSize.square310x310:
-                    preloadUrls.push(app.visualElements.defaultTile.square310x310Logo);
+                    preloadUrls.push(
+                        app.visualElements.defaultTile.square310x310Logo,
+                    );
                     break;
                 default:
                 case TileSize.square150x150:
@@ -106,7 +117,7 @@ const generatePreload = async () => {
     }
 
     return preloadUrls;
-}
+};
 
 export default function registerRoutes(router: Router) {
     router.get('/app/:package/:id', standaloneApp);

@@ -1,17 +1,17 @@
-if (process.env.NODE_ENV === "development") {
-    require("preact/debug");
+if (process.env.NODE_ENV === 'development') {
+    require('preact/debug');
 }
 
-import "./polyfill";
+import './polyfill';
 import './index.scss';
 import './segoe.scss';
 
-import { LocationProvider, Route, Router, lazy, useLocation } from "preact-iso";
-import { hasAvif, hasWebP } from "./Util";
-import { hydrate, render } from "preact"
+import { LocationProvider, Route, Router, lazy, useLocation } from 'preact-iso';
+import { hasAvif, hasWebP } from './Util';
+import { hydrate, render } from 'preact';
 
-import PackageRegistry from "./Data/PackageRegistry";
-import { useEffect } from "preact/hooks";
+import PackageRegistry from './Data/PackageRegistry';
+import { useEffect } from 'preact/hooks';
 
 const packages = [
     require('../../packages/Socials/AppxManifest.xml').default,
@@ -32,34 +32,50 @@ const Main = () => {
     const route = useLocation();
 
     useEffect(() => {
-        if (window.location.pathname.startsWith("/app"))
-            return;
+        if (window.location.pathname.startsWith('/app')) return;
 
-        const media = window.matchMedia("(max-width: 600px)");
+        const media = window.matchMedia('(max-width: 600px)');
         const handler = ({ matches }: MediaQueryList | MediaQueryListEvent) => {
             if (matches) {
-                route.route("/mobile");
+                route.route('/mobile');
+            } else {
+                route.route('/');
             }
-            else {
-                route.route("/");
-            }
-        }
+        };
 
-        media.addEventListener("change", handler);
+        media.addEventListener('change', handler);
         handler(media);
 
         return () => {
-            media.removeEventListener("change", () => { });
-        }
+            media.removeEventListener('change', () => {});
+        };
     });
 
     return (
         <Router>
-            <Route path="/" component={lazy(() => import("./Root").then(m => m.default))} />
-            <Route path="/mobile" component={lazy(() => import("./MobileRoot").then(m => m.default))} />
-            <Route path="/app/:packageId/:appId" component={lazy(() => import("./StandaloneRoot").then(m => m.default))} />
+            <Route
+                path="/"
+                component={lazy(() => import('./Root').then((m) => m.default))}
+            />
+            <Route
+                path="/mobile"
+                component={lazy(() =>
+                    import('./MobileRoot').then((m) => m.default),
+                )}
+            />
+            <Route
+                path="/app/:packageId/:appId"
+                component={lazy(() =>
+                    import('./StandaloneRoot').then((m) => m.default),
+                )}
+            />
         </Router>
-    )
-}
+    );
+};
 
-render(<LocationProvider><Main /></LocationProvider>, document.body);
+render(
+    <LocationProvider>
+        <Main />
+    </LocationProvider>,
+    document.body,
+);

@@ -1,9 +1,7 @@
-import { CalcManager } from "./CalcManager/CalcManager";
- 
+import { CalcManager } from './CalcManager/CalcManager';
 
 export function CreateButtonMap(root: typeof CalcManager) {
-    enum NumbersAndOperatorsEnum
-    {
+    enum NumbersAndOperatorsEnum {
         Zero = root.Command.Num0,
         One = root.Command.Num1,
         Two = root.Command.Num2,
@@ -186,8 +184,8 @@ export function CreateButtonMap(root: typeof CalcManager) {
         MemoryRecall = root.Command.RECALL,
         MemoryClear = root.Command.MCLEAR,
         BitflipButton = 1000,
-        FullKeypadButton = 1001
-    };
+        FullKeypadButton = 1001,
+    }
 
     return NumbersAndOperatorsEnum;
 }

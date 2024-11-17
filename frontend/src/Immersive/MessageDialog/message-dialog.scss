@@ -52,7 +52,7 @@
     }
 
     .message-dialog-content {
-        font-family: "Segoe UI";
+        font-family: 'Segoe UI';
         word-wrap: break-word;
         white-space: pre-wrap;
         overflow-x: hidden;
@@ -76,7 +76,7 @@
         font-size: 11pt;
         font-weight: 500;
         line-height: 1.3636;
-        font-family: "Segoe UI";
+        font-family: 'Segoe UI';
         background-color: #cccccc;
         border: 2px solid #cccccc;
         color: #1f1f1f;
@@ -130,7 +130,8 @@
 
         &[open] {
             .message-dialog-content-root {
-                animation: show_mobile 0.2s cubic-bezier(.18, .89, .32, 1.28) forwards;
+                animation: show_mobile 0.2s cubic-bezier(0.18, 0.89, 0.32, 1.28)
+                    forwards;
             }
 
             &.closing {
@@ -247,7 +248,7 @@
 
 @keyframes show_backdrop {
     from {
-        background: rgba(0, 0, 0, 0.0);
+        background: rgba(0, 0, 0, 0);
     }
 
     to {
@@ -261,6 +262,6 @@
     }
 
     to {
-        background: rgba(0, 0, 0, 0.0);
+        background: rgba(0, 0, 0, 0);
     }
 }

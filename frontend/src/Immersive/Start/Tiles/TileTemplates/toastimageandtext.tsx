@@ -8,10 +8,10 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-import toastimageandtext01 from './toastimageandtext01'
-import toastimageandtext02 from './toastimageandtext02'
-import toastimageandtext03 from './toastimageandtext03'
-import toastimageandtext04 from './toastimageandtext04'
+import toastimageandtext01 from './toastimageandtext01';
+import toastimageandtext02 from './toastimageandtext02';
+import toastimageandtext03 from './toastimageandtext03';
+import toastimageandtext04 from './toastimageandtext04';
 
 export {
     toastimageandtext01,

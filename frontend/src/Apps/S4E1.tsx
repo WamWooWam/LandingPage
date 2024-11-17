@@ -1,16 +1,25 @@
-import { AppInstance, CoreWindow } from "./Shared";
+import { AppInstance, CoreWindow } from './Shared';
 
-import { render } from "preact";
+import { render } from 'preact';
 
 export default (instance: AppInstance, window: CoreWindow) => {
     return new Promise<void>((resolve, reject) => {
-        const frame = <iframe
-            src="/sonic4/"
-            style={{ width: "100%", height: "100%", border: "none", position: "absolute", top: "0", left: "0" }}
-            onLoad={() => resolve()}
-            onError={() => reject()}
-        />
+        const frame = (
+            <iframe
+                src="/sonic4/"
+                style={{
+                    width: '100%',
+                    height: '100%',
+                    border: 'none',
+                    position: 'absolute',
+                    top: '0',
+                    left: '0',
+                }}
+                onLoad={() => resolve()}
+                onError={() => reject()}
+            />
+        );
 
-        render(frame, window.view)
+        render(frame, window.view);
     });
-}
+};

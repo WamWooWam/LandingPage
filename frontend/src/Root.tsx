@@ -1,25 +1,31 @@
-import "./Test"
+import './Test';
 
-import { Component, ComponentChild, RenderableProps } from "preact";
+import { Component, ComponentChild, RenderableProps } from 'preact';
 
-import MessageDialogRenderer from "./Immersive/MessageDialog/MessageDialogRenderer";
-import ScrollStateProvider from "./Immersive/Start/ScrollStateProvider";
-import Start from "./Immersive/Start";
-import { lazy } from "preact-iso"
+import MessageDialogRenderer from './Immersive/MessageDialog/MessageDialogRenderer';
+import ScrollStateProvider from './Immersive/Start/ScrollStateProvider';
+import Start from './Immersive/Start';
+import { lazy } from 'preact-iso';
 
-const CoreWindowContainer = lazy(() => import("./Immersive/CoreWindow/CoreWindowContainer"));
-const CharmsBarRenderer = lazy(() => import("./Immersive/Charms/CharmsBarRenderer"));
+const CoreWindowContainer = lazy(
+    () => import('./Immersive/CoreWindow/CoreWindowContainer'),
+);
+const CharmsBarRenderer = lazy(
+    () => import('./Immersive/Charms/CharmsBarRenderer'),
+);
 
-
-interface RootState {
-}
+interface RootState {}
 
 export default class Root extends Component<{}, RootState> {
     constructor(props: {}) {
         super(props);
     }
 
-    render(props: RenderableProps<{}>, state?: Readonly<{}>, context?: any): ComponentChild {
+    render(
+        props: RenderableProps<{}>,
+        state?: Readonly<{}>,
+        context?: any,
+    ): ComponentChild {
         return (
             <>
                 <ScrollStateProvider>
@@ -30,6 +36,6 @@ export default class Root extends Component<{}, RootState> {
                 <MessageDialogRenderer />
                 <CharmsBarRenderer />
             </>
-        )
+        );
     }
 }

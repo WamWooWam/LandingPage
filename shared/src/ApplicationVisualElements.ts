@@ -1,7 +1,6 @@
-import { ForegroundText } from "./PackageApplication";
-import { ApplicationSplashScreen } from "./ApplicationSplashScreen";
-import { ApplicationDefaultTile } from "./ApplicationDefaultTile";
-
+import { ForegroundText } from './PackageApplication';
+import { ApplicationSplashScreen } from './ApplicationSplashScreen';
+import { ApplicationDefaultTile } from './ApplicationDefaultTile';
 
 export interface ApplicationVisualElements {
     displayName: string;

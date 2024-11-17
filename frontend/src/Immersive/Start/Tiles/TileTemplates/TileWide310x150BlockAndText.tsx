@@ -8,10 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-import TileWide310x150BlockAndText01 from './TileWide310x150BlockAndText01'
-import TileWide310x150BlockAndText02 from './TileWide310x150BlockAndText02'
+import TileWide310x150BlockAndText01 from './TileWide310x150BlockAndText01';
+import TileWide310x150BlockAndText02 from './TileWide310x150BlockAndText02';
 
-export {
-    TileWide310x150BlockAndText01,
-    TileWide310x150BlockAndText02,
-};
+export { TileWide310x150BlockAndText01, TileWide310x150BlockAndText02 };

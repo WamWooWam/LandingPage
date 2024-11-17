@@ -1,4 +1,4 @@
-import CoreWindow from "../Data/CoreWindow";
+import CoreWindow from '../Data/CoreWindow';
 
 interface CoreWindowRestoreEventInit {
     window: CoreWindow;

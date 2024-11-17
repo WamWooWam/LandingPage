@@ -1,11 +1,11 @@
-import { DOMParser, XMLSerializer } from 'xmldom'
-import { Request, Response, Router } from "express";
+import { DOMParser, XMLSerializer } from 'xmldom';
+import { Request, Response, Router } from 'express';
 
 import { HttpError } from '../../utils';
-import { TileTemplateType } from "../../TileTemplateType";
-import { TileUpdateManager } from "../../TileUpdateManager";
+import { TileTemplateType } from '../../TileTemplateType';
+import { TileUpdateManager } from '../../TileUpdateManager';
 
-const rootUrl = 'https://api.github.com'
+const rootUrl = 'https://api.github.com';
 const username = process.env.GITHUB_USERNAME;
 
 const recentActivity = async (req: Request, res: Response) => {
@@ -14,8 +14,7 @@ const recentActivity = async (req: Request, res: Response) => {
     let url = '';
     if (req.params.project === 'recent-activity') {
         url = `${rootUrl}/users/${username}/events`;
-    }
-    else {
+    } else {
         url = `${rootUrl}/repos/${req.params.username ?? username}/${req.params.project}/events`;
     }
 
@@ -24,50 +23,72 @@ const recentActivity = async (req: Request, res: Response) => {
         headers: {
             'Content-Type': 'application/json',
             'User-Agent': 'LandingPage/1.0.0 (https://wamwoowam.co.uk)',
-            'Authorization': `Bearer ${process.env.GITHUB_API_KEY}`
-        }
-    })
+            Authorization: `Bearer ${process.env.GITHUB_API_KEY}`,
+        },
+    });
 
     if (!resp.ok) {
         throw new HttpError(500, 'Failed to fetch recent activity');
     }
 
-    const json = await resp.json()
+    const json = await resp.json();
 
-    let root = TileUpdateManager.getTemplateContent(TileTemplateType.tileWideSmallImageAndText03);
-    let rootElement = root.getElementsByTagName("tile")[0];
-    rootElement.removeChild(rootElement.getElementsByTagName("visual")[0]);
+    let root = TileUpdateManager.getTemplateContent(
+        TileTemplateType.tileWideSmallImageAndText03,
+    );
+    let rootElement = root.getElementsByTagName('tile')[0];
+    rootElement.removeChild(rootElement.getElementsByTagName('visual')[0]);
 
     for (const event of json) {
-        let visual = root.createElement("visual");
+        let visual = root.createElement('visual');
         rootElement.appendChild(visual);
-        visual.setAttribute("version", "4");
+        visual.setAttribute('version', '4');
 
         {
-            let content = TileUpdateManager.getTemplateContent(TileTemplateType.tileSquare150x150Text02);
+            let content = TileUpdateManager.getTemplateContent(
+                TileTemplateType.tileSquare150x150Text02,
+            );
             if (populateEvent(event, content, true)) {
-                visual.appendChild(root.importNode(content.getElementsByTagName("binding")[0], true));
+                visual.appendChild(
+                    root.importNode(
+                        content.getElementsByTagName('binding')[0],
+                        true,
+                    ),
+                );
             }
         }
 
         {
-            let content = TileUpdateManager.getTemplateContent(TileTemplateType.tileWide310x150Text09);
+            let content = TileUpdateManager.getTemplateContent(
+                TileTemplateType.tileWide310x150Text09,
+            );
             if (populateEvent(event, content, false)) {
-                visual.appendChild(root.importNode(content.getElementsByTagName("binding")[0], true));
+                visual.appendChild(
+                    root.importNode(
+                        content.getElementsByTagName('binding')[0],
+                        true,
+                    ),
+                );
             }
         }
     }
 
-    res.contentType('application/xml')
-        .send(new XMLSerializer().serializeToString(root));
+    res.contentType('application/xml').send(
+        new XMLSerializer().serializeToString(root),
+    );
 };
 
+const populateEvent = (
+    event: any,
+    content: Document,
+    isSmall: boolean,
+): boolean => {
+    let headerElement = content.getElementsByTagName('text')[0];
+    headerElement.textContent = isSmall
+        ? event.repo.name.split('/')[1]
+        : event.repo.name;
 
-const populateEvent = (event: any, content: Document, isSmall: boolean): boolean => {
-    let headerElement = content.getElementsByTagName("text")[0];
-    headerElement.textContent = isSmall ? event.repo.name.split('/')[1] : event.repo.name;
-
-    let textElement = content.getElementsByTagName("text")[1];
+    let textElement = content.getElementsByTagName('text')[1];
     switch (event.type) {
         case 'PushEvent':
             textElement.textContent = `${event.actor.login} pushed ${event.payload.size} commits`;
@@ -113,7 +134,7 @@ const populateEvent = (event: any, content: Document, isSmall: boolean): boolean
     }
 
     return true;
-}
+};
 
 export default function registerRoutes(router: Router) {
     router.get('/github/:username/:project.xml', recentActivity);

@@ -8,8 +8,8 @@
     width: 100%;
     height: 100%;
     flex-direction: column;
-    background: #F4F4F4;
-    font-family: "Segoe UI", "Segoe UI Symbol", "Symbols", "Segoe UI Emoji" !important;
+    background: #f4f4f4;
+    font-family: 'Segoe UI', 'Segoe UI Symbol', 'Symbols', 'Segoe UI Emoji' !important;
 
     .header {
         height: 160px;
@@ -35,7 +35,7 @@
         transform-origin: right top;
     }
 
-    .scroll-wrapper>* {
+    .scroll-wrapper > * {
         display: flex;
         flex-direction: row;
         transform: rotate(90deg) translateX(calc(100%));
@@ -80,7 +80,7 @@
         grid-row-end: span 4;
     }
 
-    .people-me>* {
+    .people-me > * {
         grid-column: 1;
     }
 
@@ -140,7 +140,8 @@
     }
 
     .me-tile-primary-chevron {
-        font-family: "Segoe UI Symbol", "Segoe UI", Tahoma, Verdana, Arial, sans-serif;
+        font-family: 'Segoe UI Symbol', 'Segoe UI', Tahoma, Verdana, Arial,
+            sans-serif;
     }
 
     .notification-list {
@@ -170,7 +171,7 @@
 
     .header-text {
         color: #d24625;
-        font-family: "Segoe UI";
+        font-family: 'Segoe UI';
         font-weight: lighter;
         margin-left: 120px;
         margin-top: 36px;

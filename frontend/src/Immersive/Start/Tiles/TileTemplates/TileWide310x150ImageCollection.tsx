@@ -8,27 +8,51 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-import "./tile-wide310x150-image-collection.scss"
-import TileTemplateProps from '../TileTemplateProps'
-import TileNotificationBinding from '../TileNotificationBinding'
-import TileImageBinding from '../TileImageBinding'
-import TileTextBinding from '../TileTextBinding'
+import './tile-wide310x150-image-collection.scss';
+import TileTemplateProps from '../TileTemplateProps';
+import TileNotificationBinding from '../TileNotificationBinding';
+import TileImageBinding from '../TileImageBinding';
+import TileTextBinding from '../TileTextBinding';
 
-export default function TileWide310x150ImageCollection(props: TileTemplateProps) {
-    const image1 = props.elements.find(b => b.id === 1 && b.type === 'image');
-    const image2 = props.elements.find(b => b.id === 2 && b.type === 'image');
-    const image3 = props.elements.find(b => b.id === 3 && b.type === 'image');
-    const image4 = props.elements.find(b => b.id === 4 && b.type === 'image');
-    const image5 = props.elements.find(b => b.id === 5 && b.type === 'image');
-    
+export default function TileWide310x150ImageCollection(
+    props: TileTemplateProps,
+) {
+    const image1 = props.elements.find((b) => b.id === 1 && b.type === 'image');
+    const image2 = props.elements.find((b) => b.id === 2 && b.type === 'image');
+    const image3 = props.elements.find((b) => b.id === 3 && b.type === 'image');
+    const image4 = props.elements.find((b) => b.id === 4 && b.type === 'image');
+    const image5 = props.elements.find((b) => b.id === 5 && b.type === 'image');
+
     return (
-        <TileNotificationBinding className="tile-wide310x150-image-collection" forceBadgePlate={true} dynamicFormat={false} x={0} y={0} width={248} height={120}>
+        <TileNotificationBinding
+            className="tile-wide310x150-image-collection"
+            forceBadgePlate={true}
+            dynamicFormat={false}
+            x={0}
+            y={0}
+            width={248}
+            height={120}>
             <div className="images">
-                <TileImageBinding className="tile-image-style id-1" binding={image1} />
-                <TileImageBinding className="tile-small-image-top-style id-2" binding={image2} />
-                <TileImageBinding className="tile-small-image-top-style id-3" binding={image3} />
-                <TileImageBinding className="tile-small-image-bottom-style id-4" binding={image4} />
-                <TileImageBinding className="tile-small-image-bottom-style id-5" binding={image5} />
+                <TileImageBinding
+                    className="tile-image-style id-1"
+                    binding={image1}
+                />
+                <TileImageBinding
+                    className="tile-small-image-top-style id-2"
+                    binding={image2}
+                />
+                <TileImageBinding
+                    className="tile-small-image-top-style id-3"
+                    binding={image3}
+                />
+                <TileImageBinding
+                    className="tile-small-image-bottom-style id-4"
+                    binding={image4}
+                />
+                <TileImageBinding
+                    className="tile-small-image-bottom-style id-5"
+                    binding={image5}
+                />
             </div>
         </TileNotificationBinding>
     );

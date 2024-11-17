@@ -2,7 +2,7 @@ enum CoreWindowSnapState {
     none,
     left,
     right,
-    full
+    full,
 }
 
 export default CoreWindowSnapState;

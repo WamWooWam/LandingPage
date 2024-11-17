@@ -1,4 +1,4 @@
-import { Package } from "shared/Package";
+import { Package } from 'shared/Package';
 
 export default class PackageRegistry {
     static packages: Map<string, Package> = new Map();
@@ -9,7 +9,10 @@ export default class PackageRegistry {
     }
 
     static registerPackage(pack: Package) {
-        console.log(`registering %O as ${pack.identity.packageFamilyName}`, pack);
+        console.log(
+            `registering %O as ${pack.identity.packageFamilyName}`,
+            pack,
+        );
         PackageRegistry.packages.set(pack.identity.packageFamilyName, pack);
     }
 }

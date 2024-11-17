@@ -1,14 +1,14 @@
 import { useEffect, useRef, useState } from 'preact/hooks';
 
-import { VNode } from 'preact'
+import { VNode } from 'preact';
 import { pickImage } from '.';
 
 type PickImageProps = {
     avif?: string;
     webp?: string;
     png: string;
-    children: (value: string) => VNode<any>
-}
+    children: (value: string) => VNode<any>;
+};
 
 const PickImage = (props: PickImageProps) => {
     const unmounted = useRef<boolean>(false);
@@ -28,7 +28,7 @@ const PickImage = (props: PickImageProps) => {
 
         return () => {
             unmounted.current = true;
-        }
+        };
     });
     return image && props.children(image);
 };

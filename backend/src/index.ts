@@ -1,9 +1,9 @@
-import 'dotenv/config'
+import 'dotenv/config';
 
 import { PackageReader } from 'landing-page-shared';
 import PackageRegistry from './PackageRegistry';
 import error from './middleware/error';
-import logging from "./middleware/logging"
+import logging from './middleware/logging';
 import registerBlueSky from './controllers/tiles/bluesky';
 import registerConfiguration from './controllers/tiles/configuration';
 import registerGithub from './controllers/tiles/github';
@@ -23,18 +23,16 @@ import fsp = require('fs/promises');
 import apicache = require('apicache');
 import xmldom = require('xmldom');
 
-
 const cache = (() => {
     return apicache.options({
         debug: process.env.NODE_ENV === 'development',
         respectCacheControl: false,
         statusCodes: {
             include: [200, 204],
-            exclude: [400, 401, 404, 500]
-        }
+            exclude: [400, 401, 404, 500],
+        },
     }).middleware;
-})()
-
+})();
 
 const app = express();
 (async () => {
@@ -46,13 +44,18 @@ const app = express();
         if (!stat.isDirectory()) continue;
 
         try {
-            const appxManifest = await fsp.readFile(`../packages/${packageName}/AppxManifest.xml`, 'utf-8');
-            const parser = new PackageReader(appxManifest, new xmldom.DOMParser);
+            const appxManifest = await fsp.readFile(
+                `../packages/${packageName}/AppxManifest.xml`,
+                'utf-8',
+            );
+            const parser = new PackageReader(
+                appxManifest,
+                new xmldom.DOMParser(),
+            );
             const manifest = await parser.readPackage();
 
             PackageRegistry.registerPackage(manifest);
-        }
-        catch (e) {
+        } catch (e) {
             console.error(`Error reading package ${packageName}:`, e);
         }
     }
@@ -76,7 +79,12 @@ const app = express();
     registerTwitter(liveTilesRouter);
     registerGithub(liveTilesRouter);
 
-    registerMisskeyInstance(liveTilesRouter, process.env.SNUG_NAME, process.env.SNUG_BASE_URL, process.env.SNUG_USER_ID);
+    registerMisskeyInstance(
+        liveTilesRouter,
+        process.env.SNUG_NAME,
+        process.env.SNUG_BASE_URL,
+        process.env.SNUG_USER_ID,
+    );
 
     registerPeopleTiles(liveTilesRouter);
 
@@ -93,7 +101,7 @@ const app = express();
 
     registerRoutes(app);
 
-    app.use(error)
+    app.use(error);
 
     app.listen(process.env.PORT || 5001);
 })();

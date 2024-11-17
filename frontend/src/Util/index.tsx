@@ -1,5 +1,4 @@
-
-export const EXT_XMLNS = "https://wamwoowam.co.uk/tiles/2022";
+export const EXT_XMLNS = 'https://wamwoowam.co.uk/tiles/2022';
 
 export interface Size {
     width: number;
@@ -39,15 +38,15 @@ export function circularEase(t: number, b: number, c: number, d: number) {
 
 export function newGuid() {
     return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, (c) => {
-        var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
+        var r = (Math.random() * 16) | 0,
+            v = c == 'x' ? r : (r & 0x3) | 0x8;
         return v.toString(16);
     });
 }
 
-
 const testImages = {
-    webp: "data:image/webp;base64,UklGRh4AAABXRUJQVlA4TBEAAAAvAQAAAAfQ//73v/+BiOh/AAA=",
-    avif: "data:image/avif;base64,AAAAHGZ0eXBhdmlmAAAAAGF2aWZtaWYxbWlhZgAAAOptZXRhAAAAAAAAACFoZGxyAAAAAAAAAABwaWN0AAAAAAAAAAAAAAAAAAAAAA5waXRtAAAAAAABAAAAImlsb2MAAAAAREAAAQABAAAAAAEOAAEAAAAAAAAAIgAAACNpaW5mAAAAAAABAAAAFWluZmUCAAAAAAEAAGF2MDEAAAAAamlwcnAAAABLaXBjbwAAABNjb2xybmNseAABAA0AAIAAAAAMYXYxQ4EgAgAAAAAUaXNwZQAAAAAAAAAQAAAAEAAAABBwaXhpAAAAAAMICAgAAAAXaXBtYQAAAAAAAAABAAEEgYIDhAAAACptZGF0EgAKCDgM/9lAQ0AIMhQQAAAAFLm4wN/TRReKCcSo648oag=="
+    webp: 'data:image/webp;base64,UklGRh4AAABXRUJQVlA4TBEAAAAvAQAAAAfQ//73v/+BiOh/AAA=',
+    avif: 'data:image/avif;base64,AAAAHGZ0eXBhdmlmAAAAAGF2aWZtaWYxbWlhZgAAAOptZXRhAAAAAAAAACFoZGxyAAAAAAAAAABwaWN0AAAAAAAAAAAAAAAAAAAAAA5waXRtAAAAAAABAAAAImlsb2MAAAAAREAAAQABAAAAAAEOAAEAAAAAAAAAIgAAACNpaW5mAAAAAAABAAAAFWluZmUCAAAAAAEAAGF2MDEAAAAAamlwcnAAAABLaXBjbwAAABNjb2xybmNseAABAA0AAIAAAAAMYXYxQ4EgAgAAAAAUaXNwZQAAAAAAAAAQAAAAEAAAABBwaXhpAAAAAAMICAgAAAAXaXBtYQAAAAAAAAABAAEEgYIDhAAAACptZGF0EgAKCDgM/9lAQ0AIMhQQAAAAFLm4wN/TRReKCcSo648oag==',
 };
 
 let webpSupported: boolean | null = null;
@@ -62,19 +61,21 @@ export async function hasWebP(): Promise<boolean> {
 
         var img = new Image();
         img.onload = () => {
-            resolve(webpSupported = ((img.width > 0) && (img.height > 0)));
+            resolve((webpSupported = img.width > 0 && img.height > 0));
         };
         img.onerror = () => {
-            resolve(webpSupported = false);
+            resolve((webpSupported = false));
         };
         img.src = testImages.webp;
     });
-};
+}
 
 export async function hasAvif(): Promise<boolean> {
     return new Promise((resolve, reject) => {
-        if(/**navigator.userAgent.includes("Safari") && !navigator.userAgent.includes("Chrome") */ true) {
-            resolve(avifSupported = false); // Safari's avif support is broken :D
+        if (
+            /**navigator.userAgent.includes("Safari") && !navigator.userAgent.includes("Chrome") */ true
+        ) {
+            resolve((avifSupported = false)); // Safari's avif support is broken :D
             return;
         }
 
@@ -85,21 +86,25 @@ export async function hasAvif(): Promise<boolean> {
 
         var img = new Image();
         img.onload = () => {
-            resolve(avifSupported = ((img.width > 0) && (img.height > 0)));
+            resolve((avifSupported = img.width > 0 && img.height > 0));
         };
         img.onerror = () => {
-            resolve(avifSupported = false);
+            resolve((avifSupported = false));
         };
         img.src = testImages.avif;
     });
-};
+}
 
-export async function pickImage(types: { avif?: string, webp?: string, png: string }): Promise<string> {
-    if (types.avif && (avifSupported == true || await hasAvif())) {
+export async function pickImage(types: {
+    avif?: string;
+    webp?: string;
+    png: string;
+}): Promise<string> {
+    if (types.avif && (avifSupported == true || (await hasAvif()))) {
         return types.avif;
     }
 
-    if (types.webp && (webpSupported == true || await hasWebP())) {
+    if (types.webp && (webpSupported == true || (await hasWebP()))) {
         return types.webp;
     }
 
@@ -107,5 +112,5 @@ export async function pickImage(types: { avif?: string, webp?: string, png: stri
 }
 
 export function isMobile(): boolean {
-    return window.matchMedia("(max-width: 600px)").matches ? true : false;
+    return window.matchMedia('(max-width: 600px)').matches ? true : false;
 }

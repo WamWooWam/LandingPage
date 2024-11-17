@@ -1,0 +1,27 @@
+{
+    "version": 1,
+    "formats": {
+        "Png": {
+            "glob": "*.png",
+            "command": "pngcrush",
+            "args": [
+                "-ow",
+                "-brute",
+                "<file>"
+            ]
+        },
+        "TypeScript": {
+            "glob": "*.ts|*.tsx|*.js|*.jsx|*.scss|*.css",
+            "command": "prettier",
+            "args": [
+                "-w",
+                "<file>"
+            ]
+        }
+    },
+    "ignore": [
+        "*go.mod",
+        "*go.sum",
+        "*Makefile"
+    ]
+}

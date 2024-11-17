@@ -1,11 +1,9 @@
-import { Component, RefObject, createRef } from "preact";
+import { Component, RefObject, createRef } from 'preact';
 
-import { ScrollStateContext } from "../ScrollStateProvider";
-import { useContext } from "preact/hooks";
+import { ScrollStateContext } from '../ScrollStateProvider';
+import { useContext } from 'preact/hooks';
 
-export interface TileBackgroundProps {
-
-}
+export interface TileBackgroundProps {}
 
 export interface TileBackgroundState {
     tileX: number;
@@ -13,8 +11,10 @@ export interface TileBackgroundState {
     height: number;
 }
 
-export default class TileBackgroundRenderer extends Component<TileBackgroundProps, TileBackgroundState> {
-
+export default class TileBackgroundRenderer extends Component<
+    TileBackgroundProps,
+    TileBackgroundState
+> {
     element: RefObject<HTMLDivElement>;
 
     constructor(props: TileBackgroundProps) {
@@ -33,23 +33,24 @@ export default class TileBackgroundRenderer extends Component<TileBackgroundProp
     }
 
     render(props: TileBackgroundProps) {
-        let { height, tileX: x, tileY: y } = this.state;        
-        let { totalWidth, totalHeight, scrollHeight } = useContext(ScrollStateContext);
-        
+        let { height, tileX: x, tileY: y } = this.state;
+        let { totalWidth, totalHeight, scrollHeight } =
+            useContext(ScrollStateContext);
+
         let wallpaperSize = Math.max(totalWidth, totalHeight) * 1.5;
         let wallpaperOriginX = (wallpaperSize - totalWidth) / 2;
         let wallpaperOriginY = 0;
 
-        let wallpaperX = (wallpaperOriginX) + (x);
+        let wallpaperX = wallpaperOriginX + x;
         let wallpaperY = scrollHeight + y;
 
         let style = {
             backgroundPosition: `${(wallpaperX / wallpaperSize) * 100}% ${(wallpaperY / wallpaperSize) * 100}%`,
-            backgroundSize: `${wallpaperSize}px ${wallpaperSize}px`
-        }      
-        
+            backgroundSize: `${wallpaperSize}px ${wallpaperSize}px`,
+        };
+
         return (
             <div ref={this.element} class="tile-background" style={style}></div>
-        )
+        );
     }
 }

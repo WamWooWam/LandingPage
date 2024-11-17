@@ -8,14 +8,9 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-import toasttext01 from './toasttext01'
-import toasttext02 from './toasttext02'
-import toasttext03 from './toasttext03'
-import toasttext04 from './toasttext04'
+import toasttext01 from './toasttext01';
+import toasttext02 from './toasttext02';
+import toasttext03 from './toasttext03';
+import toasttext04 from './toasttext04';
 
-export {
-    toasttext01,
-    toasttext02,
-    toasttext03,
-    toasttext04,
-};
+export { toasttext01, toasttext02, toasttext03, toasttext04 };

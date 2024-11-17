@@ -8,19 +8,29 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-import "./tile-square70x70-image.scss"
-import TileTemplateProps from '../TileTemplateProps'
-import TileNotificationBinding from '../TileNotificationBinding'
-import TileImageBinding from '../TileImageBinding'
-import TileTextBinding from '../TileTextBinding'
+import './tile-square70x70-image.scss';
+import TileTemplateProps from '../TileTemplateProps';
+import TileNotificationBinding from '../TileNotificationBinding';
+import TileImageBinding from '../TileImageBinding';
+import TileTextBinding from '../TileTextBinding';
 
 export default function TileSquare70x70Image(props: TileTemplateProps) {
-    const image1 = props.elements.find(b => b.id === 1 && b.type === 'image');
-    
+    const image1 = props.elements.find((b) => b.id === 1 && b.type === 'image');
+
     return (
-        <TileNotificationBinding className="tile-square70x70-image" forceBadgePlate={true} dynamicFormat={false} x={0} y={0} width={56} height={56}>
+        <TileNotificationBinding
+            className="tile-square70x70-image"
+            forceBadgePlate={true}
+            dynamicFormat={false}
+            x={0}
+            y={0}
+            width={56}
+            height={56}>
             <div className="images">
-                <TileImageBinding className="tile-image-style id-1" binding={image1} />
+                <TileImageBinding
+                    className="tile-image-style id-1"
+                    binding={image1}
+                />
             </div>
         </TileNotificationBinding>
     );

@@ -1,5 +1,5 @@
-import { RenderableProps, createContext } from "preact";
-import { useLayoutEffect, useRef, useState } from "preact/hooks";
+import { RenderableProps, createContext } from 'preact';
+import { useLayoutEffect, useRef, useState } from 'preact/hooks';
 
 interface VisualState {
     maxWidth: number;
@@ -12,9 +12,13 @@ interface VisualStateManagerProps {
 
 export const VisualStateContext = createContext<VisualState>(null);
 
-export function VisualStateManager(props: RenderableProps<VisualStateManagerProps>) {
+export function VisualStateManager(
+    props: RenderableProps<VisualStateManagerProps>,
+) {
     const ref = useRef<HTMLDivElement>();
-    const [currentState, setCurrentState] = useState<VisualState>(props.visualStates[0]);
+    const [currentState, setCurrentState] = useState<VisualState>(
+        props.visualStates[0],
+    );
     const calculateState = (width: number) => {
         let state = props.visualStates[0];
         for (let i = 0; i < props.visualStates.length; i++) {
@@ -25,7 +29,7 @@ export function VisualStateManager(props: RenderableProps<VisualStateManagerProp
         }
 
         return state;
-    }
+    };
 
     useLayoutEffect(() => {
         const onSizeChanged = (entries: ResizeObserverEntry[]) => {
@@ -35,7 +39,7 @@ export function VisualStateManager(props: RenderableProps<VisualStateManagerProp
                     setCurrentState(calculateState(entry.contentRect.width));
                 }
             }
-        }
+        };
 
         const observer = new ResizeObserver(onSizeChanged);
         observer.observe(ref.current);
@@ -45,7 +49,9 @@ export function VisualStateManager(props: RenderableProps<VisualStateManagerProp
 
     return (
         <VisualStateContext.Provider value={currentState}>
-            <div ref={ref} class={`visual-state-manager ${currentState.className}`}>
+            <div
+                ref={ref}
+                class={`visual-state-manager ${currentState.className}`}>
                 {props.children}
             </div>
         </VisualStateContext.Provider>

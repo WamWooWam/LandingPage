@@ -1,17 +1,17 @@
 const path = require('path');
-const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const FaviconsWebpackPlugin = require('favicons-webpack-plugin')
+const FaviconsWebpackPlugin = require('favicons-webpack-plugin');
 const { env } = require('process');
 const { transform } = require('ts-transform-react-jsx-source');
 
 module.exports = [
     {
         entry: {
-            "index": "./src/index.tsx",
+            index: './src/index.tsx',
         },
-        target: "browserslist",
-        mode: env.NODE_ENV || "development",
+        target: 'browserslist',
+        mode: env.NODE_ENV || 'development',
         devtool: 'source-map',
         module: {
             rules: [
@@ -32,7 +32,7 @@ module.exports = [
                 },
                 {
                     test: /AppxManifest\.xml$/i,
-                    use: ['manifest-loader']
+                    use: ['manifest-loader'],
                 },
                 {
                     test: /\.css$/i,
@@ -40,39 +40,54 @@ module.exports = [
                         MiniCssExtractPlugin.loader,
                         { loader: 'css-loader', options: { importLoaders: 1 } },
                         'postcss-loader',
-                    ]
+                    ],
                 },
                 {
                     test: /\.scss$/i,
                     use: [
                         MiniCssExtractPlugin.loader,
                         { loader: 'css-loader', options: { importLoaders: 1 } },
-                        "postcss-loader",
-                        "sass-loader",
+                        'postcss-loader',
+                        'sass-loader',
                     ],
                 },
                 {
                     test: /\.(png|jpg|gif|webp|avif)$/i,
                     use: [
-                        { loader: 'url-loader', options: { limit: 4096, fallback: { loader: 'file-loader', options: { outputPath: 'static/' } } } },
+                        {
+                            loader: 'url-loader',
+                            options: {
+                                limit: 4096,
+                                fallback: {
+                                    loader: 'file-loader',
+                                    options: { outputPath: 'static/' },
+                                },
+                            },
+                        },
                     ],
                 },
                 {
                     test: /\.(woff(2)?|ttf|eot|wasm)(\?v=\d+\.\d+\.\d+)?$/i,
                     use: [
-                        { loader: 'file-loader', options: { outputPath: 'static/' } }
-                    ]
+                        {
+                            loader: 'file-loader',
+                            options: { outputPath: 'static/' },
+                        },
+                    ],
                 },
                 {
                     test: /\.svg$/i,
                     use: [
-                        { loader: 'file-loader', options: { outputPath: 'static/' } },
-                        'xml-loader'
-                    ]
+                        {
+                            loader: 'file-loader',
+                            options: { outputPath: 'static/' },
+                        },
+                        'xml-loader',
+                    ],
                 },
                 {
                     test: /StartScreen\.xml$/i,
-                    use: ['raw-loader', 'xml-loader']
+                    use: ['raw-loader', 'xml-loader'],
                 },
             ],
         },
@@ -80,49 +95,68 @@ module.exports = [
             runtimeChunk: 'single',
             usedExports: true,
             splitChunks: {
-                chunks: "all",
-                minSize: 4096
-            }
+                chunks: 'all',
+                minSize: 4096,
+            },
         },
         resolve: {
             extensions: ['.tsx', '.ts', '.js'],
-            fallback: { "crypto": false, "xmldom": false },
+            fallback: { crypto: false, xmldom: false },
             alias: {
-                "shared": path.resolve(__dirname, '../shared/src'),
-                "static": path.resolve(__dirname, './static'),
-                "packages": path.resolve(__dirname, '../packages'),
-                "~": path.resolve(__dirname, './src')
-            }
+                shared: path.resolve(__dirname, '../shared/src'),
+                static: path.resolve(__dirname, './static'),
+                packages: path.resolve(__dirname, '../packages'),
+                '~': path.resolve(__dirname, './src'),
+            },
         },
         plugins: [
             new MiniCssExtractPlugin({
-                filename: env.NODE_ENV === 'production' ? "[name].[chunkhash].css" : "[name].bundle.css",
-                chunkFilename: env.NODE_ENV === 'production' ? "[id].bundle.[chunkhash].css" : "[id].bundle.css"
+                filename:
+                    env.NODE_ENV === 'production'
+                        ? '[name].[chunkhash].css'
+                        : '[name].bundle.css',
+                chunkFilename:
+                    env.NODE_ENV === 'production'
+                        ? '[id].bundle.[chunkhash].css'
+                        : '[id].bundle.css',
             }),
             new HtmlWebpackPlugin({
                 inject: true,
-                template: "./src/index.hbs",
-                chunks: ["index"],
-                filename: "views/index.hbs",
-                publicPath: "/"
+                template: './src/index.hbs',
+                chunks: ['index'],
+                filename: 'views/index.hbs',
+                publicPath: '/',
             }),
             new HtmlWebpackPlugin({
                 inject: true,
-                template: "./src/standalone.hbs",
-                chunks: ["index"],
-                filename: "views/standalone.hbs",
-                publicPath: "/"
+                template: './src/standalone.hbs',
+                chunks: ['index'],
+                filename: 'views/standalone.hbs',
+                publicPath: '/',
             }),
             new FaviconsWebpackPlugin({
                 logo: './static/wam-circular.png',
                 favicons: {
-                    icons: { android: false, appleIcon: false, appleStartup: false, windows: false, yandex: false, }
-                }
-            })
+                    icons: {
+                        android: false,
+                        appleIcon: false,
+                        appleStartup: false,
+                        windows: false,
+                        yandex: false,
+                    },
+                },
+            }),
         ],
         output: {
-            filename: env.NODE_ENV === 'production' ? '[name].[chunkhash].js' : '[name].bundle.js',
-            chunkFilename: env.NODE_ENV === 'production' ? '[id].bundle.[chunkhash].js' : '[id].bundle.js',
+            filename:
+                env.NODE_ENV === 'production'
+                    ? '[name].[chunkhash].js'
+                    : '[name].bundle.js',
+            chunkFilename:
+                env.NODE_ENV === 'production'
+                    ? '[id].bundle.[chunkhash].js'
+                    : '[id].bundle.js',
             path: path.resolve(__dirname, 'dist'),
-        }
-    }];
+        },
+    },
+];

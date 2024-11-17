@@ -1,15 +1,21 @@
-import { useContext, useEffect, useLayoutEffect, useRef, useState } from "preact/hooks";
+import {
+    useContext,
+    useEffect,
+    useLayoutEffect,
+    useRef,
+    useState,
+} from 'preact/hooks';
 
-import { RenderableProps } from "preact";
-import { TileContext } from "./TileRenderer";
-import { getTileSize } from "./TileUtils";
+import { RenderableProps } from 'preact';
+import { TileContext } from './TileRenderer';
+import { getTileSize } from './TileUtils';
 
 type Rectangle = {
     left: number;
     top: number;
     right: number;
     bottom: number;
-}
+};
 
 type TileNotificationBindingProps = {
     className: string;
@@ -31,9 +37,11 @@ type TileNotificationBindingProps = {
     logoMargins?: Rectangle;
     badgeMargins?: Rectangle;
     logoAndBadgeMargins?: Rectangle;
-}
+};
 
-export default function TileNotificationBinding(props: RenderableProps<TileNotificationBindingProps>) {
+export default function TileNotificationBinding(
+    props: RenderableProps<TileNotificationBindingProps>,
+) {
     const tile = useContext(TileContext);
 
     const [subVisual, setSubVisual] = useState<number>(0);
@@ -53,12 +61,14 @@ export default function TileNotificationBinding(props: RenderableProps<TileNotif
     const style = {
         width: tileSize.width + 'px',
         height: tileSize.height + 'px',
-        transform: `translateY(${(-tileSize.height) * subVisual}px)`,
-    }
+        transform: `translateY(${-tileSize.height * subVisual}px)`,
+    };
 
     return (
-        <div className={`${props.className} tile-notification logo`} style={style}>
+        <div
+            className={`${props.className} tile-notification logo`}
+            style={style}>
             {props.children}
         </div>
-    )
+    );
 }

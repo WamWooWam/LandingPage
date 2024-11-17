@@ -16,12 +16,12 @@ module.exports = function (source) {
         if (!file) return;
 
         // if this is a webp, check if a png version exists and use that too
-        if (file.endsWith(".webp")) {
-            addFile(file.substring(0, file.length - 5) + ".png");
-            addFile(file.substring(0, file.length - 5) + ".avif");
+        if (file.endsWith('.webp')) {
+            addFile(file.substring(0, file.length - 5) + '.png');
+            addFile(file.substring(0, file.length - 5) + '.avif');
         }
 
-        if (file.startsWith("/") || file.startsWith("\\")) {
+        if (file.startsWith('/') || file.startsWith('\\')) {
             file = file.substring(1);
         }
 
@@ -34,12 +34,15 @@ module.exports = function (source) {
         this.addDependency(filePath);
 
         let data = fs.readFileSync(filePath);
-        if (file.endsWith(".xml") || file.endsWith(".svg")) {
+        if (file.endsWith('.xml') || file.endsWith('.svg')) {
             data = minify(data.toString());
         }
 
-        this.emitFile(path.join("packages", reader.identity.packageFamilyName, file), data);
-    }
+        this.emitFile(
+            path.join('packages', reader.identity.packageFamilyName, file),
+            data,
+        );
+    };
 
     // hack
     const map = new Map();
@@ -55,7 +58,7 @@ module.exports = function (source) {
     reader.readPackage().then((manifest) => {
         const modules = [];
 
-        const name = manifest.identity.packageFamilyName.replace(/\./g, "_");
+        const name = manifest.identity.packageFamilyName.replace(/\./g, '_');
 
         for (const id of Object.keys(manifest.applications)) {
             let application = manifest.applications[id];
@@ -69,13 +72,18 @@ module.exports = function (source) {
             addFile(map.get(visualElements.splashScreen.image));
 
             if (application.entryPoint) {
-                modules.push(`${name}.applications['${id}'].load = (async () => await import("../../frontend/src/${application.entryPoint}"))`);
+                modules.push(
+                    `${name}.applications['${id}'].load = (async () => await import("../../frontend/src/${application.entryPoint}"))`,
+                );
             }
         }
 
-        return callback(null, `
+        return callback(
+            null,
+            `
         const ${name} = ${JSON.stringify(manifest)};
-        ${modules.join(";\n")}
-        export default ${name};`);
+        ${modules.join(';\n')}
+        export default ${name};`,
+        );
     });
-}
+};

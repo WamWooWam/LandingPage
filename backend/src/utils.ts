@@ -1,27 +1,35 @@
-import { Package, PackageApplication } from "landing-page-shared";
+import { Package, PackageApplication } from 'landing-page-shared';
 
-import PackageRegistry from "./PackageRegistry";
-import { TileTemplateType } from "./TileTemplateType";
-import { TileUpdateManager } from "./TileUpdateManager";
+import PackageRegistry from './PackageRegistry';
+import { TileTemplateType } from './TileTemplateType';
+import { TileUpdateManager } from './TileUpdateManager';
 
-import xmldom = require("xmldom");
+import xmldom = require('xmldom');
 
-export const EXT_XMLNS = "https://wamwoowam.co.uk/tiles/2022";
+export const EXT_XMLNS = 'https://wamwoowam.co.uk/tiles/2022';
 
 export function createRoot(): Document {
-    return new xmldom.DOMParser().parseFromString("<tile xmlns=\"\" xmlns:ext=\"https://wamwoowam.co.uk/tiles/2022\"></tile>", "application/xml");
+    return new xmldom.DOMParser().parseFromString(
+        '<tile xmlns="" xmlns:ext="https://wamwoowam.co.uk/tiles/2022"></tile>',
+        'application/xml',
+    );
 }
 
 export function createVisual(document: Document): Element {
-    let visual = document.createElement("visual");
-    visual.setAttribute("version", "4");
+    let visual = document.createElement('visual');
+    visual.setAttribute('version', '4');
     document.documentElement.appendChild(visual);
     return visual;
 }
 
-export function createBindingFromTemplate(document: Document, visual: Element, template: TileTemplateType): Element {
+export function createBindingFromTemplate(
+    document: Document,
+    visual: Element,
+    template: TileTemplateType,
+): Element {
     let content = TileUpdateManager.getTemplateContent(template);
-    let element = content.getElementsByTagName("visual")[0].firstChild as Element;
+    let element = content.getElementsByTagName('visual')[0]
+        .firstChild as Element;
 
     let newElement = document.importNode(element, true) as Element;
     visual.appendChild(newElement);
@@ -30,16 +38,29 @@ export function createBindingFromTemplate(document: Document, visual: Element, t
 }
 
 export class HttpError extends Error {
-    constructor(public status: number, message: string) {
+    constructor(
+        public status: number,
+        message: string,
+    ) {
         super(message);
     }
 }
 
-export function getAppAndPackage(appId: string, packageId: string): { app: PackageApplication; pack: Package; appId: string; packageId: string; } {
-    if (!packageId ||
+export function getAppAndPackage(
+    appId: string,
+    packageId: string,
+): {
+    app: PackageApplication;
+    pack: Package;
+    appId: string;
+    packageId: string;
+} {
+    if (
+        !packageId ||
         !appId ||
         typeof packageId !== 'string' ||
-        typeof appId !== 'string') {
+        typeof appId !== 'string'
+    ) {
         throw new HttpError(400, 'Bad Request');
     }
 
@@ -49,7 +70,7 @@ export function getAppAndPackage(appId: string, packageId: string): { app: Packa
     }
 
     let pack = PackageRegistry.getPackage(packageId);
-    if (!pack) { 
+    if (!pack) {
         throw new HttpError(404, 'Not found!');
     }
 
@@ -58,5 +79,10 @@ export function getAppAndPackage(appId: string, packageId: string): { app: Packa
         throw new HttpError(404, 'Not found!');
     }
 
-    return { app, pack, appId: app.id, packageId: pack.identity.packageFamilyName };
+    return {
+        app,
+        pack,
+        appId: app.id,
+        packageId: pack.identity.packageFamilyName,
+    };
 }

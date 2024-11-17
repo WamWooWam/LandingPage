@@ -1,4 +1,4 @@
-import { TileSize } from "./TileSize";
+import { TileSize } from './TileSize';
 
 export interface StartTileGroup {
     title: string;
@@ -13,59 +13,66 @@ export interface RawTileProps {
     fence: boolean;
 }
 
-export const parseLayout = (text: string, parser: typeof DOMParser = globalThis.DOMParser) => {
+export const parseLayout = (
+    text: string,
+    parser: typeof DOMParser = globalThis.DOMParser,
+) => {
     let doc = new parser().parseFromString(text, 'application/xml');
-    let root = doc.getElementsByTagName("launcher")[0];
+    let root = doc.getElementsByTagName('launcher')[0];
 
     if (root == null) {
         return;
     }
 
     let tileGroups: StartTileGroup[] = [];
-    let groups = root.getElementsByTagName("group");
+    let groups = root.getElementsByTagName('group');
     for (let i = 0; i < groups.length; i++) {
         let group = groups[i];
         let groupProps: StartTileGroup = {
-            title: group.getAttribute("name")!,
-            tiles: []
+            title: group.getAttribute('name')!,
+            tiles: [],
         };
 
-        let tiles = group.getElementsByTagName("tile");
+        let tiles = group.getElementsByTagName('tile');
         for (let j = 0; j < tiles.length; j++) {
             let tile = tiles[j];
-            let rawAppId = tile.getAttribute("AppID");
+            let rawAppId = tile.getAttribute('AppID');
             let tileProps: RawTileProps = {
                 packageName: null,
                 appId: null,
                 size: TileSize.square150x150,
-                fence: false
+                fence: false,
             };
 
             if (rawAppId !== null) {
                 // parsing windows 8 start screen xml dump
-                let idx = rawAppId.lastIndexOf("!");
+                let idx = rawAppId.lastIndexOf('!');
                 if (idx === -1) {
                     tileProps.appId = rawAppId;
-                }
-                else {
+                } else {
                     tileProps.packageName = rawAppId.substring(0, idx);
                     tileProps.appId = rawAppId.substring(idx + 1);
                 }
 
-                idx = tileProps.appId.indexOf("?");
+                idx = tileProps.appId.indexOf('?');
                 if (idx !== -1) {
                     tileProps.appId = tileProps.appId.substring(0, idx);
                     tileProps.query = tileProps.appId.substring(idx + 1);
                 }
 
-                tileProps.fence = tile.getAttribute("FencePost") === "1";
-                tileProps.size = TileSize[tile.getAttribute("size") as keyof typeof TileSize];
-            }
-            else {
-                tileProps.packageName = tile.getAttribute("packageName");
-                tileProps.appId = tile.getAttribute("appId");
-                tileProps.fence = tile.getAttribute("fence") === "true";
-                tileProps.size = TileSize[tile.getAttribute("size") as keyof typeof TileSize];
+                tileProps.fence = tile.getAttribute('FencePost') === '1';
+                tileProps.size =
+                    TileSize[
+                        tile.getAttribute('size') as keyof typeof TileSize
+                    ];
+            } else {
+                tileProps.packageName = tile.getAttribute('packageName');
+                tileProps.appId = tile.getAttribute('appId');
+                tileProps.fence = tile.getAttribute('fence') === 'true';
+                tileProps.size =
+                    TileSize[
+                        tile.getAttribute('size') as keyof typeof TileSize
+                    ];
             }
 
             groupProps.tiles.push(tileProps);
@@ -75,4 +82,4 @@ export const parseLayout = (text: string, parser: typeof DOMParser = globalThis.
     }
 
     return tileGroups;
-}
+};

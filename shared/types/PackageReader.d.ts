@@ -1,4 +1,4 @@
-import { Package } from "./Package";
+import { Package } from './Package';
 export declare class PackageReader {
     private parser;
     private packageManifest;

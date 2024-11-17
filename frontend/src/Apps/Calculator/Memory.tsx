@@ -1,8 +1,5 @@
-import { Component } from "preact";
+import { Component } from 'preact';
 
 export default function Memory() {
-    return (
-        <div class="calc-memory">
-        </div>
-    )
+    return <div class="calc-memory"></div>;
 }

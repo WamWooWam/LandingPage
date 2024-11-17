@@ -16,7 +16,7 @@
 .charms-pane {
     width: 345px;
     height: 100%;
-    border-left: 1px solid #18004F;
+    border-left: 1px solid #18004f;
     background: var(--background-colour);
     align-self: flex-end;
     pointer-events: all;
@@ -40,10 +40,10 @@
 
 .charms-pane-info-text {
     margin: 20px 40px;
-    color: rgba(255, 255, 255, 0.6)
+    color: rgba(255, 255, 255, 0.6);
 }
 
-.charms-pane-info-text>p {
+.charms-pane-info-text > p {
     margin: 0;
 }
 
@@ -61,7 +61,9 @@
     display: flex;
     flex-direction: column;
     justify-content: center;
-    transition: background 0.45s ease-out, opacity 0.30s ease-out;
+    transition:
+        background 0.45s ease-out,
+        opacity 0.3s ease-out;
     z-index: 2147483647;
     pointer-events: none;
 }
@@ -128,14 +130,14 @@
     display: inline-block;
 }
 
-.charms-bar-item>p {
+.charms-bar-item > p {
     margin: 0;
     opacity: 0;
     transition: opacity 0.15s ease-out;
     font-size: 15px;
 }
 
-.charms-bar.open .charms-bar-item>p {
+.charms-bar.open .charms-bar-item > p {
     opacity: 0.75;
 }
 
@@ -149,37 +151,38 @@
     transition-delay: 0.1s;
 }
 
-.charms-bar-search>.charms-bar-image {
+.charms-bar-search > .charms-bar-image {
     background-image: url(static/charms/search-outline.png);
 }
 
-.charms-bar-share>.charms-bar-image {
+.charms-bar-share > .charms-bar-image {
     background-image: url(static/charms/share-outline.png);
 }
 
-.charms-bar-start>.charms-bar-image {
+.charms-bar-start > .charms-bar-image {
     background-image: url(static/charms/windows-outline.png);
 }
 
-.charms-bar-devices>.charms-bar-image {
+.charms-bar-devices > .charms-bar-image {
     background-image: url(static/charms/devices-outline.png);
 }
 
-.charms-bar-settings>.charms-bar-image {
+.charms-bar-settings > .charms-bar-image {
     background-image: url(/static/charms/settings-outline.png);
 }
 
-.charms-bar.open>.charms-bar-items>.charms-bar-search>.charms-bar-image {
+.charms-bar.open > .charms-bar-items > .charms-bar-search > .charms-bar-image {
     background-image: url(static/charms/search.png);
 }
 
-.charms-bar.open>.charms-bar-items>.charms-bar-share>.charms-bar-image {
+.charms-bar.open > .charms-bar-items > .charms-bar-share > .charms-bar-image {
     background-image: url(static/charms/share.png);
 }
 
-.charms-bar.open>.charms-bar-items>.charms-bar-start>.charms-bar-image {
+.charms-bar.open > .charms-bar-items > .charms-bar-start > .charms-bar-image {
     background: var(--accent-colour);
-    mask-image: url(static/charms/windows-highlight-mask.png), linear-gradient(#fff 0 0);
+    mask-image: url(static/charms/windows-highlight-mask.png),
+        linear-gradient(#fff 0 0);
     mask-composite: exclude;
 
     &:before {
@@ -192,7 +195,8 @@
         background-repeat: no-repeat;
         background-position: 48px;
         mix-blend-mode: luminosity;
-        mask-image: url(static/charms/windows-highlight-mask.png), linear-gradient(#fff 0 0);
+        mask-image: url(static/charms/windows-highlight-mask.png),
+            linear-gradient(#fff 0 0);
         mask-composite: exclude;
         animation: show-start-highlight 0.8s forwards;
         animation-delay: 0.4s;
@@ -209,11 +213,14 @@
     }
 }
 
-.charms-bar.open>.charms-bar-items>.charms-bar-devices>.charms-bar-image {
+.charms-bar.open > .charms-bar-items > .charms-bar-devices > .charms-bar-image {
     background-image: url(static/charms/devices.png);
 }
 
-.charms-bar.open>.charms-bar-items>.charms-bar-settings>.charms-bar-image {
+.charms-bar.open
+    > .charms-bar-items
+    > .charms-bar-settings
+    > .charms-bar-image {
     background-image: url(static/charms/settings.png);
 }
 
@@ -254,7 +261,7 @@
         padding: 0;
         align-self: center;
         justify-self: center;
-        font-feature-settings: "tnum" on;
+        font-feature-settings: 'tnum' on;
     }
 
     .charms-clock-day {

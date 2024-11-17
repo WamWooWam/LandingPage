@@ -8,11 +8,11 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-import TileWide310x150SmallImageAndText01 from './TileWide310x150SmallImageAndText01'
-import TileWide310x150SmallImageAndText02 from './TileWide310x150SmallImageAndText02'
-import TileWide310x150SmallImageAndText03 from './TileWide310x150SmallImageAndText03'
-import TileWide310x150SmallImageAndText04 from './TileWide310x150SmallImageAndText04'
-import TileWide310x150SmallImageAndText05 from './TileWide310x150SmallImageAndText05'
+import TileWide310x150SmallImageAndText01 from './TileWide310x150SmallImageAndText01';
+import TileWide310x150SmallImageAndText02 from './TileWide310x150SmallImageAndText02';
+import TileWide310x150SmallImageAndText03 from './TileWide310x150SmallImageAndText03';
+import TileWide310x150SmallImageAndText04 from './TileWide310x150SmallImageAndText04';
+import TileWide310x150SmallImageAndText05 from './TileWide310x150SmallImageAndText05';
 
 export {
     TileWide310x150SmallImageAndText01,

@@ -1,10 +1,10 @@
-import PackageRegistry from "./Data/PackageRegistry";
-import Events from "./Events";
-import AppLaunchRequestedEvent from "./Events/AppLaunchRequestedEvent";
+import PackageRegistry from './Data/PackageRegistry';
+import Events from './Events';
+import AppLaunchRequestedEvent from './Events/AppLaunchRequestedEvent';
 
 export class Launcher {
     static launchApp(id: string): void {
-        const parts = id.split("!");
+        const parts = id.split('!');
         const packageId = parts[0];
         const appId = parts[1];
 
@@ -18,7 +18,9 @@ export class Launcher {
             throw new Error(`Application ${appId} not found!`);
         }
 
-        Events.getInstance().dispatchEvent(new AppLaunchRequestedEvent(pack, app));
+        Events.getInstance().dispatchEvent(
+            new AppLaunchRequestedEvent(pack, app),
+        );
     }
 }
 

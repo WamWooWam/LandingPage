@@ -8,26 +8,41 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-import "./toasttext04.scss"
-import TileTemplateProps from '../TileTemplateProps'
-import TileNotificationBinding from '../TileNotificationBinding'
-import TileImageBinding from '../TileImageBinding'
-import TileTextBinding from '../TileTextBinding'
+import './toasttext04.scss';
+import TileTemplateProps from '../TileTemplateProps';
+import TileNotificationBinding from '../TileNotificationBinding';
+import TileImageBinding from '../TileImageBinding';
+import TileTextBinding from '../TileTextBinding';
 
 export default function toasttext04(props: TileTemplateProps) {
-    const text1 = props.elements.find(b => b.id === 1 && b.type === 'text');
-    const text2 = props.elements.find(b => b.id === 2 && b.type === 'text');
-    const text3 = props.elements.find(b => b.id === 3 && b.type === 'text');
-    
+    const text1 = props.elements.find((b) => b.id === 1 && b.type === 'text');
+    const text2 = props.elements.find((b) => b.id === 2 && b.type === 'text');
+    const text3 = props.elements.find((b) => b.id === 3 && b.type === 'text');
+
     return (
-        <TileNotificationBinding className="toasttext04" dynamicFormat={false} x={0} y={0} width={308} height={72}>
+        <TileNotificationBinding
+            className="toasttext04"
+            dynamicFormat={false}
+            x={0}
+            y={0}
+            width={308}
+            height={72}>
             <div className="images" />
             <div className="headlines">
-                <TileTextBinding className="toast-header-style id-1" binding={text1} />
+                <TileTextBinding
+                    className="toast-header-style id-1"
+                    binding={text1}
+                />
             </div>
             <div className="text-fields">
-                <TileTextBinding className="toast-body-text-style id-2" binding={text2} />
-                <TileTextBinding className="toast-body-text-style id-3" binding={text3} />
+                <TileTextBinding
+                    className="toast-body-text-style id-2"
+                    binding={text2}
+                />
+                <TileTextBinding
+                    className="toast-body-text-style id-3"
+                    binding={text3}
+                />
             </div>
         </TileNotificationBinding>
     );

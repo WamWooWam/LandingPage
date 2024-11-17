@@ -1,6 +1,6 @@
 export default interface TileElement {
     id: number;
-    type: "image" | "text";
+    type: 'image' | 'text';
     content: string;
     alt: string;
 }

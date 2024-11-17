@@ -1,17 +1,24 @@
 // singleton class to manage instances of apps
 
-import AppInstance from "./AppInstance";
-import CoreWindowManager from "./CoreWindowManager";
-import { Package } from "shared/Package";
-import { PackageApplication } from "shared/PackageApplication";
+import AppInstance from './AppInstance';
+import CoreWindowManager from './CoreWindowManager';
+import { Package } from 'shared/Package';
+import { PackageApplication } from 'shared/PackageApplication';
 
 export default class AppInstanceManager {
     static instances: AppInstance[] = [];
 
-    static launchInstance(pack: Package, packageApplication: PackageApplication): AppInstance {
+    static launchInstance(
+        pack: Package,
+        packageApplication: PackageApplication,
+    ): AppInstance {
         for (let i = 0; i < AppInstanceManager.instances.length; i++) {
             let instance = AppInstanceManager.instances[i];
-            if (instance.package.identity.packageFamilyName === pack.identity.packageFamilyName && instance.packageApplication.id === packageApplication.id) {
+            if (
+                instance.package.identity.packageFamilyName ===
+                    pack.identity.packageFamilyName &&
+                instance.packageApplication.id === packageApplication.id
+            ) {
                 return instance;
             }
         }

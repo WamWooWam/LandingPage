@@ -1,4 +1,3 @@
-
 export interface ApplicationDefaultTile {
     shortName: string;
     square70x70Logo?: string;

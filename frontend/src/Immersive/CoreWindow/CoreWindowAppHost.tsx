@@ -1,12 +1,15 @@
-import { Component, Ref, RefObject, createRef } from "preact";
+import { Component, Ref, RefObject, createRef } from 'preact';
 
-import CoreWindow from "~/Data/CoreWindow";
+import CoreWindow from '~/Data/CoreWindow';
 
 interface CoreWindowAppHostProps {
     window: CoreWindow;
 }
 
-export default class CoreWindowAppHost extends Component<CoreWindowAppHostProps, { hasRendered: boolean }> {
+export default class CoreWindowAppHost extends Component<
+    CoreWindowAppHostProps,
+    { hasRendered: boolean }
+> {
     private ref: RefObject<HTMLDivElement> = createRef();
 
     constructor(props: CoreWindowAppHostProps) {
@@ -35,6 +38,6 @@ export default class CoreWindowAppHost extends Component<CoreWindowAppHostProps,
     }
 
     render() {
-        return (<div ref={this.ref} className="core-window-app-host"></div>);
+        return <div ref={this.ref} className="core-window-app-host"></div>;
     }
 }

@@ -5,9 +5,9 @@ module.exports = {
             name: 'preset-default',
             params: {
                 overrides: {
-                    removeViewBox: false
-                }
-            }
-        }
-    ]
+                    removeViewBox: false,
+                },
+            },
+        },
+    ],
 };

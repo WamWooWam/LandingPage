@@ -1,8 +1,8 @@
-import { PackageApplication, lightenDarkenColour2 } from "landing-page-shared";
-import { Request, Response, Router } from "express";
+import { PackageApplication, lightenDarkenColour2 } from 'landing-page-shared';
+import { Request, Response, Router } from 'express';
 
-import { Resvg } from "@resvg/resvg-js"
-import { getAppAndPackage } from "../../utils";
+import { Resvg } from '@resvg/resvg-js';
+import { getAppAndPackage } from '../../utils';
 
 import path = require('path');
 import fs = require('fs');
@@ -12,7 +12,10 @@ import sharp = require('sharp');
 
 // api/images/:type/:package/:app/:size
 async function getImage(req: Request, res: Response) {
-    const { app, appId, packageId } = getAppAndPackage(req.params.app, req.params.package);
+    const { app, appId, packageId } = getAppAndPackage(
+        req.params.app,
+        req.params.package,
+    );
 
     let rawSize = req.params.size?.toLowerCase();
     let type = req.params.type?.toLowerCase();
@@ -28,7 +31,7 @@ async function getImage(req: Request, res: Response) {
         return;
     }
 
-    let sourceImage = path.join(process.cwd(), "..", "frontend", "dist", image);
+    let sourceImage = path.join(process.cwd(), '..', 'frontend', 'dist', image);
     if (!fs.existsSync(sourceImage)) {
         res.status(404).send('Not found!');
         return;
@@ -46,23 +49,27 @@ async function getImage(req: Request, res: Response) {
         // this may seem pointless, as sharp can read SVG, but most SVGs embed other SVGs or images
         // which sharp doesn't handle because fuck me i guess
         let svg = await fs.promises.readFile(sourceImage, 'utf8');
-        let resvg = new Resvg(svg, { fitTo: { mode: 'width', value: width }, font: { loadSystemFonts: false } });
+        let resvg = new Resvg(svg, {
+            fitTo: { mode: 'width', value: width },
+            font: { loadSystemFonts: false },
+        });
 
         const rendered = resvg.render();
         data = rendered.asPng();
-    }
-    else {
+    } else {
         data = await fs.promises.readFile(sourceImage);
     }
 
     let img = sharp(data);
-    img = img.resize(width, height, { fit: 'contain', background: { r: 0, g: 0, b: 0, alpha: 0 } });
+    img = img.resize(width, height, {
+        fit: 'contain',
+        background: { r: 0, g: 0, b: 0, alpha: 0 },
+    });
 
     if (type === 'plated') {
-        if (["splash", "square30x30logo"].includes(size.toLowerCase())) {
+        if (['splash', 'square30x30logo'].includes(size.toLowerCase())) {
             img = img.flatten({ background: color });
-        }
-        else {
+        } else {
             // generate svg gradient
             let svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="${height}">
     <defs>
@@ -81,11 +88,10 @@ async function getImage(req: Request, res: Response) {
             img = bgImage;
         }
     }
-    
+
     let png = img.png();
     let buffer = await png.toBuffer();
-    res.set('Content-Type', 'image/png')
-        .send(buffer);
+    res.set('Content-Type', 'image/png').send(buffer);
 }
 
 function parseSize(app: PackageApplication, size: string) {
@@ -101,7 +107,10 @@ function parseSize(app: PackageApplication, size: string) {
             width = 620;
             height = 300;
             image = app.visualElements.splashScreen.image;
-            if (app.visualElements.splashScreen.backgroundColor && app.visualElements.splashScreen.backgroundColor !== '') {
+            if (
+                app.visualElements.splashScreen.backgroundColor &&
+                app.visualElements.splashScreen.backgroundColor !== ''
+            ) {
                 color = app.visualElements.splashScreen.backgroundColor;
             }
             break;
@@ -134,13 +143,14 @@ function parseSize(app: PackageApplication, size: string) {
         case 'appletouchicon':
         case 'apple-touch-icon':
             size = 'appleTouchIcon';
-            image = app.visualElements.defaultTile.square70x70Logo ?? app.visualElements.square150x150Logo;
+            image =
+                app.visualElements.defaultTile.square70x70Logo ??
+                app.visualElements.square150x150Logo;
             width = height = 120;
             break;
     }
     return { image, width, height, color, size };
 }
-
 
 export default function registerRoutes(router: Router) {
     router.get('/:type/:package/:app/:size', getImage);

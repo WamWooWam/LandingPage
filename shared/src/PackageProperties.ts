@@ -1,4 +1,3 @@
-
 export interface PackageProperties {
     displayName: string;
     description: string;

@@ -1,4 +1,3 @@
-
 export type calc_display_t = {};
 export type calc_expression_command_t = {};
 export type calc_manager_t = {};
@@ -25,11 +24,21 @@ export interface calc_resource_provider_callbacks_t {
 declare namespace CalcManager {
     type HRESULT = number;
 
-    function calc_display_create(callbacks: calc_display_callbacks_t): calc_display_t;
-    function calc_resource_provider_create(callbacks: calc_resource_provider_callbacks_t): calc_resource_provider_t;
-    function calc_manager_create(display: calc_display_t, resources: calc_resource_provider_t): calc_manager_t;
+    function calc_display_create(
+        callbacks: calc_display_callbacks_t,
+    ): calc_display_t;
+    function calc_resource_provider_create(
+        callbacks: calc_resource_provider_callbacks_t,
+    ): calc_resource_provider_t;
+    function calc_manager_create(
+        display: calc_display_t,
+        resources: calc_resource_provider_t,
+    ): calc_manager_t;
     function calc_manager_delete(calc_manager: calc_manager_t): void;
-    function calc_manager_reset(manager: calc_manager_t, clearMemory: boolean): HRESULT;
+    function calc_manager_reset(
+        manager: calc_manager_t,
+        clearMemory: boolean,
+    ): HRESULT;
 
     enum Command {
         DEG = 321,
@@ -72,7 +81,7 @@ declare namespace CalcManager {
         REC = 114,
         DMS = 115,
         CUBEROOT = 116, // x ^ 1/3
-        POW10 = 117,    // 10 ^ x
+        POW10 = 117, // 10 ^ x
         PERCENT = 118,
         FE = 119,
         PI = 120,
@@ -213,19 +222,36 @@ declare namespace CalcManager {
         BINPOS61 = 761,
         BINPOS62 = 762,
         BINPOS63 = 763,
-        BINEDITEND = 763
+        BINEDITEND = 763,
     }
 
     function calc_manager_set_standard_mode(manager: calc_manager_t): HRESULT;
     function calc_manager_set_scientific_mode(manager: calc_manager_t): HRESULT;
     function calc_manager_set_programmer_mode(manager: calc_manager_t): HRESULT;
-    function calc_manager_send_command(manager: calc_manager_t, command: Command): HRESULT;
+    function calc_manager_send_command(
+        manager: calc_manager_t,
+        command: Command,
+    ): HRESULT;
     function calc_manager_memorize_number(manager: calc_manager_t): HRESULT;
-    function calc_manager_memorized_number_load(manager: calc_manager_t, index: number): HRESULT;
-    function calc_manager_memorized_number_add(manager: calc_manager_t, index: number): HRESULT;
-    function calc_manager_memorized_number_subtract(manager: calc_manager_t, index: number): HRESULT;
-    function calc_manager_memorized_number_clear(manager: calc_manager_t, index: number): HRESULT;
-    function calc_manager_memorized_number_clear_all(manager: calc_manager_t): HRESULT;
+    function calc_manager_memorized_number_load(
+        manager: calc_manager_t,
+        index: number,
+    ): HRESULT;
+    function calc_manager_memorized_number_add(
+        manager: calc_manager_t,
+        index: number,
+    ): HRESULT;
+    function calc_manager_memorized_number_subtract(
+        manager: calc_manager_t,
+        index: number,
+    ): HRESULT;
+    function calc_manager_memorized_number_clear(
+        manager: calc_manager_t,
+        index: number,
+    ): HRESULT;
+    function calc_manager_memorized_number_clear_all(
+        manager: calc_manager_t,
+    ): HRESULT;
 }
 
-export default function Initialize(opts: any): Promise<typeof CalcManager>
+export default function Initialize(opts: any): Promise<typeof CalcManager>;

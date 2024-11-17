@@ -1,15 +1,15 @@
-import { E_LONGATED_MUSKRAT } from 'landing-page-shared'
+import { E_LONGATED_MUSKRAT } from 'landing-page-shared';
 import { Router } from 'express';
 
 async function getConfiguration(req, resp) {
     const config = {
         appStatus: {
-            "Socials_zfgz6xjnaz0ym!Discord": {
-                statusCode: 0x8000FFFF,
-                unavailable: true
-            }
-        }
-    }
+            'Socials_zfgz6xjnaz0ym!Discord': {
+                statusCode: 0x8000ffff,
+                unavailable: true,
+            },
+        },
+    };
 
     resp.json(config);
 }

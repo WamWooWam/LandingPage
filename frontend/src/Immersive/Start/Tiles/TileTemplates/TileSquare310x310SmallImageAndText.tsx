@@ -8,8 +8,6 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-import TileSquare310x310SmallImageAndText01 from './TileSquare310x310SmallImageAndText01'
+import TileSquare310x310SmallImageAndText01 from './TileSquare310x310SmallImageAndText01';
 
-export {
-    TileSquare310x310SmallImageAndText01,
-};
+export { TileSquare310x310SmallImageAndText01 };

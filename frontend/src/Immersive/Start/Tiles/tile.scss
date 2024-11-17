@@ -64,18 +64,17 @@
         white-space: nowrap;
     }
 
-    .start-tile-group>.fence-tile-container {
+    .start-tile-group > .fence-tile-container {
         grid-area: tiles;
         grid-row-end: span 1;
         grid-column-end: span 1;
     }
 
-    .start-tile-group>.tile-container {
+    .start-tile-group > .tile-container {
         grid-area: tiles;
         grid-row-end: span 1;
         grid-column-end: span 1;
     }
-
 }
 
 .tile {
@@ -94,7 +93,7 @@
 }
 
 .tile-border:hover:before {
-    content: " ";
+    content: ' ';
     position: absolute;
     top: -4px;
     left: -4px;
@@ -192,10 +191,10 @@
 }
 
 @media only screen and (-moz-min-device-pixel-ratio: 2),
-only screen and (-o-min-device-pixel-ratio: 2/1),
-only screen and (-webkit-min-device-pixel-ratio: 2),
-only screen and (min-device-pixel-ratio: 2),
-(resolution >=2dppx) {
+    only screen and (-o-min-device-pixel-ratio: 2/1),
+    only screen and (-webkit-min-device-pixel-ratio: 2),
+    only screen and (min-device-pixel-ratio: 2),
+    (resolution >=2dppx) {
     .tile-badge.error {
         background-image: url(static/tiles/error-badge@2x.png);
     }
@@ -205,7 +204,7 @@ only screen and (min-device-pixel-ratio: 2),
     width: 28px;
 }
 
-.moving>.tile {
+.moving > .tile {
     width: 100%;
     height: 100%;
 }
@@ -229,7 +228,6 @@ only screen and (min-device-pixel-ratio: 2),
     grid-column-end: span 2;
 }
 
-
 .tile-container .front {
     display: flex;
     position: absolute;
@@ -243,10 +241,10 @@ only screen and (min-device-pixel-ratio: 2),
 }
 
 .tile-notification {
-    transition: transform 0.8s cubic-bezier(0, 0.50, 0.1, 1);
+    transition: transform 0.8s cubic-bezier(0, 0.5, 0.1, 1);
 }
 
-.tile-container .front>* {
+.tile-container .front > * {
     position: absolute;
     width: calc(100%);
     height: calc(100%);
@@ -263,7 +261,7 @@ only screen and (min-device-pixel-ratio: 2),
     flex-direction: column;
     transform: translateY(calc(100% + 1px));
     will-change: transform;
-    animation: show-next 0.8s cubic-bezier(0, 0.50, 0.1, 1);
+    animation: show-next 0.8s cubic-bezier(0, 0.5, 0.1, 1);
 }
 
 @keyframes show-next {
@@ -276,13 +274,12 @@ only screen and (min-device-pixel-ratio: 2),
     }
 }
 
-
 .tile-scale-container {
-    width: 100%;   
+    width: 100%;
     height: 100%;
 }
 
-.next>* {
+.next > * {
     position: absolute;
     top: 0px;
     left: 0px;
@@ -377,7 +374,7 @@ only screen and (min-device-pixel-ratio: 2),
     width: 100%;
 }
 
-.tile-wide-small-image-and-text>img {
+.tile-wide-small-image-and-text > img {
     width: 64px;
     height: 64px;
     margin: 16px;
@@ -393,7 +390,7 @@ only screen and (min-device-pixel-ratio: 2),
     background-position: center;
 }
 
-.tile-wide-small-image-and-text>p {
+.tile-wide-small-image-and-text > p {
     display: -webkit-box;
     -webkit-line-clamp: 4;
     -webkit-box-orient: vertical;
@@ -407,7 +404,7 @@ only screen and (min-device-pixel-ratio: 2),
     word-break: normal;
 }
 
-.tile-square-text>p {
+.tile-square-text > p {
     display: -webkit-box;
     -webkit-line-clamp: 4;
     -webkit-box-orient: vertical;
@@ -429,7 +426,7 @@ only screen and (min-device-pixel-ratio: 2),
     display: flex;
     flex-direction: column;
 
-    >h3 {
+    > h3 {
         display: flex;
         font-size: 16pt;
         font-weight: 300;
@@ -441,7 +438,7 @@ only screen and (min-device-pixel-ratio: 2),
         width: 100%;
     }
 
-    >p {
+    > p {
         display: -webkit-box;
         -webkit-line-clamp: 4;
         -webkit-box-orient: vertical;
@@ -479,7 +476,7 @@ only screen and (min-device-pixel-ratio: 2),
 
     justify-content: space-between;
 
-    >h3 {
+    > h3 {
         display: -webkit-box;
         -webkit-line-clamp: 2;
         -webkit-box-orient: vertical;
@@ -492,7 +489,7 @@ only screen and (min-device-pixel-ratio: 2),
         overflow-wrap: break-word;
     }
 
-    >p {
+    > p {
         display: -webkit-box;
         -webkit-line-clamp: 3;
         -webkit-box-orient: vertical;

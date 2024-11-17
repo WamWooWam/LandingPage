@@ -8,24 +8,37 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-import "./tile-square150x150-text02.scss"
-import TileTemplateProps from '../TileTemplateProps'
-import TileNotificationBinding from '../TileNotificationBinding'
-import TileImageBinding from '../TileImageBinding'
-import TileTextBinding from '../TileTextBinding'
+import './tile-square150x150-text02.scss';
+import TileTemplateProps from '../TileTemplateProps';
+import TileNotificationBinding from '../TileNotificationBinding';
+import TileImageBinding from '../TileImageBinding';
+import TileTextBinding from '../TileTextBinding';
 
 export default function TileSquare150x150Text02(props: TileTemplateProps) {
-    const text1 = props.elements.find(b => b.id === 1 && b.type === 'text');
-    const text2 = props.elements.find(b => b.id === 2 && b.type === 'text');
-    
+    const text1 = props.elements.find((b) => b.id === 1 && b.type === 'text');
+    const text2 = props.elements.find((b) => b.id === 2 && b.type === 'text');
+
     return (
-        <TileNotificationBinding className="tile-square150x150-text02" forceBadgePlate={true} dynamicFormat={false} x={0} y={0} width={120} height={120}>
+        <TileNotificationBinding
+            className="tile-square150x150-text02"
+            forceBadgePlate={true}
+            dynamicFormat={false}
+            x={0}
+            y={0}
+            width={120}
+            height={120}>
             <div className="images" />
             <div className="headlines">
-                <TileTextBinding className="tile-headline-style id-1" binding={text1} />
+                <TileTextBinding
+                    className="tile-headline-style id-1"
+                    binding={text1}
+                />
             </div>
             <div className="text-fields">
-                <TileTextBinding className="tile-body-text-style id-2" binding={text2} />
+                <TileTextBinding
+                    className="tile-body-text-style id-2"
+                    binding={text2}
+                />
             </div>
         </TileNotificationBinding>
     );

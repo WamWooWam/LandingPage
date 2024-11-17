@@ -1,4 +1,3 @@
-
 export interface PackageIdentity {
     name: string;
     version: string;

@@ -8,28 +8,49 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-import "./tile-wide310x150-text05.scss"
-import TileTemplateProps from '../TileTemplateProps'
-import TileNotificationBinding from '../TileNotificationBinding'
-import TileImageBinding from '../TileImageBinding'
-import TileTextBinding from '../TileTextBinding'
+import './tile-wide310x150-text05.scss';
+import TileTemplateProps from '../TileTemplateProps';
+import TileNotificationBinding from '../TileNotificationBinding';
+import TileImageBinding from '../TileImageBinding';
+import TileTextBinding from '../TileTextBinding';
 
 export default function TileWide310x150Text05(props: TileTemplateProps) {
-    const text1 = props.elements.find(b => b.id === 1 && b.type === 'text');
-    const text2 = props.elements.find(b => b.id === 2 && b.type === 'text');
-    const text3 = props.elements.find(b => b.id === 3 && b.type === 'text');
-    const text4 = props.elements.find(b => b.id === 4 && b.type === 'text');
-    const text5 = props.elements.find(b => b.id === 5 && b.type === 'text');
-    
+    const text1 = props.elements.find((b) => b.id === 1 && b.type === 'text');
+    const text2 = props.elements.find((b) => b.id === 2 && b.type === 'text');
+    const text3 = props.elements.find((b) => b.id === 3 && b.type === 'text');
+    const text4 = props.elements.find((b) => b.id === 4 && b.type === 'text');
+    const text5 = props.elements.find((b) => b.id === 5 && b.type === 'text');
+
     return (
-        <TileNotificationBinding className="tile-wide310x150-text05" forceBadgePlate={false} x={0} y={0} width={248} height={120}>
+        <TileNotificationBinding
+            className="tile-wide310x150-text05"
+            forceBadgePlate={false}
+            x={0}
+            y={0}
+            width={248}
+            height={120}>
             <div className="images" />
             <div className="text-fields">
-                <TileTextBinding className="tile-body-text-style id-1" binding={text1} />
-                <TileTextBinding className="tile-body-text-style id-2" binding={text2} />
-                <TileTextBinding className="tile-body-text-style id-3" binding={text3} />
-                <TileTextBinding className="tile-body-text-style id-4" binding={text4} />
-                <TileTextBinding className="tile-body-text-style id-5" binding={text5} />
+                <TileTextBinding
+                    className="tile-body-text-style id-1"
+                    binding={text1}
+                />
+                <TileTextBinding
+                    className="tile-body-text-style id-2"
+                    binding={text2}
+                />
+                <TileTextBinding
+                    className="tile-body-text-style id-3"
+                    binding={text3}
+                />
+                <TileTextBinding
+                    className="tile-body-text-style id-4"
+                    binding={text4}
+                />
+                <TileTextBinding
+                    className="tile-body-text-style id-5"
+                    binding={text5}
+                />
             </div>
         </TileNotificationBinding>
     );

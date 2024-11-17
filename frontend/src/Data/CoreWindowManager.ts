@@ -1,16 +1,15 @@
-
 //
 // Because React is kinda difficult to work with for this stuff, creating a CoreWindow allocates
-// a "handle" associated with the window state and <webview> element that can be used to render 
+// a "handle" associated with the window state and <webview> element that can be used to render
 // that window anywhere in the DOM
 //
 
-import AppInstance from "./AppInstance";
-import AppInstanceManager from "./AppInstanceManager";
-import CoreWindow from "./CoreWindow";
-import CoreWindowEvent from "../Events/CoreWindowEvent";
-import CoreWindowLayoutManager from "./CoreWindowLayoutManager";
-import Events from "../Events";
+import AppInstance from './AppInstance';
+import AppInstanceManager from './AppInstanceManager';
+import CoreWindow from './CoreWindow';
+import CoreWindowEvent from '../Events/CoreWindowEvent';
+import CoreWindowLayoutManager from './CoreWindowLayoutManager';
+import Events from '../Events';
 
 export default class CoreWindowManager {
     static coreWindowMap: Map<string, CoreWindow> = new Map();
@@ -24,8 +23,9 @@ export default class CoreWindowManager {
         console.log(info.id, info);
         CoreWindowManager.coreWindowMap.set(info.id, info);
 
-        Events.getInstance()
-            .dispatchEvent(new CoreWindowEvent("core-window-created", info));
+        Events.getInstance().dispatchEvent(
+            new CoreWindowEvent('core-window-created', info),
+        );
 
         return info;
     }
@@ -38,11 +38,11 @@ export default class CoreWindowManager {
         let window = CoreWindowManager.coreWindowMap.get(id);
         if (!window) return;
 
-        CoreWindowLayoutManager.getInstance()
-            .removeWindowFromLayout(window);
+        CoreWindowLayoutManager.getInstance().removeWindowFromLayout(window);
 
-        Events.getInstance()
-            .dispatchEvent(new CoreWindowEvent("core-window-destroyed", window));
+        Events.getInstance().dispatchEvent(
+            new CoreWindowEvent('core-window-destroyed', window),
+        );
 
         if (window) {
             let instance = window.instance;

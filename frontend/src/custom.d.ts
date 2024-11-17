@@ -1,32 +1,32 @@
-declare module "*.png" {
+declare module '*.png' {
     const content: any;
     export default content;
 }
-declare module "*.svg" {
+declare module '*.svg' {
     const content: any;
     export default content;
 }
-declare module "*.jpg" {
+declare module '*.jpg' {
     const content: any;
     export default content;
 }
-declare module "*.gif" {
+declare module '*.gif' {
     const content: any;
     export default content;
 }
-declare module "*.xml" {
+declare module '*.xml' {
     const content: any;
     export default content;
 }
-declare module "*.webp" {
+declare module '*.webp' {
     const content: any;
     export default content;
 }
-declare module "*.avif" {
+declare module '*.avif' {
     const content: any;
     export default content;
 }
-declare module "*.wasm" {
+declare module '*.wasm' {
     const content: any;
     export default content;
 }

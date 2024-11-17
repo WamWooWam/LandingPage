@@ -1,24 +1,24 @@
 :root {
-  --background-colour: #25079b;
-  --accent-colour: #2B0680;
+    --background-colour: #25079b;
+    --accent-colour: #2b0680;
 }
 
 body {
-  position: fixed;
-  font-family: 'Segoe UI';
-  margin: 0;
-  width: 100vw;
-  height: 100vh;
-  height: -webkit-fill-available;
-  user-select: none;
-  -webkit-user-select: none;
-  /* lick my entire ass */
-  -webkit-text-size-adjust: 100%;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+    position: fixed;
+    font-family: 'Segoe UI';
+    margin: 0;
+    width: 100vw;
+    height: 100vh;
+    height: -webkit-fill-available;
+    user-select: none;
+    -webkit-user-select: none;
+    /* lick my entire ass */
+    -webkit-text-size-adjust: 100%;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
 }
 
 code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+    font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+        monospace;
 }

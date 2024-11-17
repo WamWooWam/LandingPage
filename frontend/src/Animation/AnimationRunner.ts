@@ -1,5 +1,5 @@
-import Animation from "./Animation";
-import AnimationEvent from "./AnimationEvent";
+import Animation from './Animation';
+import AnimationEvent from './AnimationEvent';
 
 export default class AnimationRunner {
     private animation: Animation;
@@ -41,27 +41,41 @@ export default class AnimationRunner {
     private run(time: number) {
         if (this.startTime === null) {
             this.startTime = time;
-            this.eventTarget.dispatchEvent(new Event("start"));
+            this.eventTarget.dispatchEvent(new Event('start'));
         }
 
-        const progress = (time - this.startTime) / (this.animation.duration * (1000 * this.timeScalar));
+        const progress =
+            (time - this.startTime) /
+            (this.animation.duration * (1000 * this.timeScalar));
         if (progress < 1.0) {
             let values = this.animation.tick(progress);
-            this.eventTarget.dispatchEvent(new AnimationEvent(progress, values));
+            this.eventTarget.dispatchEvent(
+                new AnimationEvent(progress, values),
+            );
             this.animationFrame = requestAnimationFrame(this.run);
         } else {
             let values = this.animation.tick(1.0);
-            this.eventTarget.dispatchEvent(new AnimationEvent(progress, values));
+            this.eventTarget.dispatchEvent(
+                new AnimationEvent(progress, values),
+            );
             this.running = false;
-            this.eventTarget.dispatchEvent(new Event("complete"));
+            this.eventTarget.dispatchEvent(new Event('complete'));
         }
     }
 
-    public addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void {
+    public addEventListener(
+        type: string,
+        listener: EventListenerOrEventListenerObject,
+        options?: boolean | AddEventListenerOptions,
+    ): void {
         this.eventTarget.addEventListener(type, listener, options);
     }
 
-    public removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void {
+    public removeEventListener(
+        type: string,
+        listener: EventListenerOrEventListenerObject,
+        options?: boolean | EventListenerOptions,
+    ): void {
         this.eventTarget.removeEventListener(type, listener, options);
     }
 }

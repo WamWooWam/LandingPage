@@ -1,4 +1,4 @@
-import { TileSize } from "./TileSize";
+import { TileSize } from './TileSize';
 export interface StartTileGroup {
     title: string;
     tiles: Array<RawTileProps>;
@@ -10,4 +10,7 @@ export interface RawTileProps {
     size: TileSize;
     fence: boolean;
 }
-export declare const parseLayout: (text: string, parser?: typeof DOMParser) => StartTileGroup[];
+export declare const parseLayout: (
+    text: string,
+    parser?: typeof DOMParser,
+) => StartTileGroup[];

@@ -1,8 +1,8 @@
-import { PackageApplication } from "./PackageApplication";
-import { PackageCapability } from "./PackageCapability";
-import { PackageCompatibilityMode } from "./PackageCompatibilityMode";
-import { PackageIdentity } from "./PackageIdentity";
-import { PackageProperties } from "./PackageProperties";
+import { PackageApplication } from './PackageApplication';
+import { PackageCapability } from './PackageCapability';
+import { PackageCompatibilityMode } from './PackageCompatibilityMode';
+import { PackageIdentity } from './PackageIdentity';
+import { PackageProperties } from './PackageProperties';
 
 export interface Package {
     path: string;
@@ -12,5 +12,3 @@ export interface Package {
     capabilities?: PackageCapability[];
     compatibilityMode?: PackageCompatibilityMode;
 }
-
-

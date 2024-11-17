@@ -1,13 +1,13 @@
-import { useLayoutEffect, useRef } from "preact/hooks";
+import { useLayoutEffect, useRef } from 'preact/hooks';
 
-import TileElement from "~/Data/TileElement";
+import TileElement from '~/Data/TileElement';
 
 type TileTextBindingProps = {
     className: string;
     binding: TileElement;
 
     isBottomUp?: boolean;
-}
+};
 
 export default function TileTextBinding(props: TileTextBindingProps) {
     if (props.isBottomUp) {
@@ -24,10 +24,12 @@ export default function TileTextBinding(props: TileTextBindingProps) {
 
         return (
             <div className={props.className} style={{ overflow: 'visible' }}>
-                <span ref={ref} style={{ position: 'relative' }}>{props.binding.content}</span>
+                <span ref={ref} style={{ position: 'relative' }}>
+                    {props.binding.content}
+                </span>
             </div>
-        )
+        );
     }
 
-    return <span className={props.className}>{props.binding.content}</span>
-} 
+    return <span className={props.className}>{props.binding.content}</span>;
+}

@@ -8,24 +8,40 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-import "./tile-square310x310-image-and-text-overlay01.scss"
-import TileTemplateProps from '../TileTemplateProps'
-import TileNotificationBinding from '../TileNotificationBinding'
-import TileImageBinding from '../TileImageBinding'
-import TileTextBinding from '../TileTextBinding'
+import './tile-square310x310-image-and-text-overlay01.scss';
+import TileTemplateProps from '../TileTemplateProps';
+import TileNotificationBinding from '../TileNotificationBinding';
+import TileImageBinding from '../TileImageBinding';
+import TileTextBinding from '../TileTextBinding';
 
-export default function TileSquare310x310ImageAndTextOverlay01(props: TileTemplateProps) {
-    const image1 = props.elements.find(b => b.id === 1 && b.type === 'image');
-    const text1 = props.elements.find(b => b.id === 1 && b.type === 'text');
-    
+export default function TileSquare310x310ImageAndTextOverlay01(
+    props: TileTemplateProps,
+) {
+    const image1 = props.elements.find((b) => b.id === 1 && b.type === 'image');
+    const text1 = props.elements.find((b) => b.id === 1 && b.type === 'text');
+
     return (
-        <TileNotificationBinding className="tile-square310x310-image-and-text-overlay01" forceBadgePlate={true} dynamicFormat={false} x={0} y={0} width={248} height={248}>
+        <TileNotificationBinding
+            className="tile-square310x310-image-and-text-overlay01"
+            forceBadgePlate={true}
+            dynamicFormat={false}
+            x={0}
+            y={0}
+            width={248}
+            height={248}>
             <div className="images">
-                <TileImageBinding className="tile-image-style id-1" binding={image1} />
+                <TileImageBinding
+                    className="tile-image-style id-1"
+                    binding={image1}
+                />
             </div>
             <div className="tile-image-overlay-style image-overlay" />
             <div className="headlines">
-                <TileTextBinding className="tile-headline-style id-1" isBottomUp={true} binding={text1} />
+                <TileTextBinding
+                    className="tile-headline-style id-1"
+                    isBottomUp={true}
+                    binding={text1}
+                />
             </div>
         </TileNotificationBinding>
     );

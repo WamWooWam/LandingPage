@@ -8,9 +8,9 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-import TileSquare310x310ImageAndTextOverlay01 from './TileSquare310x310ImageAndTextOverlay01'
-import TileSquare310x310ImageAndTextOverlay02 from './TileSquare310x310ImageAndTextOverlay02'
-import TileSquare310x310ImageAndTextOverlay03 from './TileSquare310x310ImageAndTextOverlay03'
+import TileSquare310x310ImageAndTextOverlay01 from './TileSquare310x310ImageAndTextOverlay01';
+import TileSquare310x310ImageAndTextOverlay02 from './TileSquare310x310ImageAndTextOverlay02';
+import TileSquare310x310ImageAndTextOverlay03 from './TileSquare310x310ImageAndTextOverlay03';
 
 export {
     TileSquare310x310ImageAndTextOverlay01,

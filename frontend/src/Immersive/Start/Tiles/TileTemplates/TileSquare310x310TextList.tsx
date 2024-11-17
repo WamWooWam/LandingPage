@@ -8,9 +8,9 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-import TileSquare310x310TextList01 from './TileSquare310x310TextList01'
-import TileSquare310x310TextList02 from './TileSquare310x310TextList02'
-import TileSquare310x310TextList03 from './TileSquare310x310TextList03'
+import TileSquare310x310TextList01 from './TileSquare310x310TextList01';
+import TileSquare310x310TextList02 from './TileSquare310x310TextList02';
+import TileSquare310x310TextList03 from './TileSquare310x310TextList03';
 
 export {
     TileSquare310x310TextList01,

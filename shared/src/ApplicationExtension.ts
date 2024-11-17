@@ -1,3 +1,1 @@
-
-export interface ApplicationExtension {
-}
+export interface ApplicationExtension {}

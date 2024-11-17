@@ -1,4 +1,4 @@
-import * as bezier from "bezier-easing";
+import * as bezier from 'bezier-easing';
 
 export const EASE_LINEAR = bezier(0, 0, 1, 1);
 export const EASE_CUBIC = bezier(0.25, 0.1, 0.25, 1);

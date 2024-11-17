@@ -1,6 +1,6 @@
-import { Component } from "preact";
+import { Component } from 'preact';
 
-import Wam from "../../../static/wam.webp"
+import Wam from '../../../static/wam.webp';
 
 export class AboutMeContent extends Component {
     render() {
@@ -14,11 +14,18 @@ export class AboutMeContent extends Component {
                         </div>
                         <div class="me-tile-primary">
                             <a class="me-tile-primary-text">Me</a>
-                            <a class="me-tile-primary-text me-tile-primary-chevron" aria-hidden="true"></a>
+                            <a
+                                class="me-tile-primary-text me-tile-primary-chevron"
+                                aria-hidden="true">
+                                
+                            </a>
                         </div>
                     </div>
                     <div class="notification-list">
-                        <div class="notification-boiler-text">Welcome to my site! Here you'll find all my socials and projects!</div>
+                        <div class="notification-boiler-text">
+                            Welcome to my site! Here you'll find all my socials
+                            and projects!
+                        </div>
                     </div>
                 </div>
                 <div class="people-b">

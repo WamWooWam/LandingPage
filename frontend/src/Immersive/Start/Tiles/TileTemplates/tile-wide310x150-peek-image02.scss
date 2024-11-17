@@ -29,7 +29,10 @@
         width: 248px;
         height: 120px;
         .id-1 {
-            font-feature-settings: 'ss20' 1,'dlig' 1,'kern' 1;
+            font-feature-settings:
+                'ss20' 1,
+                'dlig' 1,
+                'kern' 1;
             left: 16px;
             top: 4px;
             width: 216px;

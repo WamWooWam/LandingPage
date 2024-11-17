@@ -1,15 +1,15 @@
-import { Position, Size, newGuid } from "../Util";
+import { Position, Size, newGuid } from '../Util';
 
-import AppInstance from "./AppInstance";
-import CoreWindowEvent from "../Events/CoreWindowEvent";
-import CoreWindowLayoutManager from "./CoreWindowLayoutManager";
-import CoreWindowManager from "./CoreWindowManager";
-import CoreWindowState from "./CoreWindowState";
-import Events from "../Events";
-import { Package } from "shared/Package";
-import { PackageApplication } from "shared/PackageApplication";
-import { Signal } from "@preact/signals";
-import { ensureCapabilitiesAsync } from "./PackageCapabilities";
+import AppInstance from './AppInstance';
+import CoreWindowEvent from '../Events/CoreWindowEvent';
+import CoreWindowLayoutManager from './CoreWindowLayoutManager';
+import CoreWindowManager from './CoreWindowManager';
+import CoreWindowState from './CoreWindowState';
+import Events from '../Events';
+import { Package } from 'shared/Package';
+import { PackageApplication } from 'shared/PackageApplication';
+import { Signal } from '@preact/signals';
+import { ensureCapabilitiesAsync } from './PackageCapabilities';
 
 class CoreWindowSignals {
     title: Signal<string>;
@@ -25,32 +25,32 @@ class CoreWindowSignals {
 export default class CoreWindow {
     error: Error | null;
 
-    private _id: string
-    private _instance: AppInstance
-    private _view: HTMLElement
+    private _id: string;
+    private _instance: AppInstance;
+    private _view: HTMLElement;
     private _state: CoreWindowState;
     private _size: Size;
     private _position: Position;
     private _signals: CoreWindowSignals = new CoreWindowSignals();
 
     constructor(instance: AppInstance) {
-        this._id = `CoreWindow_${newGuid()}`
-        this._instance = instance
+        this._id = `CoreWindow_${newGuid()}`;
+        this._instance = instance;
         this._state = CoreWindowState.uninitialized;
         this._size = { width: 0, height: 0 };
         this._position = { x: 0, y: 0 };
-        this._view = document.createElement("div");
+        this._view = document.createElement('div');
         this._view.id = this._id;
 
-        this.signals.title.value = "";
+        this.signals.title.value = '';
         this.signals.isVisible.value = false;
-        
-        this._view.addEventListener("click", (e) => {
+
+        this._view.addEventListener('click', (e) => {
             e.stopPropagation();
             this.focus();
         });
 
-        this._view.addEventListener("contextmenu", (e) => {
+        this._view.addEventListener('contextmenu', (e) => {
             e.preventDefault();
         });
     }
@@ -93,8 +93,9 @@ export default class CoreWindow {
 
     set size(newSize: Size) {
         this._size = newSize;
-        Events.getInstance()
-            .dispatchEvent(new CoreWindowEvent("core-window-bounds-changed", this));
+        Events.getInstance().dispatchEvent(
+            new CoreWindowEvent('core-window-bounds-changed', this),
+        );
     }
 
     get position(): Position {
@@ -103,8 +104,9 @@ export default class CoreWindow {
 
     set position(newPosition: Position) {
         this._position = newPosition;
-        Events.getInstance()
-            .dispatchEvent(new CoreWindowEvent("core-window-bounds-changed", this));
+        Events.getInstance().dispatchEvent(
+            new CoreWindowEvent('core-window-bounds-changed', this),
+        );
     }
 
     get visible(): boolean {
@@ -113,8 +115,9 @@ export default class CoreWindow {
 
     set visible(newVisible: boolean) {
         this.signals.isVisible.value = newVisible;
-        Events.getInstance()
-            .dispatchEvent(new CoreWindowEvent("core-window-visibility-changed", this));
+        Events.getInstance().dispatchEvent(
+            new CoreWindowEvent('core-window-visibility-changed', this),
+        );
     }
 
     get state(): CoreWindowState {
@@ -125,8 +128,9 @@ export default class CoreWindow {
         if (this._state == newState) return;
 
         this._state = newState;
-        Events.getInstance()
-            .dispatchEvent(new CoreWindowEvent("core-window-state-changed", this));
+        Events.getInstance().dispatchEvent(
+            new CoreWindowEvent('core-window-state-changed', this),
+        );
     }
 
     get left(): number {
@@ -173,17 +177,18 @@ export default class CoreWindow {
 
                 this.state = CoreWindowState.loaded;
 
-                Events.getInstance()
-                    .dispatchEvent(new CoreWindowEvent("core-window-loaded", this));
+                Events.getInstance().dispatchEvent(
+                    new CoreWindowEvent('core-window-loaded', this),
+                );
             }
-        }
-        catch (e) {
+        } catch (e) {
             this.error = e;
-            this.title = "This page can\u2019t be displayed";
+            this.title = 'This page can\u2019t be displayed';
             this.state = CoreWindowState.errored;
 
-            Events.getInstance()
-                .dispatchEvent(new CoreWindowEvent("core-window-errored", this));
+            Events.getInstance().dispatchEvent(
+                new CoreWindowEvent('core-window-errored', this),
+            );
 
             console.error(e);
         }
@@ -193,18 +198,20 @@ export default class CoreWindow {
         this._position = { x: x, y: y };
         this._size = { width: width, height: height };
 
-        this._view.style.setProperty("--width", `${width}px`);
-        this._view.style.setProperty("--height", `${height}px`);
-        this._view.style.setProperty("--left", `${x}px`);
-        this._view.style.setProperty("--top", `${y}px`);
+        this._view.style.setProperty('--width', `${width}px`);
+        this._view.style.setProperty('--height', `${height}px`);
+        this._view.style.setProperty('--left', `${x}px`);
+        this._view.style.setProperty('--top', `${y}px`);
 
-        Events.getInstance()
-            .dispatchEvent(new CoreWindowEvent("core-window-bounds-changed", this));
+        Events.getInstance().dispatchEvent(
+            new CoreWindowEvent('core-window-bounds-changed', this),
+        );
     }
 
     focus() {
-        Events.getInstance()
-            .dispatchEvent(new CoreWindowEvent("core-window-focus", this));
+        Events.getInstance().dispatchEvent(
+            new CoreWindowEvent('core-window-focus', this),
+        );
 
         // this.view.focus();
     }
@@ -216,8 +223,9 @@ export default class CoreWindow {
 
         CoreWindowLayoutManager.getInstance().removeWindowFromLayout(this);
         this.visible = false;
-        Events.getInstance()
-            .dispatchEvent(new CoreWindowEvent("core-window-close-requested", this));
+        Events.getInstance().dispatchEvent(
+            new CoreWindowEvent('core-window-close-requested', this),
+        );
     }
 
     close() {
@@ -225,7 +233,8 @@ export default class CoreWindow {
         this.view.remove();
         CoreWindowLayoutManager.getInstance().removeWindowFromLayout(this);
         CoreWindowManager.deleteWindowById(this.id);
-        Events.getInstance()
-            .dispatchEvent(new CoreWindowEvent("core-window-closed", this));
+        Events.getInstance().dispatchEvent(
+            new CoreWindowEvent('core-window-closed', this),
+        );
     }
 }

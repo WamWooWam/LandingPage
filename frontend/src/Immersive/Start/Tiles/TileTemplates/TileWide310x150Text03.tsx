@@ -8,20 +8,29 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-import "./tile-wide310x150-text03.scss"
-import TileTemplateProps from '../TileTemplateProps'
-import TileNotificationBinding from '../TileNotificationBinding'
-import TileImageBinding from '../TileImageBinding'
-import TileTextBinding from '../TileTextBinding'
+import './tile-wide310x150-text03.scss';
+import TileTemplateProps from '../TileTemplateProps';
+import TileNotificationBinding from '../TileNotificationBinding';
+import TileImageBinding from '../TileImageBinding';
+import TileTextBinding from '../TileTextBinding';
 
 export default function TileWide310x150Text03(props: TileTemplateProps) {
-    const text1 = props.elements.find(b => b.id === 1 && b.type === 'text');
-    
+    const text1 = props.elements.find((b) => b.id === 1 && b.type === 'text');
+
     return (
-        <TileNotificationBinding className="tile-wide310x150-text03" forceBadgePlate={false} x={0} y={0} width={248} height={120}>
+        <TileNotificationBinding
+            className="tile-wide310x150-text03"
+            forceBadgePlate={false}
+            x={0}
+            y={0}
+            width={248}
+            height={120}>
             <div className="images" />
             <div className="headlines">
-                <TileTextBinding className="tile-headline-style id-1" binding={text1} />
+                <TileTextBinding
+                    className="tile-headline-style id-1"
+                    binding={text1}
+                />
             </div>
         </TileNotificationBinding>
     );

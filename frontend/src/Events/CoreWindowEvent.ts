@@ -1,4 +1,4 @@
-import CoreWindow from "../Data/CoreWindow";
+import CoreWindow from '../Data/CoreWindow';
 
 export default class CoreWindowEvent extends CustomEvent<CoreWindow> {
     constructor(type: string, info: CoreWindow) {

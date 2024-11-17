@@ -1,7 +1,7 @@
 export function ConvertMarginToStyle(margin: string) {
     if (!margin) return null;
 
-    const parts = margin.split(",");
+    const parts = margin.split(',');
     if (parts.length === 4) {
         const marginLeft = parts[0];
         const marginTop = parts[1];

@@ -1,6 +1,6 @@
-import { useLayoutEffect, useRef, useState } from "preact/hooks";
+import { useLayoutEffect, useRef, useState } from 'preact/hooks';
 
-import { RenderableProps } from "preact";
+import { RenderableProps } from 'preact';
 
 // implementation of a XAML ViewBox
 export default function ViewBox(props: RenderableProps<{}>) {
@@ -12,16 +12,18 @@ export default function ViewBox(props: RenderableProps<{}>) {
             if (!ref.current) return;
             for (const entry of entries) {
                 if (entry.target === ref.current.parentElement) {
-
                     // scale up to fit the parent container
                     let parent = ref.current.parentElement;
-                    let scale = Math.min(parent.clientWidth / ref.current.clientWidth, parent.clientHeight / ref.current.clientHeight);
+                    let scale = Math.min(
+                        parent.clientWidth / ref.current.clientWidth,
+                        parent.clientHeight / ref.current.clientHeight,
+                    );
                     setScale(scale);
 
                     console.log(`ViewBox: scale=${scale}`);
                 }
             }
-        }
+        };
 
         const observer = new ResizeObserver(onSizeChanged);
         observer.observe(ref.current.parentElement);
@@ -30,7 +32,10 @@ export default function ViewBox(props: RenderableProps<{}>) {
     }, []);
 
     return (
-        <div ref={ref} class="view-box" style={{ transform: `scale(${scale})` }}>
+        <div
+            ref={ref}
+            class="view-box"
+            style={{ transform: `scale(${scale})` }}>
             {props.children}
         </div>
     );

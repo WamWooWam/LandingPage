@@ -8,10 +8,10 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-import TileSquare150x150PeekImageAndText01 from './TileSquare150x150PeekImageAndText01'
-import TileSquare150x150PeekImageAndText02 from './TileSquare150x150PeekImageAndText02'
-import TileSquare150x150PeekImageAndText03 from './TileSquare150x150PeekImageAndText03'
-import TileSquare150x150PeekImageAndText04 from './TileSquare150x150PeekImageAndText04'
+import TileSquare150x150PeekImageAndText01 from './TileSquare150x150PeekImageAndText01';
+import TileSquare150x150PeekImageAndText02 from './TileSquare150x150PeekImageAndText02';
+import TileSquare150x150PeekImageAndText03 from './TileSquare150x150PeekImageAndText03';
+import TileSquare150x150PeekImageAndText04 from './TileSquare150x150PeekImageAndText04';
 
 export {
     TileSquare150x150PeekImageAndText01,

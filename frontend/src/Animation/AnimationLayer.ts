@@ -1,4 +1,4 @@
-import { TimedEasingFunction } from "./types";
+import { TimedEasingFunction } from './types';
 
 export default interface AnimationLayer {
     name: string;

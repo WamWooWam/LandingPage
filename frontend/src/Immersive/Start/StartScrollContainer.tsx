@@ -1,9 +1,9 @@
-import { Component, RefObject, createRef } from "preact";
+import { Component, RefObject, createRef } from 'preact';
 
-import { StartTileGroup } from "shared/StartLayoutParser";
-import TileGroup from "./Tiles/TileGroup";
-import { calculateLayout } from "./Tiles/TileUtils";
-import { useContext } from "preact/hooks";
+import { StartTileGroup } from 'shared/StartLayoutParser';
+import TileGroup from './Tiles/TileGroup';
+import { calculateLayout } from './Tiles/TileUtils';
+import { useContext } from 'preact/hooks';
 
 interface StartScrollContainerProps {
     tileGroups: StartTileGroup[];
@@ -15,10 +15,12 @@ interface StartScrollContainerState {
     visible: boolean;
 }
 
-export default class StartScrollContainer extends Component<StartScrollContainerProps, StartScrollContainerState> {
-
-    scrollContainer: RefObject<HTMLDivElement>
-    startTilesContainer: RefObject<HTMLDivElement>
+export default class StartScrollContainer extends Component<
+    StartScrollContainerProps,
+    StartScrollContainerState
+> {
+    scrollContainer: RefObject<HTMLDivElement>;
+    startTilesContainer: RefObject<HTMLDivElement>;
 
     constructor(props: StartScrollContainerProps) {
         super(props);
@@ -31,9 +33,11 @@ export default class StartScrollContainer extends Component<StartScrollContainer
     componentDidMount() {
         this.setState({ visible: true });
 
-        this.scrollContainer.current.addEventListener("wheel", this.onWheel, { passive: true });
+        this.scrollContainer.current.addEventListener('wheel', this.onWheel, {
+            passive: true,
+        });
         let startTilesContainer = this.startTilesContainer.current;
-        if (typeof ResizeObserver !== "undefined") {
+        if (typeof ResizeObserver !== 'undefined') {
             let resizeObserver = new ResizeObserver((entries) => {
                 for (const entry of entries) {
                     if (entry.target === startTilesContainer) {
@@ -44,22 +48,20 @@ export default class StartScrollContainer extends Component<StartScrollContainer
 
             resizeObserver.observe(startTilesContainer);
             this.setState({ observer: resizeObserver });
-        }
-        else {
+        } else {
             // fallback to window resize event
-            window.addEventListener("resize", this.onResize);
+            window.addEventListener('resize', this.onResize);
         }
 
         this.setHeight();
     }
 
     componentWillUnmount() {
-        this.scrollContainer.current.removeEventListener("wheel", this.onWheel);
+        this.scrollContainer.current.removeEventListener('wheel', this.onWheel);
         if (this.state.observer) {
             this.state.observer.disconnect();
-        }
-        else {
-            window.removeEventListener("resize", this.onResize);
+        } else {
+            window.removeEventListener('resize', this.onResize);
         }
     }
 
@@ -71,10 +73,10 @@ export default class StartScrollContainer extends Component<StartScrollContainer
         if (num !== undefined) {
             let availableHeight = num - 32;
             this.setState({ availableHeight });
-        }
-        else {
+        } else {
             let startTilesElement = this.startTilesContainer.current;
-            let availableHeight = startTilesElement.getBoundingClientRect().height - 32;
+            let availableHeight =
+                startTilesElement.getBoundingClientRect().height - 32;
             this.setState({ availableHeight });
         }
     }
@@ -92,29 +94,47 @@ export default class StartScrollContainer extends Component<StartScrollContainer
         const scrollContainer = e.currentTarget as HTMLElement;
         const scrollLeft = scrollContainer.scrollLeft;
         const scrollWidth = scrollContainer.scrollWidth;
-        const scrollLeftNew = Math.max(0, Math.min(scrollWidth - scrollContainer.clientWidth, scrollLeft + deltaX));
-        scrollContainer.scrollTo({ left: scrollLeftNew, behavior: "auto" });
+        const scrollLeftNew = Math.max(
+            0,
+            Math.min(
+                scrollWidth - scrollContainer.clientWidth,
+                scrollLeft + deltaX,
+            ),
+        );
+        scrollContainer.scrollTo({ left: scrollLeftNew, behavior: 'auto' });
     }
 
     render() {
         let cols = 0;
         // BUGBUG: this is horrible
-        let tileGroups = this.props.tileGroups.map(m => {
+        let tileGroups = this.props.tileGroups.map((m) => {
             let colBase = cols;
-            let { tileColumns } = calculateLayout(m.tiles, this.state.availableHeight, false);
+            let { tileColumns } = calculateLayout(
+                m.tiles,
+                this.state.availableHeight,
+                false,
+            );
             cols += tileColumns.length;
             return { ...m, tileColumns, baseColumn: colBase };
         });
 
-        const maxRows = (Math.floor(this.state.availableHeight / 128) * 128) + 30;
+        const maxRows = Math.floor(this.state.availableHeight / 128) * 128 + 30;
 
         return (
-            <div ref={this.scrollContainer} class="start-tiles-scroll-container" >
-                <div ref={this.startTilesContainer} class="start-tiles" style={{ visibility: this.state.visible ? "visible" : "hidden" }}>
-                    {tileGroups.map(m => <TileGroup {...m} height={maxRows} />)}
+            <div
+                ref={this.scrollContainer}
+                class="start-tiles-scroll-container">
+                <div
+                    ref={this.startTilesContainer}
+                    class="start-tiles"
+                    style={{
+                        visibility: this.state.visible ? 'visible' : 'hidden',
+                    }}>
+                    {tileGroups.map((m) => (
+                        <TileGroup {...m} height={maxRows} />
+                    ))}
                 </div>
             </div>
         );
     }
-
 }

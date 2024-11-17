@@ -1,7 +1,7 @@
-import { FenceTileProps } from "./FenceTileRenderer";
-import { RawTileProps } from "shared/StartLayoutParser"
-import { TileProps } from "./TileRenderer";
-import { TileSize } from "shared/TileSize";
+import { FenceTileProps } from './FenceTileRenderer';
+import { RawTileProps } from 'shared/StartLayoutParser';
+import { TileProps } from './TileRenderer';
+import { TileSize } from 'shared/TileSize';
 
 export function getTileSize(size: TileSize) {
     switch (size) {
@@ -16,7 +16,12 @@ export function getTileSize(size: TileSize) {
     }
 }
 
-export type TilePropsWithType = (TileProps | FenceTileProps) & { size: TileSize, type: "fence" | "tile", key: any, animColumn: number };
+export type TilePropsWithType = (TileProps | FenceTileProps) & {
+    size: TileSize;
+    type: 'fence' | 'tile';
+    key: any;
+    animColumn: number;
+};
 
 export function collapseTiles(tiles: RawTileProps[]): Array<TilePropsWithType> {
     let fullTiles: TilePropsWithType[] = [];
@@ -26,14 +31,14 @@ export function collapseTiles(tiles: RawTileProps[]): Array<TilePropsWithType> {
             fullTiles.push({
                 size: TileSize.square150x150,
                 apps: currentFence,
-                type: "fence",
+                type: 'fence',
                 key: `${currentFence[0].packageName}!${currentFence[0].appId}`,
-                animColumn: 0
+                animColumn: 0,
             });
         }
 
         currentFence = val;
-    }
+    };
 
     for (const tile of tiles) {
         if (tile.fence && tile.size === TileSize.square70x70) {
@@ -45,8 +50,7 @@ export function collapseTiles(tiles: RawTileProps[]): Array<TilePropsWithType> {
         if (currentFence) {
             if (tile.size !== TileSize.square70x70) {
                 resetFence();
-            }
-            else {
+            } else {
                 if (currentFence.length === 4) {
                     resetFence([]);
                 }
@@ -56,7 +60,12 @@ export function collapseTiles(tiles: RawTileProps[]): Array<TilePropsWithType> {
             }
         }
 
-        fullTiles.push({ type: 'tile', key: `${tile.packageName}!${tile.appId}`, animColumn: 0, ...tile });
+        fullTiles.push({
+            type: 'tile',
+            key: `${tile.packageName}!${tile.appId}`,
+            animColumn: 0,
+            ...tile,
+        });
     }
 
     resetFence([]);
@@ -75,7 +84,7 @@ export function tileSizeToColumns(size: TileSize): number {
             return 2;
         case TileSize.square70x70: // handled separately
         default:
-            throw new Error("Invalid tile size!")
+            throw new Error('Invalid tile size!');
     }
 }
 
@@ -88,16 +97,23 @@ export function tileSizeToRows(size: TileSize): number {
             return 2;
         case TileSize.square70x70: // handled separately
         default:
-            throw new Error("Invalid tile size!")
+            throw new Error('Invalid tile size!');
     }
 }
 
-export function calculateLayout(tiles: RawTileProps[], availableHeight: number, isMobile: boolean): { tileColumns: TilePropsWithType[][] } {
+export function calculateLayout(
+    tiles: RawTileProps[],
+    availableHeight: number,
+    isMobile: boolean,
+): { tileColumns: TilePropsWithType[][] } {
     let collapsedTiles = collapseTiles(tiles);
     return layoutDesktopNew(collapsedTiles, availableHeight);
 }
 
-export function layoutDesktopNew(collapseTiles: TilePropsWithType[], availableHeight: number): { tileColumns: TilePropsWithType[][] } {
+export function layoutDesktopNew(
+    collapseTiles: TilePropsWithType[],
+    availableHeight: number,
+): { tileColumns: TilePropsWithType[][] } {
     let maxRows = Math.max(1, Math.floor(availableHeight / 128));
     let row = 0;
     let column = 0;
@@ -122,8 +138,7 @@ export function layoutDesktopNew(collapseTiles: TilePropsWithType[], availableHe
                 tileColumns.push(currentColumn);
                 currentColumn = [];
                 row = 0;
-            }
-            else {
+            } else {
                 row += lastHeight;
             }
 
@@ -145,7 +160,11 @@ export function layoutDesktopNew(collapseTiles: TilePropsWithType[], availableHe
 }
 
 // TODO: use this to generate CSS directly
-export function layoutDesktop(collapsedTiles: TilePropsWithType[], baseCol: number, availableHeight: number): { tiles: Array<TilePropsWithType>, columns: number } {
+export function layoutDesktop(
+    collapsedTiles: TilePropsWithType[],
+    baseCol: number,
+    availableHeight: number,
+): { tiles: Array<TilePropsWithType>; columns: number } {
     let maxRows = Math.floor(availableHeight / 128);
     // console.log(`available height: ${availableHeight}, maxRows: ${maxRows}`);
     let row = 0;
@@ -160,12 +179,11 @@ export function layoutDesktop(collapsedTiles: TilePropsWithType[], baseCol: numb
         let tileWidth = tileSizeToColumns(tile.size);
         let tileHeight = tileSizeToRows(tile.size);
 
-        if ((column - baseColumn) >= 2) {
-            if ((row + Math.max(lastHeight, tileHeight)) >= maxRows) {
+        if (column - baseColumn >= 2) {
+            if (row + Math.max(lastHeight, tileHeight) >= maxRows) {
                 row = 0;
                 baseColumn += 2;
-            }
-            else {
+            } else {
                 row += lastHeight;
             }
 
@@ -180,7 +198,10 @@ export function layoutDesktop(collapsedTiles: TilePropsWithType[], baseCol: numb
     }
 
     // BUGBUG: fix for a webkit bug where the container size is not calculated correctly
-    let totalColumns = tiles.reduce((prev, cur) => Math.max(prev, cur.column + tileSizeToColumns(cur.size)), 0);
+    let totalColumns = tiles.reduce(
+        (prev, cur) => Math.max(prev, cur.column + tileSizeToColumns(cur.size)),
+        0,
+    );
 
     console.log(tiles, totalColumns);
 

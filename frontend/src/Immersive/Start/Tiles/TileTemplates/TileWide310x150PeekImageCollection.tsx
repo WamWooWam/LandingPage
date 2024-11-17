@@ -8,12 +8,12 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-import TileWide310x150PeekImageCollection01 from './TileWide310x150PeekImageCollection01'
-import TileWide310x150PeekImageCollection02 from './TileWide310x150PeekImageCollection02'
-import TileWide310x150PeekImageCollection03 from './TileWide310x150PeekImageCollection03'
-import TileWide310x150PeekImageCollection04 from './TileWide310x150PeekImageCollection04'
-import TileWide310x150PeekImageCollection05 from './TileWide310x150PeekImageCollection05'
-import TileWide310x150PeekImageCollection06 from './TileWide310x150PeekImageCollection06'
+import TileWide310x150PeekImageCollection01 from './TileWide310x150PeekImageCollection01';
+import TileWide310x150PeekImageCollection02 from './TileWide310x150PeekImageCollection02';
+import TileWide310x150PeekImageCollection03 from './TileWide310x150PeekImageCollection03';
+import TileWide310x150PeekImageCollection04 from './TileWide310x150PeekImageCollection04';
+import TileWide310x150PeekImageCollection05 from './TileWide310x150PeekImageCollection05';
+import TileWide310x150PeekImageCollection06 from './TileWide310x150PeekImageCollection06';
 
 export {
     TileWide310x150PeekImageCollection01,

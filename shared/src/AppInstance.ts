@@ -1,6 +1,6 @@
-import { CoreWindow } from "./CoreWindow";
-import { Package } from "./Package";
-import { PackageApplication } from "./PackageApplication";
+import { CoreWindow } from './CoreWindow';
+import { Package } from './Package';
+import { PackageApplication } from './PackageApplication';
 
 export interface AppInstance {
     id: string;

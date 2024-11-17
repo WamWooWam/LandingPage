@@ -1,5 +1,5 @@
-import { TileSize } from "./TileSize";
-import { RawTileProps } from "./StartLayoutParser"
+import { TileSize } from './TileSize';
+import { RawTileProps } from './StartLayoutParser';
 
 export interface TileProps {
     packageName: string;
@@ -12,14 +12,16 @@ export interface TileProps {
 }
 
 export interface FenceTileProps {
-    apps: TileProps[]
+    apps: TileProps[];
     row?: number;
     column?: number;
     width?: number;
     height?: number;
 }
 
-export type TilePropsWithType = (TileProps | FenceTileProps) & { type: "tile" | "fence" };
+export type TilePropsWithType = (TileProps | FenceTileProps) & {
+    type: 'tile' | 'fence';
+};
 
 export function tileSizeToWidth(size: TileSize): number {
     switch (size) {
@@ -30,7 +32,7 @@ export function tileSizeToWidth(size: TileSize): number {
             return 2;
         case TileSize.square70x70: // handled separately
         default:
-            throw new Error("Invalid tile size!")
+            throw new Error('Invalid tile size!');
     }
 }
 
@@ -43,7 +45,7 @@ export function tileSizeToHeight(size: TileSize): number {
             return 2;
         case TileSize.square70x70: // handled separately
         default:
-            throw new Error("Invalid tile size!")
+            throw new Error('Invalid tile size!');
     }
 }
 
@@ -56,12 +58,12 @@ export function collapseTiles(tiles: RawTileProps[]): Array<TilePropsWithType> {
             fullTiles.push({
                 size: TileSize.square150x150,
                 apps: currentFence,
-                type: "fence",
+                type: 'fence',
             });
         }
 
         return val;
-    }
+    };
 
     for (const tile of tiles) {
         if (tile.fence && tile.size === TileSize.square70x70) {
@@ -73,8 +75,7 @@ export function collapseTiles(tiles: RawTileProps[]): Array<TilePropsWithType> {
         if (currentFence !== null) {
             if (tile.size !== TileSize.square70x70) {
                 currentFence = resetFence();
-            }
-            else if (currentFence !== null) {
+            } else if (currentFence !== null) {
                 if (currentFence!.length === 4) {
                     currentFence = resetFence([]);
                 }
@@ -82,7 +83,6 @@ export function collapseTiles(tiles: RawTileProps[]): Array<TilePropsWithType> {
                 currentFence!.push(tile);
                 continue;
             }
-
         }
 
         fullTiles.push({ type: 'tile', ...tile });
@@ -93,8 +93,13 @@ export function collapseTiles(tiles: RawTileProps[]): Array<TilePropsWithType> {
     return fullTiles;
 }
 
-export function layoutDesktop(collapsedTiles: any[], availableHeight: number): Array<TilePropsWithType> {
-    let maxRows = Number.isFinite(availableHeight) ? Math.floor(availableHeight / 128) : availableHeight; 
+export function layoutDesktop(
+    collapsedTiles: any[],
+    availableHeight: number,
+): Array<TilePropsWithType> {
+    let maxRows = Number.isFinite(availableHeight)
+        ? Math.floor(availableHeight / 128)
+        : availableHeight;
     let row = 0;
     let column = 0;
     let baseColumn = 0;
@@ -107,24 +112,27 @@ export function layoutDesktop(collapsedTiles: any[], availableHeight: number): A
         let tileWidth = tileSizeToWidth(tile.size);
         let tileHeight = tileSizeToHeight(tile.size);
 
-        if ((column - baseColumn) >= 2) {
-            if ((row + Math.max(lastHeight, tileHeight)) >= maxRows) {
+        if (column - baseColumn >= 2) {
+            if (row + Math.max(lastHeight, tileHeight) >= maxRows) {
                 row = 0;
                 baseColumn += 2;
-            }
-            else {
+            } else {
                 row += lastHeight;
             }
 
             column = baseColumn;
         }
 
-
         if (tile.type === 'fence') {
             tiles.push({ row, column, width: 1, height: 1, ...tile });
-        }
-        else {
-            tiles.push({ row, column, width: tileWidth, height: tileHeight, ...tile });
+        } else {
+            tiles.push({
+                row,
+                column,
+                width: tileWidth,
+                height: tileHeight,
+                ...tile,
+            });
         }
 
         column += tileWidth;

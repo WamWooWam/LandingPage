@@ -1,7 +1,7 @@
-import * as fs from 'node:fs'
-import * as fsp from 'node:fs/promises'
-import * as os from 'node:os'
-import * as path from 'node:path'
+import * as fs from 'node:fs';
+import * as fsp from 'node:fs/promises';
+import * as os from 'node:os';
+import * as path from 'node:path';
 
 import { DOMParser, XMLSerializer } from 'xmldom';
 import {
@@ -14,8 +14,8 @@ import {
     collapseTiles,
     layoutDesktop,
     lightenDarkenColour2,
-    parseLayout
-} from "landing-page-shared";
+    parseLayout,
+} from 'landing-page-shared';
 
 import PackageRegistry from '../../PackageRegistry';
 import { Resvg } from '@resvg/resvg-js';
@@ -24,32 +24,53 @@ import { render } from 'preact-render-to-string';
 
 import xmldom = require('xmldom');
 
-const Tile = (props: { x: number, y: number, width: number, height: number, fill: string, image: string, text: string, textStyle: string }) => {
-
-    let textElement = props.text &&
-        <text x={8}
+const Tile = (props: {
+    x: number;
+    y: number;
+    width: number;
+    height: number;
+    fill: string;
+    image: string;
+    text: string;
+    textStyle: string;
+}) => {
+    let textElement = props.text && (
+        <text
+            x={8}
             y={props.height - 8}
             font-size="7.5pt"
             fill={props.textStyle === 'light' ? 'white' : 'black'}
             style={`font-family: 'Segoe UI';`}>
             {props.text}
-        </text>;
+        </text>
+    );
 
     let imageUrl = `../frontend/dist${props.image}`;
     if (imageUrl.endsWith('.svg')) {
-        const content = fs.readFileSync('../frontend/dist/' + props.image, 'utf-8');
+        const content = fs.readFileSync(
+            '../frontend/dist/' + props.image,
+            'utf-8',
+        );
         const doc = new DOMParser().parseFromString(content, 'application/xml');
         let xml = new XMLSerializer().serializeToString(doc.documentElement);
 
         return (
             <g transform={`translate(${props.x}, ${props.y})`}>
-                <rect x={0} y={0} width={props.width} height={props.height} fill={props.fill} />
-                <g dangerouslySetInnerHTML={{ __html: xml }} transform={`scale(0.575)`} />
+                <rect
+                    x={0}
+                    y={0}
+                    width={props.width}
+                    height={props.height}
+                    fill={props.fill}
+                />
+                <g
+                    dangerouslySetInnerHTML={{ __html: xml }}
+                    transform={`scale(0.575)`}
+                />
                 {textElement}
             </g>
-        )
-    }
-    else {
+        );
+    } else {
         if (imageUrl.endsWith('.webp')) {
             imageUrl = imageUrl.replace('.webp', '.png');
         }
@@ -59,15 +80,32 @@ const Tile = (props: { x: number, y: number, width: number, height: number, fill
 
         return (
             <g transform={`translate(${props.x}, ${props.y})`}>
-                <rect x={0} y={0} width={props.width} height={props.height} fill={props.fill} />
-                <image href={base64} x={0} y={0} width={props.width} height={props.height} />
+                <rect
+                    x={0}
+                    y={0}
+                    width={props.width}
+                    height={props.height}
+                    fill={props.fill}
+                />
+                <image
+                    href={base64}
+                    x={0}
+                    y={0}
+                    width={props.width}
+                    height={props.height}
+                />
                 {textElement}
             </g>
         );
     }
-}
+};
 
-const TileGroup = (props: { title: string, tiles: TilePropsWithType[], x: number, y: number }) => {
+const TileGroup = (props: {
+    title: string;
+    tiles: TilePropsWithType[];
+    x: number;
+    y: number;
+}) => {
     // render each tile as a styled svg rect
     let tiles = props.tiles.map((tile, index) => {
         let row = tile.row!;
@@ -79,46 +117,73 @@ const TileGroup = (props: { title: string, tiles: TilePropsWithType[], x: number
         let x = props.x + column * 88;
         let y = props.y + row * 88;
 
-        if (tile.type === "fence") {
+        if (tile.type === 'fence') {
             // a fence has up to 4 smaller tiles inside it also laid out in a grid of 34px cells with 4px padding
-            let fenceTiles = (tile as FenceTileProps).apps.map((tile, index) => {
-                let row = index % 2;
-                let column = Math.floor(index / 2);
+            let fenceTiles = (tile as FenceTileProps).apps.map(
+                (tile, index) => {
+                    let row = index % 2;
+                    let column = Math.floor(index / 2);
 
-                // layout tiles in a grid of 34px cells with 4px padding
-                let x1 = column * 44;
-                let y1 = row * 44;
+                    // layout tiles in a grid of 34px cells with 4px padding
+                    let x1 = column * 44;
+                    let y1 = row * 44;
 
-                let { image, fill } = getData(tile as any);
+                    let { image, fill } = getData(tile as any);
 
-                return (
-                    <Tile x={x1} y={y1} width={40} height={40} fill={fill} image={image} text={null} textStyle={null} />
-                )
-            });
+                    return (
+                        <Tile
+                            x={x1}
+                            y={y1}
+                            width={40}
+                            height={40}
+                            fill={fill}
+                            image={image}
+                            text={null}
+                            textStyle={null}
+                        />
+                    );
+                },
+            );
 
-            return (
-                <g transform={`translate(${x}, ${y})`}>{fenceTiles}</g>
-            )
+            return <g transform={`translate(${x}, ${y})`}>{fenceTiles}</g>;
         }
 
         let { image, app, fill, text, textStyle } = getData(tile);
 
         return (
-            <Tile x={x} y={y} width={widthInColumns * 88 - 4} height={heightInRows * 88 - 4} fill={fill} image={image} text={text} textStyle={textStyle} />
-        )
+            <Tile
+                x={x}
+                y={y}
+                width={widthInColumns * 88 - 4}
+                height={heightInRows * 88 - 4}
+                fill={fill}
+                image={image}
+                text={text}
+                textStyle={textStyle}
+            />
+        );
     });
 
     return (
         <>
-            <text x={props.x} y={props.y - 8} font-size="12pt" fill="white" style={"font-family: 'Segoe UI'; font-weight: 300;"}>{props.title}</text>
+            <text
+                x={props.x}
+                y={props.y - 8}
+                font-size="12pt"
+                fill="white"
+                style={"font-family: 'Segoe UI'; font-weight: 300;"}>
+                {props.title}
+            </text>
             {tiles}
         </>
-    )
-
-}
+    );
+};
 
 const generateThumbnail = async () => {
-    const startLayout = await fsp.readFile('../packages/StartScreen.xml', 'utf-8');
+    const startLayout = await fsp.readFile(
+        '../packages/StartScreen.xml',
+        'utf-8',
+    );
     const tileGroups = parseLayout(startLayout, xmldom.DOMParser);
 
     let x = 58;
@@ -126,14 +191,14 @@ const generateThumbnail = async () => {
     for (let tileGroup of tileGroups) {
         let collapsedTiles = collapseTiles(tileGroup.tiles);
         let layout = layoutDesktop(collapsedTiles, 600);
-        let maxColumn = Math.max(...layout.map(t => t.column + t.width));
+        let maxColumn = Math.max(...layout.map((t) => t.column + t.width));
 
         renderedTileGroups.push(
-            <TileGroup {...tileGroup} tiles={layout} x={x} y={120} />
-        )
+            <TileGroup {...tileGroup} tiles={layout} x={x} y={120} />,
+        );
 
         x += maxColumn * 88 + 20;
-    };
+    }
 
     // map each application to packageFamilyName!appId
     let renderedTiles = [];
@@ -143,27 +208,44 @@ const generateThumbnail = async () => {
             let app = packageInfo.applications[appId];
             renderedTiles.push(
                 <linearGradient id={`${packageFamilyName}!${appId}`}>
-                    <stop offset="0%" stop-color={app.visualElements.backgroundColor} />
-                    <stop offset="100%" stop-color={lightenDarkenColour2(app.visualElements.backgroundColor, 0.05)} />
-                </linearGradient>
-            )
+                    <stop
+                        offset="0%"
+                        stop-color={app.visualElements.backgroundColor}
+                    />
+                    <stop
+                        offset="100%"
+                        stop-color={lightenDarkenColour2(
+                            app.visualElements.backgroundColor,
+                            0.05,
+                        )}
+                    />
+                </linearGradient>,
+            );
         }
     }
 
     return render(
-        <svg width="1280" height="800" viewBox="0 0 640 400"
-            fill="none" xmlns="http://www.w3.org/2000/svg">
-            <defs>
-                {renderedTiles}
-            </defs>
+        <svg
+            width="1280"
+            height="800"
+            viewBox="0 0 640 400"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg">
+            <defs>{renderedTiles}</defs>
             <rect width="640" height="400" fill="#04016c" />
-            <text x={58} y={72} font-size="42pt" fill="white" style={"font-family: 'Segoe UI'; font-weight: 300;"}>Start</text>
+            <text
+                x={58}
+                y={72}
+                font-size="42pt"
+                fill="white"
+                style={"font-family: 'Segoe UI'; font-weight: 300;"}>
+                Start
+            </text>
 
             {renderedTileGroups}
-        </svg>
+        </svg>,
     );
-}
-
+};
 
 function getData(tile: TilePropsWithType) {
     let tileProps = tile as TileProps;
@@ -188,7 +270,11 @@ function getData(tile: TilePropsWithType) {
     }
 
     let text = '';
-    if (app.visualElements.defaultTile.showNameOnTiles.includes(TileSize[tileProps.size])) {
+    if (
+        app.visualElements.defaultTile.showNameOnTiles.includes(
+            TileSize[tileProps.size],
+        )
+    ) {
         text = app.visualElements.displayName;
     }
 
@@ -197,7 +283,6 @@ function getData(tile: TilePropsWithType) {
     let fill = `url(#${tileProps.packageName}!${tileProps.appId})`;
     return { tileProps, image, app, fill, text, textStyle };
 }
-
 
 export const generateThumbnailPng = async () => {
     const svg = await generateThumbnail();
@@ -208,20 +293,17 @@ export const generateThumbnailPng = async () => {
             value: 1280,
         },
         font: {
-            fontFiles: [
-                './fonts/segoeui.ttf',
-                './fonts/segoeuil.ttf',
-            ],
+            fontFiles: ['./fonts/segoeui.ttf', './fonts/segoeuil.ttf'],
             loadSystemFonts: false,
-            defaultFontFamily: 'Segoe UI'
-        }
-    }
+            defaultFontFamily: 'Segoe UI',
+        },
+    };
 
     const resvg = new Resvg(svg, options as any);
     const png = resvg.render().asPng();
-    
+
     return png;
-}
+};
 
 export default function registerRoutes(router: Router) {
     router.get('/og-image.svg', async (req, res) => {

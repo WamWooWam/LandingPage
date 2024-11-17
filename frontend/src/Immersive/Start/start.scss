@@ -37,7 +37,6 @@
     }
 }
 
-
 .start-screen,
 .core-window-container {
     transform-style: preserve-3d;
@@ -94,7 +93,6 @@ html {
     appearance: none;
 }
 
-
 .start-show-all-icon {
     width: 32px;
     height: 32px;
@@ -110,7 +108,7 @@ html {
 }
 
 .start-show-all-button:hover #circle {
-    fill: #2E00A5;
+    fill: #2e00a5;
 }
 
 .start-show-all-button:active #circle {
@@ -135,7 +133,7 @@ html {
 }
 
 .start-hide-all-button:hover #circle {
-    fill: #2E00A5;
+    fill: #2e00a5;
 }
 
 .start-hide-all-button:active #circle {
@@ -161,7 +159,6 @@ html {
     }
 }
 
-
 @media screen and (min-width: 350px) {
     .start-content {
         grid-template-columns: 0 1fr 0;
@@ -183,25 +180,27 @@ html {
 // smaller, lower resolution background
 
 @media screen and (min-width: 600px) {
-
     body,
     .start {
         background-image: url(static/wallpaper/the-cliffs-small.jpg);
-        background-image: image-set("static/wallpaper/the-cliffs-small.avif" type("image/avif"),
-                "static/wallpaper/the-cliffs-small.webp" type("image/webp"),
-                "static/wallpaper/the-cliffs-small.jpg" type("image/jpeg"));
+        background-image: image-set(
+            'static/wallpaper/the-cliffs-small.avif' type('image/avif'),
+            'static/wallpaper/the-cliffs-small.webp' type('image/webp'),
+            'static/wallpaper/the-cliffs-small.jpg' type('image/jpeg')
+        );
     }
 }
 
 // larger, higher resolution background
 @media screen and (min-width: 1200px) {
-
     body,
     .start {
         background-image: url(static/wallpaper/the-cliffs.jpg);
-        background-image: image-set("static/wallpaper/the-cliffs.avif" type("image/avif"),
-                "static/wallpaper/the-cliffs.webp" type("image/webp"),
-                "static/wallpaper/the-cliffs.jpg" type("image/jpeg"));
+        background-image: image-set(
+            'static/wallpaper/the-cliffs.avif' type('image/avif'),
+            'static/wallpaper/the-cliffs.webp' type('image/webp'),
+            'static/wallpaper/the-cliffs.jpg' type('image/jpeg')
+        );
     }
 }
 
@@ -230,7 +229,8 @@ html {
     .start-content {
         grid-template-rows: 120px 1fr;
         height: 100vh;
-        padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
+        padding: env(safe-area-inset-top) env(safe-area-inset-right)
+            env(safe-area-inset-bottom) env(safe-area-inset-left);
     }
 
     .start-main-header {
@@ -241,10 +241,12 @@ html {
 
     .start-title {
         /* 42pt;Light;None;Segoe UI */
-        font-family: "Segoe UI";
+        font-family: 'Segoe UI';
         font-size: 42pt;
         font-weight: 200;
-        font-feature-settings: "ss17" 1, "dlig" 1;
+        font-feature-settings:
+            'ss17' 1,
+            'dlig' 1;
         line-height: 80px;
         margin: 0;
     }
@@ -282,26 +284,26 @@ html {
         align-items: center;
         font-weight: 300;
 
-        >.username {
+        > .username {
             flex: 1;
             text-align: right;
 
-            >p {
+            > p {
                 margin: 0;
             }
 
-            >.primary {
+            > .primary {
                 font-size: 27px;
                 line-height: 27px;
             }
 
-            >.secondary {
+            > .secondary {
                 font-size: 18px;
                 line-height: 18px;
             }
         }
 
-        >.start-header-user-picture {
+        > .start-header-user-picture {
             width: 40px;
             height: 40px;
             align-self: center;
@@ -310,21 +312,20 @@ html {
         }
     }
 
-
     .start-header-power,
     .start-header-search {
         display: flex;
         align-items: center;
         justify-content: center;
-        font-family: "Segoe UI Symbol";
+        font-family: 'Segoe UI Symbol';
         font-size: 28px;
         line-height: 30px;
         width: 57px;
         height: 57px;
     }
 
-    .mobile>.start-header,
-    .mobile>.start-footer {
+    .mobile > .start-header,
+    .mobile > .start-footer {
         display: none;
     }
 
@@ -410,7 +411,7 @@ html {
         grid-auto-columns: 120px;
         grid-auto-rows: 120px;
         grid-auto-flow: none;
-        
+
         transform-origin: center;
         perspective-origin: center;
 
@@ -428,7 +429,7 @@ html {
     }
 
     .start-arrow-button {
-        font-family: "Segoe UI Symbol";
+        font-family: 'Segoe UI Symbol';
         font-size: 42px;
         display: flex;
         justify-self: flex-start;
@@ -478,7 +479,8 @@ html {
 
         .start-title {
             opacity: 0;
-            animation: start-title-show-login 1.5s forwards cubic-bezier(0.16, 1, 0.3, 1) 0.5s;
+            animation: start-title-show-login 1.5s forwards
+                cubic-bezier(0.16, 1, 0.3, 1) 0.5s;
         }
 
         .tile-group-header {
@@ -487,24 +489,28 @@ html {
         }
 
         .start-tiles-scroll-container {
-            animation: start-tiles-show-login 1.5s forwards cubic-bezier(0.16, 1, 0.3, 1);
+            animation: start-tiles-show-login 1.5s forwards
+                cubic-bezier(0.16, 1, 0.3, 1);
         }
 
         .tile-column {
             opacity: 0;
             transform: perspective(1000px) scale(0.66) rotateY(10deg);
-            animation: tile-column-show-login 0.85s forwards cubic-bezier(0.16, 1, 0.3, 1);
+            animation: tile-column-show-login 0.85s forwards
+                cubic-bezier(0.16, 1, 0.3, 1);
             animation-delay: calc(133ms * var(--column));
         }
 
         .start-show-all-button {
             opacity: 0;
-            animation: start-show-all-login 0.85s forwards cubic-bezier(0.16, 1, 0.3, 1) 1s;
+            animation: start-show-all-login 0.85s forwards
+                cubic-bezier(0.16, 1, 0.3, 1) 1s;
         }
 
         .start-header-buttons {
             opacity: 0;
-            animation: start-header-buttons-show-login 0.85s forwards cubic-bezier(0.16, 1, 0.3, 1);
+            animation: start-header-buttons-show-login 0.85s forwards
+                cubic-bezier(0.16, 1, 0.3, 1);
         }
 
         @keyframes tile-column-show-login {
@@ -545,7 +551,6 @@ html {
             }
         }
 
-
         @keyframes start-header-buttons-show-login {
             0% {
                 opacity: 0;
@@ -567,13 +572,15 @@ html {
         animation: fade-in 0.25s forwards cubic-bezier(0.16, 1, 0.3, 1);
 
         .start-tiles-scroll-container {
-            animation: start-tiles-show 1.25s forwards cubic-bezier(0.16, 1, 0.3, 1);
+            animation: start-tiles-show 1.25s forwards
+                cubic-bezier(0.16, 1, 0.3, 1);
         }
 
         .tile-column {
             opacity: 0;
             transform: perspective(1000px) scale(0.75) rotateY(10deg);
-            animation: tile-column-show 0.66s forwards cubic-bezier(0.16, 1, 0.3, 1);
+            animation: tile-column-show 0.66s forwards
+                cubic-bezier(0.16, 1, 0.3, 1);
             animation-delay: calc(66ms * var(--column));
         }
 
@@ -607,7 +614,6 @@ html {
             10% {
                 transform: translateX(50px);
             }
-
 
             100% {
                 transform: translateX(0px);

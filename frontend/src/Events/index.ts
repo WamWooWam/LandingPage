@@ -15,16 +15,24 @@ export default class Events {
         return Events.instance;
     }
 
-    public addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void {
+    public addEventListener(
+        type: string,
+        listener: EventListenerOrEventListenerObject,
+        options?: boolean | AddEventListenerOptions,
+    ): void {
         this.eventTarget.addEventListener(type, listener, options);
     }
 
-    public removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void {
+    public removeEventListener(
+        type: string,
+        listener: EventListenerOrEventListenerObject,
+        options?: boolean | EventListenerOptions,
+    ): void {
         this.eventTarget.removeEventListener(type, listener, options);
     }
 
     public dispatchEvent(event: Event): boolean {
-        console.warn("dispatching event: %s, %O", event.type, event);
+        console.warn('dispatching event: %s, %O', event.type, event);
         return this.eventTarget.dispatchEvent(event);
     }
 }
