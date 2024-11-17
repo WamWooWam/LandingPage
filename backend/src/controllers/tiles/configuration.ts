@@ -1,11 +1,16 @@
-import { E_LONGATED_MUSKRAT } from 'landing-page-shared';
+import { E_LONGATED_MUSKRAT, E_NOTIMPL } from 'landing-page-shared';
+
 import { Router } from 'express';
 
 async function getConfiguration(req, resp) {
     const config = {
         appStatus: {
             'Socials_zfgz6xjnaz0ym!Discord': {
-                statusCode: 0x8000ffff,
+                statusCode: E_NOTIMPL,
+                unavailable: true,
+            },
+            'Socials_zfgz6xjnaz0ym!Twitter': {
+                statusCode: E_LONGATED_MUSKRAT,
                 unavailable: true,
             },
         },

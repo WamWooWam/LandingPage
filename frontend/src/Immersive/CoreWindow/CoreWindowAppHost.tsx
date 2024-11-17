@@ -14,16 +14,15 @@ export default class CoreWindowAppHost extends Component<
 
     constructor(props: CoreWindowAppHostProps) {
         super(props);
-        this.state = { hasRendered: false };
     }
 
     shouldComponentUpdate(): boolean {
-        return !this.state.hasRendered;
+        return false;
     }
 
-    async componentDidUpdate(): Promise<void> {
-        if (this.ref.current && !this.state.hasRendered) {
-            this.setState({ hasRendered: true });
+    async componentDidMount(): Promise<void> {
+        if (this.ref.current) {
+            console.log(this.ref.current, this.props.window.view);
             this.ref.current.appendChild(this.props.window.view);
             await this.props.window.load();
         }
