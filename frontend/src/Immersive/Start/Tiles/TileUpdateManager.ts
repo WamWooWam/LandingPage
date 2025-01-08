@@ -32,7 +32,7 @@ export default class TileUpdateManager {
         ); // 10 minutes
         this._initialUpdate = window.setTimeout(
             () => this.updateAllTiles(),
-            2000,
+            500,
         ); // kinda hacky? but it works
     }
 
