@@ -118,7 +118,7 @@
                 <wb:SplashScreen BackgroundColor="#FF0000" Image="youtube-splash.svg" />
             </wb:VisualElements>
         </Application>
-        <Application Id="Discord" StartPage="https://discord.gg/something">
+        <Application Id="Discord" StartPage="https://discord.gg/gq5btbE7EZ">
             <wb:VisualElements DisplayName="Discord" Description="Discord" ForegroundText="light"
                 BackgroundColor="#5865F2" Square150x150Logo="images/discord-square150x150.svg"
                 Square30x30Logo="images/discord-square30x30.svg" ToastCapable="true">

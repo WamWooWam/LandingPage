@@ -33,9 +33,7 @@ export default class StartScrollContainer extends Component<
     componentDidMount() {
         this.setState({ visible: true });
 
-        this.scrollContainer.current.addEventListener('wheel', this.onWheel, {
-            passive: true,
-        });
+        this.scrollContainer.current.addEventListener('wheel', this.onWheel, { passive: true, });
         let startTilesContainer = this.startTilesContainer.current;
         if (typeof ResizeObserver !== 'undefined') {
             let resizeObserver = new ResizeObserver((entries) => {

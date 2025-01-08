@@ -81,7 +81,7 @@ export default class Start extends Component<{}, StartState> {
 
         return (
             <div class={classes.join(' ')}>
-                <div class={'start-screen'}>
+                <div class="start-screen">
                     <div class="start-content">
                         <div class="start-header start-main-header">
                             <h1 class="start-title">Start</h1>
