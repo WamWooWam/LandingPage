@@ -2,8 +2,9 @@
 <Package IgnorableNamespaces="build" xmlns="http://schemas.microsoft.com/appx/2010/manifest"
     xmlns:wb="http://schemas.microsoft.com/appx/2013/manifest"
     xmlns:wam="https://wamwoowam.co.uk/appx/2022"
+    xmlns:uap="http://schemas.microsoft.com/appx/manifest/foundation/windows10"
     xmlns:build="http://schemas.microsoft.com/developer/appx/2012/build">
-    <Identity Name="Friends" ProcessorArchitecture="x86" Publisher="CN=Wan Kerr Co. Ltd."
+    <Identity Name="Friends" ProcessorArchitecture="neutral" Publisher="CN=Wan Kerr Co. Ltd."
         Version="2.6.672.0" />
     <Properties>
         <DisplayName>Friends</DisplayName>
@@ -13,7 +14,7 @@
     </Properties>
     <Prerequisites>
         <OSMinVersion>6.3.0</OSMinVersion>
-        <OSMaxVersionTested>6.3.0</OSMaxVersionTested>
+        <OSMaxVersionTested>10.0.22000</OSMaxVersionTested>
     </Prerequisites>
     <Resources>
         <Resource wb:Scale="100" />
@@ -23,139 +24,213 @@
     <Applications>
         <Application Id="amyy54" StartPage="https://amyy.me/">
             <wb:VisualElements DisplayName="Amy"
+                Description="Friend"
                 ForegroundText="light"
-                BackgroundColor="#696db8" Square150x150Logo="amyy54-square150x150.webp"
-                Square30x30Logo="amyy54-square30x30.webp" ToastCapable="true">
-                <wb:DefaultTile Square70x70Logo="amyy54-square70x70.webp"
-                    Wide310x150Logo="amyy54-wide310x150.webp"
-                    Square310x310Logo="amyy54-square310x310.webp">
+                BackgroundColor="#696db8" Square150x150Logo="amyy54-square150x150.png"
+                Square30x30Logo="amyy54-square30x30.png" ToastCapable="true">
+                <wb:DefaultTile Square70x70Logo="amyy54-square70x70.png"
+                    Wide310x150Logo="amyy54-wide310x150.png"
+                    Square310x310Logo="amyy54-square310x310.png">
                     <wb:ShowNameOnTiles>
                         <wb:ShowOn Tile="square150x150Logo" />
                         <wb:ShowOn Tile="wide310x150Logo" />
                         <wb:ShowOn Tile="square310x310Logo" />
                     </wb:ShowNameOnTiles>
                 </wb:DefaultTile>
-                <wb:SplashScreen BackgroundColor="#FFFFFF" Image="" />
+                <wb:SplashScreen BackgroundColor="#696db8" Image="peoplesplash.png" />
             </wb:VisualElements>
+            <ApplicationContentUriRules>
+                <Rule Type="include" Match="https://amyy.me/*" />
+            </ApplicationContentUriRules>
         </Application>
         <Application Id="aspyn" StartPage="https://aspyn.gay/">
             <wb:VisualElements DisplayName="aspyn.gay"
+                Description="Friend"
                 ForegroundText="light"
-                BackgroundColor="#ff00ff" Square150x150Logo="aspyn-square150x150.webp"
-                Square30x30Logo="aspyn-square30x30.webp" ToastCapable="true">
-                <wb:DefaultTile Square70x70Logo="aspyn-square70x70.webp">
+                BackgroundColor="#ff00ff" Square150x150Logo="aspyn-square150x150.png"
+                Square30x30Logo="aspyn-square30x30.png" ToastCapable="true">
+                <wb:DefaultTile Square70x70Logo="aspyn-square70x70.png">
                     <wb:ShowNameOnTiles>
-                        <wb:ShowOn Tile="square150x150logo" />
+                        <wb:ShowOn Tile="square150x150Logo" />
                     </wb:ShowNameOnTiles>
                 </wb:DefaultTile>
-                <wb:SplashScreen BackgroundColor="#FFFFFF" Image="" />
+                <wb:SplashScreen BackgroundColor="#ff00ff" Image="peoplesplash.png" />
             </wb:VisualElements>
+            <ApplicationContentUriRules>
+                <Rule Type="include" Match="https://aspyn.gay/*" />
+            </ApplicationContentUriRules>
         </Application>
         <Application Id="barra" StartPage="https://ocathain.ie/">
             <wb:VisualElements DisplayName="ocathain.ie"
+                Description="Friend"
                 ForegroundText="light"
-                BackgroundColor="#008000" Square150x150Logo="barra-square150x150.webp"
-                Square30x30Logo="barra-square30x30.webp" ToastCapable="true">
-                <wb:DefaultTile Square70x70Logo="barra-square70x70.webp">
+                BackgroundColor="#008000" Square150x150Logo="barra-square150x150.png"
+                Square30x30Logo="barra-square30x30.png" ToastCapable="true">
+                <wb:DefaultTile Square70x70Logo="barra-square70x70.png">
                     <wb:ShowNameOnTiles>
-                        <wb:ShowOn Tile="square150x150logo" />
+                        <wb:ShowOn Tile="square150x150Logo" />
                     </wb:ShowNameOnTiles>
                 </wb:DefaultTile>
-                <wb:SplashScreen BackgroundColor="#FFFFFF" Image="" />
+                <wb:SplashScreen BackgroundColor="#008000" Image="peoplesplash.png" />
             </wb:VisualElements>
+            <ApplicationContentUriRules>
+                <Rule Type="include" Match="https://ocathain.ie/*" />
+            </ApplicationContentUriRules>
         </Application>
         <Application Id="emma" StartPage="https://invoxiplaygames.uk/">
             <wb:VisualElements DisplayName="InvoxiPlayGames"
+                Description="Friend"
                 ForegroundText="light"
-                BackgroundColor="#e3008c" Square150x150Logo="emma1-square150x150.webp"
-                Square30x30Logo="emma-square30x30.webp" ToastCapable="true">
-                <wb:DefaultTile Square70x70Logo="emma/emma-square70x70.webp">
+                BackgroundColor="#e3008c" Square150x150Logo="emma1-square150x150.png"
+                Square30x30Logo="emma-square30x30.png" ToastCapable="true">
+                <wb:DefaultTile Square70x70Logo="emma/emma-square70x70.png">
                     <wb:TileUpdate Recurrence="halfHour"
-                        UriTemplate="/api/live-tiles/people/emma.xml" />
+                        UriTemplate="https://wamwoowam.co.uk/api/live-tiles/people/emma.xml" />
                     <wb:ShowNameOnTiles>
-                        <wb:ShowOn Tile="square150x150logo" />
+                        <wb:ShowOn Tile="square150x150Logo" />
                     </wb:ShowNameOnTiles>
                 </wb:DefaultTile>
-                <wb:SplashScreen BackgroundColor="#FFFFFF" Image="" />
+                <wb:SplashScreen BackgroundColor="#e3008c" Image="peoplesplash.png" />
             </wb:VisualElements>
+            <ApplicationContentUriRules>
+                <Rule Type="include" Match="https://invoxiplaygames.uk/*" />
+            </ApplicationContentUriRules>
         </Application>
         <Application Id="lily" StartPage="https://lilykiwi.xyz/">
             <wb:VisualElements DisplayName="lilykiwi"
+                Description="Friend"
                 ForegroundText="light"
-                BackgroundColor="#d8bfd8" Square150x150Logo="lily-square150x150.webp"
-                Square30x30Logo="lily-square30x30.webp" ToastCapable="true">
-                <wb:DefaultTile Square70x70Logo="lily-square70x70.webp">
+                BackgroundColor="#d8bfd8" Square150x150Logo="lily-square150x150.png"
+                Square30x30Logo="lily-square30x30.png" ToastCapable="true">
+                <wb:DefaultTile Square70x70Logo="lily-square70x70.png">
                     <wb:ShowNameOnTiles>
-                        <wb:ShowOn Tile="square150x150logo" />
+                        <wb:ShowOn Tile="square150x150Logo" />
                     </wb:ShowNameOnTiles>
                 </wb:DefaultTile>
-                <wb:SplashScreen BackgroundColor="#FFFFFF" Image="" />
+                <wb:SplashScreen BackgroundColor="#d8bfd8" Image="peoplesplash.png" />
             </wb:VisualElements>
+            <ApplicationContentUriRules>
+                <Rule Type="include" Match="https://lilykiwi.xyz/*" />
+            </ApplicationContentUriRules>
         </Application>
-        <Application Id="xub" StartPage="https://xubiod.net/ ">
+        <Application Id="xub" StartPage="https://xubiod.net/">
             <wb:VisualElements DisplayName="xubiod"
+                Description="Friend"
                 ForegroundText="light"
-                BackgroundColor="#30006C" Square150x150Logo="xub-square150x150.webp"
-                Square30x30Logo="xub-square30x30.webp" ToastCapable="true">
-                <wb:DefaultTile Square70x70Logo="xub-square70x70.webp">
+                BackgroundColor="#30006C" Square150x150Logo="xub-square150x150.png"
+                Square30x30Logo="xub-square30x30.png" ToastCapable="true">
+                <wb:DefaultTile Square70x70Logo="xub-square70x70.png">
                     <wb:ShowNameOnTiles>
-                        <wb:ShowOn Tile="square150x150logo" />
+                        <wb:ShowOn Tile="square150x150Logo" />
                     </wb:ShowNameOnTiles>
                 </wb:DefaultTile>
-                <wb:SplashScreen BackgroundColor="#FFFFFF" Image="" />
+                <wb:SplashScreen BackgroundColor="#30006C" Image="peoplesplash.png" />
             </wb:VisualElements>
+            <ApplicationContentUriRules>
+                <Rule Type="include" Match="https://xubiod.net/*" />
+            </ApplicationContentUriRules>
         </Application>
         <Application Id="darrio" StartPage="https://linktr.ee/bigdarrio">
             <wb:VisualElements DisplayName="bigdarrio"
+                Description="Friend"
                 ForegroundText="dark"
-                BackgroundColor="#ffac33" Square150x150Logo="darrio-square150x150.webp"
-                Square30x30Logo="darrio-square30x30.webp" ToastCapable="true">
-                <wb:DefaultTile Square70x70Logo="darrio-square70x70.webp">
+                BackgroundColor="#ffac33" Square150x150Logo="darrio-square150x150.png"
+                Square30x30Logo="darrio-square30x30.png" ToastCapable="true">
+                <wb:DefaultTile Square70x70Logo="darrio-square70x70.png">
                     <wb:ShowNameOnTiles>
-                        <wb:ShowOn Tile="square150x150logo" />
+                        <wb:ShowOn Tile="square150x150Logo" />
                     </wb:ShowNameOnTiles>
                 </wb:DefaultTile>
-                <wb:SplashScreen BackgroundColor="#FFFFFF" Image="" />
+                <wb:SplashScreen BackgroundColor="#ffac33" Image="peoplesplash.png" />
             </wb:VisualElements>
+            <ApplicationContentUriRules>
+                <Rule Type="include" Match="https://linktr.ee/*" />
+            </ApplicationContentUriRules>
         </Application>
         <Application Id="eden8" StartPage="https://twitch.tv/eden8">
             <wb:VisualElements DisplayName="eden8"
+                Description="Friend"
                 ForegroundText="dark"
-                BackgroundColor="#7dd7dd" Square150x150Logo="eden8-square150x150.webp"
-                Square30x30Logo="eden8-square30x30.webp" ToastCapable="true">
-                <wb:DefaultTile Square70x70Logo="eden8-square70x70.webp">
+                BackgroundColor="#7dd7dd" Square150x150Logo="eden8-square150x150.png"
+                Square30x30Logo="eden8-square30x30.png" ToastCapable="true">
+                <wb:DefaultTile Square70x70Logo="eden8-square70x70.png">
                     <wb:ShowNameOnTiles>
-                        <wb:ShowOn Tile="square150x150logo" />
+                        <wb:ShowOn Tile="square150x150Logo" />
                     </wb:ShowNameOnTiles>
                 </wb:DefaultTile>
-                <wb:SplashScreen BackgroundColor="#FFFFFF" Image="" />
+                <wb:SplashScreen BackgroundColor="#7dd7dd" Image="peoplesplash.png" />
             </wb:VisualElements>
-        </Application>        
+            <ApplicationContentUriRules>
+                <Rule Type="include" Match="https://twitch.tv/*" />
+            </ApplicationContentUriRules>
+        </Application>
         <Application Id="ipicpp" StartPage="https://github.com/iProgramMC">
             <wb:VisualElements DisplayName="iProgramInCpp"
+                Description="Friend"
                 ForegroundText="light"
-                BackgroundColor="#3A4A2B" Square150x150Logo="ipicpp-square150x150.webp"
-                Square30x30Logo="ipicpp-square30x30.webp" ToastCapable="true">
-                <wb:DefaultTile Square70x70Logo="ipicpp-square70x70.webp">
+                BackgroundColor="#3A4A2B" Square150x150Logo="ipicpp-square150x150.png"
+                Square30x30Logo="ipicpp-square30x30.png" ToastCapable="true">
+                <wb:DefaultTile Square70x70Logo="ipicpp-square70x70.png">
                     <wb:ShowNameOnTiles>
-                        <wb:ShowOn Tile="square150x150logo" />
+                        <wb:ShowOn Tile="square150x150Logo" />
                     </wb:ShowNameOnTiles>
                 </wb:DefaultTile>
-                <wb:SplashScreen BackgroundColor="#FFFFFF" Image="" />
+                <wb:SplashScreen BackgroundColor="#3A4A2B" Image="peoplesplash.png" />
             </wb:VisualElements>
+            <ApplicationContentUriRules>
+                <Rule Type="include" Match="https://github.com/*" />
+            </ApplicationContentUriRules>
         </Application>
         <Application Id="tea" StartPage="https://sympathytea.neocities.org/">
             <wb:VisualElements DisplayName="SympathyTea"
+                Description="Friend"
                 ForegroundText="dark"
-                BackgroundColor="#9ccfd8" Square150x150Logo="tea-square150x150.webp"
-                Square30x30Logo="tea-square30x30.webp" ToastCapable="true">
-                <wb:DefaultTile Square70x70Logo="tea-square70x70.webp">
+                BackgroundColor="#9ccfd8" Square150x150Logo="tea-square150x150.png"
+                Square30x30Logo="tea-square30x30.png" ToastCapable="true">
+                <wb:DefaultTile Square70x70Logo="tea-square70x70.png">
                     <wb:ShowNameOnTiles>
-                        <wb:ShowOn Tile="square150x150logo" />
+                        <wb:ShowOn Tile="square150x150Logo" />
                     </wb:ShowNameOnTiles>
                 </wb:DefaultTile>
-                <wb:SplashScreen BackgroundColor="#FFFFFF" Image="" />
+                <wb:SplashScreen BackgroundColor="#9ccfd8" Image="peoplesplash.png" />
             </wb:VisualElements>
+            <ApplicationContentUriRules>
+                <Rule Type="include" Match="https://sympathytea.neocities.org/*" />
+            </ApplicationContentUriRules>
+        </Application>
+        <Application Id="max" StartPage="https://uwx.github.io/">
+            <wb:VisualElements DisplayName="Maxine"
+                Description="Friend"
+                ForegroundText="dark"
+                BackgroundColor="#f869bf" Square150x150Logo="max-square150x150.png"
+                Square30x30Logo="max-square30x30.png" ToastCapable="true">
+                <wb:DefaultTile Square70x70Logo="max-square70x70.png">
+                    <wb:ShowNameOnTiles>
+                        <wb:ShowOn Tile="square150x150Logo" />
+                    </wb:ShowNameOnTiles>
+                </wb:DefaultTile>
+                <wb:SplashScreen BackgroundColor="#f869bf" Image="peoplesplash.png" />
+            </wb:VisualElements>
+            <ApplicationContentUriRules>
+                <Rule Type="include" Match="https://uwx.github.io/*" />
+            </ApplicationContentUriRules>
+        </Application>
+        <Application Id="wam" StartPage="https://wamwoowam.co.uk/">
+            <wb:VisualElements DisplayName="wamwoowam.co.uk"
+                Description="Friend"
+                ForegroundText="light"
+                BackgroundColor="#2b0680" Square150x150Logo="wam-square150x150.png"
+                Square30x30Logo="wam-square30x30.png" ToastCapable="true">
+                <wb:DefaultTile Square70x70Logo="wam-square70x70.png">
+                    <wb:ShowNameOnTiles>
+                        <wb:ShowOn Tile="square150x150Logo" />
+                    </wb:ShowNameOnTiles>
+                </wb:DefaultTile>
+                <wb:SplashScreen BackgroundColor="#2b0680" Image="peoplesplash.png" />
+            </wb:VisualElements>
+            <ApplicationContentUriRules>
+                <Rule Type="include" Match="https://wamwoowam.co.uk/*" />
+            </ApplicationContentUriRules>
         </Application>
         <!-- hack 4 emma -->
         <Application Id="emma2" StartPage="https://invoxiplaygames.uk/">
@@ -168,7 +243,7 @@
             </wb:VisualElements>
         </Application>
     </Applications>
-    <Capabilities></Capabilities>
-    <Dependencies></Dependencies>
-    <Extensions></Extensions>
+    <Capabilities>
+        <Capability Name="internetClient" />
+    </Capabilities>
 </Package>
