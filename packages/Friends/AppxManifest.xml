@@ -223,7 +223,7 @@
             <wb:VisualElements DisplayName="NotNite"
                 Description="Friend"
                 ForegroundText="light"
-                BackgroundColor="#f869bf" Square150x150Logo="notnite-square150x150.png"
+                BackgroundColor="#cb2027" Square150x150Logo="notnite-square150x150.png"
                 Square30x30Logo="notnite-square30x30.png" ToastCapable="true">
                 <wb:DefaultTile Square70x70Logo="notnite-square70x70.png">
                     <wb:ShowNameOnTiles>
