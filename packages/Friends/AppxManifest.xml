@@ -204,15 +204,36 @@
                 ForegroundText="dark"
                 BackgroundColor="#f869bf" Square150x150Logo="max-square150x150.png"
                 Square30x30Logo="max-square30x30.png" ToastCapable="true">
-                <wb:DefaultTile Square70x70Logo="max-square70x70.png">
+                <wb:DefaultTile Square70x70Logo="max-square70x70.png"
+                                Wide310x150Logo="max-wide310x150.png"
+                                Square310x310Logo="max-square310x310.png">
                     <wb:ShowNameOnTiles>
                         <wb:ShowOn Tile="square150x150Logo" />
+                        <wb:ShowOn Tile="wide310x150Logo" />
+                        <wb:ShowOn Tile="square310x310Logo" />
                     </wb:ShowNameOnTiles>
                 </wb:DefaultTile>
                 <wb:SplashScreen BackgroundColor="#f869bf" Image="peoplesplash.png" />
             </wb:VisualElements>
             <ApplicationContentUriRules>
                 <Rule Type="include" Match="https://uwx.github.io/*" />
+            </ApplicationContentUriRules>
+        </Application>
+        <Application Id="notnite" StartPage="https://notnite.com/">
+            <wb:VisualElements DisplayName="NotNite"
+                Description="Friend"
+                ForegroundText="light"
+                BackgroundColor="#f869bf" Square150x150Logo="notnite-square150x150.png"
+                Square30x30Logo="notnite-square30x30.png" ToastCapable="true">
+                <wb:DefaultTile Square70x70Logo="notnite-square70x70.png">
+                    <wb:ShowNameOnTiles>
+                        <wb:ShowOn Tile="square150x150Logo" />
+                    </wb:ShowNameOnTiles>
+                </wb:DefaultTile>
+                <wb:SplashScreen BackgroundColor="#cb2027" Image="peoplesplash.png" />
+            </wb:VisualElements>
+            <ApplicationContentUriRules>
+                <Rule Type="include" Match="https://notnite.com/*" />
             </ApplicationContentUriRules>
         </Application>
         <Application Id="wam" StartPage="https://wamwoowam.co.uk/">
