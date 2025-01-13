@@ -25,15 +25,15 @@
             <tile AppID="Friends_zfgz6xjnaz0ym!amyy54" size="wide310x150" FencePost="0" />
             <tile AppID="Friends_zfgz6xjnaz0ym!max" size="wide310x150" FencePost="0" />
             <tile AppID="Friends_zfgz6xjnaz0ym!aspyn" size="square150x150" FencePost="0" />
+            <tile AppID="Friends_zfgz6xjnaz0ym!darrio" size="square150x150" FencePost="0" />
+            <tile AppID="Friends_zfgz6xjnaz0ym!lily" size="square150x150" FencePost="0" />
+            <tile AppID="Friends_zfgz6xjnaz0ym!barra" size="square150x150" FencePost="0" />
             <tile AppID="Friends_zfgz6xjnaz0ym!emma" size="square150x150" FencePost="0" />
             <tile AppID="Friends_zfgz6xjnaz0ym!notnite" size="square150x150" FencePost="0" />
-            <tile AppID="Friends_zfgz6xjnaz0ym!barra" size="square150x150" FencePost="0" />
-            <tile AppID="Friends_zfgz6xjnaz0ym!lily" size="square150x150" FencePost="0" />
             <tile AppID="Friends_zfgz6xjnaz0ym!xub" size="square150x150" FencePost="0" />
-            <tile AppID="Friends_zfgz6xjnaz0ym!darrio" size="square150x150" FencePost="0" />
+            <tile AppID="Friends_zfgz6xjnaz0ym!tea" size="square150x150" FencePost="0" />
             <tile AppID="Friends_zfgz6xjnaz0ym!eden8" size="square150x150" FencePost="0" />
             <tile AppID="Friends_zfgz6xjnaz0ym!ipicpp" size="square150x150" FencePost="0" />
-            <tile AppID="Friends_zfgz6xjnaz0ym!tea" size="square150x150" FencePost="0" />
         </group>
     </view>
 </launcher>
