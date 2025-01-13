@@ -48,14 +48,14 @@
     {{/each}}
 
     <style>:root {background-color: {{themeColor}};}</style>
-    {{#if UMAMI_ID}}
-    <script defer src="{{UMAMI_URL}}" data-website-id="{{UMAMI_ID}}"></script>
-    {{/if}}
 </head>
 
 <body>
     {{{body}}}
     <noscript>This app requires JavaScript!</noscript>
+    {{#if UMAMI_ID}}
+    <script defer src="{{UMAMI_URL}}" data-website-id="{{UMAMI_ID}}"></script>
+    {{/if}}
 </body>
 
 </html>
