@@ -3,19 +3,20 @@
     <view name="Start">
         <group name="Socials">
             <!-- <tile AppID="Socials_zfgz6xjnaz0ym!AboutMe" size="square310x310" FencePost="0" /> -->
-            <tile AppID="Socials_zfgz6xjnaz0ym!Snug" size="square310x310" FencePost="0" />
-            <tile AppID="Socials_zfgz6xjnaz0ym!Bluesky" size="wide310x150" FencePost="0" />
+            <tile AppID="Socials_zfgz6xjnaz0ym!Bluesky" size="square310x310" FencePost="0" />
+            <tile AppID="Socials_zfgz6xjnaz0ym!Snug" size="wide310x150" FencePost="0" />
+            <tile AppID="Socials_zfgz6xjnaz0ym!YouTube" size="wide310x150" FencePost="0" />
             <tile AppID="Socials_zfgz6xjnaz0ym!Twitch" size="square150x150" FencePost="0" />
-            <tile AppID="Socials_zfgz6xjnaz0ym!YouTube" size="square150x150" FencePost="0" />
             <tile AppID="Socials_zfgz6xjnaz0ym!Twitter" size="square150x150" FencePost="0" />
-            <tile AppID="Socials_zfgz6xjnaz0ym!Discord" size="square70x70" FencePost="1" />
-            <tile AppID="Socials_zfgz6xjnaz0ym!Steam" size="square70x70" FencePost="0" />
+            <tile AppID="Socials_zfgz6xjnaz0ym!Discord" size="square150x150" FencePost="0" />
+            <tile AppID="Socials_zfgz6xjnaz0ym!Steam" size="square70x70" FencePost="1" />
             <tile AppID="Socials_zfgz6xjnaz0ym!hasthebig.gay" size="square70x70" FencePost="0" />
             <tile AppID="windows.immersivecontrolpanel_cw5n1h2txyewy!microsoft.windows.immersivecontrolpanel" size="square70x70" FencePost="0" />
         </group>
         <group name="Projects">
             <tile AppID="Projects_zfgz6xjnaz0ym!GitHub" size="wide310x150" FencePost="0" />
             <tile AppID="Projects_zfgz6xjnaz0ym!Unicord" size="square150x150" FencePost="0" />
+            <tile AppID="Projects_zfgz6xjnaz0ym!Unisky" size="square150x150" FencePost="0" />
             <tile AppID="Projects_zfgz6xjnaz0ym!ReLiveWP" size="square150x150" FencePost="0" />
             <tile AppID="Games_zfgz6xjnaz0ym!S4E1" size="square150x150" FencePost="0" />
             <tile AppID="Games_zfgz6xjnaz0ym!Sanicball" size="square150x150" FencePost="0" />

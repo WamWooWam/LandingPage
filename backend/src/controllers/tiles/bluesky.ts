@@ -1,4 +1,4 @@
-import { AppBskyEmbedImages, AppBskyFeedPost, BskyAgent } from '@atproto/api';
+import AtpAgent, { AppBskyEmbedImages, AppBskyFeedPost, BskyAgent } from '@atproto/api';
 import {
     EXT_XMLNS,
     createBindingFromTemplate,
@@ -14,7 +14,7 @@ import { XRPCError } from '@atproto/xrpc';
 const bskyUsername = process.env.BLUESKY_USERNAME;
 const bskyPassword = process.env.BLUESKY_APP_PASSWORD;
 
-const agent = new BskyAgent({ service: 'https://bsky.social' });
+const agent = new AtpAgent({ service: 'https://bsky.social' });
 
 let initialized = false;
 async function initialize() {
@@ -50,6 +50,9 @@ async function latestPosts(req: Request, res: Response) {
         const visual = createVisual(root);
         const author = data.post.author;
         const record = data.post.record as AppBskyFeedPost.Record;
+        
+        if (!!data.reply)
+            continue;
 
         if (data.post.embed?.$type === 'app.bsky.embed.images#view') {
             const embed = data.post.embed as AppBskyEmbedImages.View;
@@ -58,6 +61,7 @@ async function latestPosts(req: Request, res: Response) {
                 visual,
                 TileTemplateType.tileSquarePeekImageAndText04,
             );
+
             content
                 .getElementsByTagName('image')[0]
                 .setAttribute('src', embed.images[0].thumb);
@@ -98,6 +102,15 @@ async function latestPosts(req: Request, res: Response) {
             wideContent
                 .getElementsByTagName('image')[0]
                 .setAttribute('alt', embed.images[0].alt);
+
+            const largeContent = createBindingFromTemplate(root, visual, TileTemplateType.tileSquare310x310ImageAndText01)
+            largeContent.getElementsByTagName('image')[0]
+                .setAttribute('src', embed.images[0].thumb);
+
+            largeContent.getElementsByTagName('image')[0]
+                .setAttribute('alt', embed.images[0].alt);
+
+            largeContent.getElementsByTagName('text')[0].textContent = record.text ?? '';
         } else {
             const content = createBindingFromTemplate(
                 root,
@@ -119,6 +132,22 @@ async function latestPosts(req: Request, res: Response) {
                 .setAttribute('alt', author.displayName + ' profile picture');
             wideContent.getElementsByTagName('text')[0].textContent =
                 record.text;
+
+
+            const largeContent = createBindingFromTemplate(
+                root,
+                visual,
+                TileTemplateType.tileSquare310x310SmallImageAndText01,
+            );
+            largeContent
+                .getElementsByTagName('image')[0]
+                .setAttribute('src', author.avatar);
+            largeContent
+                .getElementsByTagName('image')[0]
+                .setAttribute('alt', author.displayName + ' profile picture');
+
+            largeContent.getElementsByTagName('text')[0].textContent = author.displayName;
+            largeContent.getElementsByTagName('text')[1].textContent = record.text;
         }
     }
 

@@ -1,5 +1,7 @@
 import 'dotenv/config';
 
+import xmldom, { DOMParser } from 'xmldom';
+
 import { PackageReader } from 'landing-page-shared';
 import PackageRegistry from './PackageRegistry';
 import error from './middleware/error';
@@ -21,7 +23,6 @@ import express = require('express');
 import path = require('path');
 import fsp = require('fs/promises');
 import apicache = require('apicache');
-import xmldom = require('xmldom');
 
 const cache = (() => {
     return apicache.options({
@@ -50,7 +51,7 @@ const app = express();
             );
             const parser = new PackageReader(
                 appxManifest,
-                new xmldom.DOMParser(),
+                new DOMParser(),
             );
             const manifest = await parser.readPackage();
 
