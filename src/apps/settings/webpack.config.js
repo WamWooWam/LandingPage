@@ -51,10 +51,6 @@ module.exports = {
         extensions: ['.tsx', '.ts', '.js'],
     },
     plugins: [
-        new webpack.DllReferencePlugin({
-            context: path.resolve("/"),
-            manifest: require("@landing-page/api/dist/manifest.api.json")
-        }),
         new MiniCssExtractPlugin({
             filename: env.NODE_ENV === 'production' ? "[name].[chunkhash].css" : "[name].bundle.css",
             chunkFilename: env.NODE_ENV === 'production' ? "[id].bundle.[chunkhash].css" : "[id].bundle.css"

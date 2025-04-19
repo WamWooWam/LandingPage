@@ -14,7 +14,6 @@
 		<Resource m2:Scale="100"/>
 		<Resource Language="en-us"/>
 		<Resource Language="en-gb"/>
-		
 	</Resources>
 	<Applications>
 		<Application Id="App" Executable="Numbers.exe" EntryPoint="/dist/index.html" wam:ShortLink="/apps/calculator">

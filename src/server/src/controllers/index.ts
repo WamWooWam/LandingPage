@@ -71,7 +71,7 @@ const standaloneApp = (req: Request, res: Response, next: NextFunction) => {
 const generatePreload = async () => {
     const preloadUrls: string[] = [];
 
-    const startLayout = await fs.promises.readFile('../packages/StartScreen.xml', 'utf-8');
+    const startLayout = await fs.promises.readFile('../config/StartScreen.xml', 'utf-8');
     const layout = parseLayout(startLayout, xmldom.DOMParser)
         .flatMap(g => g.tiles);
 

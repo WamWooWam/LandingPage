@@ -1,6 +1,6 @@
 {
-  "name": "@landing-page/apps/socials",
-  "version": "2.6.672.0",
+  "name": "@landing-page/app-socials",
+  "version": "2.6.672",
   "description": "",
   "main": "index.js",
   "scripts": {

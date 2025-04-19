@@ -130,7 +130,7 @@ export default class TileRenderer extends Component<TileProps, TileState> {
             clearInterval(this.state.interval);
 
             // tile safe mode, show the default visual
-            return { error: error.toString(), visuals: [TileDefaultVisual], nextVisualIdx: undefined, visualIdx: 0, swapping: false };
+            return { error: error.toString(), visuals: [TileDefaultVisual], nextVisualIdx: undefined as number, visualIdx: 0, swapping: false };
         });
     }
 
@@ -193,44 +193,40 @@ export default class TileRenderer extends Component<TileProps, TileState> {
                     `There's a problem with ${this.state.app.visualElements.displayName}.`,
                     "This app can't open");
 
+                if (this.state.appStatus?.statusCode == 2151645484) {
+                    dialog = new MessageDialog(
+                        `${this.state.app.visualElements.displayName} appears to have been corrupted. Running this app might put your PC at risk.\r\n<a target="_blank" href="https://www.sec.gov/Archives/edgar/data/1418091/000110465922048128/tm2213229d1_sc13da.htm">More info</a>`,
+                        "Start protected your PC");
+                }
+
                 dialog.commands.push(new UICommand("Close"))
                 dialog.showAsync();
                 return
-            }
-            else {
-                let dialog = new MessageDialog(
-                    `${this.state.app.visualElements.displayName} appears to have been corrupted. Running this app might put your PC at risk.\r\n<a target="_blank" href="https://www.sec.gov/Archives/edgar/data/1418091/000110465922048128/tm2213229d1_sc13da.htm">More info</a>`,
-                    "Start protected your PC");
-
-                dialog.commands.push(new UICommand("Run anyway", () => { window.open(this.state.app.startPage, "_blank") }))
-                dialog.commands.push(new UICommand("Don't run"))
-                dialog.showAsync();
-                return;
             }
         }
 
         this.updatePressState(e);
         // BUGBUG: Hack to prevent the tile from launching on mobile for now
-        if (this.state.app.entryPoint && !isMobile()) {
-            e.preventDefault();
+        // if (this.state.app.entryPoint  && !isMobile()) {
+        //     e.preventDefault();
 
-            this.setState({ clicked: false, visible: false });
+        //     this.setState({ clicked: false, visible: false });
 
-            const bounds = this.root.current.getBoundingClientRect();
-            const event = new AppLaunchRequestedEvent(this.state.pack, this.state.app, {
-                tileX: bounds.x,
-                tileY: bounds.y,
-                tileWidth: bounds.width,
-                tileHeight: bounds.height,
-                tileVisual: this.state.visuals[this.state.visualIdx],
-                tileSize: this.props.size
-            });
+        //     const bounds = this.root.current.getBoundingClientRect();
+        //     const event = new AppLaunchRequestedEvent(this.state.pack, this.state.app, {
+        //         tileX: bounds.x,
+        //         tileY: bounds.y,
+        //         tileWidth: bounds.width,
+        //         tileHeight: bounds.height,
+        //         tileVisual: this.state.visuals[this.state.visualIdx],
+        //         tileSize: this.props.size
+        //     });
 
-            Events.getInstance()
-                .dispatchEvent(event);
+        //     Events.getInstance()
+        //         .dispatchEvent(event);
 
-            setTimeout(() => this.setState({ visible: true }), 1000);
-        }
+        //     setTimeout(() => this.setState({ visible: true }), 1000);
+        // }
     }
 
     render(props: TileProps, state: TileState) {
@@ -286,8 +282,11 @@ export default class TileRenderer extends Component<TileProps, TileState> {
         let nextBinding = nextVisual?.bindings?.find(f => f.size === props.size);
 
         let href = state.app.startPage;
-        if (state.app.load) {
-            href = `/app/${state.pack.identity.packageFamilyName}/${state.app.id}`;
+        if (state.app.shortLink) {
+            href = `${state.app.shortLink}`;
+        }
+        else if (state.app.entryPoint) {
+            href = state.app.entryPoint
         }
 
         if (this.state.appStatus?.statusCode !== 0 && this.state.appStatus?.unavailable) {
@@ -309,7 +308,6 @@ export default class TileRenderer extends Component<TileProps, TileState> {
                     onMouseUp={this.onMouseUp}
                     onClick={this.onClick}
                     title={state.app.visualElements.displayName}
-                    name={state.app.visualElements.displayName}
                     href={href}
                     target="_blank">
                     <div class="tile">

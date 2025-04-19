@@ -1,7 +1,5 @@
 import "./calculator.scss"
 
-import { CoreApplication, LaunchActivatedEvent } from "@landing-page/api";
-
 import CalcManager from "./CalcManager/CalcManager"
 import CalcManagerModule from "./CalcManager/CalcManager.wasm"
 import CalculatorModel from "./CalculatorModel";
@@ -9,7 +7,7 @@ import MainPage from "./MainPage";
 import { VisualStateManager } from "./VisualStateManager";
 import { hydrate } from "preact";
 
-const main = async () => {
+(async () => {
     const manager = await CalcManager({
         locateFile: (file: string) => {
             if (file.endsWith('.wasm')) {
@@ -27,21 +25,5 @@ const main = async () => {
     )
 
     hydrate(root, document.querySelector("#app"));
-}
 
-(async () => {
-    const application = await CoreApplication.initializeAsync();
-    if (application != null) {
-        application.addEventListener("activated", async (e: LaunchActivatedEvent) => {
-            const deferral = e.detail.activatedOperation.getDeferral();
-            await main();
-
-            deferral.complete();
-        })
-
-        application.run();
-    }
-    else {
-        main();
-    }
 })();

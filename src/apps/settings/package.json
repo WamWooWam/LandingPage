@@ -1,6 +1,6 @@
 {
-  "name": "@landing-page/apps/settings",
-  "version": "6.2.0.1",
+  "name": "@landing-page/app-settings",
+  "version": "6.2.0",
   "description": "",
   "main": "src/index.tsx",
   "files": [
@@ -13,8 +13,7 @@
   "license": "ISC",
   "packageManager": "pnpm@9.10.0",
   "dependencies": {
-    "@landing-page/api": "workspace:api",
-    "preact": "^10.15.1"
+    "preact": "^10.26.5"
   },
   "devDependencies": {
     "css-loader": "^7.1.2",
@@ -23,7 +22,7 @@
     "sass-loader": "^13.3.2",
     "ts-loader": "^9.5.1",
     "url-loader": "^4.1.1",
-    "webpack": "^5.31.2",
+    "webpack": "^5.99.6",
     "webpack-cli": "^5.1.4"
   },
   "scripts": {

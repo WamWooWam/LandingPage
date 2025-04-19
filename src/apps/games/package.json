@@ -1,6 +1,6 @@
 {
-  "name": "@landing-page/apps/games",
-  "version": "2.6.672.0",
+  "name": "@landing-page/app-games",
+  "version": "2.6.672",
   "description": "",
   "main": "index.js",
   "scripts": {

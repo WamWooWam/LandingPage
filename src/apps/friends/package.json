@@ -1,6 +1,6 @@
 {
-  "name": "@landing-page/apps/friends",
-  "version": "2.6.672.0",
+  "name": "@landing-page/app-friends",
+  "version": "2.6.672",
   "description": "",
   "main": "index.js",
   "scripts": {

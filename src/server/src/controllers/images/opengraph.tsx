@@ -118,7 +118,7 @@ const TileGroup = (props: { title: string, tiles: TilePropsWithType[], x: number
 }
 
 const generateThumbnail = async () => {
-    const startLayout = await fsp.readFile('../packages/StartScreen.xml', 'utf-8');
+    const startLayout = await fsp.readFile('../config/StartScreen.xml', 'utf-8');
     const tileGroups = parseLayout(startLayout, xmldom.DOMParser);
 
     let x = 58;

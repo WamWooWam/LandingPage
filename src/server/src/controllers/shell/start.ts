@@ -1,7 +1,7 @@
 import { Request, Response, Router } from 'express';
 
 import { Package } from '@landing-page/shared';
-import PackageRegistry from 'src/PackageRegistry';
+import PackageRegistry from '../../PackageRegistry';
 import path from 'path';
 
 async function getStartScreen(req: Request, res: Response) {

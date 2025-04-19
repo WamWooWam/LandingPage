@@ -3,7 +3,7 @@
     xmlns:wb="http://schemas.microsoft.com/appx/2013/manifest"
     xmlns:m2="http://schemas.microsoft.com/appx/2013/manifest"
     xmlns:build="http://schemas.microsoft.com/developer/appx/2012/build">
-    <Identity Name="Socials" ProcessorArchitecture="neutral" Publisher="CN=Wan Kerr Co. Ltd."
+    <Identity Name="Socials" ProcessorArchitecture="x86" Publisher="CN=Wan Kerr Co. Ltd."
         Version="2.6.672.0" />
     <Properties>
         <DisplayName>Socials</DisplayName>
@@ -21,7 +21,7 @@
         <Resource Language="en-GB" />
     </Resources>
     <Applications>
-        <!-- <Application Id="AboutMe" EntryPoint="apps/aboutme">
+        <!-- <Application Id="AboutMe" EntryPoint="Apps/AboutMe">
             <m2:VisualElements DisplayName="About Me"
                 Square150x150Logo="images/people.png"
                 Square30x30Logo="images/peoplesmall.png"
@@ -118,7 +118,7 @@
                 <wb:SplashScreen BackgroundColor="#FF0000" Image="youtube-splash.svg" />
             </wb:VisualElements>
         </Application>
-        <Application Id="Discord" StartPage="https://discord.gg/something">
+        <Application Id="Discord" StartPage="https://discord.gg/gq5btbE7EZ">
             <wb:VisualElements DisplayName="Discord" Description="Discord" ForegroundText="light"
                 BackgroundColor="#5865F2" Square150x150Logo="images/discord-square150x150.svg"
                 Square30x30Logo="images/discord-square30x30.svg" ToastCapable="true">

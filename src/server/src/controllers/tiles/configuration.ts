@@ -4,8 +4,8 @@ import { Router } from 'express';
 async function getConfiguration(req, resp) {
     const config = {
         appStatus: {
-            "Socials_zfgz6xjnaz0ym!Discord": {
-                statusCode: 0x8000FFFF,
+            "Socials_zfgz6xjnaz0ym!Twitter": {
+                statusCode: E_LONGATED_MUSKRAT,
                 unavailable: true
             }
         }

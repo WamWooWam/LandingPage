@@ -68,7 +68,6 @@ export default class TileUpdateManager {
     }
 
     private async fetchVisuals(packageApplication: PackageApplication): Promise<boolean> {
-        return false;
         if (!packageApplication?.visualElements.defaultTile.tileUpdateUrl)
             return false;
 

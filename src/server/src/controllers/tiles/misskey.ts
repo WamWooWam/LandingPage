@@ -8,6 +8,7 @@ import { TileTemplateType } from "../../TileTemplateType";
 import { TileUpdateManager } from "../../TileUpdateManager";
 
 class MisskeyTileProvider {
+
     private client: APIClient;
 
     constructor(host: string, private userId: string) {

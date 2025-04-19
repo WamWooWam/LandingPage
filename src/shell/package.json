@@ -2,21 +2,23 @@
   "name": "@landing-page/shell",
   "version": "0.1.0",
   "main": "dist/index.hbs",
+  "files": [
+    "dist"
+  ],
   "dependencies": {
-    "@preact/signals": "^1.1.5",
-    "@landing-page/api": "workspace:api",
     "@landing-page/shared": "workspace:shared",
+    "@preact/signals": "^2.0.3",
     "base32.js": "^0.1.0",
     "bezier-easing": "^2.1.0",
-    "preact": "^10.15.1",
+    "preact": "^10.26.5",
     "preact-async-route": "^2.2.1",
     "preact-router": "^4.1.2",
     "wasm-feature-detect": "^1.5.1"
   },
   "devDependencies": {
-    "@types/node": "^20.4.3",
-    "@landing-page/xml-loader": "workspace:xml-loader",
     "@landing-page/manifest-loader": "workspace:manifest-loader",
+    "@landing-page/xml-loader": "workspace:xml-loader",
+    "@types/node": "^20.4.3",
     "css-loader": "^5.2.1",
     "css-minimizer-webpack-plugin": "^5.0.1",
     "favicons": "^7.1.4",
@@ -38,7 +40,7 @@
     "ts-loader": "^8.1.0",
     "typescript": "^5.1.6",
     "url-loader": "^4.1.1",
-    "webpack": "^5.31.2",
+    "webpack": "^5.99.6",
     "webpack-cli": "^5.1.4",
     "webpack-dev-server": "^4.15.1",
     "xmldom": "^0.6.0"

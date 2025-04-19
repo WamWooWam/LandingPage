@@ -3,16 +3,27 @@
   "version": "1.0.0",
   "main": "dist/index.js",
   "license": "MIT",
+  "files": [
+    "config",
+    "dist",
+    "fonts"
+  ],
   "dependencies": {
     "@atproto/api": "^0.13.7",
     "@atproto/xrpc": "^0.6.2",
-    "@preact/compat": "^17.1.2",
-    "@resvg/resvg-js": "^2.4.1",
-    "@types/jsdom": "^21.1.6",
-    "@types/memory-cache": "^0.2.5",
+    "@landing-page/app-calculator": "workspace:",
+    "@landing-page/app-friends": "workspace:",
+    "@landing-page/app-games": "workspace:",
+    "@landing-page/app-projects": "workspace:",
+    "@landing-page/app-settings": "workspace:",
+    "@landing-page/app-socials": "workspace:",
     "@landing-page/shared": "workspace:shared",
     "@landing-page/shell": "workspace:shell",
-    "@landing-page/api": "workspace:api",
+    "@preact/compat": "^18.3.1",
+    "@resvg/resvg-js": "^2.6.2",
+    "@resvg/resvg-js-linux-x64-gnu": "^2.6.2",
+    "@types/jsdom": "^21.1.6",
+    "@types/memory-cache": "^0.2.5",
     "apicache": "^1.6.3",
     "base32-encode": "^2.0.0",
     "base32.js": "^0.1.0",
@@ -25,10 +36,11 @@
     "memory-cache": "^0.2.0",
     "mime": "^3.0.0",
     "misskey-js": "0.0.16",
-    "preact": "^10.15.1",
-    "preact-render-to-string": "^6.1.0",
-    "preact-ssr-prepass": "^1.2.0",
+    "preact": "^10.26.5",
+    "preact-render-to-string": "^6.5.13",
+    "preact-ssr-prepass": "^1.2.2",
     "sharp": "^0.33.2",
+    "@img/sharp-linux-x64": "^0.33.2",
     "twitter-api-sdk": "^1.0.6",
     "xmldom": "^0.6.0"
   },
@@ -38,6 +50,7 @@
     "@types/node": "^20.4.2",
     "@types/node-fetch": "^2.6.1",
     "@types/xmldom": "^0.1.31",
+    "pnpm": "^10.8.1",
     "typescript": "^5.1.6"
   },
   "scripts": {
@@ -48,5 +61,5 @@
     "install-apps": "node ./scripts/install",
     "rebuild-registry": "node ./scripts/rebuild-registry"
   },
-  "packageManager": "pnpm@9.5.0+sha512.140036830124618d624a2187b50d04289d5a087f326c9edfc0ccd733d76c4f52c3a313d4fc148794a2a9d81553016004e6742e8cf850670268a7387fc220c903"
+  "packageManager": "pnpm@9.15.9+sha512.68046141893c66fad01c079231128e9afb89ef87e2691d69e4d40eee228988295fd4682181bae55b58418c3a253bde65a505ec7c5f9403ece5cc3cd37dcf2531"
 }

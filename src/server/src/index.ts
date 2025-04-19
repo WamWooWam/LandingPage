@@ -1,5 +1,7 @@
 import 'dotenv/config'
 
+import { DOMParser } from 'xmldom';
+import { PackageReader } from '@landing-page/shared';
 import PackageRegistry from './PackageRegistry';
 import error from './middleware/error';
 import logging from "./middleware/logging"
@@ -34,25 +36,34 @@ const cache = (() => {
     }).middleware;
 })()
 
+const APP_PACKAGES = [
+    "@landing-page/app-calculator",
+    "@landing-page/app-calculator",
+    "@landing-page/app-friends",
+    "@landing-page/app-games",
+    "@landing-page/app-projects",
+    "@landing-page/app-settings",
+    "@landing-page/app-socials",
+]
+
 
 const app = express();
 (async () => {
-    // load all packages
-    const packages = await fsp.readFile('./packages/registry.json', 'utf-8');
-    const manifest = JSON.parse(packages);
-    for (const key in manifest) {
-        try {
-            PackageRegistry.registerPackage(manifest[key]);
-        }
-        catch (e) {
-            console.error(`Error reading package ${key}:`, e);
-        }
+    
+    for (const appPackages of APP_PACKAGES) {
+        const dirName = path.dirname(require.resolve(appPackages + "/AppxManifest.xml"));
+        const manifest = await fsp.readFile(path.join(dirName, 'AppxManifest.xml'), 'utf8');
+        const reader = new PackageReader(manifest, new DOMParser());
+        reader["fixupUrl"] = (url) => url;
+
+        const pack = await reader.readPackage();
+        pack.path = dirName;
+        // registry[pack.identity.packageFamilyName] = pack;
+        PackageRegistry.registerPackage(pack);
     }
 
     const staticDirectory = path.dirname(require.resolve("@landing-page/shell"));
     const packagesDirectory = path.join(__dirname, '..', 'packages');
-
-    const apiDirectory = path.dirname(require.resolve("@landing-page/api/dist/api.bundle.js"));
 
     app.set('view engine', 'hbs');
     app.set('views', path.join(staticDirectory));
@@ -88,10 +99,12 @@ const app = express();
 
     const packagesRouter = express.Router();
     app.use('/packages', packagesRouter);
-    packagesRouter.use(express.static(packagesDirectory, { index: false, maxAge: '90d' }));
+    
+    for (const pack of PackageRegistry.packages) {
+        packagesRouter.use(`/${pack.identity.packageFullName}`, express.static(pack.path, { index: false, maxAge: '90d' }))
+    }
 
     app.use(express.static(staticDirectory, { index: false, maxAge: '90d' }));
-    app.use(express.static(apiDirectory, { index: false, maxAge: '90d' }));
 
     registerApps(app);
 

@@ -27,8 +27,6 @@ export function CalculatorButton(props: CalculatorButtonProps) {
 
     return (
         <button class={`calc-button calc-button-${props.ButtonId.toLowerCase()}`} 
-                width={props.Width} 
-                height={props.Height}
                 style={style} 
                 onClick={() => props.Click && props.Click(props.ButtonId)}>
             <div class="calc-button-content" style={{ margin: ConvertMarginToStyle(props.Padding) }}>

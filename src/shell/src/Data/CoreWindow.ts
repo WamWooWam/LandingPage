@@ -1,4 +1,3 @@
-import { ActivatedDeferralV1, ActivationKind, AppLifecycleV1, CoreApplicationV1, Message } from "@landing-page/api";
 import { Position, Size, newGuid } from "../Util";
 
 import CoreApplication from "./CoreApplication";
@@ -35,11 +34,6 @@ export default class CoreWindow {
     private _signals: CoreWindowSignals = new CoreWindowSignals();
     private _messageChannel: MessageChannel;
 
-    private _callbackMap = new Map<number, (msg: Message) => any | Promise<any>>();
-    private _callbackId = 0x7FFFFFFF;
-
-    private _deferralId: string = null;
-
     constructor(instance: CoreApplication) {
         this._id = `CoreWindow_${newGuid()}`
         this._instance = instance
@@ -49,15 +43,8 @@ export default class CoreWindow {
         this._view = document.createElement("iframe");
         this._view.id = this._id;
 
-        this._messageChannel = new MessageChannel();
-        this._messageChannel.port2.addEventListener("message", this.handleMessage);
-        this._messageChannel.port2.start();
-
         this.signals.title.value = "";
         this.signals.isVisible.value = false;
-
-        this.handleMessage = this.handleMessage.bind(this);
-        this.onLoaded = this.onLoaded.bind(this);
     }
 
     get signals(): CoreWindowSignals {
@@ -171,7 +158,6 @@ export default class CoreWindow {
             }
 
             this._view.src = entryPoint;
-            this._view.addEventListener("load", this.onLoaded);
 
             if (entryPoint.startsWith("https")) {
                 // for now we're assuming that if the site isn't loaded relative to the current site, it doesn't use the CoreApplication lifecycle events
@@ -222,120 +208,5 @@ export default class CoreWindow {
         CoreWindowManager.deleteWindowById(this.id);
         Events.getInstance()
             .dispatchEvent(new CoreWindowEvent("core-window-closed", this));
-    }
-
-    private registerCallback(callback: (msg: Message) => any | Promise<any>, persist: boolean = false) {
-        const id = --this._callbackId;
-        const handler = (msg: Message) => {
-            if (!persist)
-                this._callbackMap.delete(id);
-            return callback(msg);
-        };
-
-        this._callbackMap.set(id, handler);
-        return id;
-    }
-
-    private sendMessage<S = any, R = any>(msg: Message<S>): Promise<Message<R>> {
-        return new Promise((resolve, reject) => {
-            if (!this._messageChannel) {
-                console.warn(`channel is null, is the process terminated? dropping message %s:%d, %O`, msg.type, msg.channel, msg);
-                return;
-            }
-
-            console.debug(`sending message %s:%d, %O`, msg.type, msg.channel, msg);
-            const channel = this.registerCallback((msg: Message) => {
-                if (msg.errored) {
-                    reject(msg.data);
-                }
-                else {
-                    resolve(msg);
-                }
-            });
-
-            this._messageChannel.port2.postMessage({
-                type: msg.type,
-                channel: msg.channel ?? channel,
-                replyChannel: channel,
-                data: msg.data
-            });
-        });
-    }
-
-    private postMessage<S = any>(msg: Message<S>): void {
-        console.debug(`sending message %s:%d, %O`, msg.type, msg.channel, msg);
-        this._messageChannel.port2.postMessage({
-            type: msg.type,
-            channel: msg.channel,
-            replyChannel: msg.replyChannel,
-            data: msg.data
-        });
-    }
-
-    private async handleMessage(event: MessageEvent) {
-        console.log(event.data);
-
-        const data = event.data as Message;
-        const resp = await doMessageHandling();
-
-        this.postMessage({
-            type: data.type,
-            channel: data.replyChannel,
-            replyChannel: data.channel,
-            data: resp
-        });
-
-        function doMessageHandling() {
-            if (data.type == AppLifecycleV1) {
-                if (!this._deferralId) {
-                    this.state = CoreWindowState.loaded;
-                    console.log(`Window ${this.id} completed activation with no deferral.`);
-                }
-                else {
-                    console.log(`Window ${this.id} got lifecycle response but has captured ActivatedDeferral`);
-                }
-            }
-
-            if (data.type == ActivatedDeferralV1) {
-                if (data.data.type == 'captured') {
-                    this._deferralId = data.data.deferralId;
-                    console.log(`Window ${this.id} captured ActivatedDeferral ${data.data.deferralId}`);
-                }
-                if (data.data.type == 'completed' && data.data.deferralId == this._deferralId) {
-                    this._deferralId = null;
-                    console.log(`Window ${this.id} completed ActivatedDeferral ${data.data.deferralId}`);
-
-                    this.state = CoreWindowState.loaded;
-                }
-            }
-        }
-    }
-
-    private async onLoaded(ev: Event) {        
-        if (!(ev.target as HTMLIFrameElement).contentWindow)
-            return;
-        console.log(ev);
-
-        this._view.contentWindow.postMessage({ type: CoreApplicationV1, data: { type: "initialized" } }, "*", [this._messageChannel.port1]);
-        this._view.removeEventListener("load", this.onLoaded);
-
-        let activationDetails = {
-            kind: ActivationKind.launch,
-            args: "",
-            files: [] as any[], // would be StorageFile[]
-            splashRect: {
-                x: 0,
-                y: 0,
-                width: 620,
-                height: 300
-            }
-        }
-
-        const reply = await this.sendMessage({
-            type: AppLifecycleV1,
-            data: { type: "activated", details: activationDetails }
-        });
-
-        console.log(reply);
     }
 }

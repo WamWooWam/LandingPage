@@ -1,5 +1,4 @@
 packages:
-  - 'src/api'
   - 'src/server'
   - 'src/shared'
   - 'src/shell'
