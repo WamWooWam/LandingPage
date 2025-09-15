@@ -10,7 +10,7 @@ async function getStartScreen(req: Request, res: Response) {
 }
 
 
-function fixupUrl(pack: Package, relativeUrl: string | null | undefined): string | null {
+export function fixupUrl(pack: Package, relativeUrl: string | null | undefined): string | null {
     var url = new URL(relativeUrl, "http://localhost");
     if (url.host !== "localhost")
         return relativeUrl; // most likely wasn't a local path

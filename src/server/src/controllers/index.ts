@@ -4,6 +4,7 @@ import { NextFunction, Request, Response, Router } from "express";
 import { StartTileGroup, TileSize, parseLayout } from "@landing-page/shared";
 
 import PackageRegistry from "../PackageRegistry";
+import { fixupUrl } from "./shell/start";
 
 import xmldom = require("xmldom");
 
@@ -69,7 +70,7 @@ const standaloneApp = (req: Request, res: Response, next: NextFunction) => {
 }
 
 const generatePreload = async () => {
-    const preloadUrls: string[] = [];
+    const urls: string[] = [];
 
     const startLayout = await fs.promises.readFile(require.resolve("../../config/StartScreen.xml"), 'utf-8');
     const layout = parseLayout(startLayout, xmldom.DOMParser)
@@ -82,6 +83,8 @@ const generatePreload = async () => {
 
             const app = pack.applications[tile.appId];
             if (!app) continue;
+
+            const preloadUrls = [];
 
             switch (tile.size) {
                 case TileSize.square70x70:
@@ -102,10 +105,12 @@ const generatePreload = async () => {
             if (app.visualElements.defaultTile.tileUpdateUrl) {
                 preloadUrls.push(app.visualElements.square30x30Logo);
             }
+
+            urls.push(...preloadUrls.map(u => fixupUrl(pack, u)));
         }
     }
 
-    return preloadUrls;
+    return urls;
 }
 
 export default function registerRoutes(router: Router) {
