@@ -4,7 +4,7 @@ import { RenderableProps } from "preact";
 
 // implementation of a XAML ViewBox
 export default function ViewBox(props: RenderableProps<{}>) {
-    const ref = useRef<HTMLDivElement>();
+    const ref = useRef<HTMLDivElement>(null);
     const [scale, setScale] = useState(1);
 
     useLayoutEffect(() => {

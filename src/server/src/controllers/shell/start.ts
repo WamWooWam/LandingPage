@@ -35,6 +35,8 @@ async function getPackages(req: Request, res: Response) {
             const app = copy.applications[id];
 
             app.entryPoint = fixupUrl(item, app.entryPoint);
+            app.startPage = fixupUrl(item, app.startPage);
+            app.executable = fixupUrl(item, app.executable);
             app.visualElements.splashScreen.image = fixupUrl(item, app.visualElements.splashScreen.image);
             app.visualElements.square30x30Logo = fixupUrl(item, app.visualElements.square30x30Logo);
             app.visualElements.square150x150Logo = fixupUrl(item, app.visualElements.square150x150Logo);

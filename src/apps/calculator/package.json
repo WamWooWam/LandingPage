@@ -2,7 +2,7 @@
   "name": "@landing-page/app-calculator",
   "version": "6.3.9600",
   "description": "",
-  "main": "index.js",
+  "main": "dist/index.bundle.js",
   "files": [
     "dist",
     "assets",
@@ -11,13 +11,14 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "packageManager": "pnpm@9.10.0",
+  "packageManager": "pnpm@10.16.1+sha512.0e155aa2629db8672b49e8475da6226aa4bdea85fdcdfdc15350874946d4f3c91faaf64cbdc4a5d1ab8002f473d5c3fcedcd197989cf0390f9badd3c04678706",
   "dependencies": {
-    "@preact/signals": "^2.0.3",
+    "@preact/signals": "^2.3.1",
     "auto-text-size": "^0.2.2",
-    "preact": "^10.26.5"
+    "preact": "11.0.0-beta.0"
   },
   "devDependencies": {
+    "@types/node": "^24.4.0",
     "css-loader": "^7.1.2",
     "file-loader": "^6.2.0",
     "html-webpack-plugin": "^5.5.3",

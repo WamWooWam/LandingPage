@@ -12,8 +12,8 @@ interface VisualStateManagerProps {
 
 export const VisualStateContext = createContext<VisualState>(null);
 
-export function VisualStateManager(props: RenderableProps<VisualStateManagerProps>) {
-    const ref = useRef<HTMLDivElement>();
+export default function VisualStateManager(props: RenderableProps<VisualStateManagerProps>) {
+    const ref = useRef<HTMLDivElement>(null);
     const [currentState, setCurrentState] = useState<VisualState>(props.visualStates[0]);
     const calculateState = (width: number) => {
         let state = props.visualStates[0];

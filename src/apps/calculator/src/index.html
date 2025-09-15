@@ -7,13 +7,17 @@
 
     <meta http-equiv='X-UA-Compatible' content='IE=edge'>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
+
     <link rel='preconnect' href='https://c.s-microsoft.com'>
 </head>
 
 <body>
     <div id="app"> </div>
     <noscript>This app requires JavaScript!</noscript>
+    <script type="module">
+        import { default as main } from './index.bundle.js';
+        main(document.getElementById('app'));
+    </script>
 </body>
 
 </html>

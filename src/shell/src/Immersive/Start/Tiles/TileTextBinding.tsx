@@ -14,7 +14,7 @@ export default function TileTextBinding(props: TileTextBindingProps) {
         // we need to absolutely position the text to the negative of its height
         // so that it can be bottom aligned
 
-        const ref = useRef<HTMLSpanElement>();
+        const ref = useRef<HTMLSpanElement>(null);
         useLayoutEffect(() => {
             if (!ref.current) return;
 

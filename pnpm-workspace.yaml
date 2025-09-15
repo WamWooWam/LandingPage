@@ -6,3 +6,7 @@ packages:
   - 'src/apps/*'
   - 'tools/manifest-loader'
   - 'tools/xml-loader'
+
+# enable inject-workspace-packages
+# https://pnpm.io/workspaces#monorepo-features
+injectWorkspacePackages: true

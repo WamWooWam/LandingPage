@@ -26,7 +26,7 @@ export default class CoreWindow {
 
     private _id: string
     private _instance: CoreApplication
-    private _view: HTMLIFrameElement
+    private _view: HTMLDivElement
     private _state: CoreWindowState;
     private _size: Size;
     private _position: Position;
@@ -39,8 +39,9 @@ export default class CoreWindow {
         this._state = CoreWindowState.uninitialized;
         this._size = { width: 0, height: 0 };
         this._position = { x: 0, y: 0 };
-        this._view = document.createElement("iframe");
+        this._view = document.createElement("div");
         this._view.id = this._id;
+        this._view.onclick = (e: Event) => e.stopPropagation();
 
         this.signals.title.value = "";
         this.signals.isVisible.value = false;
@@ -145,23 +146,24 @@ export default class CoreWindow {
     }
 
     async load(): Promise<void> {
-        if (this.state != CoreWindowState.uninitialized) return;
+        if (this.state != CoreWindowState.uninitialized)
+            return;
+
         this.state = CoreWindowState.loading;
         await ensureCapabilitiesAsync(this.package);
 
         try {
             let app = this.packageApplication;
-            let entryPoint = app.entryPoint;
+            let entryPoint = app.executable;
             if (!entryPoint) {
                 throw new Error("No entry point defined for package application");
             }
 
-            this._view.src = entryPoint;
+            const { default: def } = await import(/* webpackIgnore: true */ entryPoint);
+            const shadow = this.view.attachShadow({ mode: 'open', delegatesFocus: true });
+            await def(shadow);
 
-            if (entryPoint.startsWith("https")) {
-                // for now we're assuming that if the site isn't loaded relative to the current site, it doesn't use the CoreApplication lifecycle events
-                this.state = CoreWindowState.loaded;
-            }
+            this.state = CoreWindowState.loaded;
         }
         catch (e) {
             this.error = e;

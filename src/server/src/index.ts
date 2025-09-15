@@ -46,16 +46,12 @@ const APP_PACKAGES = [
     "@landing-page/app-socials",
 ]
 
-
 const app = express();
 (async () => {
-    
     for (const appPackages of APP_PACKAGES) {
         const dirName = path.dirname(require.resolve(appPackages + "/AppxManifest.xml"));
         const manifest = await fsp.readFile(path.join(dirName, 'AppxManifest.xml'), 'utf8');
-        const reader = new PackageReader(manifest, new DOMParser());
-        reader["fixupUrl"] = (url) => url;
-
+        const reader = new PackageReader(manifest, new DOMParser(), (url) => url);
         const pack = await reader.readPackage();
         pack.path = dirName;
         // registry[pack.identity.packageFamilyName] = pack;
@@ -99,7 +95,7 @@ const app = express();
 
     const packagesRouter = express.Router();
     app.use('/packages', packagesRouter);
-    
+
     for (const pack of PackageRegistry.packages) {
         packagesRouter.use(`/${pack.identity.packageFullName}`, express.static(pack.path, { index: false, maxAge: '90d' }))
     }

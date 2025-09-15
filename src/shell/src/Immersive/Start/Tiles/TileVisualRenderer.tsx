@@ -1,5 +1,6 @@
 import { ApplicationVisualElements, PackageApplication, TileSize } from "@landing-page/shared";
 import { FunctionalComponent, JSX, RenderableProps, VNode } from "preact";
+import { getTileSize, useTileSize } from "./TileUtils";
 import { useEffect, useState } from "preact/hooks";
 
 import PackageImage from "~/Util/PackageImage";
@@ -8,7 +9,6 @@ import TileTemplateProps from "./TileTemplateProps";
 import TileTemplates from "./TileTemplates";
 import TileVisual from "~/Data/TileVisual";
 import { memo } from "preact/compat";
-import { useTileSize } from "./TileUtils";
 
 interface TileVisualRendererProps {
     app: PackageApplication,
@@ -39,7 +39,7 @@ function TileVisualBinding({ binding }: RenderableProps<TileVisualRendererProps>
 
 const DefaultTileVisual: FunctionalComponent<{ size: TileSize, app: PackageApplication, visualElements: ApplicationVisualElements }> = memo(({ size, app }) => {
     const tileImageUrl = getTileImageUrl(size, app);
-    const { width, height } = useTileSize();
+    const { width, height } = getTileSize(size);
 
     return (
         <div class="tile-visual tile-visual-visible">

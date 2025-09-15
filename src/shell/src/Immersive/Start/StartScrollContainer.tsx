@@ -9,7 +9,7 @@ interface StartScrollContainerProps {
 }
 
 export default function StartScrollContainer({ tileGroups }: StartScrollContainerProps) {
-    const startTilesContainer = useRef<HTMLDivElement>();
+    const startTilesContainer = useRef<HTMLDivElement>(null);
     const [height, setHeight] = useState(-1);
 
     useLayoutEffect(() => {

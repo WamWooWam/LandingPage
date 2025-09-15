@@ -105,7 +105,3 @@ export async function pickImage(types: { avif?: string, webp?: string, png: stri
 
     return types.png;
 }
-
-export function isMobile(): boolean {
-    return window.matchMedia("(max-width: 600px)").matches ? true : false;
-}

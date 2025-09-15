@@ -4,7 +4,7 @@ export declare class PackageReader {
     private packageManifest;
     private identity;
     private compatibilityMode;
-    constructor(packageManifest: string, parser?: DOMParser);
+    constructor(packageManifest: string, parser?: DOMParser, fixupUrl?: (url: string) => string);
     readPackage(): Promise<Package>;
     private readIdentity;
     private readProperties;

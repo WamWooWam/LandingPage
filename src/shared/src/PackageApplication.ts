@@ -11,6 +11,7 @@ export interface PackageApplication {
     id: string;
     startPage: string;
     entryPoint: string;
+    executable: string;
     shortLink?: string;
     visualElements: ApplicationVisualElements;
     extensions: ApplicationExtension[];

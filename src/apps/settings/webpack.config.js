@@ -21,14 +21,12 @@ module.exports = {
             {
                 test: /\.css$/i,
                 use: [
-                    MiniCssExtractPlugin.loader,
                     { loader: 'css-loader', options: { importLoaders: 1 } },
                 ]
             },
             {
                 test: /\.scss$/i,
                 use: [
-                    MiniCssExtractPlugin.loader,
                     { loader: 'css-loader', options: { importLoaders: 1 } },
                     "sass-loader",
                 ],
@@ -52,21 +50,25 @@ module.exports = {
     },
     plugins: [
         new MiniCssExtractPlugin({
-            filename: env.NODE_ENV === 'production' ? "[name].[chunkhash].css" : "[name].bundle.css",
-            chunkFilename: env.NODE_ENV === 'production' ? "[id].bundle.[chunkhash].css" : "[id].bundle.css"
+            filename: "[name].bundle.css",
         }),
         new HtmlWebpackPlugin({
             inject: true,
             template: "./src/index.html",
             chunks: ["index"],
             filename: "index.html",
-            publicPath: "/",
-            baseUrl: "/apps/settings"
+            baseUrl: "/apps/calculator",
+            scriptLoading: 'module'
         }),
     ],
     output: {
-        filename: env.NODE_ENV === 'production' ? '[name].[chunkhash].js' : '[name].bundle.js',
-        chunkFilename: env.NODE_ENV === 'production' ? '[id].bundle.[chunkhash].js' : '[id].bundle.js',
+        filename: '[name].bundle.js',
         path: path.resolve(__dirname, 'dist'),
-    }
+        library: {
+            type: "modern-module"
+        }
+    },
+    experiments: {
+        outputModule: true,
+    },
 };

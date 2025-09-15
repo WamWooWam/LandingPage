@@ -1,7 +1,10 @@
 import ConfigurationManager, { AppStatus } from "~/Data/ConfigurationManager";
 import { Package, PackageApplication, TileSize, lightenDarkenColour2 } from "@landing-page/shared";
-import { useContext, useEffect, useState } from "preact/hooks";
+import { useContext, useEffect, useRef, useState } from "preact/hooks";
 
+import AppLaunchRequestedEvent from "~/Events/AppLaunchRequestedEvent";
+import Events from "~/Events";
+import MessageDialog from "~/Data/MessageDialog";
 import PackageRegistry from "~/Data/PackageRegistry";
 import TileBadge from "./TileBadge";
 import { TileBranding } from "./TileBranding";
@@ -9,6 +12,7 @@ import TileDefaultVisual from "./TileDefaultVisual";
 import TileUpdateManager from "./TileUpdateManager";
 import TileVisual from "~/Data/TileVisual";
 import TileVisualRenderer from "./TileVisualRenderer";
+import UICommand from "~/Data/UICommand";
 import { createContext } from "preact";
 import { getTileSize } from "./TileUtils";
 import { useSignal } from "@preact/signals";
@@ -100,14 +104,16 @@ const TileInner = ({ pack, app, visuals, appStatus, size }: TileInnerProps) => {
     return (
         <>
             <div class="tile">
-                <div class="front" style={frontStyle} key={frontKey}>
-                    <TileVisualRenderer app={app} binding={frontBinding} size={size} />
-                </div>
-                {swapping.value &&
-                    <div class="next" key={nextKey} style={frontStyle} onAnimationEnd={onAnimationEnded}>
-                        <TileVisualRenderer app={app} binding={nextBinding} size={size} />
+                <>
+                    <div class="front" style={frontStyle} >
+                        <TileVisualRenderer key={frontKey} app={app} binding={frontBinding} size={size} />
                     </div>
-                }
+                    {swapping.value &&
+                        <div class="next" style={frontStyle} onAnimationEnd={onAnimationEnded}>
+                            <TileVisualRenderer key={nextKey} app={app} binding={nextBinding} size={size} />
+                        </div>
+                    }
+                </>
 
                 {size !== TileSize.square70x70 &&
                     <TileBranding branding={visual.branding}
@@ -130,10 +136,13 @@ export const useTileInfo = () => {
 }
 
 export default function TileRenderer({ packageName, appId, row, column, style, size }: TileProps) {
+    const root = useRef<HTMLAnchorElement>(null);
+
     const [pressState, setPressState] = useState<PressState>("none");
     const [appStatus, setAppStatus] = useState<AppStatus>(null);
     const [availableVisuals, setAvailableVisuals] = useState<Map<TileSize, TileVisual[]>>(new Map());
     const [visuals, setVisuals] = useState<TileVisual[]>([]);
+    const [visible, setVisible] = useState<boolean>(true);
 
     const { pack, app } = getAppAndPackage(packageName, appId);
 
@@ -141,6 +150,7 @@ export default function TileRenderer({ packageName, appId, row, column, style, s
         'grid-row-start': row !== undefined ? (row + 1).toString() : undefined,
         'grid-column-start': column !== undefined ? (column + 1).toString() : undefined,
         opacity: "1",
+        ...((!visible) ? { display: "none" } : {}),
         ...((style) ? style : {})
     }
 
@@ -212,6 +222,46 @@ export default function TileRenderer({ packageName, appId, row, column, style, s
     }
 
     const onClick = (e: MouseEvent) => {
+        // todo: move this somewhere else
+        if (appStatus?.statusCode != 0) {
+            e.preventDefault();
+
+            let dialog = new MessageDialog(
+                `There's a problem with ${app.visualElements.displayName}.`,
+                "This app can't open",
+            );
+
+            dialog.commands.push(new UICommand('Close'));
+            dialog.showAsync();
+            return;
+        }
+
+        updatePressState(e);
+        
+        if (app.executable) {
+            e.preventDefault();
+            
+            const bounds = root.current.getBoundingClientRect();
+            const event = new AppLaunchRequestedEvent(
+                pack,
+                app,
+                {
+                    tileX: bounds.x,
+                    tileY: bounds.y,
+                    tileWidth: bounds.width,
+                    tileHeight: bounds.height,
+                    tileVisual: TileDefaultVisual,
+                    tileSize: size
+                },
+            );
+
+            setVisible(false);
+
+            Events.getInstance()
+                .dispatchEvent(event);
+
+            setTimeout(() => setVisible(true), 1000);
+        }
     }
 
     const didGetVisuals = (newVisuals: Map<TileSize, TileVisual[]>) => {
@@ -241,7 +291,8 @@ export default function TileRenderer({ packageName, appId, row, column, style, s
 
     return (
         <TileContext.Provider value={{ pack: pack, app: app, size: size }}>
-            <a id={`${packageName}!${appId}`}
+            <a ref={root}
+                id={`${packageName}!${appId}`}
                 class={classList.join(" ")}
                 style={containerStyle}
                 onMouseDown={onMouseDown}

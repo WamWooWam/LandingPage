@@ -141,25 +141,25 @@ export default class CharmsBarRenderer extends Component<{}, CharmsBarRendererSt
 
                 <div class={"charms-bar" + className} onTransitionEnd={this.onTransitionEnd.bind(this)}>
                     <ul class="charms-bar-items">
-                        <a role="listitem" class="charms-bar-item charms-bar-search" href="#">
+                        <a class="charms-bar-item charms-bar-search" href="#">
                             <div class="charms-bar-image"></div>
                             <p>Search</p>
                         </a>
-                        <a role="listitem" class="charms-bar-item charms-bar-share" href="#">
+                        <a class="charms-bar-item charms-bar-share" href="#">
                             <div class="charms-bar-image"></div>
                             <p>Share</p>
                         </a>
-                        <a role="listitem" class="charms-bar-item charms-bar-start" href="#" onClick={this.onStartClicked.bind(this)}>
+                        <a class="charms-bar-item charms-bar-start" href="#" onClick={this.onStartClicked.bind(this)}>
                             <div class="charms-bar-image">
                                 <div class="highlight-effect" />
                             </div>
                             <p>Start</p>
                         </a>
-                        <a role="listitem" class="charms-bar-item charms-bar-devices" href="#">
+                        <a class="charms-bar-item charms-bar-devices" href="#">
                             <div class="charms-bar-image"></div>
                             <p>Devices</p>
                         </a>
-                        <a role="listitem" class="charms-bar-item charms-bar-settings" href="#">
+                        <a class="charms-bar-item charms-bar-settings" href="#">
                             <div class="charms-bar-image"></div>
                             <p>Settings</p>
                         </a>

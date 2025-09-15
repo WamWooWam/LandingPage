@@ -16,7 +16,7 @@
 		<Resource Language="en-gb"/>
 	</Resources>
 	<Applications>
-		<Application Id="App" Executable="Numbers.exe" EntryPoint="/dist/index.html" wam:ShortLink="/apps/calculator/">
+		<Application Id="App" Executable="/dist/index.bundle.js" EntryPoint="/dist/index.html" wam:ShortLink="/apps/calculator/">
 			<m2:VisualElements DisplayName="Calculator" Square150x150Logo="assets/calculatemedium.png" Square30x30Logo="assets/smalllogo.png" Description="Calculator" ForegroundText="light" BackgroundColor="#008A00">
 				<m2:DefaultTile ShortName="Calculator" Square70x70Logo="assets/calculatetiny.png">
 					<m2:ShowNameOnTiles>
@@ -30,20 +30,5 @@
 	</Applications>
 	<Dependencies>
         <wam:FeatureDependency Name="WebAssembly" Features="Exceptions"/>
-		<PackageDependency Name="Microsoft.VCLibs.120.00" Publisher="CN=Microsoft Corporation, O=Microsoft Corporation, L=Redmond, S=Washington, C=US" MinVersion="12.0.20501.1"/>
 	</Dependencies>
-	<Extensions>
-		<Extension Category="windows.activatableClass.inProcessServer">
-			<InProcessServer>
-				<Path>microsoft.sqm.dll</Path>
-				<ActivatableClass ActivatableClassId="Microsoft.SQM.SQMSession" ThreadingModel="both"/>
-			</InProcessServer>
-		</Extension>
-		<Extension Category="windows.activatableClass.inProcessServer">
-			<InProcessServer>
-				<Path>Microsoft.PerfTrack.dll</Path>
-				<ActivatableClass ActivatableClassId="Microsoft.PerfTrack.PerfTrackLogger" ThreadingModel="both"/>
-			</InProcessServer>
-		</Extension>
-	</Extensions>
 </Package>

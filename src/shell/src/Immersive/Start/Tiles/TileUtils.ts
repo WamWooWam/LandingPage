@@ -1,7 +1,6 @@
-import { RawTileProps, TileSize } from "@landing-page/shared";
+import { RawTileProps, TileProps, TileSize } from "@landing-page/shared";
 
 import { FenceTileProps } from "./FenceTileRenderer";
-import { TileProps } from "./TileRenderer_v1";
 import { useTileInfo } from "./TileRenderer";
 
 export function useTileSize(): { width: number, height: number } {

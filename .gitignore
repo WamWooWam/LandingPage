@@ -30,3 +30,4 @@ yarn-error.log*
 dist/
 publish/
 publish.zip
+publish.7z

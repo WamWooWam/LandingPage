@@ -15,16 +15,16 @@ const AppX2013ManifestNS = "http://schemas.microsoft.com/appx/2013/manifest";
 const WamAppX2022NS = "https://wamwoowam.co.uk/appx/2022";
 
 export class PackageReader {
-
     private parser: DOMParser;
     private packageManifest: string;
 
     private identity: PackageIdentity;
     private compatibilityMode: PackageCompatibilityMode;
 
-    constructor(packageManifest: string, parser?: DOMParser) {
+    constructor(packageManifest: string, parser?: DOMParser, fixupUrl?: (url: string) => string) {
         this.packageManifest = packageManifest ?? ``;
         this.parser = parser ?? new DOMParser();
+        this.fixupUrl = fixupUrl ?? this.fixupUrl.bind(this);
     }
 
     async readPackage(): Promise<Package> {
@@ -114,6 +114,7 @@ export class PackageReader {
         const id = element.getAttribute("Id")!;
         const startPage = element.getAttribute("StartPage")!;
         const entryPoint = element.getAttribute("EntryPoint")!;
+        const executable = element.getAttribute("Executable") ?? entryPoint;
         const shortLink = element.getAttributeNS(WamAppX2022NS, "ShortLink") ?? null;
 
         const visualElementsElement = element.getElementsByTagNameNS(AppX2013ManifestNS, "VisualElements")[0]!;
@@ -123,7 +124,7 @@ export class PackageReader {
         // let extensionsElement = element.getElementsByTagNameNS(AppX2018ManifestNS, "Extensions")[0];
         // for (const extensionElement of extensionsElement.childNodes) {
         // }
-        return { id, startPage, entryPoint, visualElements, extensions: [], shortLink };
+        return { id, startPage, entryPoint, executable, visualElements, extensions: [], shortLink };
     }
 
     private readVisualElements(element: Element): ApplicationVisualElements {

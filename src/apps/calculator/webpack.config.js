@@ -3,6 +3,7 @@ const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const { env } = require('process');
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const { library } = require('webpack');
 
 module.exports = {
     entry: {
@@ -21,14 +22,14 @@ module.exports = {
             {
                 test: /\.css$/i,
                 use: [
-                    MiniCssExtractPlugin.loader,
+                    // MiniCssExtractPlugin.loader,
                     { loader: 'css-loader', options: { importLoaders: 1 } },
                 ]
             },
             {
                 test: /\.scss$/i,
                 use: [
-                    MiniCssExtractPlugin.loader,
+                    // MiniCssExtractPlugin.loader,
                     { loader: 'css-loader', options: { importLoaders: 1 } },
                     "sass-loader",
                 ],
@@ -56,20 +57,25 @@ module.exports = {
     },
     plugins: [
         new MiniCssExtractPlugin({
-            filename: env.NODE_ENV === 'production' ? "[name].[chunkhash].css" : "[name].bundle.css",
-            chunkFilename: env.NODE_ENV === 'production' ? "[id].bundle.[chunkhash].css" : "[id].bundle.css"
+            filename: "[name].bundle.css",
         }),
         new HtmlWebpackPlugin({
             inject: true,
             template: "./src/index.html",
             chunks: ["index"],
             filename: "index.html",
-            baseUrl: "/apps/calculator"
+            baseUrl: "/apps/calculator",
+            scriptLoading: 'module'
         }),
     ],
     output: {
-        filename: env.NODE_ENV === 'production' ? '[name].[chunkhash].js' : '[name].bundle.js',
-        chunkFilename: env.NODE_ENV === 'production' ? '[id].bundle.[chunkhash].js' : '[id].bundle.js',
+        filename: '[name].bundle.js',
         path: path.resolve(__dirname, 'dist'),
-    }
+        library: {
+            type: "modern-module"
+        }
+    },
+    experiments: {
+        outputModule: true,
+    },
 };
