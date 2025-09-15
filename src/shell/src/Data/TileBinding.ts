@@ -1,5 +1,5 @@
 import TileElement from "./TileElement";
-import { TileSize } from "shared/TileSize";
+import { TileSize } from "@landing-page/shared";
 
 export default interface TileBinding {
     id: number;

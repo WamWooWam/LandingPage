@@ -1,6 +1,6 @@
 import { exceptions, simd } from "wasm-feature-detect";
 
-import { Package } from "shared/Package";
+import { Package } from "@landing-page/shared";
 
 // throw on missing features
 export async function ensureCapabilitiesAsync(pack: Package): Promise<void> {

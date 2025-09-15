@@ -1,5 +1,5 @@
-import { PackageApplication } from "shared/PackageApplication"
-import { TileSize } from "shared/TileSize";
+import { PackageApplication, TileSize } from "@landing-page/shared";
+
 import TileVisual from "../../../Data/TileVisual";
 import { getVisuals } from "./TileToast";
 

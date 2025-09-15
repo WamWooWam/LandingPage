@@ -1,9 +1,9 @@
 // singleton class to manage instances of apps
 
+import { Package, PackageApplication } from "@landing-page/shared";
+
 import CoreApplication from "./CoreApplication";
 import CoreWindowManager from "./CoreWindowManager";
-import { Package } from "shared/Package";
-import { PackageApplication } from "shared/PackageApplication";
 
 export default class CoreApplicationManager {
     static instances: CoreApplication[] = [];

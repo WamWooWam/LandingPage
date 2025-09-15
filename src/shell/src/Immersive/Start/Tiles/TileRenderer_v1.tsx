@@ -2,26 +2,23 @@ import "./tile.scss"
 
 import { Component, ErrorInfo, Ref, RefObject, createContext, createRef } from "preact";
 import ConfigurationManager, { AppStatus } from "~/Data/ConfigurationManager";
+import { Package, PackageApplication, TileSize, lightenDarkenColour2 } from "@landing-page/shared";
 import { getTileSize, useTileSize } from "./TileUtils";
 
 import AppLaunchRequestedEvent from "~/Events/AppLaunchRequestedEvent";
 import Events from "~/Events";
 import MessageDialog from "~/Data/MessageDialog";
-import { Package } from "shared/Package";
-import { PackageApplication } from "shared/PackageApplication";
 import PackageImage from "../../../Util/PackageImage";
 import PackageRegistry from "~/Data/PackageRegistry";
 import TileBadge from "./TileBadge";
 import { TileBranding } from "./TileBranding";
 import TileDefaultVisual from "./TileDefaultVisual";
-import { TileSize } from "shared/TileSize";
 import TileTemplates from "./TileTemplates";
 import TileUpdateManager from "./TileUpdateManager";
 import TileVisual from "../../../Data/TileVisual";
 import TileVisualRenderer from "./TileVisualRenderer";
 import UICommand from "~/Data/UICommand";
 import { isMobile } from "~/Util";
-import { lightenDarkenColour2 } from "shared/ColourUtils";
 
 export interface TileProps {
     packageName?: string;

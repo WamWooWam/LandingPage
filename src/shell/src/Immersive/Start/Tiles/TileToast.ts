@@ -1,6 +1,6 @@
+import { TileSize } from "@landing-page/shared";
 import TileElement from "~/Data/TileElement";
 import TileVisual from "~/Data/TileVisual";
-import { TileSize } from "shared/TileSize";
 import { EXT_XMLNS } from "~/Util";
 
 export function getTileSizeForTemplate(template: string): TileSize {

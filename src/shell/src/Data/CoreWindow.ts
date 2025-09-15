@@ -1,3 +1,4 @@
+import { Package, PackageApplication } from "@landing-page/shared";
 import { Position, Size, newGuid } from "../Util";
 
 import CoreApplication from "./CoreApplication";
@@ -6,8 +7,6 @@ import CoreWindowLayoutManager from "./CoreWindowLayoutManager";
 import CoreWindowManager from "./CoreWindowManager";
 import CoreWindowState from "./CoreWindowState";
 import Events from "../Events";
-import { Package } from "shared/Package";
-import { PackageApplication } from "shared/PackageApplication";
 import { Signal } from "@preact/signals";
 import { ensureCapabilitiesAsync } from "./PackageCapabilities";
 

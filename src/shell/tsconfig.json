@@ -13,8 +13,7 @@
     "jsx": "react-jsx",
     "jsxImportSource": "preact",
     "paths": {
-      "~/*": [ "./src/*" ],
-      "shared/*": [ "../shared/src/*" ]
+      "~/*": [ "./src/*" ]
     }
   }
 }

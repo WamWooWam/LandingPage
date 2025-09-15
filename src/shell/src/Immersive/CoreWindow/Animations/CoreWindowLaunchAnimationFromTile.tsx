@@ -1,16 +1,15 @@
 import { AnimationSlowed, EASE_APPLAUNCHDRIFT, EASE_APPLAUNCHFASTIN, EASE_APPLAUNCHROTATE, EASE_APPLAUNCHROTATEBOUNCE, EASE_APPLAUNCHSCALE, EASE_LINEAR } from "./AnimationCommon";
 import { Component, RefObject, createRef } from "preact";
 import { Position, Size } from "~/Util";
+import { TileSize, lightenDarkenColour2 } from "@landing-page/shared";
 
 import AnimationEvent from "~/Animation/AnimationEvent";
 import AnimationRunner from "~/Animation/AnimationRunner";
 import CoreWindowRenderer from "../CoreWindowRenderer";
 import Storyboard from "~/Animation/Storyboard";
 import TileInfo from "~/Data/TileInfo";
-import { TileSize } from "shared/TileSize";
 import TileVisualRenderer from "~/Immersive/Start/Tiles/TileVisualRenderer";
 import { getTileSize } from "~/Immersive/Start/Tiles/TileUtils";
-import { lightenDarkenColour2 } from "shared/ColourUtils";
 
 //
 // Provides a two sided element presenting both a tile and CoreWindow, used when animating between the two

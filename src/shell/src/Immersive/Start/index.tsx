@@ -1,6 +1,6 @@
 import "./start.scss"
 
-import { StartTileGroup, parseLayout } from "shared/StartLayoutParser";
+import { StartTileGroup, parseLayout } from "@landing-page/shared";
 import { useEffect, useRef } from "preact/hooks";
 
 import AllAppsButton from "./AllAppsButton";

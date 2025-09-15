@@ -1,6 +1,6 @@
 import { useLayoutEffect, useRef, useState } from "preact/hooks";
 
-import { StartTileGroup } from "shared/StartLayoutParser";
+import { StartTileGroup } from "@landing-page/shared";
 import TileGroup from "./Tiles/TileGroup";
 import { calculateLayout } from "./Tiles/TileUtils";
 

@@ -1,6 +1,6 @@
-import { ApplicationVisualElements } from "shared/ApplicationVisualElements";
+import { ApplicationVisualElements, TileSize } from "@landing-page/shared";
+
 import PackageImage from "~/Util/PackageImage";
-import { TileSize } from "shared/TileSize";
 
 interface TileBrandingProps {
     branding: string;

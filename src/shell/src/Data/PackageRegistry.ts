@@ -1,4 +1,4 @@
-import { Package } from "shared/Package";
+import { Package } from "@landing-page/shared";
 
 export default class PackageRegistry {
     static packages: Map<string, Package> = new Map();

@@ -1,5 +1,4 @@
-import { Package } from "shared/Package";
-import { PackageApplication } from "shared/PackageApplication";
+import { Package, PackageApplication } from "@landing-page/shared";
 
 export interface AppStatus {
     statusCode: number;

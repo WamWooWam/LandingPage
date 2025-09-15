@@ -1,6 +1,5 @@
 import ConfigurationManager, { AppStatus } from "~/Data/ConfigurationManager";
-import { Package, PackageApplication, TileSize } from "@landing-page/shared";
-import { getTileSize, useTileSize } from "./TileUtils";
+import { Package, PackageApplication, TileSize, lightenDarkenColour2 } from "@landing-page/shared";
 import { useContext, useEffect, useState } from "preact/hooks";
 
 import PackageRegistry from "~/Data/PackageRegistry";
@@ -11,7 +10,7 @@ import TileUpdateManager from "./TileUpdateManager";
 import TileVisual from "~/Data/TileVisual";
 import TileVisualRenderer from "./TileVisualRenderer";
 import { createContext } from "preact";
-import { lightenDarkenColour2 } from "shared/ColourUtils";
+import { getTileSize } from "./TileUtils";
 import { useSignal } from "@preact/signals";
 
 export interface TileProps {

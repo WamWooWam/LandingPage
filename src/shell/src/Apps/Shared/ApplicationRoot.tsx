@@ -1,6 +1,6 @@
+import { AppInstance, CoreWindow } from "@landing-page/shared";
+
 import { createContext } from "preact";
-import { AppInstance } from "shared/AppInstance";
-import { CoreWindow } from "shared/CoreWindow";
 
 export const InstanceContext = createContext<AppInstance>(null);
 export const CoreWindowContext = createContext<CoreWindow>(null);

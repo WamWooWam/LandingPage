@@ -1,6 +1,6 @@
 import "./core-window-splash-screen.scss"
 
-import { ApplicationVisualElements } from "shared/ApplicationVisualElements";
+import { ApplicationVisualElements } from "@landing-page/shared";
 import PackageImage from "~/Util/PackageImage";
 
 interface CoreWindowSplashScreenProps {

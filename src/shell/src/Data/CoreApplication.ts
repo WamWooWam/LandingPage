@@ -1,6 +1,6 @@
+import { Package, PackageApplication } from "@landing-page/shared";
+
 import CoreWindow from "./CoreWindow";
-import { Package } from "shared/Package"
-import { PackageApplication } from "shared/PackageApplication"
 import { newGuid } from "../Util";
 
 export default class CoreApplication {

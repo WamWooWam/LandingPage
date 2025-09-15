@@ -1,11 +1,9 @@
+import { ApplicationVisualElements, PackageApplication, TileSize } from "@landing-page/shared";
 import { FunctionalComponent, JSX, RenderableProps, VNode } from "preact";
 import { useEffect, useState } from "preact/hooks";
 
-import { ApplicationVisualElements } from "shared/ApplicationVisualElements";
-import { PackageApplication } from "shared/PackageApplication";
 import PackageImage from "~/Util/PackageImage";
 import TileBinding from "~/Data/TileBinding";
-import { TileSize } from "shared/TileSize";
 import TileTemplateProps from "./TileTemplateProps";
 import TileTemplates from "./TileTemplates";
 import TileVisual from "~/Data/TileVisual";
