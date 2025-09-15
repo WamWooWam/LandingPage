@@ -6,9 +6,13 @@ body {
     font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
 }
 
-#app {
-    width: 100vw;
-    height: 100vh;
+#app,
+app {
+    display: block;
+    width: 100%;
+    height: 100%;
+    container-type: inline-size;
+    container-name: app;
 }
 
 .visual-state-manager {
@@ -16,112 +20,9 @@ body {
     height: 100%;
 }
 
-.small {
-    .calc-root {
-        .calc-grid {
-            width: 340px;
-        }
-
-        .calc-navbar {
-            width: 320px;
-            margin-top: 19px;
-        }
-
-
-        .calc-buttons-root {
-            flex-direction: column;
-            margin-top: 20px;
-        }
-
-        .calc-standard-buttons {
-            flex-direction: row;
-            width: 320px;
-            height: 82px;
-            margin-right: 5px;
-            margin-bottom: 30px;
-
-            .calc-button-memory {
-                font-size: 21.333pt;
-                margin: 0px 5px 0px 0px;
-            }
-
-            .calc-button-negate {
-                font-size: 32px;
-                margin: 0px 5px 0px 0px;
-
-                .calc-button-content {
-                    margin: -2px 0px 7px 1px;
-                }
-            }
-
-            .calc-button-sqrt {
-                font-size: 42.667px;
-                margin: 0px 5px 0px 0px;
-
-                .calc-button-content {
-                    margin: -4px -1px 0px 0px;
-                }
-            }
-
-            .calc-button-percent {
-                font-size: 34.667px;
-                margin: 0px 5px 0px 0px;
-                font-weight: normal;
-
-                .calc-button-content {
-                    margin: -1px 0px 0px;
-                }
-            }
-
-            .calc-button-invert {
-                font-size: 24px;
-                margin: 0px 1px 0px 0px;
-                font-weight: normal;
-                font-family: "Segoe UI Symbol";
-
-                .calc-button-content {
-                    margin: -2px 0px 0px -1px;
-                }
-            }
-        }
-
-        .results {
-            width: calc(320px - 40px);
-            height: 80px;
-
-            .expression {
-                font-size: 14pt;
-            }
-        }
-
-        .calc-pad {
-            width: 320px;
-            height: 430px;
-            margin-left: 0px;
-            .calc-numbers {
-                .calc-button {
-                    font-size: 36pt;
-                }
-            }
-        }
-
-        input[type="radio"].calc-navbar-item {
-            font-size: 20pt;
-
-            &:not(:checked) {
-                visibility: collapse;
-            }
-
-            &:not(:first-child) {
-                margin-left: 20px;
-            }
-        }
-    }
-}
-
 .calc-root {
     $font-family: 'Segoe UI',
-    'Segoe UI Symbol';
+        'Segoe UI Symbol';
 
     background: #1D1D1D;
     color: white;
@@ -526,6 +427,111 @@ body {
 
         .calc-button-content {
             margin: -2px 0px 0px -1px;
+        }
+    }
+}
+
+@container app (width < 600px) {
+    .calc-root {
+
+        .calc-grid {
+            width: 340px !important;
+        }
+
+        .calc-navbar {
+            width: 320px !important;
+            margin-top: 19px;
+        }
+
+
+        .calc-buttons-root {
+            flex-direction: column;
+            margin-top: 20px;
+        }
+
+        .calc-standard-buttons {
+            flex-direction: row;
+            width: 320px;
+            height: 82px;
+            margin-right: 5px;
+            margin-bottom: 30px;
+
+            .calc-button-memory {
+                font-size: 21.333pt;
+                margin: 0px 5px 0px 0px;
+            }
+
+            .calc-button-negate {
+                font-size: 32px;
+                margin: 0px 5px 0px 0px;
+
+                .calc-button-content {
+                    margin: -2px 0px 7px 1px;
+                }
+            }
+
+            .calc-button-sqrt {
+                font-size: 42.667px;
+                margin: 0px 5px 0px 0px;
+
+                .calc-button-content {
+                    margin: -4px -1px 0px 0px;
+                }
+            }
+
+            .calc-button-percent {
+                font-size: 34.667px;
+                margin: 0px 5px 0px 0px;
+                font-weight: normal;
+
+                .calc-button-content {
+                    margin: -1px 0px 0px;
+                }
+            }
+
+            .calc-button-invert {
+                font-size: 24px;
+                margin: 0px 1px 0px 0px;
+                font-weight: normal;
+                font-family: "Segoe UI Symbol";
+
+                .calc-button-content {
+                    margin: -2px 0px 0px -1px;
+                }
+            }
+        }
+
+        .results {
+            width: calc(320px - 40px);
+            height: 80px;
+
+            .expression {
+                font-size: 14pt;
+            }
+        }
+
+        .calc-pad {
+            width: 320px;
+            height: 430px;
+            margin-left: 0px;
+
+            .calc-numbers {
+                .calc-button {
+                    font-size: 36pt;
+                }
+            }
+        }
+
+        input[type="radio"].calc-navbar-item {
+            font-size: 20pt;
+
+            &:not(:checked) {
+                visibility: collapse;
+            }
+
+            &:not(:first-child) {
+                margin-left: 20px;
+            }
         }
     }
 }

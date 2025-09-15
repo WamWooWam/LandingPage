@@ -45,7 +45,7 @@ export default function VisualStateManager(props: RenderableProps<VisualStateMan
 
     return (
         <VisualStateContext.Provider value={currentState}>
-            <div ref={ref} class={`visual-state-manager ${currentState.className}`}>
+            <div ref={ref} class={"visual-state-manager"}>
                 {props.children}
             </div>
         </VisualStateContext.Provider>
