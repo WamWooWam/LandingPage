@@ -2,8 +2,7 @@ import { useContext, useEffect, useState } from "preact/hooks";
 
 import PackageImage from "~/Util/PackageImage";
 import { RenderableProps } from "preact";
-import { TileContext } from "./TileRenderer";
-import { getTileSize } from "./TileUtils";
+import { useTileSize } from "./TileUtils";
 
 type Rectangle = {
     left: number;
@@ -35,11 +34,9 @@ type TileNotificationBindingProps = {
 }
 
 export default function TileNotificationBinding(props: RenderableProps<TileNotificationBindingProps>) {
-    const tile = useContext(TileContext);
-
+    const tileSize = useTileSize();
     const [subVisual, setSubVisual] = useState<number>(0);
     useEffect(() => {
-        const tileSize = getTileSize(tile.size);
         const subVisuals = Math.ceil(props.height / tileSize.height);
         if (subVisuals <= 1) return;
 
@@ -50,7 +47,6 @@ export default function TileNotificationBinding(props: RenderableProps<TileNotif
         return () => window.clearInterval(interval);
     });
 
-    const tileSize = getTileSize(tile.size);
     const style = {
         width: tileSize.width,
         height: tileSize.height,

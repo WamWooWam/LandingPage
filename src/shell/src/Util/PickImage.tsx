@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'preact/hooks';
 
 import { VNode } from 'preact'
+import { memo } from 'preact/compat';
 import { pickImage } from '.';
 
 type PickImageProps = {
@@ -10,7 +11,7 @@ type PickImageProps = {
     children: (value: string) => VNode<any>
 }
 
-const PickImage = (props: PickImageProps) => {
+const PickImage = memo((props: PickImageProps) => {
     const unmounted = useRef<boolean>(false);
     const [image, setImage] = useState<string>();
     useEffect(() => {
@@ -31,6 +32,6 @@ const PickImage = (props: PickImageProps) => {
         }
     });
     return image && props.children(image);
-};
+});
 
 export default PickImage;

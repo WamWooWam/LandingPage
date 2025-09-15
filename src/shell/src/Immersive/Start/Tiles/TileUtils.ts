@@ -1,9 +1,15 @@
 import { FenceTileProps } from "./FenceTileRenderer";
 import { RawTileProps } from "shared/StartLayoutParser"
-import { TileProps } from "./TileRenderer";
+import { TileProps } from "./TileRenderer_v1";
 import { TileSize } from "shared/TileSize";
+import { useTileInfo } from "./TileRenderer";
 
-export function getTileSize(size: TileSize) {
+export function useTileSize(): { width: number, height: number } {
+    const data = useTileInfo();
+    return getTileSize(data.size);
+}
+
+export function getTileSize(size: TileSize): { width: number, height: number } {
     switch (size) {
         case TileSize.square70x70:
             return { width: 56, height: 56 };
@@ -16,7 +22,11 @@ export function getTileSize(size: TileSize) {
     }
 }
 
-export type TilePropsWithType = (TileProps | FenceTileProps) & { size: TileSize, type: "fence" | "tile", key: any, animColumn: number };
+export type TilePropsWithType = (TileProps | FenceTileProps) & {
+    size: TileSize, type: "fence" | "tile",
+    key: any,
+    animColumn: number
+};
 
 export function collapseTiles(tiles: RawTileProps[]): Array<TilePropsWithType> {
     let fullTiles: TilePropsWithType[] = [];
@@ -94,10 +104,10 @@ export function tileSizeToRows(size: TileSize): number {
 
 export function calculateLayout(tiles: RawTileProps[], availableHeight: number, isMobile: boolean): { tileColumns: TilePropsWithType[][] } {
     let collapsedTiles = collapseTiles(tiles);
-    return layoutDesktopNew(collapsedTiles, availableHeight);
+    return layoutDesktop(collapsedTiles, availableHeight);
 }
 
-export function layoutDesktopNew(collapseTiles: TilePropsWithType[], availableHeight: number): { tileColumns: TilePropsWithType[][] } {
+export function layoutDesktop(collapseTiles: TilePropsWithType[], availableHeight: number): { tileColumns: TilePropsWithType[][] } {
     let maxRows = Math.max(1, Math.floor(availableHeight / 128));
     let row = 0;
     let column = 0;
@@ -142,47 +152,4 @@ export function layoutDesktopNew(collapseTiles: TilePropsWithType[], availableHe
     console.log(tileColumns);
 
     return { tileColumns };
-}
-
-// TODO: use this to generate CSS directly
-export function layoutDesktop(collapsedTiles: TilePropsWithType[], baseCol: number, availableHeight: number): { tiles: Array<TilePropsWithType>, columns: number } {
-    let maxRows = Math.floor(availableHeight / 128);
-    // console.log(`available height: ${availableHeight}, maxRows: ${maxRows}`);
-    let row = 0;
-    let column = 0;
-    let baseColumn = 0;
-
-    let lastWidth = 0;
-    let lastHeight = 0;
-    let tiles: TilePropsWithType[] = [];
-
-    for (const tile of collapsedTiles) {
-        let tileWidth = tileSizeToColumns(tile.size);
-        let tileHeight = tileSizeToRows(tile.size);
-
-        if ((column - baseColumn) >= 2) {
-            if ((row + Math.max(lastHeight, tileHeight)) >= maxRows) {
-                row = 0;
-                baseColumn += 2;
-            }
-            else {
-                row += lastHeight;
-            }
-
-            column = baseColumn;
-        }
-
-        tiles.push({ row, column, ...tile, animColumn: baseCol + baseColumn });
-
-        column += tileWidth;
-        lastWidth = tileWidth;
-        lastHeight = tileHeight;
-    }
-
-    // BUGBUG: fix for a webkit bug where the container size is not calculated correctly
-    let totalColumns = tiles.reduce((prev, cur) => Math.max(prev, cur.column + tileSizeToColumns(cur.size)), 0);
-
-    console.log(tiles, totalColumns);
-
-    return { tiles, columns: totalColumns };
 }

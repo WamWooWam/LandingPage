@@ -6,10 +6,8 @@ import AnimationEvent from "~/Animation/AnimationEvent";
 import AnimationRunner from "~/Animation/AnimationRunner";
 import CoreWindowRenderer from "../CoreWindowRenderer";
 import Storyboard from "~/Animation/Storyboard";
-import TileDefaultVisual from "~/Immersive/Start/Tiles/TileDefaultVisual";
 import TileInfo from "~/Data/TileInfo";
 import { TileSize } from "shared/TileSize";
-import TileVisual from "~/Data/TileVisual";
 import TileVisualRenderer from "~/Immersive/Start/Tiles/TileVisualRenderer";
 import { getTileSize } from "~/Immersive/Start/Tiles/TileUtils";
 import { lightenDarkenColour2 } from "shared/ColourUtils";
@@ -105,8 +103,6 @@ export default class CoreWindowLaunchAnimationFromTile extends Component<CoreWin
             classList.push("text-light");
         }
 
-        let tileBounds = getTileSize(this.props.tile.size);
-
         let style = {
             left: "0px",
             top: "0px",
@@ -118,7 +114,7 @@ export default class CoreWindowLaunchAnimationFromTile extends Component<CoreWin
         let tileStyle = {
             width: tileSize.width + "px",
             height: tileSize.height + "px",
-            transform: `scale(${this.props.targetSize.width / tileBounds.width}, ${this.props.targetSize.height / tileBounds.height})`,
+            transform: `scale(${this.props.targetSize.width / tileSize.width}, ${this.props.targetSize.height / tileSize.height})`,
             transformOrigin: "top left"
         }
 

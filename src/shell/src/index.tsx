@@ -6,47 +6,23 @@ import "./polyfill";
 import './index.scss';
 import './segoe.scss';
 
-import Router, { route } from "preact-router";
+import { LocationProvider, Route, Router } from "preact-iso";
 import { hasAvif, hasWebP } from "./Util";
 
-import AsyncRoute from "preact-async-route";
+import Root from "./Root";
 import { hydrate } from "preact"
-import { useEffect } from "preact/hooks";
 
 Promise.all([hasWebP, hasAvif]);
 
-if (typeof window !== "undefined") {
-    const Main = () => {
-        useEffect(() => {
-            if (window.location.pathname.startsWith("/app"))
-                return;
-
-            const media = window.matchMedia("(max-width: 600px)");
-            const handler = ({ matches }: MediaQueryList | MediaQueryListEvent) => {
-                if (matches) {
-                    route("/mobile");
-                }
-                else {
-                    route("/");
-                }
-            }
-
-            media.addEventListener("change", handler);
-            handler(media);
-
-            return () => {
-                media.removeEventListener("change", () => { });
-            }
-        });
-
-        return (
+const Main = () => {
+    return (
+        <LocationProvider>
             <Router>
-                <AsyncRoute path="/" getComponent={() => import("./Root").then(m => m.default)} />
-                <AsyncRoute path="/mobile" getComponent={() => import("./MobileRoot").then(m => m.default)} />
-                <AsyncRoute path="/app/:packageId/:appId" getComponent={() => import("./StandaloneRoot").then(m => m.default)} />
+                <Route path="/" component={Root} />
+                <Route path="/app/:packageId/:appId" component={() => import("./StandaloneRoot").then(m => m.default)} />
             </Router>
-        )
-    }
-
-    hydrate(<Main />, document.body);
+        </LocationProvider>
+    )
 }
+
+hydrate(<Main />, document.body);

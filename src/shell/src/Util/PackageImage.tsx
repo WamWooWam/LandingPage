@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'preact/hooks';
 
 import { VNode } from 'preact'
+import { memo } from 'preact/compat';
 import { pickImage } from '~/Util';
 
 type PackageImageProps = {
@@ -8,12 +9,12 @@ type PackageImageProps = {
     children: (value: string) => VNode<any>
 }
 
-const PackageImage = (props: PackageImageProps) => {
+const PackageImage = memo((props: PackageImageProps) => {
     const unmounted = useRef<boolean>(false);
     const [image, setImage] = useState<string>(null);
 
     useEffect(() => {
-        if(!props.url) return;
+        if (!props.url) return;
 
         if (!props.url.endsWith(".webp") && !props.url.endsWith(".avif")) {
             setImage(props.url);
@@ -46,6 +47,6 @@ const PackageImage = (props: PackageImageProps) => {
     return <>
         {image ? props.children(image) : null}
     </>;
-}
+})
 
 export default PackageImage;

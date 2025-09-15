@@ -1,27 +1,18 @@
-import "./tile.scss"
-
-import { Component, ErrorInfo, Ref, RefObject, createContext, createRef } from "preact";
 import ConfigurationManager, { AppStatus } from "~/Data/ConfigurationManager";
+import { Package, PackageApplication, TileSize } from "@landing-page/shared";
+import { getTileSize, useTileSize } from "./TileUtils";
+import { useContext, useEffect, useState } from "preact/hooks";
 
-import AppLaunchRequestedEvent from "~/Events/AppLaunchRequestedEvent";
-import Events from "~/Events";
-import MessageDialog from "~/Data/MessageDialog";
-import { Package } from "shared/Package";
-import { PackageApplication } from "shared/PackageApplication";
-import PackageImage from "../../../Util/PackageImage";
 import PackageRegistry from "~/Data/PackageRegistry";
 import TileBadge from "./TileBadge";
 import { TileBranding } from "./TileBranding";
 import TileDefaultVisual from "./TileDefaultVisual";
-import { TileSize } from "shared/TileSize";
-import TileTemplates from "./TileTemplates";
 import TileUpdateManager from "./TileUpdateManager";
-import TileVisual from "../../../Data/TileVisual";
+import TileVisual from "~/Data/TileVisual";
 import TileVisualRenderer from "./TileVisualRenderer";
-import UICommand from "~/Data/UICommand";
-import { getTileSize } from "./TileUtils";
-import { isMobile } from "~/Util";
+import { createContext } from "preact";
 import { lightenDarkenColour2 } from "shared/ColourUtils";
+import { useSignal } from "@preact/signals";
 
 export interface TileProps {
     packageName?: string;
@@ -35,341 +26,237 @@ export interface TileProps {
     style?: any;
 }
 
-interface TileState {
-    pack: Package;
-    app: PackageApplication;
-
-    appStatus?: AppStatus;
-
-    pressState?: "none" | "top" | "bottom" | "left" | "right" | "center";
-
-    visualIdx: number;
-    nextVisualIdx?: number;
-    visuals: TileVisual[]
-    visible: boolean;
-
-    swapping: boolean;
-    clicked: boolean;
-
-    interval?: any;
-    noStyle?: boolean;
-
-    error: string | null
-}
-
 interface TileContextData {
     pack: Package;
     app: PackageApplication;
     size: TileSize;
 }
 
-export const TileContext = createContext<TileContextData>(null);
+const TileContext = createContext<TileContextData>(null);
 
-export default class TileRenderer extends Component<TileProps, TileState> {
-    // BUGBUG: this should be possible without a ref
-    private root: RefObject<HTMLAnchorElement>;
+interface TileInnerProps {
+    pack: Package;
+    app: PackageApplication;
+    visuals: TileVisual[];
+    appStatus?: AppStatus
+    size: TileSize;
+}
 
-    constructor(props: TileProps) {
-        super(props);
+type PressState = "none" | "top" | "bottom" | "left" | "right" | "center";
 
-        let { pack, app } = this.getAppAndPackage(props);
-        this.state = {
-            app,
-            pack,
-            pressState: "none",
-            visuals: [],
-            visualIdx: -1,
-            swapping: false,
-            clicked: false,
-            visible: true,
-            error: null
-        };
+const getAppAndPackage = (packageName: string, appId: string): { pack: Package, app: PackageApplication } => {
+    let pack = PackageRegistry.getPackage(packageName);
+    if (!pack) console.warn(`Package ${packageName} not found!`);
+    let app = pack?.applications[appId];
+    if (!app) console.warn(`App ${appId} in package ${packageName} not found!`);
+    return { pack, app };
+}
 
-        this.root = createRef();
-        this.didGetVisuals = this.didGetVisuals.bind(this);
-        this.onMouseDown = this.onMouseDown.bind(this);
-        this.onMouseUp = this.onMouseUp.bind(this);
-        this.onClick = this.onClick.bind(this);
-        this.updatePressState = this.updatePressState.bind(this);
-        this.onAnimationEnded = this.onAnimationEnded.bind(this);
+const TileInner = ({ pack, app, visuals, appStatus, size }: TileInnerProps) => {
+    const swapping = useSignal<boolean>(false);
+    const visualIdx = useSignal<number>(-1);
+
+    const onAnimationEnded = (e: AnimationEvent) => {
+        visualIdx.value = (visualIdx.value + 1) % visuals.length;
+        swapping.value = false;
     }
 
-    componentDidUpdate(previousProps: Readonly<TileProps>, previousState: Readonly<TileState>, snapshot: any): void {
-        if (this.props.packageName !== previousProps.packageName || this.props.appId !== previousProps.appId) {
-            let { pack, app } = this.getAppAndPackage();
-            clearInterval(this.state.interval);
+    useEffect(() => {
+        if (visuals.length <= 1) return;
 
-            TileUpdateManager.getInstance()
-                .unregisterVisualUpdateCallback(this.state.app, this.didGetVisuals);
+        swapping.value = true;
 
-            this.setState({ pack, app, visualIdx: 0, visuals: [TileDefaultVisual], nextVisualIdx: undefined });
+        const interval = setInterval(() => {
+            swapping.value = true;
+        }, 10000 + (Math.random() * 5000));
+
+        return () => {
+            clearInterval(interval);
         }
+    }, [visuals]);
 
-        if (!previousState.appStatus && this.state.appStatus) {
-            if (this.state.appStatus.statusCode === 0) {
-                TileUpdateManager.getInstance()
-                    .registerVisualUpdateCallback(this.state.app, this.didGetVisuals);
-            }
-        }
+    if (!pack || !app) {
+        return (
+            <div></div>
+        );
     }
 
-    componentDidMount() {
-        ConfigurationManager.getAppStatus(this.state.app, this.state.pack)
-            .then((status) => {
-                this.setState({ appStatus: status });
-            });
+    const tileColour = app.visualElements.backgroundColor ?? "#4617b4";
+    const tileColourLight = lightenDarkenColour2(tileColour, 0.05);
+    const frontStyle = {
+        background: `linear-gradient(to right, ${tileColour}, ${tileColourLight})`
     }
 
-    componentDidCatch(error: any, errorInfo: ErrorInfo): void {
-        console.error(error);
+    const idx = visualIdx.value;
+    const visual = idx == -1 ? TileDefaultVisual : visuals[idx];
+    const nextVisual = visuals[(idx + 1) % visuals.length];
+    const previousVisual = visuals[(idx - 1) % visuals.length] ?? TileDefaultVisual;
 
-        TileUpdateManager.getInstance()
-            .unregisterVisualUpdateCallback(this.state.app, this.didGetVisuals);
+    const frontBinding = visual?.bindings?.find(f => f.size === size);
+    const nextBinding = nextVisual?.bindings?.find(f => f.size === size);
 
-        this.setState(() => {
-            clearInterval(this.state.interval);
+    const frontKey = idx.toString();
+    const nextKey = ((idx + 1) % visuals.length).toString();
 
-            // tile safe mode, show the default visual
-            return { error: error.toString(), visuals: [TileDefaultVisual], nextVisualIdx: undefined as number, visualIdx: 0, swapping: false };
-        });
-    }
-
-    componentWillUnmount() {
-        TileUpdateManager.getInstance()
-            .unregisterVisualUpdateCallback(this.state.app, this.didGetVisuals);
-    }
-
-    didGetVisuals(visuals: Map<TileSize, TileVisual[]>) {
-        if (this.state.interval)
-            clearInterval(this.state.interval);
-
-        let tileVisuals = visuals.get(this.props.size);
-        if (tileVisuals.length > 0) {
-            // Promise.race(tileVisuals.flatMap(f => f.bindings).map(s => TileTemplates[s.template as keyof typeof TileTemplates]()))
-            //     .then(() => {
-            let interval = setInterval(() => this.updateBinding(), 10000 + (Math.random() * 5000));
-
-            this.setState({ visuals: tileVisuals, interval });
-            this.updateBinding()
-            // })
-        }
-    }
-
-    updateBinding() {
-        // we need to transition from the previous visual to the next visual
-        this.setState({ swapping: true });
-    }
-
-    onAnimationEnded(e: AnimationEvent) {
-        this.setState((s) => {
-            let visuals = [...s.visuals];
-            let visualIdx = s.visualIdx;
-            visualIdx = (visualIdx + 1) % visuals.length;
-
-            return ({
-                visuals,
-                visualIdx,
-                swapping: false
-            })
-        });
-    }
-
-    // BUGBUG: these really should be pointer events, but they prevent scrolling on iOS 
-    onMouseDown(e: MouseEvent) {
-        this.updatePressState(e);
-    }
-
-    onMouseUp(e: MouseEvent) {
-        this.setState({ pressState: "none" });
-    }
-
-    onClick(e: MouseEvent) {
-        // todo: move this somewhere else
-        if (this.state.appStatus?.statusCode != 0) {
-            e.preventDefault();
-
-            if (this.state.appStatus?.unavailable) {
-                let dialog = new MessageDialog(
-                    `There's a problem with ${this.state.app.visualElements.displayName}.`,
-                    "This app can't open");
-
-                if (this.state.appStatus?.statusCode == 2151645484) {
-                    dialog = new MessageDialog(
-                        `${this.state.app.visualElements.displayName} appears to have been corrupted. Running this app might put your PC at risk.\r\n<a target="_blank" href="https://www.sec.gov/Archives/edgar/data/1418091/000110465922048128/tm2213229d1_sc13da.htm">More info</a>`,
-                        "Start protected your PC");
+    return (
+        <>
+            <div class="tile">
+                <div class="front" style={frontStyle} key={frontKey}>
+                    <TileVisualRenderer app={app} binding={frontBinding} size={size} />
+                </div>
+                {swapping.value &&
+                    <div class="next" key={nextKey} style={frontStyle} onAnimationEnd={onAnimationEnded}>
+                        <TileVisualRenderer app={app} binding={nextBinding} size={size} />
+                    </div>
                 }
 
-                dialog.commands.push(new UICommand("Close"))
-                dialog.showAsync();
-                return
-            }
-        }
+                {size !== TileSize.square70x70 &&
+                    <TileBranding branding={visual.branding}
+                        nextBranding={nextVisual?.branding}
+                        previousBranding={previousVisual?.branding}
+                        size={size}
+                        visualElements={app.visualElements} />}
+            </div>
 
-        this.updatePressState(e);
-        // BUGBUG: Hack to prevent the tile from launching on mobile for now
-        // if (this.state.app.entryPoint  && !isMobile()) {
-        //     e.preventDefault();
+            <TileBadge isError={appStatus && appStatus.statusCode !== 0} />
 
-        //     this.setState({ clicked: false, visible: false });
+            <div className="tile-border"
+                style={{ border: '1px solid rgba(255,255,255,0.1)' }} />
+        </>
+    )
+}
 
-        //     const bounds = this.root.current.getBoundingClientRect();
-        //     const event = new AppLaunchRequestedEvent(this.state.pack, this.state.app, {
-        //         tileX: bounds.x,
-        //         tileY: bounds.y,
-        //         tileWidth: bounds.width,
-        //         tileHeight: bounds.height,
-        //         tileVisual: this.state.visuals[this.state.visualIdx],
-        //         tileSize: this.props.size
-        //     });
+export const useTileInfo = () => {
+    return useContext(TileContext);
+}
 
-        //     Events.getInstance()
-        //         .dispatchEvent(event);
+export default function TileRenderer({ packageName, appId, row, column, style, size }: TileProps) {
+    const [pressState, setPressState] = useState<PressState>("none");
+    const [appStatus, setAppStatus] = useState<AppStatus>(null);
+    const [availableVisuals, setAvailableVisuals] = useState<Map<TileSize, TileVisual[]>>(new Map());
+    const [visuals, setVisuals] = useState<TileVisual[]>([]);
 
-        //     setTimeout(() => this.setState({ visible: true }), 1000);
-        // }
+    const { pack, app } = getAppAndPackage(packageName, appId);
+
+    const containerStyle: any = {
+        'grid-row-start': row !== undefined ? (row + 1).toString() : undefined,
+        'grid-column-start': column !== undefined ? (column + 1).toString() : undefined,
+        opacity: "1",
+        ...((style) ? style : {})
     }
 
-    render(props: TileProps, state: TileState) {
-        let containerStyle: any = {
-            'grid-row-start': props.row !== undefined ? (props.row + 1).toString() : undefined,
-            'grid-column-start': props.column !== undefined ? (props.column + 1).toString() : undefined,
-            visibility: state.visible ? undefined : "hidden",
-            opacity: "1",
-            ...((props.style) ? props.style : {})
+    const classList = ["tile-container", TileSize[size]];
+    if (app?.visualElements.foregroundText === "light")
+        classList.push("text-light");
+    else
+        classList.push("text-dark");
+
+    if (appStatus?.statusCode === 0) {
+        classList.push("disabled");
+    }
+
+    classList.push("press-" + pressState);
+
+    const href = (() => {
+        if (!pack || !app)
+            return "#";
+
+        let href = app.startPage;
+        if (app.shortLink) {
+            href = `${app.shortLink}`;
+        }
+        else if (app.entryPoint) {
+            href = app.entryPoint
         }
 
-        let tileColour = state.app?.visualElements.backgroundColor ?? "#4617b4";
-        let tileColourLight = lightenDarkenColour2(tileColour, 0.05);
-        let frontStyle = {
-            background: `linear-gradient(to right, ${tileColour}, ${tileColourLight})`
-        }
-
-        let classList = ["tile-container", TileSize[props.size]];
-
-        if (this.state.appStatus?.statusCode === 0) {
-            classList.push("press-" + state.pressState);
-        }
-        else {
-            classList.push("disabled");
-        }
-
-        if (!state.pack || !state.app) {
-            return (
-                <a id={`${props.packageName}!${props.appId}`}
-                    class={classList.join(" ")}
-                    onMouseDown={this.onMouseDown}
-                    onMouseUp={this.onMouseUp}
-                    onClick={this.onClick}
-                    style={containerStyle}>
-                    <div class="tile" style={frontStyle} />
-                    <div className="tile-border"
-                        style={{ border: '1px solid rgba(255,255,255,0.1)' }} />
-                </a>
-            );
-        }
-
-
-        if (state.app.visualElements.foregroundText === "light")
-            classList.push("text-light");
-        else
-            classList.push("text-dark");
-
-        let visual = state.visualIdx == -1 ? TileDefaultVisual : state.visuals[state.visualIdx];
-        let nextVisual = state.visuals[(state.visualIdx + 1) % state.visuals.length];
-        let previousVisual = state.visuals[(state.visualIdx - 1) % state.visuals.length] ?? TileDefaultVisual;
-
-        let frontBinding = visual?.bindings?.find(f => f.size === props.size);
-        let nextBinding = nextVisual?.bindings?.find(f => f.size === props.size);
-
-        let href = state.app.startPage;
-        if (state.app.shortLink) {
-            href = `${state.app.shortLink}`;
-        }
-        else if (state.app.entryPoint) {
-            href = state.app.entryPoint
-        }
-
-        if (this.state.appStatus?.statusCode !== 0 && this.state.appStatus?.unavailable) {
+        if (appStatus?.statusCode !== 0 && appStatus?.unavailable) {
             href = "#";
         }
 
-        let frontKey = state.visualIdx.toString();
-        let nextKey = ((state.visualIdx + 1) % state.visuals.length).toString();
+        return href;
+    })();
 
+    const updatePressState = (e: PointerEvent | MouseEvent) => {
+        const tileSize = getTileSize(size);
+        const offsetX = Math.max(0, Math.min(e.offsetX, tileSize.width));
+        const offsetY = Math.max(0, Math.min(e.offsetY, tileSize.height));
 
-        //let size = this.getTileSize(props.size)
-        return (
-            <TileContext.Provider value={{ pack: state.pack, app: state.app, size: props.size }}>
-                <a ref={this.root}
-                    id={`${props.packageName}!${props.appId}`}
-                    class={classList.join(" ")}
-                    style={containerStyle}
-                    onMouseDown={this.onMouseDown}
-                    onMouseUp={this.onMouseUp}
-                    onClick={this.onClick}
-                    title={state.app.visualElements.displayName}
-                    href={href}
-                    target="_blank">
-                    <div class="tile">
-                        <div class="front" style={frontStyle} key={frontKey}>
-                            <TileVisualRenderer app={state.app} binding={frontBinding} size={props.size} />
-                        </div>
-                        {state.swapping &&
-                            <div class="next" key={nextKey} style={frontStyle} onAnimationEnd={this.onAnimationEnded}>
-                                <TileVisualRenderer app={state.app} binding={nextBinding} size={props.size} />
-                            </div>
-                        }
-
-                        {props.size !== TileSize.square70x70 &&
-                            <TileBranding branding={visual.branding}
-                                nextBranding={nextVisual?.branding}
-                                previousBranding={previousVisual?.branding}
-                                size={props.size}
-                                visualElements={state.app.visualElements} />}
-                    </div>
-
-                    <TileBadge isError={state.appStatus && state.appStatus.statusCode !== 0} />
-
-                    <div className="tile-border"
-                        style={{ border: '1px solid rgba(255,255,255,0.1)' }} />
-                </a>
-            </TileContext.Provider>
-        )
-    }
-
-    private getAppAndPackage(props: TileProps = this.props) {
-        let pack = PackageRegistry.getPackage(props.packageName);
-        if (!pack) console.warn(`Package ${props.packageName} not found!`);
-        let app = pack?.applications[props.appId];
-        if (!app) console.warn(`App ${props.appId} in package ${props.packageName} not found!`);
-        return { pack, app };
-    }
-
-    private updatePressState(e: PointerEvent | MouseEvent) {
-        const size = getTileSize(this.props.size);
-        const offsetX = Math.max(0, Math.min(e.offsetX, size.width));
-        const offsetY = Math.max(0, Math.min(e.offsetY, size.height));
-
-        if ((offsetX >= (size.width * 0.30) && offsetX <= (size.width * 0.70)) &&
-            (offsetY >= (size.height * 0.30) && offsetY <= (size.height * 0.70))) {
-            this.setState({ pressState: "center" })
+        if ((offsetX >= (tileSize.width * 0.30) && offsetX <= (tileSize.width * 0.70)) &&
+            (offsetY >= (tileSize.height * 0.30) && offsetY <= (tileSize.height * 0.70))) {
+            setPressState("center");
         }
         else {
             var distanceToPositive = { x: offsetX, y: offsetY }
-            var distanceToNegative = { x: (size.width - offsetX), y: (size.height - offsetY) }
+            var distanceToNegative = { x: (tileSize.width - offsetX), y: (tileSize.height - offsetY) }
 
             let smallestX = Math.min(distanceToPositive.x, distanceToNegative.x);
             let smallestY = Math.min(distanceToPositive.y, distanceToNegative.y);
             let smallestDistance = Math.min(smallestX, smallestY);
 
             if (smallestDistance == distanceToPositive.x)
-                this.setState({ pressState: "left" })
+                setPressState("left");
             else if (smallestDistance == distanceToNegative.x)
-                this.setState({ pressState: "right" })
+                setPressState("right");
             else if (smallestDistance == distanceToNegative.y)
-                this.setState({ pressState: "bottom" })
+                setPressState("bottom");
             else
-                this.setState({ pressState: "top" })
+                setPressState("top");
         }
     }
+
+    const onMouseDown = (e: MouseEvent) => {
+        updatePressState(e);
+    };
+
+    const onMouseUp = (e: MouseEvent) => {
+        setPressState("none");
+    }
+
+    const onClick = (e: MouseEvent) => {
+    }
+
+    const didGetVisuals = (newVisuals: Map<TileSize, TileVisual[]>) => {
+        setAvailableVisuals(newVisuals);
+    }
+
+    useEffect(() => {
+        const visualsForSize = availableVisuals.get(size) ?? [];
+        setVisuals(visualsForSize);
+    }, [size, availableVisuals]);
+
+    useEffect(() => {
+        ConfigurationManager.getAppStatus(app, pack)
+            .then((status) => {
+                setAppStatus(status);
+            });
+    }, [app, pack]);
+
+    useEffect(() => {
+        TileUpdateManager.getInstance()
+            .registerVisualUpdateCallback(app, didGetVisuals);
+        return () => {
+            TileUpdateManager.getInstance()
+                .unregisterVisualUpdateCallback(app, didGetVisuals);
+        }
+    }, [app, pack]);
+
+    return (
+        <TileContext.Provider value={{ pack: pack, app: app, size: size }}>
+            <a id={`${packageName}!${appId}`}
+                class={classList.join(" ")}
+                style={containerStyle}
+                onMouseDown={onMouseDown}
+                onMouseUp={onMouseUp}
+                onClick={onClick}
+                title={app?.visualElements.displayName}
+                href={href}
+                target="_blank">
+                <TileInner app={app}
+                    pack={pack}
+                    size={size}
+                    visuals={visuals}
+                />
+            </a>
+        </TileContext.Provider>
+    )
 }

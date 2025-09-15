@@ -24,7 +24,7 @@ import { render } from 'preact-render-to-string';
 
 import xmldom = require('xmldom');
 
-const Tile = (props: { x: number, y: number, width: number, height: number, fill: string, image: string, text: string, textStyle: string }) => {
+const Tile = (props: { pack: Package, x: number, y: number, width: number, height: number, fill: string, image: string, text: string, textStyle: string }) => {
 
     let textElement = props.text &&
         <text x={8}
@@ -35,9 +35,9 @@ const Tile = (props: { x: number, y: number, width: number, height: number, fill
             {props.text}
         </text>;
 
-    let imageUrl = `../frontend/dist${props.image}`;
+    let imageUrl = path.join(props.pack.path, props.image)
     if (imageUrl.endsWith('.svg')) {
-        const content = fs.readFileSync('../frontend/dist/' + props.image, 'utf-8');
+        const content = fs.readFileSync(imageUrl, 'utf-8');
         const doc = new DOMParser().parseFromString(content, 'application/xml');
         let xml = new XMLSerializer().serializeToString(doc.documentElement);
 
@@ -92,7 +92,7 @@ const TileGroup = (props: { title: string, tiles: TilePropsWithType[], x: number
                 let { image, fill } = getData(tile as any);
 
                 return (
-                    <Tile x={x1} y={y1} width={40} height={40} fill={fill} image={image} text={null} textStyle={null} />
+                    <Tile pack={PackageRegistry.getPackage(tile.packageName)} x={x1} y={y1} width={40} height={40} fill={fill} image={image} text={null} textStyle={null} />
                 )
             });
 
@@ -101,10 +101,10 @@ const TileGroup = (props: { title: string, tiles: TilePropsWithType[], x: number
             )
         }
 
-        let { image, app, fill, text, textStyle } = getData(tile);
+        let { image, pack, app, fill, text, textStyle } = getData(tile);
 
         return (
-            <Tile x={x} y={y} width={widthInColumns * 88 - 4} height={heightInRows * 88 - 4} fill={fill} image={image} text={text} textStyle={textStyle} />
+            <Tile pack={pack} x={x} y={y} width={widthInColumns * 88 - 4} height={heightInRows * 88 - 4} fill={fill} image={image} text={text} textStyle={textStyle} />
         )
     });
 
@@ -118,7 +118,7 @@ const TileGroup = (props: { title: string, tiles: TilePropsWithType[], x: number
 }
 
 const generateThumbnail = async () => {
-    const startLayout = await fsp.readFile('../config/StartScreen.xml', 'utf-8');
+    const startLayout = await fsp.readFile(require.resolve("../../../config/StartScreen.xml"), 'utf-8');
     const tileGroups = parseLayout(startLayout, xmldom.DOMParser);
 
     let x = 58;
@@ -195,7 +195,7 @@ function getData(tile: TilePropsWithType) {
     let textStyle = app.visualElements.foregroundText;
 
     let fill = `url(#${tileProps.packageName}!${tileProps.appId})`;
-    return { tileProps, image, app, fill, text, textStyle };
+    return { tileProps, image, pack: packageInfo, app, fill, text, textStyle };
 }
 
 

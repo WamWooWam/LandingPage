@@ -1,6 +1,7 @@
 const path = require('path');
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const InlineChunkHtmlPlugin = require('react-dev-utils/InlineChunkHtmlPlugin');
 const FaviconsWebpackPlugin = require('favicons-webpack-plugin')
 const { env } = require('process');
 
@@ -102,6 +103,7 @@ module.exports = [
                 filename: "standalone.hbs",
                 publicPath: "/"
             }),
+            new InlineChunkHtmlPlugin(HtmlWebpackPlugin, [/(runtime|bundle|index)/]),
             new FaviconsWebpackPlugin({
                 logo: './static/wam-circular.png',
                 favicons: {

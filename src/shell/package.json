@@ -7,12 +7,12 @@
   ],
   "dependencies": {
     "@landing-page/shared": "workspace:shared",
-    "@preact/signals": "^2.0.3",
+    "@preact/signals": "^2.3.1",
     "base32.js": "^0.1.0",
     "bezier-easing": "^2.1.0",
-    "preact": "^10.26.5",
-    "preact-async-route": "^2.2.1",
-    "preact-router": "^4.1.2",
+    "html-inline-script-webpack-plugin": "^3.2.1",
+    "preact": "^10.27.2",
+    "preact-iso": "^2.10.0",
     "wasm-feature-detect": "^1.5.1"
   },
   "devDependencies": {
@@ -32,6 +32,7 @@
     "postcss-loader": "^7.3.3",
     "postcss-preset-env": "^8.5.1",
     "raw-loader": "^4.0.2",
+    "react-dev-utils": "^12.0.1",
     "sass": "^1.63.6",
     "sass-loader": "^13.3.2",
     "style-loader": "^2.0.0",
@@ -66,5 +67,5 @@
       "edge 15"
     ]
   },
-  "packageManager": "pnpm@9.5.0+sha512.140036830124618d624a2187b50d04289d5a087f326c9edfc0ccd733d76c4f52c3a313d4fc148794a2a9d81553016004e6742e8cf850670268a7387fc220c903"
+  "packageManager": "pnpm@10.16.1+sha512.0e155aa2629db8672b49e8475da6226aa4bdea85fdcdfdc15350874946d4f3c91faaf64cbdc4a5d1ab8002f473d5c3fcedcd197989cf0390f9badd3c04678706"
 }
