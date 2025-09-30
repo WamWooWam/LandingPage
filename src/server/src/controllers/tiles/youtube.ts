@@ -6,14 +6,13 @@ import { XMLSerializer } from 'xmldom'
 import { createRoot } from "../../utils";
 
 const rootUrl = 'https://www.googleapis.com/youtube/v3'
-const channelId = process.env.YOUTUBE_CHANNEL_ID;
-const playlistId = process.env.YOUTUBE_PLAYLIST_ID;
-const apiKey = process.env.YOUTUBE_API_KEY;
+const CHANNEL_ID = process.env.YOUTUBE_CHANNEL_ID;
+const PLAYLIST_ID = process.env.YOUTUBE_PLAYLIST_ID;
+const API_KEY = process.env.YOUTUBE_API_KEY;
 
-let channel = null;
 
-const getChannel = async () => {
-    let url = `${rootUrl}/channels?part=snippet&id=${channelId}&fields=items%2Fsnippet%2Fthumbnails&key=${apiKey}`;
+const getChannel = async (channel_id: string | undefined) => {
+    let url = `${rootUrl}/channels?part=snippet&id=${channel_id ?? CHANNEL_ID}&fields=items%2Fsnippet%2Fthumbnails&key=${API_KEY}`;
     let resp = await fetch(url);
     let json = await resp.json();
     return json.items[0];
@@ -24,12 +23,11 @@ const getChannel = async () => {
 // so this pulls from a specific playlist instead
 //
 const recentVideos = async (req: Request, res: Response) => {
-    if (!channel) {
-        channel = await getChannel();
-    }
+    const channel = await getChannel(req.params.channel_id);
+    const playlistId = req.params.playlist_id ?? PLAYLIST_ID;
 
     // https://developers.google.com/youtube/v3/docs/playlistItems/list
-    let url = `${rootUrl}/playlistItems?part=snippet&maxResults=15&playlistId=${playlistId}&key=${apiKey}`;
+    let url = `${rootUrl}/playlistItems?part=snippet&maxResults=15&playlistId=${playlistId}&key=${API_KEY}`;
     let resp = await fetch(url);
     let json = await resp.json();
     let items = json.items;
@@ -62,5 +60,6 @@ const recentVideos = async (req: Request, res: Response) => {
 };
 
 export default function registerRoutes(router: Router) {
+    router.get('/youtube/:channel_id/:playlist_id.xml', recentVideos);
     router.get('/youtube/recent-videos.xml', recentVideos);
 }

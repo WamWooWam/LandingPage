@@ -71,7 +71,7 @@ const TileInner = ({ pack, app, visuals, appStatus, size }: TileInnerProps) => {
 
         const interval = setInterval(() => {
             swapping.value = true;
-        }, 10000 + (Math.random() * 5000));
+        }, 15000 + (Math.random() * 10000));
 
         return () => {
             clearInterval(interval);

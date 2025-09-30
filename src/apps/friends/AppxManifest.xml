@@ -50,6 +50,8 @@
                 BackgroundColor="#ff00ff" Square150x150Logo="images/aspyn-square150x150.png"
                 Square30x30Logo="images/aspyn-square30x30.png" ToastCapable="true">
                 <wb:DefaultTile Square70x70Logo="images/aspyn-square70x70.png">
+                    <wb:TileUpdate Recurrence="halfHour"
+                        UriTemplate="/api/live-tiles/bluesky/aspyn.gay/latest-posts.xml" />
                     <wb:ShowNameOnTiles>
                         <wb:ShowOn Tile="square150x150Logo" />
                     </wb:ShowNameOnTiles>
@@ -85,7 +87,7 @@
                 Square30x30Logo="images/emma-square30x30.png" ToastCapable="true">
                 <wb:DefaultTile Square70x70Logo="images/emma-square70x70.png">
                     <wb:TileUpdate Recurrence="halfHour"
-                        UriTemplate="https://wamwoowam.co.uk/api/live-tiles/people/emma.xml" />
+                        UriTemplate="/api/live-tiles/people/emma.xml" />
                     <wb:ShowNameOnTiles>
                         <wb:ShowOn Tile="square150x150Logo" />
                     </wb:ShowNameOnTiles>
@@ -137,6 +139,8 @@
                 BackgroundColor="#ffac33" Square150x150Logo="images/darrio-square150x150.png"
                 Square30x30Logo="images/darrio-square30x30.png" ToastCapable="true">
                 <wb:DefaultTile Square70x70Logo="images/darrio-square70x70.png">
+                    <wb:TileUpdate Recurrence="halfHour"
+                        UriTemplate="/api/live-tiles/bluesky/bigdarr.io/latest-posts.xml" />
                     <wb:ShowNameOnTiles>
                         <wb:ShowOn Tile="square150x150Logo" />
                     </wb:ShowNameOnTiles>
@@ -167,7 +171,7 @@
         <Application Id="ipicpp" StartPage="https://github.com/iProgramMC">
             <wb:VisualElements DisplayName="iProgramInCpp"
                 Description="Friend"
-                ForegroundText="light"
+                ForegroundText="dark"
                 BackgroundColor="#3A4A2B" Square150x150Logo="images/ipicpp-square150x150.png"
                 Square30x30Logo="images/ipicpp-square30x30.png" ToastCapable="true">
                 <wb:DefaultTile Square70x70Logo="images/ipicpp-square70x70.png">
@@ -205,8 +209,8 @@
                 BackgroundColor="#f869bf" Square150x150Logo="images/max-square150x150.png"
                 Square30x30Logo="images/max-square30x30.png" ToastCapable="true">
                 <wb:DefaultTile Square70x70Logo="images/max-square70x70.png"
-                                Wide310x150Logo="images/max-wide310x150.png"
-                                Square310x310Logo="images/max-square310x310.png">
+                    Wide310x150Logo="images/max-wide310x150.png"
+                    Square310x310Logo="images/max-square310x310.png">
                     <wb:ShowNameOnTiles>
                         <wb:ShowOn Tile="square150x150Logo" />
                         <wb:ShowOn Tile="wide310x150Logo" />
@@ -226,6 +230,8 @@
                 BackgroundColor="#cb2027" Square150x150Logo="images/notnite-square150x150.png"
                 Square30x30Logo="images/notnite-square30x30.png" ToastCapable="true">
                 <wb:DefaultTile Square70x70Logo="images/notnite-square70x70.png">
+                    <wb:TileUpdate Recurrence="halfHour"
+                        UriTemplate="/api/live-tiles/bluesky/did:plc:ra3gxl2udc22odfbvcfslcn3/latest-posts.xml" />
                     <wb:ShowNameOnTiles>
                         <wb:ShowOn Tile="square150x150Logo" />
                     </wb:ShowNameOnTiles>
@@ -263,8 +269,23 @@
                     <wb:ShowNameOnTiles>
                         <wb:ShowOn Tile="square150x150Logo" />
                     </wb:ShowNameOnTiles>
+                    <wb:TileUpdate Recurrence="halfHour"
+                        UriTemplate="/api/live-tiles/twitch/Jaydenix7/is-live.xml" />
                 </wb:DefaultTile>
                 <wb:SplashScreen BackgroundColor="#2b0680" Image="images/peoplesplash.png" />
+            </wb:VisualElements>
+        </Application>
+        <Application Id="matt" StartPage="https://www.youtube.com/@mattkc">
+            <wb:VisualElements DisplayName="MattKC"
+                Description="Friend"
+                ForegroundText="light"
+                BackgroundColor="#6969f6" Square150x150Logo="images/matt-square150x150.png"
+                Square30x30Logo="images/matt-square30x30.png" ToastCapable="true">
+                <wb:DefaultTile Square70x70Logo="images/matt-square70x70.png">
+                    <wb:TileUpdate Recurrence="halfHour"
+                        UriTemplate="/api/live-tiles/youtube/UChrYe70o7NmDioL02PRVWVg/PLbpl-gZkNl2A_UbL03nGuVuO_ci4jDsw4.xml" />
+                </wb:DefaultTile>
+                <wb:SplashScreen BackgroundColor="#121273" Image="images/peoplesplash.png" />
             </wb:VisualElements>
         </Application>
         <!-- hack 4 emma -->

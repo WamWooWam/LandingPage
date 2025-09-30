@@ -55,7 +55,7 @@ const getUser = async (username: string) => {
 }
 
 const isLive = async (req: Request, res: Response) => {
-    const user = await getUser(twitchUsername);
+    const user = await getUser(req.params.username ?? twitchUsername);
     let url = `${rootUrl}/streams?user_id=${user.id}`
     let resp = await fetch(url, {
         method: 'GET',
@@ -114,5 +114,6 @@ const isLive = async (req: Request, res: Response) => {
 };
 
 export default function registerRoutes(router: Router) {
+    router.get('/twitch/:username/is-live.xml', isLive);
     router.get('/twitch/is-live.xml', isLive);
 }

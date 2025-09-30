@@ -13,6 +13,7 @@ export default class TileUpdateManager {
 
     private _tileUpdateMap: Map<PackageApplication, TileUpdateCallback[]> = new Map();
     private _visualsCache = new Map<PackageApplication, Map<TileSize, TileVisual[]>>();
+    private _hasNotifiedInitial: Set<PackageApplication> = new Set();
 
     private _fetchQueue: PackageApplication[] = [];
     private _fetching: boolean = false;
@@ -23,7 +24,7 @@ export default class TileUpdateManager {
     private constructor() {
         if (typeof window === 'undefined') return;
         this._updateTimeout = window.setInterval(() => this.updateAllTiles(), 10 * 60 * 1000); // 10 minutes
-        this._initialUpdate = window.setTimeout(() => this.updateAllTiles(), 2000); // kinda hacky? but it works
+        this._initialUpdate = window.setTimeout(() => this.updateAllTiles(), 1000); // kinda hacky? but it works
     }
 
     public registerVisualUpdateCallback(packageApplication: PackageApplication, callback: TileUpdateCallback): void {
@@ -57,13 +58,31 @@ export default class TileUpdateManager {
     private async processFetchQueue(): Promise<void> {
         this._fetching = true;
 
-        this._fetchQueue.reverse();
-        while (this._fetchQueue.length > 0) {
-            let packageApplication = this._fetchQueue.pop();
-            if (await this.fetchVisuals(packageApplication) && this._fetchQueue.length > 0)
-                await new Promise(resolve => setTimeout(resolve, 1000 / 3));
-        }
+        const interval = setInterval(() => {
+            for (let [packageApplication, visuals] of this._visualsCache) {
+                if (!this._hasNotifiedInitial.has(packageApplication)) {
+                    this._hasNotifiedInitial.add(packageApplication);
+                    this.notifyVisualUpdate(packageApplication, visuals);
 
+                    return;
+                }
+            }
+        }, 150);
+        
+        await Promise.all(this._fetchQueue.map(pkg => this.fetchVisuals(pkg)));
+
+        this._fetchQueue = [];
+        clearInterval(interval);
+
+        for (let [packageApplication, visuals] of this._visualsCache) {
+            if (!this._hasNotifiedInitial.has(packageApplication)) {
+                this._hasNotifiedInitial.add(packageApplication);
+                this.notifyVisualUpdate(packageApplication, visuals);
+            }
+
+            await new Promise(resolve => setTimeout(resolve, 150));
+        }
+        
         this._fetching = false;
     }
 
@@ -88,7 +107,6 @@ export default class TileUpdateManager {
         }
 
         this._visualsCache.set(packageApplication, map);
-        this.notifyVisualUpdate(packageApplication, map);
         return true;
     }
 

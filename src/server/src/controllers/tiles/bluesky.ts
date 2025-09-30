@@ -33,12 +33,17 @@ async function initialize() {
 async function latestPosts(req: Request, res: Response) {
     await initialize();
 
-    const feed = await agent.getAuthorFeed({ actor: bskyUsername });
+    const feed = await agent.getAuthorFeed({ actor: req.params.did ?? bskyUsername, limit: 25, filter: "posts_no_replies" });
     const root = createRoot();
 
     // take the first 25 posts
     const posts = feed.data.feed.slice(0, 25);
     for (const data of posts) {
+        // if this is a repost, and there's a specified did, skip it
+        if (data.reply || (data.reason && req.params.did)) {
+            continue;
+        }
+        
         const visual = createVisual(root);
         const author = data.post.author;
         const record = data.post.record as AppBskyFeedPost.Record;
@@ -92,5 +97,6 @@ async function latestPosts(req: Request, res: Response) {
 }
 
 export default function registerRoutes(router: Router) {
+    router.get('/bluesky/:did/latest-posts.xml', latestPosts);
     router.get('/bluesky/latest-posts.xml', latestPosts);
 }
