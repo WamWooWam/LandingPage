@@ -80,7 +80,7 @@ const TileInner = ({ pack, app, visuals, appStatus, size }: TileInnerProps) => {
 
     if (!pack || !app) {
         return (
-            <div></div>
+            <div class="tile"></div>
         );
     }
 
@@ -213,12 +213,17 @@ export default function TileRenderer({ packageName, appId, row, column, style, s
         }
     }
 
-    const onMouseDown = (e: MouseEvent) => {
+    const onMouseDown = (e: PointerEvent) => {
+        // capture the event to get mouseup outside the element
+        root.current.setPointerCapture(e.pointerId);
+
         updatePressState(e);
     };
 
-    const onMouseUp = (e: MouseEvent) => {
+    const onMouseUp = (e: PointerEvent) => {
         setPressState("none");
+        
+        root.current.releasePointerCapture(e.pointerId);
     }
 
     const onClick = (e: MouseEvent) => {
@@ -295,8 +300,8 @@ export default function TileRenderer({ packageName, appId, row, column, style, s
                 id={`${packageName}!${appId}`}
                 class={classList.join(" ")}
                 style={containerStyle}
-                onMouseDown={onMouseDown}
-                onMouseUp={onMouseUp}
+                onPointerDown={onMouseDown}
+                onPointerUp={onMouseUp}
                 onClick={onClick}
                 title={app?.visualElements.displayName}
                 href={href}
