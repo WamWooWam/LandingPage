@@ -5,10 +5,11 @@ import TileRenderer, { TileProps } from "./TileRenderer";
 
 import { TilePropsWithType } from "./TileUtils";
 
-interface TileGroupProps {
+export interface TileGroupProps {
     title: string;
-    height: number;
+    height?: number;
     baseColumn: number;
+    baseOffset: number;
     tileColumns: TilePropsWithType[][];
 }
 
@@ -26,12 +27,12 @@ export default function TileGroup(props: TileGroupProps) {
                 {props.tileColumns.map((column, idx) => {
                     return (
                         <div class="tile-column" key={idx} style={{ '--column': (props.baseColumn + idx).toString() }}>
-                            {column.map(tile => {
+                            {column.map((tile, idx) => {
                                 if (tile.type === "fence") {
-                                    return <FenceTileRenderer key={tile.key} {...tile as FenceTileProps} />
+                                    return <FenceTileRenderer key={tile.key} style={{ '--idx': tile.animColumn, '--offset': idx + props.baseOffset } as any} {...tile as FenceTileProps} />
                                 }
                                 else {
-                                    return <TileRenderer key={tile.key} {...tile as TileProps} />
+                                    return <TileRenderer key={tile.key} style={{ '--idx': tile.animColumn, '--offset': idx + props.baseOffset } as any} {...tile as TileProps} />
                                 }
                             })}
                         </div>

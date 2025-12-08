@@ -115,6 +115,23 @@
                 <Rule Type="include" Match="https://lilykiwi.xyz/*" />
             </ApplicationContentUriRules>
         </Application>
+        <Application Id="emmi" StartPage="https://lilykiwi.xyz/">
+            <wb:VisualElements DisplayName="lilykiwi"
+                Description="Friend"
+                ForegroundText="light"
+                BackgroundColor="#d8bfd8" Square150x150Logo="images/lily-square150x150.png"
+                Square30x30Logo="images/lily-square30x30.png" ToastCapable="true">
+                <wb:DefaultTile Square70x70Logo="images/lily-square70x70.png">
+                    <wb:ShowNameOnTiles>
+                        <wb:ShowOn Tile="square150x150Logo" />
+                    </wb:ShowNameOnTiles>
+                </wb:DefaultTile>
+                <wb:SplashScreen BackgroundColor="#d8bfd8" Image="images/peoplesplash.png" />
+            </wb:VisualElements>
+            <ApplicationContentUriRules>
+                <Rule Type="include" Match="https://lilykiwi.xyz/*" />
+            </ApplicationContentUriRules>
+        </Application>
         <Application Id="xub" StartPage="https://xubiod.net/">
             <wb:VisualElements DisplayName="xubiod"
                 Description="Friend"

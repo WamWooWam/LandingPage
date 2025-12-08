@@ -120,9 +120,6 @@ importers:
       '@landing-page/shell':
         specifier: workspace:shell
         version: link:../shell
-      '@preact/compat':
-        specifier: ^18.3.1
-        version: 18.3.1(preact@10.26.5)
       '@resvg/resvg-js':
         specifier: ^2.6.2
         version: 2.6.2
@@ -172,14 +169,11 @@ importers:
         specifier: 0.0.16
         version: 0.0.16(chokidar@3.6.0)
       preact:
-        specifier: ^10.26.5
-        version: 10.26.5
+        specifier: ^10.28.0
+        version: 10.28.0
       preact-render-to-string:
-        specifier: ^6.5.13
-        version: 6.5.13(preact@10.26.5)
-      preact-ssr-prepass:
-        specifier: ^1.2.2
-        version: 1.2.2(preact@10.26.5)
+        specifier: ^6.6.3
+        version: 6.6.3(preact@10.28.0)
       sharp:
         specifier: ^0.33.2
         version: 0.33.5
@@ -241,7 +235,7 @@ importers:
         version: 11.0.0-beta.0
       preact-iso:
         specifier: ^2.10.0
-        version: 2.10.0(preact-render-to-string@6.5.13(preact@11.0.0-beta.0))(preact@11.0.0-beta.0)
+        version: 2.10.0(preact-render-to-string@6.6.3(preact@11.0.0-beta.0))(preact@11.0.0-beta.0)
       wasm-feature-detect:
         specifier: ^1.5.1
         version: 1.6.2
@@ -704,16 +698,11 @@ packages:
     resolution: {integrity: sha512-u3UPsIilWKOM3F9CXtrG8LEJmNxwoCQC/XVj4IKYXvvpx7QIi/Kg1LI5uDmDpKlac62NUtX7eLjRh+jVZcLOzw==}
     engines: {node: ^14.15.0 || ^16.10.0 || >=18.0.0}
 
-  '@jridgewell/gen-mapping@0.3.5':
-    resolution: {integrity: sha512-IzL8ZoEDIBRWEzlCcRhOaCupYyN5gdIK+Q6fbFdPDg6HqX6jpkItn7DFIpW9LQzXG6Df9sA7+OKnq0qlz/GaQg==}
-    engines: {node: '>=6.0.0'}
+  '@jridgewell/gen-mapping@0.3.13':
+    resolution: {integrity: sha512-2kkt/7niJ6MgEPxF0bYdQ6etZaA+fQvDcLKckhy1yIQOzaoKjBBjSj63/aLVjYE3qhRt5dvM+uUyfCg6UKCBbA==}
 
   '@jridgewell/resolve-uri@3.1.2':
     resolution: {integrity: sha512-bRISgCIjP20/tbWSPWMEi54QVPRZExkuD9lJL+UIxUKtwVJA8wW1Trb1jMs1RFXo1CBTNZ/5hpC9QvmKWdopKw==}
-    engines: {node: '>=6.0.0'}
-
-  '@jridgewell/set-array@1.2.1':
-    resolution: {integrity: sha512-R8gLRTZeyp03ymzP/6Lil/28tGeGEzhx1q2k703KGWRAI1VdvPIXdG70VJc2pAMw3NA6JKL5hhFu1sJX0Mnn/A==}
     engines: {node: '>=6.0.0'}
 
   '@jridgewell/source-map@0.3.6':
@@ -722,8 +711,14 @@ packages:
   '@jridgewell/sourcemap-codec@1.5.0':
     resolution: {integrity: sha512-gv3ZRaISU3fjPAgNsriBRqGWQL6quFx04YMPW/zD8XMLsU32mhCCbfbO6KZFLjvYpCZ8zyDEgqsgf+PwPaM7GQ==}
 
+  '@jridgewell/sourcemap-codec@1.5.5':
+    resolution: {integrity: sha512-cYQ9310grqxueWbl+WuIUIaiUaDcj7WOq5fVhEljNVgRfOUhY9fy2zTvfoqWsnebh8Sl70VScFbICvJnLKB0Og==}
+
   '@jridgewell/trace-mapping@0.3.25':
     resolution: {integrity: sha512-vNk6aEwybGtawWmy/PzwnGDOjCkLWSD2wqvjGGAgOAwCGWySYXfYoxt00IJkTF+8Lb57DwOb3Aa0o9CApepiYQ==}
+
+  '@jridgewell/trace-mapping@0.3.31':
+    resolution: {integrity: sha512-zzNR+SdQSDJzc8joaeP8QQoCQr8NuYx2dIIytl1QeBEZHJ9uW6hebsrYgbz8hJwUQao3TWCMtmfV8Nu1twOLAw==}
 
   '@leichtgewicht/ip-codec@2.0.5':
     resolution: {integrity: sha512-Vo+PSpZG2/fmgmiNzYK9qWRh8h/CHrwD0mo1h1DzL4yzHNSfWYujGTYsWGreD000gcgmZ7K4Ys6Tx9TxtsKdDw==}
@@ -743,11 +738,6 @@ packages:
   '@nodelib/fs.walk@1.2.8':
     resolution: {integrity: sha512-oGB+UxlgWcgQkgwo8GcEGwemoTFt3FIO9ababBmaGwXIoBKZ+GTy0pP185beGg7Llih/NSHSV2XAs1lnznocSg==}
     engines: {node: '>= 8'}
-
-  '@preact/compat@18.3.1':
-    resolution: {integrity: sha512-Kog4PSRxtT4COtOXjsuQPV1vMXpUzREQfv+6Dmcy9/rMk0HOPK0HTE9fspFjAmY8R80T/T8gtgmZ68u5bOSngw==}
-    peerDependencies:
-      preact: '*'
 
   '@preact/signals-core@1.12.1':
     resolution: {integrity: sha512-BwbTXpj+9QutoZLQvbttRg5x3l5468qaV2kufh+51yha1c53ep5dY4kTuZR35+3pAZxpfQerGJiQqg34ZNZ6uA==}
@@ -3368,18 +3358,16 @@ packages:
       preact: '>=10 || >= 11.0.0-0'
       preact-render-to-string: '>=6.4.0'
 
-  preact-render-to-string@6.5.13:
-    resolution: {integrity: sha512-iGPd+hKPMFKsfpR2vL4kJ6ZPcFIoWZEcBf0Dpm3zOpdVvj77aY8RlLiQji5OMrngEyaxGogeakTb54uS2FvA6w==}
+  preact-render-to-string@6.6.3:
+    resolution: {integrity: sha512-7oHG7jzjriqsFPkSPiPnzrQ0GcxFm6wOkYWNdStK5Ks9YlWSQQXKGBRAX4nKDdqX7HAQuRvI4pZNZMycK4WwDw==}
     peerDependencies:
-      preact: '>=10'
-
-  preact-ssr-prepass@1.2.2:
-    resolution: {integrity: sha512-XizQsmckrjbtjAvEDy40Fuxd4/doeKWOvYg9Gv1vh7crn5ptdcAMah3CRartq1aw+diQhIM2XKvG9j6RxPT32A==}
-    peerDependencies:
-      preact: '>=10 || ^10.0.0-beta.0 || ^10.0.0-alpha.0'
+      preact: '>=10 || >= 11.0.0-0'
 
   preact@10.26.5:
     resolution: {integrity: sha512-fmpDkgfGU6JYux9teDWLhj9mKN55tyepwYbxHgQuIxbWQzgFg5vk7Mrrtfx7xRxq798ynkY4DDDxZr235Kk+4w==}
+
+  preact@10.28.0:
+    resolution: {integrity: sha512-rytDAoiXr3+t6OIP3WGlDd0ouCUG1iCWzkcY3++Nreuoi17y6T5i/zRhe6uYfoVcxq6YU+sBtJouuRDsq8vvqA==}
 
   preact@11.0.0-beta.0:
     resolution: {integrity: sha512-IcODoASASYwJ9kxz7+MJeiJhvLriwSb4y4mHIyxdgaRZp6kPUud7xytrk/6GZw8U3y6EFJaRb5wi9SrEK+8+lg==}
@@ -4589,27 +4577,31 @@ snapshots:
       '@types/yargs': 17.0.33
       chalk: 4.1.2
 
-  '@jridgewell/gen-mapping@0.3.5':
+  '@jridgewell/gen-mapping@0.3.13':
     dependencies:
-      '@jridgewell/set-array': 1.2.1
-      '@jridgewell/sourcemap-codec': 1.5.0
-      '@jridgewell/trace-mapping': 0.3.25
+      '@jridgewell/sourcemap-codec': 1.5.5
+      '@jridgewell/trace-mapping': 0.3.31
 
   '@jridgewell/resolve-uri@3.1.2': {}
 
-  '@jridgewell/set-array@1.2.1': {}
-
   '@jridgewell/source-map@0.3.6':
     dependencies:
-      '@jridgewell/gen-mapping': 0.3.5
-      '@jridgewell/trace-mapping': 0.3.25
+      '@jridgewell/gen-mapping': 0.3.13
+      '@jridgewell/trace-mapping': 0.3.31
 
   '@jridgewell/sourcemap-codec@1.5.0': {}
+
+  '@jridgewell/sourcemap-codec@1.5.5': {}
 
   '@jridgewell/trace-mapping@0.3.25':
     dependencies:
       '@jridgewell/resolve-uri': 3.1.2
       '@jridgewell/sourcemap-codec': 1.5.0
+
+  '@jridgewell/trace-mapping@0.3.31':
+    dependencies:
+      '@jridgewell/resolve-uri': 3.1.2
+      '@jridgewell/sourcemap-codec': 1.5.5
 
   '@leichtgewicht/ip-codec@2.0.5': {}
 
@@ -4635,10 +4627,6 @@ snapshots:
     dependencies:
       '@nodelib/fs.scandir': 2.1.5
       fastq: 1.17.1
-
-  '@preact/compat@18.3.1(preact@10.26.5)':
-    dependencies:
-      preact: 10.26.5
 
   '@preact/signals-core@1.12.1': {}
 
@@ -7348,24 +7336,22 @@ snapshots:
       picocolors: 1.1.0
       source-map-js: 1.2.1
 
-  preact-iso@2.10.0(preact-render-to-string@6.5.13(preact@11.0.0-beta.0))(preact@11.0.0-beta.0):
+  preact-iso@2.10.0(preact-render-to-string@6.6.3(preact@11.0.0-beta.0))(preact@11.0.0-beta.0):
     dependencies:
       preact: 11.0.0-beta.0
-      preact-render-to-string: 6.5.13(preact@11.0.0-beta.0)
+      preact-render-to-string: 6.6.3(preact@11.0.0-beta.0)
 
-  preact-render-to-string@6.5.13(preact@10.26.5):
+  preact-render-to-string@6.6.3(preact@10.28.0):
     dependencies:
-      preact: 10.26.5
+      preact: 10.28.0
 
-  preact-render-to-string@6.5.13(preact@11.0.0-beta.0):
+  preact-render-to-string@6.6.3(preact@11.0.0-beta.0):
     dependencies:
       preact: 11.0.0-beta.0
-
-  preact-ssr-prepass@1.2.2(preact@10.26.5):
-    dependencies:
-      preact: 10.26.5
 
   preact@10.26.5: {}
+
+  preact@10.28.0: {}
 
   preact@11.0.0-beta.0: {}
 
@@ -8118,7 +8104,7 @@ snapshots:
     dependencies:
       browserslist: 4.23.3
       escalade: 3.2.0
-      picocolors: 1.1.0
+      picocolors: 1.1.1
 
   update-browserslist-db@1.1.3(browserslist@4.24.4):
     dependencies:

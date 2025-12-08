@@ -1,7 +1,7 @@
 import { ApplicationVisualElements, PackageApplication, TileSize } from "@landing-page/shared";
 import { FunctionalComponent, JSX, RenderableProps, VNode } from "preact";
 import { getTileSize, useTileSize } from "./TileUtils";
-import { useEffect, useState } from "preact/hooks";
+import { useEffect, useLayoutEffect, useRef, useState } from "preact/hooks";
 
 import PackageImage from "~/Util/PackageImage";
 import TileBinding from "~/Data/TileBinding";
@@ -29,9 +29,29 @@ export default function TileVisualRenderer({ app, size, binding }: RenderablePro
 
 function TileVisualBinding({ binding }: RenderableProps<TileVisualRendererProps>) {
     const TileTemplate = memo(TileTemplates[binding.template as keyof typeof TileTemplates]);
+    const tileSize = useTileSize();
+    const ref = useRef<HTMLDivElement>(null);
+    const [scale, setScale] = useState(1);
+
+    useLayoutEffect(() => {
+        if (!ref.current) return;
+
+        const observer = new ResizeObserver(entries => {
+            for (const entry of entries) {
+                const { width: currentWidth } = entry.contentRect;
+                const scale = currentWidth / tileSize.width;
+                setScale(scale);
+            }
+        });
+
+        observer.observe(ref.current);
+
+        return () => observer.disconnect();
+        
+    }, []);
 
     return (
-        <div class="tile-visual tile-visual-visible">
+        <div ref={ref} class="tile-visual tile-visual-visible" style={{ transform: `scale(${scale})`, transformOrigin: 'top center' }}>
             {(TileTemplate !== null && binding !== null) && <TileTemplate elements={binding.elements} />}
         </div>
     )

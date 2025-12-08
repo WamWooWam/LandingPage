@@ -1,19 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <launcher version="2">
     <view name="Start">
-        <group name="Socials">
+        <group name="me">
             <!-- <tile AppID="Socials_zfgz6xjnaz0ym!AboutMe" size="square310x310" FencePost="0" /> -->
             <tile AppID="Socials_zfgz6xjnaz0ym!Bluesky" size="square310x310" FencePost="0" />
             <tile AppID="Socials_zfgz6xjnaz0ym!Snug" size="wide310x150" FencePost="0" />
-            <tile AppID="Socials_zfgz6xjnaz0ym!YouTube" size="wide310x150" FencePost="0" />
+            <!-- <tile AppID="Socials_zfgz6xjnaz0ym!Old" size="square150x150" FencePost="0" /> -->
             <tile AppID="Socials_zfgz6xjnaz0ym!Twitch" size="square150x150" FencePost="0" />
+            <tile AppID="Socials_zfgz6xjnaz0ym!YouTube" size="wide310x150" FencePost="0" />
             <tile AppID="Socials_zfgz6xjnaz0ym!Twitter" size="square150x150" FencePost="0" />
             <tile AppID="Socials_zfgz6xjnaz0ym!Discord" size="square150x150" FencePost="0" />
             <tile AppID="Socials_zfgz6xjnaz0ym!Steam" size="square70x70" FencePost="1" />
             <tile AppID="Socials_zfgz6xjnaz0ym!hasthebig.gay" size="square70x70" FencePost="0" />
             <tile AppID="windows.immersivecontrolpanel_cw5n1h2txyewy!microsoft.windows.immersivecontrolpanel" size="square70x70" FencePost="0" />
         </group>
-        <group name="Projects">
+        <group name="my projects">
             <tile AppID="Projects_zfgz6xjnaz0ym!GitHub" size="wide310x150" FencePost="0" />
             <tile AppID="Projects_zfgz6xjnaz0ym!Unicord" size="square150x150" FencePost="0" />
             <tile AppID="Projects_zfgz6xjnaz0ym!Unisky" size="square150x150" FencePost="0" />
@@ -22,7 +23,7 @@
             <tile AppID="Games_zfgz6xjnaz0ym!Sanicball" size="square150x150" FencePost="0" />
             <tile AppID="Microsoft.WindowsCalculator_8wekyb3d8bbwe!App" size="square150x150" FencePost="0" />
         </group>
-        <group name="Friends">
+        <group name="my friends">
             <tile AppID="Friends_zfgz6xjnaz0ym!amyy54" size="wide310x150" FencePost="0" />
             <tile AppID="Friends_zfgz6xjnaz0ym!max" size="wide310x150" FencePost="0" />
             <tile AppID="Friends_zfgz6xjnaz0ym!aspyn" size="square150x150" FencePost="0" />
@@ -32,6 +33,7 @@
             <tile AppID="Friends_zfgz6xjnaz0ym!ipicpp" size="square150x150" FencePost="0" />
             <tile AppID="Friends_zfgz6xjnaz0ym!jayden" size="square150x150" FencePost="0" />
             <tile AppID="Friends_zfgz6xjnaz0ym!lily" size="square150x150" FencePost="0" />
+            <tile AppID="Friends_zfgz6xjnaz0ym!emmi" size="square150x150" FencePost="0" />
             <tile AppID="Friends_zfgz6xjnaz0ym!matt" size="square150x150" FencePost="0" />
             <tile AppID="Friends_zfgz6xjnaz0ym!notnite" size="square150x150" FencePost="0" />
             <tile AppID="Friends_zfgz6xjnaz0ym!barra" size="square150x150" FencePost="0" />

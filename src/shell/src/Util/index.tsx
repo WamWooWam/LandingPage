@@ -1,3 +1,5 @@
+import { createContext } from "preact";
+import { useContext } from "preact/hooks";
 
 export const EXT_XMLNS = "https://wamwoowam.co.uk/tiles/2022";
 
@@ -44,6 +46,11 @@ export function newGuid() {
     });
 }
 
+export const MobileContext = createContext<boolean>(false);
+
+export function useMobile() {
+    return useContext(MobileContext);
+}
 
 const testImages = {
     webp: "data:image/webp;base64,UklGRh4AAABXRUJQVlA4TBEAAAAvAQAAAAfQ//73v/+BiOh/AAA=",
@@ -73,7 +80,7 @@ export async function hasWebP(): Promise<boolean> {
 
 export async function hasAvif(): Promise<boolean> {
     return new Promise((resolve, reject) => {
-        if(navigator.userAgent.includes("Safari") && !navigator.userAgent.includes("Chrome")) {
+        if (navigator.userAgent.includes("Safari") && !navigator.userAgent.includes("Chrome")) {
             resolve(avifSupported = false); // Safari's avif support is broken :D
             return;
         }
@@ -95,11 +102,11 @@ export async function hasAvif(): Promise<boolean> {
 };
 
 export async function pickImage(types: { avif?: string, webp?: string, png: string }): Promise<string> {
-    if (types.avif && (avifSupported == true || await hasAvif())) {
+    if (types.avif && (avifSupported == true)) {
         return types.avif;
     }
 
-    if (types.webp && (webpSupported == true || await hasWebP())) {
+    if (types.webp && (webpSupported == true)) {
         return types.webp;
     }
 

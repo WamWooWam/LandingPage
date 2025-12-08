@@ -1,6 +1,8 @@
-if (process.env.NODE_ENV === "development") {
-    require("preact/debug");
-}
+// if (process.env.NODE_ENV === "development") {
+//     require("preact/debug");
+// }
+
+import "preact/debug"
 
 import "./polyfill";
 import './index.scss';

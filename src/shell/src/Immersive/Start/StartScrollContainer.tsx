@@ -1,8 +1,9 @@
-import { useLayoutEffect, useRef, useState } from "preact/hooks";
+import { useCallback, useLayoutEffect, useMemo, useRef, useState } from "preact/hooks";
 
-import { StartTileGroup } from "@landing-page/shared";
-import TileGroup from "./Tiles/TileGroup";
+import { StartTileGroup, TilePropsWithType } from "@landing-page/shared";
+import TileGroup, { TileGroupProps } from "./Tiles/TileGroup";
 import { calculateLayout } from "./Tiles/TileUtils";
+import { MobileContext } from "~/Util";
 
 interface StartScrollContainerProps {
     tileGroups: StartTileGroup[];
@@ -11,6 +12,7 @@ interface StartScrollContainerProps {
 export default function StartScrollContainer({ tileGroups }: StartScrollContainerProps) {
     const startTilesContainer = useRef<HTMLDivElement>(null);
     const [height, setHeight] = useState(-1);
+    const [isMobile, setIsMobile] = useState(true);
 
     useLayoutEffect(() => {
         // TODO: figure out if i need this fallback in the big 25
@@ -20,6 +22,7 @@ export default function StartScrollContainer({ tileGroups }: StartScrollContaine
                     if (entry.target !== startTilesContainer.current)
                         continue;
 
+                    setIsMobile(window.innerWidth <= 600);
                     setHeight(entry.contentRect.height - 32);
                 }
             };
@@ -36,6 +39,7 @@ export default function StartScrollContainer({ tileGroups }: StartScrollContaine
             }
 
             const rect = startTilesContainer.current.getBoundingClientRect();
+            setIsMobile(window.innerWidth <= 600);
             setHeight(rect.height - 32);
         };
 
@@ -44,7 +48,7 @@ export default function StartScrollContainer({ tileGroups }: StartScrollContaine
         return () => window.removeEventListener("resize", onResize);
     }, []);
 
-    const onWheel = (e: WheelEvent) => {
+    const onWheel = useCallback((e: WheelEvent) => {
         // make sure this isn't a horizontal scroll
         if (Math.abs(e.deltaX) > Math.abs(e.deltaY)) {
             return;
@@ -59,21 +63,32 @@ export default function StartScrollContainer({ tileGroups }: StartScrollContaine
         const scrollWidth = scrollContainer.scrollWidth;
         const scrollLeftNew = Math.max(0, Math.min(scrollWidth - scrollContainer.clientWidth, scrollLeft + deltaX));
         scrollContainer.scrollTo({ left: scrollLeftNew, behavior: "auto" });
-    };
-
-    const tileGroupsLayout = tileGroups.reduce((arr, group, idx) => {
-        let { tileColumns } = calculateLayout(group.tiles, height, false);
-        arr.push({ ...group, tileColumns, baseColumn: idx === 0 ? 0 : arr[idx - 1].baseColumn + arr[idx - 1].tileColumns.length });
-        return arr;
     }, []);
 
-    const maxRows = (Math.floor(height / 128) * 128) + 30;
+    const tileGroupsLayout = useMemo(() => {
+        return tileGroups.reduce((arr: TileGroupProps[], group, idx) => {
+            let { tileColumns } = calculateLayout(group.tiles, height, isMobile);
+
+            arr.push({
+                ...group,
+                tileColumns,
+                baseOffset: idx === 0 ? 0 : arr[idx - 1].baseOffset + arr[idx - 1].tileColumns.reduce((sum, col) => sum + col.length, 0),
+                baseColumn: idx === 0 ? 0 : arr[idx - 1].baseColumn + arr[idx - 1].tileColumns.length
+            });
+            return arr;
+        }, [])
+
+    }, [tileGroups, height, isMobile]);
+
+    const maxRows = isMobile ? 9999 : (Math.floor(height / 128) * 128) + 30;
 
     return (
-        <div class="start-tiles-scroll-container" onWheel={onWheel}>
-            <div ref={startTilesContainer} class="start-tiles" style={{ visibility: "visible" }}>
-                {tileGroupsLayout.map(m => <TileGroup {...m} height={maxRows} />)}
+        <MobileContext.Provider value={isMobile}>
+            <div class="start-tiles-scroll-container" onWheel={onWheel}>
+                <div ref={startTilesContainer} class="start-tiles" style={{ visibility: "visible" }}>
+                    {tileGroupsLayout.map(m => <TileGroup {...m} height={maxRows} />)}
+                </div>
             </div>
-        </div>
+        </MobileContext.Provider>
     )
 }

@@ -103,7 +103,56 @@ export function tileSizeToRows(size: TileSize): number {
 
 export function calculateLayout(tiles: RawTileProps[], availableHeight: number, isMobile: boolean): { tileColumns: TilePropsWithType[][] } {
     let collapsedTiles = collapseTiles(tiles);
-    return layoutDesktop(collapsedTiles, availableHeight);
+    return isMobile ? layoutMobile(collapsedTiles, availableHeight) : layoutDesktop(collapsedTiles, availableHeight);
+}
+
+export function layoutMobile(collapseTiles: TilePropsWithType[], availableHeight: number): { tileColumns: TilePropsWithType[][] } {
+    let tileColumn: TilePropsWithType[] = [];
+    let width = 0;
+    
+    for (let i = 0; i < collapseTiles.length; i++) {
+        let tile = collapseTiles[i];
+        if (tile.size === TileSize.square310x310 || tile.size === TileSize.wide310x150) {
+            if (i === 0)
+                continue;
+
+            let lastTile = collapseTiles[i - 1];
+            if (lastTile.size !== TileSize.square310x310 && lastTile.size !== TileSize.wide310x150)
+                continue;
+
+            let swapIdx = -1;
+            for (let j = i + 1; j < collapseTiles.length; j++) {
+                if (collapseTiles[j].size !== TileSize.square310x310 && collapseTiles[j].size !== TileSize.wide310x150) {
+                    swapIdx = j;
+                    break;
+                }
+            }
+
+            if (swapIdx !== -1) {
+                let temp = collapseTiles[i];
+                collapseTiles[i] = collapseTiles[swapIdx];
+                collapseTiles[swapIdx] = temp;
+            }
+
+            i++;
+        }
+    }
+
+    for (let i = 0; i < collapseTiles.length; i++) {
+        let tile = { ...collapseTiles[i] };
+        if (tile.size === TileSize.square310x310) {
+            tile.size = TileSize.wide310x150;
+        }
+
+        tile.animColumn = width % 3;
+        width += tileSizeToColumns(tile.size);
+
+        tileColumn.push(tile);
+    }
+
+    console.log("mobile layout", tileColumn);
+
+    return { tileColumns: [tileColumn] };
 }
 
 export function layoutDesktop(collapseTiles: TilePropsWithType[], availableHeight: number): { tileColumns: TilePropsWithType[][] } {

@@ -16,6 +16,7 @@ import UICommand from "~/Data/UICommand";
 import { createContext } from "preact";
 import { getTileSize } from "./TileUtils";
 import { useSignal } from "@preact/signals";
+import { useMobile } from "~/Util";
 
 export interface TileProps {
     packageName?: string;
@@ -105,11 +106,11 @@ const TileInner = ({ pack, app, visuals, appStatus, size }: TileInnerProps) => {
         <>
             <div class="tile">
                 <>
-                    <div class="front" style={frontStyle} >
+                    <div class="front" style={frontStyle} key={frontKey}>
                         <TileVisualRenderer key={frontKey} app={app} binding={frontBinding} size={size} />
                     </div>
                     {swapping.value &&
-                        <div class="next" style={frontStyle} onAnimationEnd={onAnimationEnded}>
+                        <div class="next" style={frontStyle} key={nextKey} onAnimationEnd={onAnimationEnded}>
                             <TileVisualRenderer key={nextKey} app={app} binding={nextBinding} size={size} />
                         </div>
                     }
@@ -146,10 +147,11 @@ export default function TileRenderer({ packageName, appId, row, column, style, s
 
     const { pack, app } = getAppAndPackage(packageName, appId);
 
+    const isMobile = useMobile();
+
     const containerStyle: any = {
         'grid-row-start': row !== undefined ? (row + 1).toString() : undefined,
         'grid-column-start': column !== undefined ? (column + 1).toString() : undefined,
-        opacity: "1",
         ...((!visible) ? { display: "none" } : {}),
         ...((style) ? style : {})
     }
@@ -195,18 +197,19 @@ export default function TileRenderer({ packageName, appId, row, column, style, s
             setPressState("center");
         }
         else {
-            var distanceToPositive = { x: offsetX, y: offsetY }
-            var distanceToNegative = { x: (tileSize.width - offsetX), y: (tileSize.height - offsetY) }
+            // var distanceToPositive = { x: offsetX, y: offsetY }
+            let distanceToPositive = [offsetX, offsetY];
+            let distanceToNegative = [tileSize.width - offsetX, tileSize.height - offsetY];
 
-            let smallestX = Math.min(distanceToPositive.x, distanceToNegative.x);
-            let smallestY = Math.min(distanceToPositive.y, distanceToNegative.y);
+            let smallestX = Math.min(distanceToPositive[0], distanceToNegative[0]);
+            let smallestY = Math.min(distanceToPositive[1], distanceToNegative[1]);
             let smallestDistance = Math.min(smallestX, smallestY);
 
-            if (smallestDistance == distanceToPositive.x)
+            if (smallestDistance == distanceToPositive[0])
                 setPressState("left");
-            else if (smallestDistance == distanceToNegative.x)
+            else if (smallestDistance == distanceToNegative[0])
                 setPressState("right");
-            else if (smallestDistance == distanceToNegative.y)
+            else if (smallestDistance == distanceToNegative[1])
                 setPressState("bottom");
             else
                 setPressState("top");
@@ -222,11 +225,12 @@ export default function TileRenderer({ packageName, appId, row, column, style, s
 
     const onMouseUp = (e: PointerEvent) => {
         setPressState("none");
-        
+
         root.current.releasePointerCapture(e.pointerId);
     }
 
     const onClick = (e: MouseEvent) => {
+        8
         // todo: move this somewhere else
         if (appStatus?.statusCode != 0) {
             e.preventDefault();
@@ -242,10 +246,14 @@ export default function TileRenderer({ packageName, appId, row, column, style, s
         }
 
         updatePressState(e);
-        
+
+        if (isMobile) {
+            return;
+        }
+
         if (app.executable) {
             e.preventDefault();
-            
+
             const bounds = root.current.getBoundingClientRect();
             const event = new AppLaunchRequestedEvent(
                 pack,
@@ -293,6 +301,7 @@ export default function TileRenderer({ packageName, appId, row, column, style, s
                 .unregisterVisualUpdateCallback(app, didGetVisuals);
         }
     }, [app, pack]);
+
 
     return (
         <TileContext.Provider value={{ pack: pack, app: app, size: size }}>

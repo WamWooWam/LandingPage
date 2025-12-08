@@ -1,13 +1,12 @@
 import "./start.scss"
 
-import { StartTileGroup, parseLayout } from "@landing-page/shared";
-import { useEffect, useRef } from "preact/hooks";
+import { parseLayout } from "@landing-page/shared";
+import { useEffect, useMemo, useRef, useState } from "preact/hooks";
 
 import AllAppsButton from "./AllAppsButton";
 import Avatar from "static/wam-circular.webp"
 import AvatarAvif from "static/wam-circular.avif"
 import AvatarPng from "static/wam-circular.png"
-import { Component } from "preact";
 import Events from "~/Events";
 import HeaderButton from "./HeaderButton";
 import PickImage from "~/Util/PickImage";
@@ -17,105 +16,72 @@ import StartScrollContainer from "./StartScrollContainer";
 
 interface StartProps { layoutString: string };
 
-interface StartState {
-    layoutString: string;
-    tileGroups: Array<StartTileGroup>
-    visible: boolean
-}
+const Start = ({ layoutString }: StartProps) => {
+    const tileGroups = useMemo(() => parseLayout(layoutString), [layoutString]);
+    const firstRender = useRef(true);
+    const [visible, setVisible] = useState(true);
 
-export default class Start extends Component<StartProps, StartState> {
-
-    constructor() {
-        super();
-        this.state = { layoutString: null, tileGroups: null, visible: true };
-        this.show = this.show.bind(this);
-        this.hide = this.hide.bind(this);
-    }
-
-    static getDerivedStateFromProps(props: StartProps, state: StartState) {
-        if (props.layoutString !== state.layoutString) {
-            return { tileGroups: parseLayout(props.layoutString), layoutString: state.layoutString };
+    useEffect(() => {
+        if (firstRender.current) {
+            firstRender.current = false;
+            return;
         }
-        return null;
-    }
+    }, []);
 
-    componentDidMount(): void {
+    useEffect(() => {
+        const onShow = () => setVisible(true);
+        const onHide = () => setVisible(false);
+
         Events.getInstance()
-            .addEventListener("app-launch-requested", this.hide);
+            .addEventListener("app-launch-requested", onHide);
         Events.getInstance()
-            .addEventListener("start-show-requested", this.show)
-    }
+            .addEventListener("start-show-requested", onShow)
 
-    componentWillUnmount(): void {
-        Events.getInstance()
-            .removeEventListener("app-launch-requested", this.hide);
-        Events.getInstance()
-            .removeEventListener("start-show-requested", this.show)
-    }
-
-    show() {
-        this.setState({ visible: true });
-    }
-
-    hide() {
-        this.setState({ visible: false })
-    }
-
-    render() {
-        const firstRender = useRef(true);
-        useEffect(() => {
-            if (firstRender.current) {
-                firstRender.current = false;
-                return;
-            }
-        });
-
-        const classes = ["start"];
-        if (this.state.visible) {
-            if (firstRender.current) {
-                classes.push("animate-open-login");
-            }
-            else {
-                classes.push("animate-open");
-            }
+        return () => {
+            Events.getInstance()
+                .removeEventListener("app-launch-requested", onHide);
+            Events.getInstance()
+                .removeEventListener("start-show-requested", onShow);
         }
-        else {
-            classes.push("animate-close");
-        }
+    }, []);
 
-        return (
-            <div class={classes.join(' ')}>
-                <div class={"start-screen"}>
-                    <div class="start-content">
-                        <div class="start-header start-main-header">
-                            <h1 class="start-title">Start</h1>
-                            <div class="start-header-buttons">
-                                <HeaderButton primaryClass="start-header-user-button" label="User">
-                                    <div class="username">
-                                        <p class="primary">Thomas</p>
-                                        <p class="secondary">May</p>
-                                    </div>
-                                    <PickImage webp={Avatar} png={AvatarPng} avif={AvatarAvif}>
-                                        {image => <img class="start-header-user-picture" src={image} alt="Photo of Thomas May" />}
-                                    </PickImage>
-                                </HeaderButton>
-                                <HeaderButton primaryClass="start-header-power" label="Power">
-                                    <PowerIcon width={21} height={21} />
-                                </HeaderButton>
-                                <HeaderButton primaryClass="start-header-search" label="Search">
-                                    <SearchIcon width={21} height={21} />
-                                </HeaderButton>
-                            </div>
+    const visibleClass = firstRender.current ? "animate-open-login" : "animate-open";
+    const classes = ["start", (visible ? visibleClass : "animate-close")].join(" ");
+
+    return (
+        <div class={classes}>
+            <div class={"start-screen"}>
+                <div class="start-content">
+                    <div class="start-header start-main-header">
+                        <h1 class="start-title">Start</h1>
+                        <div class="start-header-buttons">
+                            <HeaderButton primaryClass="start-header-user-button" label="User">
+                                <div class="username">
+                                    <p class="primary">Thomas</p>
+                                    <p class="secondary">May</p>
+                                </div>
+                                <PickImage webp={Avatar} png={AvatarPng} avif={AvatarAvif}>
+                                    {image => <img class="start-header-user-picture" src={image} alt="Photo of Thomas May" />}
+                                </PickImage>
+                            </HeaderButton>
+                            <HeaderButton primaryClass="start-header-power" label="Power">
+                                <PowerIcon width={21} height={21} />
+                            </HeaderButton>
+                            <HeaderButton primaryClass="start-header-search" label="Search">
+                                <SearchIcon width={21} height={21} />
+                            </HeaderButton>
                         </div>
+                    </div>
 
-                        <StartScrollContainer tileGroups={this.state.tileGroups} />
+                    <StartScrollContainer tileGroups={tileGroups} />
 
-                        <div class="start-footer">
-                            <AllAppsButton />
-                        </div>
+                    <div class="start-footer">
+                        <AllAppsButton />
                     </div>
                 </div>
             </div>
-        );
-    }
+        </div>
+    );
 }
+
+export default Start;
