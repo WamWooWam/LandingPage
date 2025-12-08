@@ -7,7 +7,7 @@
             <tile AppID="Socials_zfgz6xjnaz0ym!Snug" size="wide310x150" FencePost="0" />
             <!-- <tile AppID="Socials_zfgz6xjnaz0ym!Old" size="square150x150" FencePost="0" /> -->
             <tile AppID="Socials_zfgz6xjnaz0ym!Twitch" size="square150x150" FencePost="0" />
-            <tile AppID="Socials_zfgz6xjnaz0ym!YouTube" size="wide310x150" FencePost="0" />
+            <tile AppID="Socials_zfgz6xjnaz0ym!YouTube" size="square150x150" FencePost="0" />
             <tile AppID="Socials_zfgz6xjnaz0ym!Twitter" size="square150x150" FencePost="0" />
             <tile AppID="Socials_zfgz6xjnaz0ym!Discord" size="square150x150" FencePost="0" />
             <tile AppID="Socials_zfgz6xjnaz0ym!Steam" size="square70x70" FencePost="1" />
