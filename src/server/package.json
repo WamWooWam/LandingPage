@@ -20,6 +20,7 @@
     "@landing-page/app-socials": "workspace:",
     "@landing-page/shared": "workspace:shared",
     "@landing-page/shell": "workspace:shell",
+    "@landing-page/old": "workspace:",
     "@resvg/resvg-js": "^2.6.2",
     "@resvg/resvg-js-linux-x64-gnu": "^2.6.2",
     "@types/jsdom": "^21.1.6",

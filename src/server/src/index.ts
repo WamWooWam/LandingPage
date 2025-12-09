@@ -54,11 +54,12 @@ const app = express();
         const reader = new PackageReader(manifest, new DOMParser(), (url) => url);
         const pack = await reader.readPackage();
         pack.path = dirName;
-        // registry[pack.identity.packageFamilyName] = pack;
+
         PackageRegistry.registerPackage(pack);
     }
 
     const staticDirectory = path.dirname(require.resolve("@landing-page/shell"));
+    const oldDirectory = path.dirname(require.resolve("@landing-page/old"));
     const packagesDirectory = path.join(__dirname, '..', 'packages');
 
     app.set('view engine', 'hbs');
@@ -99,6 +100,13 @@ const app = express();
     for (const pack of PackageRegistry.packages) {
         packagesRouter.use(`/${pack.identity.packageFullName}`, express.static(pack.path, { index: false, maxAge: '90d' }))
     }
+
+    console.log(oldDirectory);
+
+    app.use('/old', express.static(oldDirectory, { index: ["index.html"], maxAge: '90d' }));
+    app.get('/old/*ignored', (req, res) => {
+        res.sendFile(path.join(oldDirectory, 'index.html'));
+    });
 
     app.use(express.static(staticDirectory, { index: false, maxAge: '90d' }));
 

@@ -2,6 +2,10 @@
 	"private": true,
 	"name": "@landing-page/old",
 	"type": "module",
+	"main": "dist/index.html",
+	"files": [
+		"dist"
+	],
 	"scripts": {
 		"dev": "vite",
 		"build": "vite build",
