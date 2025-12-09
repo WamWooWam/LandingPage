@@ -13,7 +13,6 @@ export interface TileGroupProps {
     tileColumns: TilePropsWithType[][];
 }
 
-
 export default function TileGroup(props: TileGroupProps) {
     let style = { height: props.height + "px" };
 

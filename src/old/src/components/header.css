@@ -1,0 +1,33 @@
+header {
+    margin: -16px -32px 24px -32px;
+    padding: 32px 32px 0 32px;
+    background-image: linear-gradient(to bottom, hsl(263, 66%, 55%, 0.35), hsla(263, 66%, 55%, 0) 200px);
+	box-shadow: 0 0 8px hsl(263, 66%, 70%);
+}
+
+.nav-links {
+    list-style: none;
+    padding: 0;
+    display: flex;
+    margin: 0 -32px 0 -32px;
+}
+
+.nav-links>li {
+    display: flex;
+    flex: 1;
+    justify-content: flex-start;
+    margin: 0;
+}
+
+.nav-links>li>a {
+    flex: 1;
+    font-size: 1.1rem;
+    font-weight: 500;
+    padding: 8px 32px 14px 32px;
+    border-bottom: 2px solid transparent;
+    font-family: 'Myriad Pro Semibold', sans-serif;
+}
+
+.nav-links>li>a:hover {
+    border-bottom: 2px solid hsl(263, 66%, 75%);
+}

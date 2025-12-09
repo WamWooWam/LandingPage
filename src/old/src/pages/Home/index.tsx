@@ -16,7 +16,7 @@ export function Home() {
 				and I needed a better place to put my 88x31s, feel free to poke around and
 				have fun! Or, <a href="/">return to the new site.</a></p>
 
-			<h2>Wait who are you?</h2>
+			<h2>Wait a minute, who <i>are</i> you?</h2>
 			<p>Hi! I'm Wam, I make apps, webtoys, videos and occasionally fires (though typically
 				by accident.) If I'm doing anything it probably involves a Windows Phone or a
 				PowerPC based Mac. Or both. Both is also good.</p>

@@ -1,8 +1,10 @@
 import { RenderableProps } from 'preact';
 import { useLocation } from 'preact-iso';
 
-const urls = ['/', '/projects'];
-const names = ['Home', 'Projects'];
+import "./header.css"
+
+const urls = ['/old/', '/old/projects', '/old/blog'];
+const names = ['Home', 'Projects', 'Blog'];
 
 export function Header({ children }: RenderableProps<{}>) {
 	const { url } = useLocation();
@@ -10,23 +12,23 @@ export function Header({ children }: RenderableProps<{}>) {
 	const activeName = activeIndex !== -1 ? names[activeIndex] : null;
 
 	return (
-		<div>
+		<div className="header-container">
 			<header>
 				<h1>
-					{activeName ? `Wam's ${activeName}` : "Wam"}
+					{activeName ? `Wam's ${activeName}` : "Wam's Old Site"}
 				</h1>
+				<nav className="nav">
+					<ul className="nav-links">
+						{urls.map((u, i) => (
+							<li>
+								<a href={u} aria-current={activeIndex === i ? 'page' : undefined}>
+									{names[i]}
+								</a>
+							</li>
+						))}
+					</ul>
+				</nav>
 			</header>
-			<nav>
-				<ul>
-					{urls.map((u, i) => (
-						<li>
-							<a href={u} aria-current={activeIndex === i ? 'page' : undefined}>
-								{names[i]}
-							</a>
-						</li>
-					))}
-				</ul>
-			</nav>
 			{children}
 		</div>
 	);

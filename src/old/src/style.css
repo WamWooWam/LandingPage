@@ -1,6 +1,28 @@
+@font-face {
+	font-family: 'Myriad Pro Bold';
+	src: url(assets/font/Myriad-Pro-Bold.ttf) format('truetype');
+	font-weight: 600;
+	font-style: normal;
+}
+
+@font-face {
+	font-family: 'Myriad Pro Semibold';
+	src: url(assets/font/Myriad-Pro-Semibold.ttf) format('truetype');
+	font-weight: 500;
+	font-style: normal;
+}
+
+@font-face {
+	font-family: 'Myriad Pro Regular';
+	src: url(assets/font/Myriad-Pro-Regular.ttf) format('truetype');
+	font-weight: 500;
+	font-style: normal;
+}
+
 
 body {
-	font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+	font-family: Avenir, Montserrat, Corbel, 'URW Gothic', source-sans-pro, sans-serif;
+	font-weight: normal;
 	font-weight: 400;
 
 	font-synthesis: none;
@@ -9,36 +31,43 @@ body {
 	-moz-osx-font-smoothing: grayscale;
 	-webkit-text-size-adjust: 100%;
 
-	font-size: 10.5pt;
+	font-size: 12pt;
+	margin: 0;
 
-	max-width: 800px;
-	margin: 0 auto;
-
-	/* color: #1f2c2e;
-	background-color: #f1fdff; */
-
-	background-color: hsl(263, 25%, 8%);
 	color: hsl(263, 100%, 97%);
+	background-color: black;
+
+	background-size: cover;
+	background-position: center;
+	background-attachment: fixed;
 }
 
+body {
+	background-image: url(assets/wallpaper/the-cliffs-small.jpg);
+	background-image: image-set("assets/wallpaper/the-cliffs-small.avif" type("image/avif"),
+			"assets/wallpaper/the-cliffs-small.webp" type("image/webp"),
+			"assets/wallpaper/the-cliffs-small.jpg" type("image/jpeg"));
+}
+
+
+@media screen and (min-width: 1200px) {
+	body {
+		background-image: url(assets/wallpaper/the-cliffs.jpg);
+		background-image: image-set("assets/wallpaper/the-cliffs.avif" type("image/avif"),
+				"assets/wallpaper/the-cliffs.webp" type("image/webp"),
+				"assets/wallpaper/the-cliffs.jpg" type("image/jpeg"));
+	}
+}
+
+
 a {
-	color: hsl(263, 66%, 62%);
+	color: hsl(263, 66%, 75%);
 	text-decoration: none;
 }
 
-header {
-	margin: 20px 0;
-}
-
-nav {
-	width: 200px;
-	float: right;
-	height: 100%;
-}
-
-main {
-	display: block;
-	margin-right: 220px;
+a:hover {
+	color: hsl(263, 66%, 85%);
+	filter: drop-shadow(0 0 1px hsl(263, 66%, 70%));
 }
 
 h1 {
@@ -46,10 +75,47 @@ h1 {
 }
 
 h1 {
-	font-size: 32px;
+	font-size: 2.25rem;
 }
 
 h1>small {
 	font-size: 14px;
 	color: #808080;
+}
+
+h1 {
+	color: hsl(263, 66%, 95%);
+	filter: drop-shadow(0 0 2px hsl(263, 66%, 70%));
+	font-weight: 400;
+	font-synthesis: none;
+	line-height: 1.2;
+	font-family: 'Myriad Pro Bold', sans-serif;
+}
+
+h2,
+h3,
+h4,
+h5,
+h6 {
+	color: hsl(263, 66%, 95%);
+	filter: drop-shadow(0 0 1px hsl(263, 66%, 70%));
+	font-weight: 400;
+	font-synthesis: none;
+	line-height: 1.2;
+	font-family: 'Myriad Pro Semibold', sans-serif;
+}
+
+#app {
+	background-color: rgba(0, 0, 0, 0.33);
+}
+
+#app>div {
+	background-color: hsl(263, 25%, 8%);
+	padding: 16px 32px;
+	min-height: calc(100vh - 32px);
+	display: block;
+	max-width: 864px;
+	margin: 0 auto;
+	overflow-x: hidden;
+	box-shadow: 0 0 16px hsl(263, 66%, 70%);
 }

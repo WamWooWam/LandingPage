@@ -21,7 +21,7 @@
         <Resource Language="en-GB" />
     </Resources>
     <Applications>
-        <Application Id="Old" StartPage="/old">
+        <Application Id="Old" StartPage="https://wamwoowam.co.uk/old">
             <wb:VisualElements DisplayName="Internet Explorer" Description="Take a trip back in time..." ForegroundText="light"
                 BackgroundColor="#2672ec" Square150x150Logo="images/tileLogo.png"
                 Square30x30Logo="images/smallLogo.png" ToastCapable="true">
