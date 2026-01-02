@@ -1,9 +1,15 @@
 packages:
-  - 'src/server'
-  - 'src/shared'
-  - 'src/shell'
-  - 'src/config'
-  - 'src/old'
-  - 'src/apps/*'
-  - 'tools/manifest-loader'
-  - 'tools/xml-loader'
+  - src/server
+  - src/shared
+  - src/shell
+  - src/config
+  - src/old
+  - src/apps/*
+  - tools/manifest-loader
+  - tools/xml-loader
+
+onlyBuiltDependencies:
+  - '@swc/core'
+  - dtrace-provider
+  - esbuild
+  - sharp

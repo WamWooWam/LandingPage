@@ -103,10 +103,16 @@ const app = express();
 
     console.log(oldDirectory);
 
-    app.use('/old', express.static(oldDirectory, { index: ["index.html"], maxAge: '90d' }));
-    app.get('/old/*ignored', (req, res) => {
-        res.sendFile(path.join(oldDirectory, 'index.html'));
+    const oldRouter = express.Router();
+    
+    // vite build output
+    oldRouter.use('/', express.static(path.join(oldDirectory, 'old'), { index: ["index.html"], maxAge: '90d' }));
+    oldRouter.use('/assets', express.static(path.join(oldDirectory, 'assets'), { index: false, maxAge: '90d' }));
+    oldRouter.get('/*ignored', (req, res) => {
+        res.sendFile(path.join(oldDirectory, 'old', 'index.html'));
     });
+    app.use('/old', oldRouter);
+
 
     app.use(express.static(staticDirectory, { index: false, maxAge: '90d' }));
 
