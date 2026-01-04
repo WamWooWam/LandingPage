@@ -18,9 +18,9 @@
     "@landing-page/app-projects": "workspace:",
     "@landing-page/app-settings": "workspace:",
     "@landing-page/app-socials": "workspace:",
+    "@landing-page/old": "workspace:",
     "@landing-page/shared": "workspace:shared",
     "@landing-page/shell": "workspace:shell",
-    "@landing-page/old": "workspace:",
     "@resvg/resvg-js": "^2.6.2",
     "@resvg/resvg-js-linux-x64-gnu": "^2.6.2",
     "@types/jsdom": "^21.1.6",
@@ -41,6 +41,7 @@
     "preact-render-to-string": "^6.6.3",
     "sharp": "^0.33.2",
     "twitter-api-sdk": "^1.0.6",
+    "vite": "^7.2.7",
     "xmldom": "^0.6.0"
   },
   "devDependencies": {

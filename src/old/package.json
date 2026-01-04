@@ -2,13 +2,16 @@
 	"private": true,
 	"name": "@landing-page/old",
 	"type": "module",
-	"main": "dist/index.html",
+	"main": "dist/client/index.html",
 	"files": [
-		"dist"
+		"dist",
+		"index.html"
 	],
 	"scripts": {
 		"dev": "vite",
-		"build": "vite build",
+		"build": "npm run build:client && npm run build:server",
+		"build:client": "vite build --outDir dist/client",
+		"build:server": "vite build --ssr src/index.jsx --outDir dist/server",
 		"preview": "vite preview"
 	},
 	"dependencies": {

@@ -1,5 +1,5 @@
 
-import UniskyIcon from '../assets/projects/unisky.jpg';
+import UniskyIcon from '../assets/projects/unisky.png';
 import ReLiveIcon from '../assets/projects/relivewp-square150x150.svg';
 import UnicordIcon from '../assets/projects/unicord-square150x150.svg';
 import Sonic4Icon from '../assets/projects/s4e1-square150x150.png';

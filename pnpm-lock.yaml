@@ -205,6 +205,9 @@ importers:
       twitter-api-sdk:
         specifier: ^1.0.6
         version: 1.2.1
+      vite:
+        specifier: ^7.2.7
+        version: 7.2.7(@types/node@20.16.5)(jiti@1.21.6)(sass@1.78.0)(terser@5.39.0)
       xmldom:
         specifier: ^0.6.0
         version: 0.6.0
@@ -4721,6 +4724,7 @@ packages:
   whatwg-encoding@3.1.1:
     resolution: {integrity: sha512-6qN4hJdMwfYBtE3YBTTHhoeuUrDBPZmbQaxWAqSALV/MeEnR5z1xd8UKud2RAkFoPkmB+hli1TZSnyi84xz1vQ==}
     engines: {node: '>=18'}
+    deprecated: Use @exodus/bytes instead for a more spec-conformant and faster implementation
 
   whatwg-mimetype@4.0.0:
     resolution: {integrity: sha512-QaKxh0eNIi2mE9p2vEdzfagOKHCcj1pJ56EEHGQOVxp8r9/iszLUUV7v89x9O1p/T+NlTM5W7jW6+cz4Fq1YVg==}
@@ -6002,7 +6006,7 @@ snapshots:
       caniuse-lite: 1.0.30001660
       fraction.js: 4.3.7
       normalize-range: 0.1.2
-      picocolors: 1.1.0
+      picocolors: 1.1.1
       postcss: 8.4.45
       postcss-value-parser: 4.2.0
 
@@ -7462,7 +7466,7 @@ snapshots:
 
   launch-editor@2.9.1:
     dependencies:
-      picocolors: 1.1.0
+      picocolors: 1.1.1
       shell-quote: 1.8.1
 
   lilconfig@3.1.2: {}
@@ -9160,6 +9164,21 @@ snapshots:
       source-map: 0.7.4
       stack-trace: 1.0.0-pre2
       vite: 7.2.7(@types/node@24.4.0)(jiti@1.21.6)(sass@1.78.0)(terser@5.39.0)
+
+  vite@7.2.7(@types/node@20.16.5)(jiti@1.21.6)(sass@1.78.0)(terser@5.39.0):
+    dependencies:
+      esbuild: 0.25.12
+      fdir: 6.5.0(picomatch@4.0.3)
+      picomatch: 4.0.3
+      postcss: 8.5.6
+      rollup: 4.53.3
+      tinyglobby: 0.2.15
+    optionalDependencies:
+      '@types/node': 20.16.5
+      fsevents: 2.3.3
+      jiti: 1.21.6
+      sass: 1.78.0
+      terser: 5.39.0
 
   vite@7.2.7(@types/node@24.4.0)(jiti@1.21.6)(sass@1.78.0)(terser@5.39.0):
     dependencies:

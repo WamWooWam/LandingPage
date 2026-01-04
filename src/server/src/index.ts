@@ -19,6 +19,7 @@ import registerTiles from './controllers/images/tiles';
 import registerTwitch from './controllers/tiles/twitch';
 import registerTwitter from './controllers/tiles/nitter';
 import registerYouTube from './controllers/tiles/youtube';
+import registerOld from './controllers/old';
 
 import express = require('express');
 import path = require('path');
@@ -59,7 +60,6 @@ const app = express();
     }
 
     const staticDirectory = path.dirname(require.resolve("@landing-page/shell"));
-    const oldDirectory = path.dirname(require.resolve("@landing-page/old"));
     const packagesDirectory = path.join(__dirname, '..', 'packages');
 
     app.set('view engine', 'hbs');
@@ -101,20 +101,9 @@ const app = express();
         packagesRouter.use(`/${pack.identity.packageFullName}`, express.static(pack.path, { index: false, maxAge: '90d' }))
     }
 
-    console.log(oldDirectory);
-
-    const oldRouter = express.Router();
-    
-    // vite build output
-    oldRouter.use('/', express.static(path.join(oldDirectory, 'old'), { index: ["index.html"], maxAge: '90d' }));
-    oldRouter.use('/assets', express.static(path.join(oldDirectory, 'assets'), { index: false, maxAge: '90d' }));
-    oldRouter.get('/*ignored', (req, res) => {
-        res.sendFile(path.join(oldDirectory, 'old', 'index.html'));
-    });
-    app.use('/old', oldRouter);
-
-
     app.use(express.static(staticDirectory, { index: false, maxAge: '90d' }));
+
+    await registerOld(app);
 
     registerApps(app);
 

@@ -6,6 +6,7 @@ import { Header } from './components/Header.jsx';
 import { Home } from './pages/Home/index.jsx';
 import { NotFound } from './pages/_404.jsx';
 import { Projects } from './pages/Projects';
+import { locationStub } from 'preact-iso/prerender';
 
 
 export function App() {
@@ -29,5 +30,8 @@ if (typeof window !== 'undefined') {
 }
 
 export async function prerender(data) {
-	return await ssr(<App {...data} />);
+	const { location, ...rest } = data;
+	locationStub(location)
+
+	return await ssr(<App {...rest} />);
 }
