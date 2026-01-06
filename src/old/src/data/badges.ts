@@ -99,5 +99,10 @@ export const BADGES = [
 		label: "sapphic angels",
 		image: "https://sapphic.moe/buttons/sapphic.png",
 		url: "https://sapphic.moe/"
+	},
+	{
+		label: "spotted in a burrow once",
+		image: "https://files.june.pet/88x31.png",
+		url: "https://june.pet/"
 	}
 ]
