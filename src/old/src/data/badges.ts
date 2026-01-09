@@ -96,7 +96,7 @@ export const BADGES = [
 		url: "https://eightyeightthirty.one/"
 	},
 	{
-		label: "sapphic angels",
+		label: "oomf!",
 		image: "https://sapphic.moe/buttons/sapphic.png",
 		url: "https://sapphic.moe/"
 	},
@@ -104,5 +104,10 @@ export const BADGES = [
 		label: "spotted in a burrow once",
 		image: "https://files.june.pet/88x31.png",
 		url: "https://june.pet/"
+	},
+	{
+		label: "awesome",
+		image: "https://sioda.ie/88x31.gif",
+		url: "https://sioda.ie/"
 	}
 ]
