@@ -112,7 +112,7 @@ export const BADGES = [
 	},
 	{
 		label: "lyn might have the coolest 88x31 i have ever seen",
-		image: "https://lyn.pink/IMG/BADGE.GIF",
-		url: "https://lyn.pink/"
+		image: "https://lyn.place/cpk/img/badge.gif",
+		url: "https://lyn.place/"
 	}
 ]
