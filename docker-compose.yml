@@ -1,0 +1,17 @@
+services:
+  landing-page:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: landing-page-server
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+      - PORT=3000
+    restart: unless-stopped
+    # Uncomment for debugging
+    # stdin_open: true
+    # tty: true
+    # volumes:
+    #   - ./src:/app/src:ro
