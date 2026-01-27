@@ -9,6 +9,8 @@ services:
     environment:
       - NODE_ENV=production
       - PORT=3000
+    env_file:
+      - ./src/server/.env
     restart: unless-stopped
     # Uncomment for debugging
     # stdin_open: true

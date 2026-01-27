@@ -31,7 +31,6 @@ COPY --from=builder /app/src/shared ./src/shared
 COPY --from=builder /app/src/apps ./src/apps
 COPY --from=builder /app/src/old ./src/old
 
-COPY --from=builder /app/src/server/.env ./
 COPY --from=builder /app/pnpm-workspace.yaml ./
 
 EXPOSE 3000
