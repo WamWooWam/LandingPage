@@ -3,6 +3,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
+    image: "ghcr.io/wamwoowam/landing-page:latest"
     container_name: landing-page-server
     ports:
       - "3000:3000"
@@ -10,7 +11,7 @@ services:
       - NODE_ENV=production
       - PORT=3000
     env_file:
-      - ./src/server/.env
+      - .env
     restart: unless-stopped
     # Uncomment for debugging
     # stdin_open: true
