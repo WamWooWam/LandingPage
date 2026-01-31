@@ -21,7 +21,7 @@ interface StandaloneRootState {
 export default class StandaloneRoot extends Component<StandaloneRootProps, StandaloneRootState> {
     componentWillMount() {
         let pack = PackageRegistry.getPackage(this.props.packageId);
-        let app = pack.applications[this.props.appId];
+        let app = pack.applications.get(this.props.appId);
         if (!app) {
             throw new Error(`Application ${this.props.appId} not found!`);
         }

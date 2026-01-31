@@ -6,7 +6,7 @@ import { StartTileGroup, TileSize, parseLayout } from "@landing-page/shared";
 import PackageRegistry from "../PackageRegistry";
 import { fixupUrl } from "./shell/start";
 
-import xmldom = require("xmldom");
+import xmldom from "xmldom";
 
 const index = async (req: Request, res: Response) => {
     let data = {} as any;
@@ -25,12 +25,7 @@ const standaloneApp = (req: Request, res: Response, next: NextFunction) => {
         return next();
     }
 
-    // make sure we're not doing prototype pollution
-    if (req.params.id.startsWith('__proto__') || req.params.id.startsWith('constructor')) {
-        return next();
-    }
-
-    let app = pack.applications[req.params.id];
+    let app = pack.applications.get(req.params.id);
     if (!app) {
         return next();
     }
@@ -81,7 +76,7 @@ const generatePreload = async () => {
             const pack = PackageRegistry.getPackage(tile.packageName);
             if (!pack) continue;
 
-            const app = pack.applications[tile.appId];
+            const app = pack.applications.get(tile.appId);
             if (!app) continue;
 
             const preloadUrls = [];

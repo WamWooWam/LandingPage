@@ -21,10 +21,6 @@ module.exports = [
                     exclude: /node_modules/,
                 },
                 {
-                    test: /AppxManifest\.xml$/i,
-                    use: ['@landing-page/manifest-loader']
-                },
-                {
                     test: /\.css$/i,
                     use: [
                         MiniCssExtractPlugin.loader,

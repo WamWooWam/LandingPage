@@ -51,7 +51,7 @@ type PressState = "none" | "top" | "bottom" | "left" | "right" | "center";
 const getAppAndPackage = (packageName: string, appId: string): { pack: Package, app: PackageApplication } => {
     let pack = PackageRegistry.getPackage(packageName);
     if (!pack) console.warn(`Package ${packageName} not found!`);
-    let app = pack?.applications[appId];
+    let app = pack?.applications?.get(appId);
     if (!app) console.warn(`App ${appId} in package ${packageName} not found!`);
     return { pack, app };
 }

@@ -3,8 +3,10 @@ import 'dotenv/config'
 import { DOMParser } from 'xmldom';
 import { PackageReader } from '@landing-page/shared';
 import PackageRegistry from './PackageRegistry';
+
 import error from './middleware/error';
 import logging from "./middleware/logging"
+
 import registerApps from './controllers/apps/shortlinks';
 import registerBlueSky from './controllers/tiles/bluesky';
 import registerConfiguration from './controllers/tiles/configuration';
@@ -103,7 +105,7 @@ const app = express();
 
     app.use(express.static(staticDirectory, { index: false, maxAge: '90d' }));
 
-    await registerOld(app);
+    registerOld(app);
 
     registerApps(app);
 

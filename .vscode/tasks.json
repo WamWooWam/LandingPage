@@ -2,30 +2,12 @@
     "version": "2.0.0",
     "tasks": [
         {
-            "label": "Bun: Start Server",
-            "type": "shell",
-            "command": "bun --inspect-brk=127.0.0.1:5000/test src/index.ts",
-            "options": {
-                "cwd": "${workspaceFolder}/src/server"
-            },
-            "isBackground": true,
-            "problemMatcher": [
-                {
-                    "pattern": [
-                        {
-                            "regexp": ".",
-                            "file": 1,
-                            "location": 2,
-                            "message": 3
-                        }
-                    ],
-                    "background": {
-                        "activeOnStart": true,
-                        "beginsPattern": "Listening:",
-                        "endsPattern": "ws://127.0.0.1:5000/test"
-                    }
-                }
-            ]
+            "type": "npm",
+            "script": "start",
+            "path": "src/server",
+            "problemMatcher": [],
+            "label": "npm: start - src/server",
+            "detail": "node ./dist/index.js"
         }
     ]
 }

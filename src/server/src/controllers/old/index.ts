@@ -1,6 +1,7 @@
 import express, { Router, Request, Response, NextFunction } from "express";
 import path from "path";
 import fs from "fs/promises";
+
 import { prerender } from '@landing-page/old/dist/server/index.js'
 
 const BASE = '/old'
@@ -35,7 +36,7 @@ async function ssr(req: Request, res: Response, next: NextFunction) {
        .send(responseHtml);
 }
 
-export default async function registerRoutes(router: Router) {
+export default function registerRoutes(router: Router) {
     const oldDirectory = path.dirname(require.resolve("@landing-page/old"));
     const oldRouter = express.Router();
     oldRouter.use('/assets', express.static(path.join(oldDirectory, 'assets'), { index: false, maxAge: '90d' }));

@@ -13,6 +13,8 @@ COPY src/ ./src/
 COPY tools/ ./tools/
 
 RUN pnpm install --frozen-lockfile
+
+ENV NODE_ENV=production
 RUN pnpm -r build
 
 # Runtime stage

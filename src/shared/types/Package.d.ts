@@ -7,9 +7,7 @@ export interface Package {
     path: string;
     identity?: PackageIdentity;
     properties?: PackageProperties;
-    applications?: {
-        [part: string]: PackageApplication;
-    };
+    applications?: Map<string, PackageApplication>;
     capabilities?: PackageCapability[];
     compatibilityMode?: PackageCompatibilityMode;
 }

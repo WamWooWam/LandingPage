@@ -14,8 +14,15 @@ export default function Root() {
     useEffect(() => {
         async function loadLayoutAndPackages() {
             const [layout, packages] = await Promise.all([
-                fetch("/api/start-screen.xml", { mode: 'no-cors' }).then(r => r.text()),
-                fetch("/api/packages.json", { mode: 'no-cors' }).then(r => r.json()),
+                fetch("/api/start-screen.xml", {
+                    credentials: 'include',
+                    mode: 'no-cors',
+                }).then(r => r.text()),
+
+                fetch("/api/packages.json", {
+                    credentials: 'include',
+                    mode: 'no-cors',
+                }).then(r => r.json()),
             ]);
 
             for (const key in packages) {
@@ -29,11 +36,11 @@ export default function Root() {
         loadLayoutAndPackages();
     }, []);
 
-    return layout && (
+    return  (
         <>
             <ScrollStateProvider>
-                <Start layoutString={layout} />
-            </ScrollStateProvider>  
+               {layout && <Start layoutString={layout} />}
+            </ScrollStateProvider>
             <CoreWindowContainer />
             <MessageDialogRenderer />
             <CharmsBarRenderer />

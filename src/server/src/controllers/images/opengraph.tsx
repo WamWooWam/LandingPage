@@ -22,10 +22,8 @@ import { Resvg } from '@resvg/resvg-js';
 import { Router } from 'express';
 import { render } from 'preact-render-to-string';
 
-import xmldom = require('xmldom');
 
 const Tile = (props: { pack: Package, x: number, y: number, width: number, height: number, fill: string, image: string, text: string, textStyle: string }) => {
-
     let textElement = props.text &&
         <text x={8}
             y={props.height - 8}
@@ -119,7 +117,7 @@ const TileGroup = (props: { title: string, tiles: TilePropsWithType[], x: number
 
 const generateThumbnail = async () => {
     const startLayout = await fsp.readFile(require.resolve("../../../config/StartScreen.xml"), 'utf-8');
-    const tileGroups = parseLayout(startLayout, xmldom.DOMParser);
+    const tileGroups = parseLayout(startLayout, DOMParser);
 
     let x = 58;
     let renderedTileGroups = [];
@@ -137,10 +135,9 @@ const generateThumbnail = async () => {
 
     // map each application to packageFamilyName!appId
     let renderedTiles = [];
-    for (let packageInfo of PackageRegistry.packages) {
+    for (const packageInfo of PackageRegistry.packages) {
         let packageFamilyName = packageInfo.identity.packageFamilyName;
-        for (let appId in packageInfo.applications) {
-            let app = packageInfo.applications[appId];
+        for (const [appId, app] of packageInfo.applications.entries()) {
             renderedTiles.push(
                 <linearGradient id={`${packageFamilyName}!${appId}`}>
                     <stop offset="0%" stop-color={app.visualElements.backgroundColor} />
@@ -169,7 +166,7 @@ function getData(tile: TilePropsWithType) {
     let tileProps = tile as TileProps;
     console.log(tileProps);
     let packageInfo = PackageRegistry.getPackage(tileProps.packageName);
-    let app = packageInfo.applications[tileProps.appId];
+    let app = packageInfo.applications.get(tileProps.appId);
 
     let image = app.visualElements.square150x150Logo;
     switch (tileProps.size) {

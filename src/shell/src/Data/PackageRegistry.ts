@@ -11,6 +11,16 @@ export default class PackageRegistry {
     static registerPackage(pack: Package) {
         console.log(`registering %O as ${pack.identity.packageFamilyName}`, pack);
 
-        PackageRegistry.packages.set(pack.identity.packageFamilyName, pack);
+        let packageClone = structuredClone(pack);
+        let appMap = new Map<string, any>();
+        for (const [appId, app] of Object.entries(pack.applications || {})) {
+            appMap.set(appId, app);
+        }
+
+        packageClone.applications = appMap;
+
+        console.log(`registered package: %O`, packageClone);
+
+        PackageRegistry.packages.set(pack.identity.packageFamilyName, packageClone);
     }
 }

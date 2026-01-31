@@ -28,7 +28,7 @@ export class PackageReader {
     }
 
     async readPackage(): Promise<Package> {
-        const pack: Package = { path: "", applications: {} };
+        const pack: Package = { path: "", applications: new Map() };
         const manifestDocument = this.parser.parseFromString(this.packageManifest, 'application/xml');
 
         if (manifestDocument === null) {
@@ -58,7 +58,7 @@ export class PackageReader {
         for (let i = 0; i < applicationElements.length; i++) {
             const applicationElement = applicationElements[i];
             const application = this.loadTextResources(this.readApplication(applicationElement));
-            pack.applications[application.id] = application;
+            pack.applications.set(application.id, application);
         }
 
         pack.path = "/packages/" + this.identity.packageFamilyName + "/";

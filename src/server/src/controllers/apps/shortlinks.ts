@@ -5,7 +5,7 @@ import path from "path";
 
 export default function registerRoutes(router: Router) { 
     for (const pack of PackageRegistry.packages) {
-        for (const app of Object.values(pack.applications)) {
+        for (const app of pack.applications.values()) {
             const shortLink = app.shortLink;
             if (!shortLink) 
                 continue;

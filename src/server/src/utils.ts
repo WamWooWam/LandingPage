@@ -53,7 +53,7 @@ export function getAppAndPackage(appId: string, packageId: string): { app: Packa
         throw new HttpError(404, 'Not found!');
     }
 
-    let app = pack.applications[appId];
+    let app = pack.applications.get(appId);
     if (!app) {
         throw new HttpError(404, 'Not found!');
     }
