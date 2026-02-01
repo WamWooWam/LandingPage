@@ -31,6 +31,7 @@ const PickImage = memo((props: PickImageProps) => {
             unmounted.current = true;
         }
     });
+    
     return image && props.children(image);
 });
 

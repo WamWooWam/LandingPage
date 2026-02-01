@@ -66,13 +66,12 @@
             <wb:VisualElements DisplayName="ocathain.ie"
                 Description="Friend"
                 ForegroundText="light"
-                BackgroundColor="#008000" Square150x150Logo="images/barra-square150x150.webp"
-                Square30x30Logo="images/barra-square30x30.webp" ToastCapable="true">
+                BackgroundColor="#008000" Square150x150Logo="https://ocathain.ie/tile.png"
+                Square30x30Logo="https://ocathain.ie/images/favicon.ico" ToastCapable="true">
                 <wb:DefaultTile Square70x70Logo="images/barra-square70x70.webp">
                     <wb:TileUpdate Recurrence="halfHour"
                         UriTemplate="https://ocathain.ie/blogposts?format=livetile&amp;blog=picoblog&amp;start=0&amp;end=5" />
                     <wb:ShowNameOnTiles>
-                        <wb:ShowOn Tile="square150x150Logo" />
                     </wb:ShowNameOnTiles>
                 </wb:DefaultTile>
                 <wb:SplashScreen BackgroundColor="#008000" Image="images/peoplesplash.webp" />
