@@ -61,7 +61,7 @@ const Start = ({ layoutString }: StartProps) => {
                                     <p class="secondary">May</p>
                                 </div>
                                 <PickImage webp={Avatar} png={AvatarPng} avif={AvatarAvif}>
-                                    {image => <img class="start-header-user-picture" src={image} alt="Photo of Thomas May" />}
+                                    {image => <img class="start-header-user-picture" src={image} alt="Photo of Wam" />}
                                 </PickImage>
                             </HeaderButton>
                             <HeaderButton primaryClass="start-header-power" label="Power">

@@ -4,9 +4,9 @@ import { NextFunction, Request, Response, Router } from "express";
 import { StartTileGroup, TileSize, parseLayout } from "@landing-page/shared";
 
 import PackageRegistry from "../PackageRegistry";
-import { fixupUrl } from "./shell/start";
 
 import xmldom from "xmldom";
+import { fixupUrl } from "../utils";
 
 const index = async (req: Request, res: Response) => {
     let data = {} as any;

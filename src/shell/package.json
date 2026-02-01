@@ -15,7 +15,6 @@
     "wasm-feature-detect": "^1.5.1"
   },
   "devDependencies": {
-    "@landing-page/manifest-loader": "workspace:manifest-loader",
     "@landing-page/xml-loader": "workspace:xml-loader",
     "@types/node": "^20.4.3",
     "css-loader": "^5.2.1",

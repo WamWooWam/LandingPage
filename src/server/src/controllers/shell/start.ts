@@ -1,28 +1,13 @@
 import { Request, Response, Router } from 'express';
 
-import { Package } from '@landing-page/shared';
 import PackageRegistry from '../../PackageRegistry';
 import path from 'path';
+
+import { fixupUrl } from '../../utils';
 
 async function getStartScreen(req: Request, res: Response) {
     res.contentType("application/xml")
         .sendFile(path.resolve(__dirname, "../../../config/StartScreen.xml"));
-}
-
-
-export function fixupUrl(pack: Package, relativeUrl: string | null | undefined): string | null {
-    var url = new URL(relativeUrl, "http://localhost");
-    if (url.host !== "localhost")
-        return relativeUrl; // most likely wasn't a local path
-
-    relativeUrl = relativeUrl?.replace(/\\/g, "/");
-    // remove leading slash
-    while (relativeUrl?.startsWith("/"))
-        relativeUrl = relativeUrl.substring(1);
-
-    if (relativeUrl)
-        return `/packages/${pack.identity.packageFullName}/${relativeUrl}`;
-    return null;
 }
 
 async function getPackages(req: Request, res: Response) {

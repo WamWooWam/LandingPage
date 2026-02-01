@@ -62,7 +62,6 @@ const app = express();
     }
 
     const staticDirectory = path.dirname(require.resolve("@landing-page/shell"));
-    const packagesDirectory = path.join(__dirname, '..', 'packages');
 
     app.set('view engine', 'hbs');
     app.set('views', path.join(staticDirectory));

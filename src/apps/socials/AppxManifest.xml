@@ -89,7 +89,7 @@
         </Application>
         <Application Id="YouTube" StartPage="https://youtube.com/@wamwoowam">
             <wb:VisualElements DisplayName="YouTube" Description="YouTube" ForegroundText="light"
-                BackgroundColor="#FF0000" Square150x150Logo="images/youtube-square150x150.svg"
+                BackgroundColor="#FF0033" Square150x150Logo="images/youtube-square150x150.svg"
                 Square30x30Logo="images/youtube-square30x30.svg" ToastCapable="true">
                 <wb:DefaultTile Square70x70Logo="images/youtube-square70x70.svg"
                     Wide310x150Logo="images/youtube-wide310x150.svg"
@@ -102,7 +102,7 @@
                         <wb:ShowOn Tile="square310x310Logo" />
                     </wb:ShowNameOnTiles>
                 </wb:DefaultTile>
-                <wb:SplashScreen BackgroundColor="#FF0000" Image="youtube-splash.svg" />
+                <wb:SplashScreen BackgroundColor="#FF0033" Image="youtube-splash.svg" />
             </wb:VisualElements>
         </Application>
         <Application Id="Discord" StartPage="https://discord.gg/gq5btbE7EZ">

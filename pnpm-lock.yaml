@@ -55,9 +55,12 @@ importers:
   src/apps/settings:
     dependencies:
       preact:
-        specifier: ^10.26.5
-        version: 10.26.5
+        specifier: ^10.28.0
+        version: 10.28.0
     devDependencies:
+      '@landing-page/old':
+        specifier: 'workspace:'
+        version: link:../../old
       css-loader:
         specifier: ^7.1.2
         version: 7.1.2(webpack@5.99.6)
@@ -268,9 +271,6 @@ importers:
         specifier: ^1.5.1
         version: 1.6.2
     devDependencies:
-      '@landing-page/manifest-loader':
-        specifier: workspace:manifest-loader
-        version: link:../../tools/manifest-loader
       '@landing-page/xml-loader':
         specifier: workspace:xml-loader
         version: link:../../tools/xml-loader
@@ -355,22 +355,6 @@ importers:
       webpack-dev-server:
         specifier: ^4.15.1
         version: 4.15.2(webpack-cli@5.1.4)(webpack@5.101.3)
-      xmldom:
-        specifier: ^0.6.0
-        version: 0.6.0
-
-  tools/manifest-loader:
-    dependencies:
-      '@landing-page/shared':
-        specifier: workspace:shared
-        version: link:../../src/shared
-    devDependencies:
-      base32.js:
-        specifier: ^0.1.0
-        version: 0.1.0
-      minify-xml:
-        specifier: ^3.4.0
-        version: 3.5.0
       xmldom:
         specifier: ^0.6.0
         version: 0.6.0
@@ -3847,9 +3831,6 @@ packages:
     resolution: {integrity: sha512-7oHG7jzjriqsFPkSPiPnzrQ0GcxFm6wOkYWNdStK5Ks9YlWSQQXKGBRAX4nKDdqX7HAQuRvI4pZNZMycK4WwDw==}
     peerDependencies:
       preact: '>=10 || >= 11.0.0-0'
-
-  preact@10.26.5:
-    resolution: {integrity: sha512-fmpDkgfGU6JYux9teDWLhj9mKN55tyepwYbxHgQuIxbWQzgFg5vk7Mrrtfx7xRxq798ynkY4DDDxZr235Kk+4w==}
 
   preact@10.28.0:
     resolution: {integrity: sha512-rytDAoiXr3+t6OIP3WGlDd0ouCUG1iCWzkcY3++Nreuoi17y6T5i/zRhe6uYfoVcxq6YU+sBtJouuRDsq8vvqA==}
@@ -8306,8 +8287,6 @@ snapshots:
   preact-render-to-string@6.6.3(preact@11.0.0-beta.0):
     dependencies:
       preact: 11.0.0-beta.0
-
-  preact@10.26.5: {}
 
   preact@10.28.0: {}
 

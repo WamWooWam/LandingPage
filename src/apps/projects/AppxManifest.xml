@@ -20,6 +20,25 @@
         <Resource Language="en-GB" />
     </Resources>
     <Applications>       
+        <Application Id="Start" StartPage="https://github.com/wamwoowam/landingpage/">
+            <wb:VisualElements DisplayName="Landing Page" Description="The website you're looking at :3" ForegroundText="light"
+                BackgroundColor="#25079B" Square150x150Logo="images/start-square150x150.svg"
+                Square30x30Logo="images/start-square30x30.svg" ToastCapable="true">
+                <wb:DefaultTile Square70x70Logo="images/start-square70x70.svg"
+                    Wide310x150Logo="images/start-wide310x150.svg"
+                    Square310x310Logo="images/start-square310x310.svg">
+                    <wb:TileUpdate Recurrence="halfHour"
+                        UriTemplate="/api/live-tiles/github/wamwoowam/landingpage.xml" />
+                    <wb:ShowNameOnTiles>
+                        <wb:ShowOn Tile="square150x150Logo" />
+                        <wb:ShowOn Tile="wide310x150Logo" />
+                        <wb:ShowOn Tile="square310x310Logo" />
+                    </wb:ShowNameOnTiles>
+                </wb:DefaultTile>
+                <wb:SplashScreen BackgroundColor="#25079B" Image="clippit-splash.webp" />
+            </wb:VisualElements>
+        </Application>
+
         <Application Id="GitHub" StartPage="https://github.com/wamwoowam">
             <wb:VisualElements DisplayName="GitHub" Description="My GitHub profile." ForegroundText="light"
                 BackgroundColor="#000000" Square150x150Logo="images/github-square150x150.svg"
@@ -77,6 +96,7 @@
                 <wb:SplashScreen BackgroundColor="#cf016c" Image="unisky-splash.svg" />
             </wb:VisualElements>
         </Application>
+
         <Application Id="ReLiveWP" StartPage="https://github.com/ReLiveWP/ReLiveWP">
             <wb:VisualElements DisplayName="ReLiveWP" Description="A project to revive Windows Live services for Windows Phone 7/8!" ForegroundText="light"
                 BackgroundColor="#e51400" Square150x150Logo="images/relivewp-square150x150.svg"
@@ -93,6 +113,25 @@
                     </wb:ShowNameOnTiles>
                 </wb:DefaultTile>
                 <wb:SplashScreen BackgroundColor="#dd2f00" Image="relivewp-splash.svg" />
+            </wb:VisualElements>
+        </Application>
+        
+        <Application Id="ImageGenerator" StartPage="https://wamwoowam.co.uk/clippit/">
+            <wb:VisualElements DisplayName="Office&#8482; Assistant" Description="A reasonably accurate Microsoft Office Assistant generator." ForegroundText="light"
+                BackgroundColor="#008080" Square150x150Logo="images/clippit-square150x150.webp"
+                Square30x30Logo="images/clippit-square30x30.webp" ToastCapable="true">
+                <wb:DefaultTile Square70x70Logo="images/clippit-square70x70.webp"
+                    Wide310x150Logo="images/clippit-wide310x150.webp"
+                    Square310x310Logo="images/clippit-square310x310.webp">
+                    <wb:TileUpdate Recurrence="halfHour"
+                        UriTemplate="/api/live-tiles/github/wamwoowam/imagegenerator.xml" />
+                    <wb:ShowNameOnTiles>
+                        <wb:ShowOn Tile="square150x150Logo" />
+                        <wb:ShowOn Tile="wide310x150Logo" />
+                        <wb:ShowOn Tile="square310x310Logo" />
+                    </wb:ShowNameOnTiles>
+                </wb:DefaultTile>
+                <wb:SplashScreen BackgroundColor="#008080" Image="clippit-splash.webp" />
             </wb:VisualElements>
         </Application>
     </Applications>
