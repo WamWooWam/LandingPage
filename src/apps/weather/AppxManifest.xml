@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<Package IgnorableNamespaces="build" xmlns="http://schemas.microsoft.com/appx/2010/manifest" xmlns:wb="http://schemas.microsoft.com/appx/2013/manifest" xmlns:build="http://schemas.microsoft.com/developer/appx/2012/build">
+  
+  <Identity Name="Microsoft.BingWeather" Version="3.0.4.336" Publisher="CN=Microsoft Corporation, O=Microsoft Corporation, L=Redmond, S=Washington, C=US" ProcessorArchitecture="x86"/>
+  <Properties>
+    <DisplayName>Weather</DisplayName>
+    <Description>ms-resource:AppDescription</Description>
+    <PublisherDisplayName>Microsoft Corporation</PublisherDisplayName>
+    <Logo>images\store.png</Logo>
+  </Properties>
+  <Prerequisites>
+    <OSMinVersion>6.3.0</OSMinVersion>
+    <OSMaxVersionTested>6.3.0</OSMaxVersionTested>
+  </Prerequisites>
+  <Resources>
+    <Resource Language="EN-US"/>
+    <Resource Language="EN-GB"/>
+    <Resource Language="AR"/>
+    <Resource Language="FR"/>
+    <Resource Language="DE"/>
+    <Resource Language="ID"/>
+    <Resource Language="ES"/>
+    <Resource Language="TH"/>
+    <Resource wb:Scale="100"/>
+    
+  </Resources>
+  <Applications>
+    <Application Id="App" StartPage="https://wttr.in/">
+      <Extensions>
+        <Extension Category="windows.backgroundTasks" StartPage="js\dummyTask.js">
+          <BackgroundTasks>
+            <Task Type="timer"/>
+          </BackgroundTasks>
+        </Extension>
+        <Extension Category="windows.backgroundTasks" EntryPoint="Platform.DataServices.CacheMaintainenceTask">
+          <BackgroundTasks>
+            <Task Type="systemEvent"/>
+          </BackgroundTasks>
+        </Extension>
+        <Extension Category="windows.protocol">
+          <Protocol Name="bingweather"/>
+        </Extension>
+      </Extensions>
+      <wb:VisualElements DisplayName="Weather" Description="ms-resource:AppDescription" BackgroundColor="#2672EC" ForegroundText="light" Square150x150Logo="images\logo.scale-100.png" Square30x30Logo="images\smalllogo.scale-100.png">
+        <wb:DefaultTile Square310x310Logo="images\largelogo.scale-100.png" Wide310x150Logo="images\widelogo.scale-100.png" Square70x70Logo="images\tinylogo.scale-100.png">
+          <wb:TileUpdate Recurrence="hour" UriTemplate="/api/live-tiles/weather/local.xml"/>
+          <wb:ShowNameOnTiles>
+            <wb:ShowOn Tile="square150x150Logo"/>
+            <wb:ShowOn Tile="wide310x150Logo"/>
+            <wb:ShowOn Tile="square310x310Logo"/>
+          </wb:ShowNameOnTiles>
+        </wb:DefaultTile>
+        <wb:LockScreen Notification="badgeAndTileText" BadgeLogo="images\badge.scale-100.png"/>
+        <wb:InitialRotationPreference>
+          <wb:Rotation Preference="portrait"/>
+          <wb:Rotation Preference="landscape"/>
+          <wb:Rotation Preference="portraitFlipped"/>
+          <wb:Rotation Preference="landscapeFlipped"/>
+        </wb:InitialRotationPreference>
+        <wb:SplashScreen Image="images\splash.scale-100.png"/>
+        <wb:ApplicationView MinWidth="width500"/>
+      </wb:VisualElements>
+    </Application>
+  </Applications>
+  <Capabilities>
+    <Capability Name="internetClient"/>
+    <DeviceCapability Name="location"/>
+  </Capabilities>
+  
+  <Extensions>
+  </Extensions>
+  
+  <Dependencies>
+    <PackageDependency Name="Microsoft.VCLibs.120.00" MinVersion="12.0.21005.1"/>
+    <PackageDependency Name="Microsoft.WinJS.2.0" MinVersion="1.0.9600.0"/>
+  </Dependencies>
+  <build:Metadata>
+    <build:Item Name="VisualStudio" Version="12.0"/>
+    <build:Item Name="OperatingSystem" Version="6.3.9600.16384 (winblue_rtm.130821-1623)"/>
+    <build:Item Name="Microsoft.Build.AppxPackage.dll" Version="12.0.21005.1"/>
+    <build:Item Name="Bing.Maps.JavaScript" Version="1.0"/>
+    <build:Item Name="Microsoft.Media.AdaptiveStreamingClient" Version="1.0"/>
+    <build:Item Name="MSAdvertisingJS" Version="8.1"/>
+    <build:Item Name="makepri.exe" Version="6.3.9600.16384 (winblue_rtm.130821-1623)"/>
+  </build:Metadata>
+</Package>

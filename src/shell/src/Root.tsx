@@ -13,17 +13,8 @@ export default function Root() {
 
     useEffect(() => {
         async function loadLayoutAndPackages() {
-            const [layout, packages] = await Promise.all([
-                fetch("/api/start-screen.xml", {
-                    credentials: 'include',
-                    mode: 'no-cors',
-                }).then(r => r.text()),
-
-                fetch("/api/packages.json", {
-                    credentials: 'include',
-                    mode: 'no-cors',
-                }).then(r => r.json()),
-            ]);
+            const layout = document.getElementById("start-screen-xml").textContent;
+            const packages = JSON.parse(document.getElementById("packages-json").textContent);
 
             for (const key in packages) {
                 const pack = packages[key];

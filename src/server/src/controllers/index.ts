@@ -7,19 +7,26 @@ import PackageRegistry from "../PackageRegistry";
 
 import xmldom from "xmldom";
 import { fixupUrl } from "../utils";
+import { packages, startScreen } from "./shell/start";
+import { getConfig } from "./tiles/configuration";
 
 const index = async (req: Request, res: Response) => {
     let data = {} as any;
+    const { urls, startLayout, packages } = await generatePreload();
+    data.preload = urls;
+    data.startLayout = startLayout;
+    data.packages = JSON.stringify(packages);
+    data.configuration = JSON.stringify(getConfig());
+
     if (process.env.NODE_ENV === 'production') {
         data.UMAMI_URL = process.env.UMAMI_URL;
         data.UMAMI_ID = process.env.UMAMI_ID
-        data.preload = await generatePreload();
     }
 
     res.render('index', data);
 }
 
-const standaloneApp = (req: Request, res: Response, next: NextFunction) => {
+const standaloneApp = async (req: Request, res: Response, next: NextFunction) => {
     let pack = PackageRegistry.getPackage(req.params.package);
     if (!pack) {
         return next();
@@ -36,6 +43,10 @@ const standaloneApp = (req: Request, res: Response, next: NextFunction) => {
         return;
     }
 
+    const configuration = await getConfig();
+    const startLayoutXml = await startScreen();
+    const packs = await packages();
+
     const plated = `/api/media/plated/${req.params.package}/${req.params.id}`;
     const data = {
         title: app.visualElements.displayName,
@@ -51,6 +62,7 @@ const standaloneApp = (req: Request, res: Response, next: NextFunction) => {
         appleTouchIcon: `${plated}/apple-touch-icon`,
         manifest: `/api/manifest/${req.params.package}/${req.params.id}`,
         applicationConfig: `/api/msapplication-config/${req.params.package}/${req.params.id}`,
+        packages: JSON.stringify(packs),
         preload: [
             app.visualElements.splashScreen.image
         ]
@@ -67,11 +79,15 @@ const standaloneApp = (req: Request, res: Response, next: NextFunction) => {
 const generatePreload = async () => {
     const urls: string[] = [];
 
-    const startLayout = await fs.promises.readFile(require.resolve("../../config/StartScreen.xml"), 'utf-8');
+    const packs = await packages();
+    const startLayout = await startScreen();
     const layout = parseLayout(startLayout, xmldom.DOMParser)
         .flatMap(g => g.tiles);
 
     for (let tile of layout) {
+        if (urls.length > 10)
+            break
+
         if (tile.packageName) {
             const pack = PackageRegistry.getPackage(tile.packageName);
             if (!pack) continue;
@@ -105,7 +121,7 @@ const generatePreload = async () => {
         }
     }
 
-    return urls;
+    return { urls, startLayout, packages: packs };
 }
 
 export default function registerRoutes(router: Router) {

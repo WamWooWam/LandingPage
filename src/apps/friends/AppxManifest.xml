@@ -51,7 +51,7 @@
                 Square30x30Logo="images/aspyn-square30x30.webp" ToastCapable="true">
                 <wb:DefaultTile Square70x70Logo="images/aspyn-square70x70.webp">
                     <wb:TileUpdate Recurrence="halfHour"
-                        UriTemplate="/api/live-tiles/bluesky/aspyn.gay/latest-posts.xml" />
+                        UriTemplate="/api/live-tiles/bluesky/did:plc:kol5skg3eq24l5hwpup2pant/latest-posts.xml" />
                     <wb:ShowNameOnTiles>
                         <wb:ShowOn Tile="square150x150Logo" />
                     </wb:ShowNameOnTiles>
@@ -155,7 +155,7 @@
                 Square30x30Logo="images/darrio-square30x30.webp" ToastCapable="true">
                 <wb:DefaultTile Square70x70Logo="images/darrio-square70x70.webp">
                     <wb:TileUpdate Recurrence="halfHour"
-                        UriTemplate="/api/live-tiles/bluesky/bigdarr.io/latest-posts.xml" />
+                        UriTemplate="/api/live-tiles/bluesky/did:plc:rs525ebbvgfje6ntm7njaiuy/latest-posts.xml" />
                     <wb:ShowNameOnTiles>
                         <wb:ShowOn Tile="square150x150Logo" />
                     </wb:ShowNameOnTiles>
@@ -299,6 +299,22 @@
                 <wb:DefaultTile Square70x70Logo="images/matt-square70x70.webp">
                     <wb:TileUpdate Recurrence="halfHour"
                         UriTemplate="/api/live-tiles/youtube/UChrYe70o7NmDioL02PRVWVg/PLbpl-gZkNl2A_UbL03nGuVuO_ci4jDsw4.xml" />
+                </wb:DefaultTile>
+                <wb:SplashScreen BackgroundColor="#121273" Image="images/peoplesplash.webp" />
+            </wb:VisualElements>
+        </Application>
+        <Application Id="chloe" StartPage="https://sapphic.moe/">
+            <wb:VisualElements DisplayName="SapphicAngels"
+                Description="Friend"
+                ForegroundText="light"
+                BackgroundColor="#1e1e1e" Square150x150Logo="images/chloe-square150x150.webp"
+                Square30x30Logo="images/chloe-square30x30.webp" ToastCapable="true">
+                <wb:DefaultTile Square70x70Logo="images/chloe-square70x70.webp">
+                    <wb:TileUpdate Recurrence="halfHour"
+                        UriTemplate="/api/live-tiles/bluesky/did:plc:ucaezectmpny7l42baeyooxi/latest-posts.xml" />
+                    <wb:ShowNameOnTiles>
+                        <wb:ShowOn Tile="square150x150Logo" />
+                    </wb:ShowNameOnTiles>
                 </wb:DefaultTile>
                 <wb:SplashScreen BackgroundColor="#121273" Image="images/peoplesplash.webp" />
             </wb:VisualElements>

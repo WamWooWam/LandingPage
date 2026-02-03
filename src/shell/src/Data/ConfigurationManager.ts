@@ -29,10 +29,16 @@ export default class ConfigurationManager {
     }
 
     private static async getConfiguration() {
-        const response = await fetch('/api/configuration', {
-            credentials: 'include',
-            mode: 'no-cors',
-        });
-        return await response.json();
+        // const response = await fetch('/api/configuration', {
+        //     credentials: 'include',
+        //     mode: 'no-cors',
+        // });
+        // return await response.json();
+        let configElement = document.getElementById('configuration');
+        if (!configElement) {
+            return { appStatus: {} };
+        }
+
+        return JSON.parse(configElement.innerText);
     }
 }

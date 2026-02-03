@@ -41,11 +41,16 @@
     <meta name="twitter:creator:id" content="2909863037">
 
     <!-- preload -->
+    {{!--
     <link rel="preload" as="fetch" href="/api/configuration">
     <link rel="preload" as="fetch" href="/api/start-screen.xml">
-    <link rel="preload" as="fetch" href="/api/packages.json">
+    <link rel="preload" as="fetch" href="/api/packages.json"> --}}
+    <script type="application/json" id="configuration">{{{configuration}}}</script>
+    <script type="application/xml" id="start-screen-xml">{{{startLayout}}}</script>
+    <script type="application/json" id="packages-json">{{{packages}}}</script>
+
     {{#each preload}}
-    <link rel="prefetch" as="image" href="{{this}}">
+    <link rel="prefetch" as="image" href="{{this}}" priority="low">
     {{/each}}
     {{#if UMAMI_ID}}
     <script defer src="{{UMAMI_URL}}" data-website-id="{{UMAMI_ID}}"></script>
@@ -53,7 +58,7 @@
 </head>
 
 <body>
-    {{{body}}}
+    <app id="app">{{{body}}}</app>
     <noscript>This app requires JavaScript!</noscript>
 </body>
 

@@ -1,7 +1,7 @@
 import { E_LONGATED_MUSKRAT } from '@landing-page/shared'
-import { Router } from 'express';
+import { Request, Response, Router } from 'express';
 
-async function getConfiguration(req, resp) {
+export function getConfig() {
     const config = {
         appStatus: {
             "Socials_zfgz6xjnaz0ym!Twitter": {
@@ -11,6 +11,11 @@ async function getConfiguration(req, resp) {
         }
     }
 
+    return config;
+}
+
+async function getConfiguration(req: Request, resp: Response) {
+    const config = getConfig();
     resp.json(config);
 }
 

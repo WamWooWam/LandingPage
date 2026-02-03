@@ -49,7 +49,7 @@ export function getAppAndPackage(appId: string, packageId: string): { app: Packa
     }
 
     let pack = PackageRegistry.getPackage(packageId);
-    if (!pack) { 
+    if (!pack) {
         throw new HttpError(404, 'Not found!');
     }
 
@@ -74,6 +74,42 @@ export function fixupUrl(pack: Package, relativeUrl: string | null | undefined):
 
     if (relativeUrl)
         return `/packages/${pack.identity.packageFullName}/${relativeUrl}`;
-    
+
     return null;
+}
+
+export class Mutex {
+    private _locked: boolean;
+    private _waiters: Array<(value: unknown) => void>;
+    constructor() {
+        this._locked = false;
+        this._waiters = [];
+    }
+
+    async lock() {
+        if (!this._locked) {
+            this._locked = true;
+            return;
+        }
+
+        await new Promise(resolve => this._waiters.push(resolve));
+    }
+
+    unlock() {
+        if (this._waiters.length > 0) {
+            const next = this._waiters.shift();
+            next(null);
+        } else {
+            this._locked = false;
+        }
+    }
+
+    async run(fn: () => Promise<any>) {
+        await this.lock();
+        try {
+            return await fn();
+        } finally {
+            this.unlock();
+        }
+    }
 }

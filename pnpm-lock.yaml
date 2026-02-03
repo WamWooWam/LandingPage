@@ -88,6 +88,8 @@ importers:
 
   src/apps/socials: {}
 
+  src/apps/weather: {}
+
   src/old:
     dependencies:
       preact:
@@ -139,6 +141,9 @@ importers:
       '@landing-page/app-socials':
         specifier: 'workspace:'
         version: link:../apps/socials
+      '@landing-page/app-weather':
+        specifier: 'workspace:'
+        version: link:../apps/weather
       '@landing-page/old':
         specifier: 'workspace:'
         version: link:../old
@@ -193,6 +198,9 @@ importers:
       mime:
         specifier: ^3.0.0
         version: 3.0.0
+      minify-xml:
+        specifier: ^3.5.0
+        version: 3.5.0
       misskey-js:
         specifier: 0.0.16
         version: 0.0.16(chokidar@3.6.0)
@@ -2812,10 +2820,6 @@ packages:
   is-binary-path@2.1.0:
     resolution: {integrity: sha512-ZMERYes6pDydyuGidse7OsHxtbI7WVeUEozgR/g7rd0xUimYNlvZRE/K2MgZTjWy725IfelLeVcEM97mmtRGXw==}
     engines: {node: '>=8'}
-
-  is-core-module@2.15.1:
-    resolution: {integrity: sha512-z0vtXSwucUJtANQWldhbtbt7BnL0vxiFjIdDLAatwhDYty2bad6s+rijD6Ri4YuYJubLzIJLUidCh09e1djEVQ==}
-    engines: {node: '>= 0.4'}
 
   is-core-module@2.16.1:
     resolution: {integrity: sha512-UfoeMA6fIJ8wTYFEUjelnaGI67v6+N7qXJEvQuIGa99l4xsCruSYOVSQ0uPANn4dAzm8lkYPaKLrrijLq7x23w==}
@@ -7307,10 +7311,6 @@ snapshots:
     dependencies:
       binary-extensions: 2.3.0
 
-  is-core-module@2.15.1:
-    dependencies:
-      hasown: 2.0.2
-
   is-core-module@2.16.1:
     dependencies:
       hasown: 2.0.2
@@ -7710,7 +7710,7 @@ snapshots:
   normalize-package-data@3.0.3:
     dependencies:
       hosted-git-info: 4.1.0
-      is-core-module: 2.15.1
+      is-core-module: 2.16.1
       semver: 7.6.3
       validate-npm-package-license: 3.0.4
 

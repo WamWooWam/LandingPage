@@ -2,15 +2,19 @@ import { Request, Response, Router } from 'express';
 
 import PackageRegistry from '../../PackageRegistry';
 import path from 'path';
+import fs from 'fs/promises';
+
+import { minify } from 'minify-xml';
 
 import { fixupUrl } from '../../utils';
+import { Package } from '@landing-page/shared';
 
-async function getStartScreen(req: Request, res: Response) {
-    res.contentType("application/xml")
-        .sendFile(path.resolve(__dirname, "../../../config/StartScreen.xml"));
+export async function startScreen() {
+    const startScreenPath = require.resolve("../../../config/StartScreen.xml");
+    return minify(await fs.readFile(startScreenPath, 'utf-8'));
 }
 
-async function getPackages(req: Request, res: Response) {
+export async function packages(): Promise<Record<string, Package>> {
     const packages = {};
     for (const item of PackageRegistry.packages) {
         const copy = structuredClone(item);
@@ -31,8 +35,20 @@ async function getPackages(req: Request, res: Response) {
 
         packages[item.identity.packageFamilyName] = copy;
     }
+    return packages;
+}
 
-    res.json(packages);
+
+async function getStartScreen(req: Request, res: Response) {
+    const xml = await startScreen();
+
+    res.contentType("application/xml")
+        .send(xml);
+}
+
+async function getPackages(req: Request, res: Response) {
+    const packs = await packages();
+    res.json(packs);
 }
 
 export default function registerRoutes(router: Router) {

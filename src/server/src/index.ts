@@ -14,12 +14,13 @@ import registerGithub from './controllers/tiles/github';
 import registerMisskeyInstance from './controllers/tiles/misskey';
 import registerOpenGraphImages from './controllers/images/opengraph';
 import registerPeopleTiles from './controllers/tiles/people';
+import registerWeather from './controllers/tiles/weather';
 import registerRoutes from './controllers';
 import registerStandaloneManifests from './controllers/standalone/manifest';
 import registerStart from './controllers/shell/start';
 import registerTiles from './controllers/images/tiles';
 import registerTwitch from './controllers/tiles/twitch';
-import registerTwitter from './controllers/tiles/nitter';
+// import registerTwitter from './controllers/tiles/nitter';
 import registerYouTube from './controllers/tiles/youtube';
 import registerOld from './controllers/old';
 
@@ -47,6 +48,7 @@ const APP_PACKAGES = [
     "@landing-page/app-projects",
     "@landing-page/app-settings",
     "@landing-page/app-socials",
+    "@landing-page/app-weather",
 ]
 
 const app = express();
@@ -79,12 +81,14 @@ const app = express();
     registerYouTube(liveTilesRouter);
     registerBlueSky(liveTilesRouter);
     registerTwitch(liveTilesRouter);
-    registerTwitter(liveTilesRouter);
+    // registerTwitter(liveTilesRouter);
     registerGithub(liveTilesRouter);
 
     registerMisskeyInstance(liveTilesRouter, process.env.SNUG_NAME, process.env.SNUG_BASE_URL, process.env.SNUG_USER_ID);
 
     registerPeopleTiles(liveTilesRouter);
+
+    registerWeather(liveTilesRouter);
 
     const mediaRouter = express.Router({ mergeParams: true });
     apiRouter.use('/media', cache('90 days'), mediaRouter);

@@ -2,7 +2,7 @@
 //     require("preact/debug");
 // }
 
-import "preact/debug"
+// import "preact/debug"
 
 import "./polyfill";
 import './index.scss';
@@ -12,19 +12,21 @@ import { LocationProvider, Route, Router } from "preact-iso";
 import { hasAvif, hasWebP } from "./Util";
 
 import Root from "./Root";
-import { hydrate } from "preact"
+import { hydrate, render } from "preact"
 
 Promise.all([hasWebP, hasAvif]);
 
 const Main = () => {
     return (
-        <LocationProvider>
-            <Router>
-                <Route path="/" component={Root} />
-                <Route path="/app/:packageId/:appId" component={() => import("./StandaloneRoot").then(m => m.default)} />
-            </Router>
-        </LocationProvider>
+        // <LocationProvider>
+        //     <Router>
+        //         <Route path="/" component={Root} />
+        //         <Route path="/app/:packageId/:appId" component={() => import("./StandaloneRoot").then(m => m.default)} />
+        //     </Router>
+        // </LocationProvider>
+
+        <Root />
     )
 }
 
-hydrate(<Main />, document.body);
+render(<Main />, document.getElementById("app"));

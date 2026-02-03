@@ -1,6 +1,6 @@
 import ConfigurationManager, { AppStatus } from "~/Data/ConfigurationManager";
 import { Package, PackageApplication, TileSize, lightenDarkenColour2 } from "@landing-page/shared";
-import { useContext, useEffect, useRef, useState } from "preact/hooks";
+import { useCallback, useContext, useEffect, useRef, useState } from "preact/hooks";
 
 import AppLaunchRequestedEvent from "~/Events/AppLaunchRequestedEvent";
 import Events from "~/Events";
@@ -78,6 +78,12 @@ const TileInner = ({ pack, app, visuals, appStatus, size }: TileInnerProps) => {
             clearInterval(interval);
         }
     }, [visuals]);
+
+    useEffect(() => {
+        if (visuals.length === 1) {
+            swapping.value = true;
+        }
+    }, [visuals])
 
     if (!pack || !app) {
         return (
@@ -277,12 +283,14 @@ export default function TileRenderer({ packageName, appId, row, column, style, s
         }
     }
 
-    const didGetVisuals = (newVisuals: Map<TileSize, TileVisual[]>) => {
+    const didGetVisuals = useCallback((newVisuals: Map<TileSize, TileVisual[]>) => {
+        console.debug("%s!%s got visuals: %O", pack.identity.packageFullName, app.id, newVisuals)
         setAvailableVisuals(newVisuals);
-    }
+    }, [])
 
     useEffect(() => {
         const visualsForSize = availableVisuals.get(size) ?? [];
+        console.debug("%s!%s got visuals for size %d: %O", pack.identity.packageFullName, app.id, size, visualsForSize)
         setVisuals(visualsForSize);
     }, [size, availableVisuals]);
 
@@ -301,7 +309,6 @@ export default function TileRenderer({ packageName, appId, row, column, style, s
                 .unregisterVisualUpdateCallback(app, didGetVisuals);
         }
     }, [app, pack]);
-
 
     return (
         <TileContext.Provider value={{ pack: pack, app: app, size: size }}>
