@@ -320,6 +320,22 @@
                 <wb:SplashScreen BackgroundColor="#121273" Image="images/peoplesplash.webp" />
             </wb:VisualElements>
         </Application>
+        <Application Id="lyn.cpk" StartPage="https://lyn.place/">
+            <wb:VisualElements DisplayName="lyncpk"
+                Description="Friend"
+                ForegroundText="light"
+                BackgroundColor="#FF0060 " Square150x150Logo="images/lyn.cpk-square150x150.webp"
+                Square30x30Logo="images/lyn.cpk-square30x30.webp" ToastCapable="true">
+                <wb:DefaultTile Square70x70Logo="images/lyn.cpk-square70x70.webp">
+                    <wb:TileUpdate Recurrence="halfHour"
+                        UriTemplate="/api/live-tiles/bluesky/did:plc:cjsauniuld3i43to2t3ahjb7/latest-posts.xml" />
+                    <wb:ShowNameOnTiles>
+                        <wb:ShowOn Tile="square150x150Logo" />
+                    </wb:ShowNameOnTiles>
+                </wb:DefaultTile>
+                <wb:SplashScreen BackgroundColor="#121273" Image="images/peoplesplash.webp" />
+            </wb:VisualElements>
+        </Application>
         <!-- hack 4 emma -->
         <Application Id="emma2" StartPage="https://invoxiplaygames.uk/">
             <wb:VisualElements DisplayName="InvoxiPlayGames"
