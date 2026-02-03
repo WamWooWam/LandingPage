@@ -49,11 +49,12 @@
                 ForegroundText="light"
                 BackgroundColor="#ff00ff" Square150x150Logo="images/aspyn-square150x150.webp"
                 Square30x30Logo="images/aspyn-square30x30.webp" ToastCapable="true">
-                <wb:DefaultTile Square70x70Logo="images/aspyn-square70x70.webp">
+                <wb:DefaultTile Square70x70Logo="images/aspyn-square70x70.webp" Wide310x150Logo="images/aspyn-wide310x150.webp">
                     <wb:TileUpdate Recurrence="halfHour"
                         UriTemplate="/api/live-tiles/bluesky/did:plc:kol5skg3eq24l5hwpup2pant/latest-posts.xml" />
                     <wb:ShowNameOnTiles>
                         <wb:ShowOn Tile="square150x150Logo" />
+                        <wb:ShowOn Tile="wide310x150Logo" />
                     </wb:ShowNameOnTiles>
                 </wb:DefaultTile>
                 <wb:SplashScreen BackgroundColor="#ff00ff" Image="images/peoplesplash.webp" />

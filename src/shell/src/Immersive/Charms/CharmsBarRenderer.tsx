@@ -1,3 +1,4 @@
+import { ErrorBoundary } from "preact-iso";
 import "./charms-bar.scss"
 
 import CharmsBarClock from "./CharmsBarClock";
@@ -136,7 +137,9 @@ export default class CharmsBarRenderer extends Component<{}, CharmsBarRendererSt
                         {/* network icon, power icon, these dont really do anything */}
                     </div>
 
-                    <CharmsBarClock />
+                    <ErrorBoundary onError={(e) => console.log(e)}>
+                        <CharmsBarClock />
+                    </ErrorBoundary>
                 </div>
 
                 <div class={"charms-bar" + className} onTransitionEnd={this.onTransitionEnd.bind(this)}>

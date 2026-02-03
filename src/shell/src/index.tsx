@@ -8,11 +8,10 @@ import "./polyfill";
 import './index.scss';
 import './segoe.scss';
 
-import { LocationProvider, Route, Router } from "preact-iso";
 import { hasAvif, hasWebP } from "./Util";
 
 import Root from "./Root";
-import { hydrate, render } from "preact"
+import { render } from "preact"
 
 Promise.all([hasWebP, hasAvif]);
 

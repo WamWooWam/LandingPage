@@ -17,6 +17,7 @@ import { createContext } from "preact";
 import { getTileSize } from "./TileUtils";
 import { useSignal } from "@preact/signals";
 import { useMobile } from "~/Util";
+import { ErrorBoundary } from "preact-iso";
 
 export interface TileProps {
     packageName?: string;
@@ -312,22 +313,24 @@ export default function TileRenderer({ packageName, appId, row, column, style, s
 
     return (
         <TileContext.Provider value={{ pack: pack, app: app, size: size }}>
-            <a ref={root}
-                id={`${packageName}!${appId}`}
-                class={classList.join(" ")}
-                style={containerStyle}
-                onPointerDown={onMouseDown}
-                onPointerUp={onMouseUp}
-                onClick={onClick}
-                title={app?.visualElements.displayName}
-                href={href}
-                target="_blank">
-                <TileInner app={app}
-                    pack={pack}
-                    size={size}
-                    visuals={visuals}
-                />
-            </a>
+            <ErrorBoundary onError={(e) => console.log('Error in tile %O', e)}>
+                <a ref={root}
+                    id={`${packageName}!${appId}`}
+                    class={classList.join(" ")}
+                    style={containerStyle}
+                    onPointerDown={onMouseDown}
+                    onPointerUp={onMouseUp}
+                    onClick={onClick}
+                    title={app?.visualElements.displayName}
+                    href={href}
+                    target="_blank">
+                    <TileInner app={app}
+                        pack={pack}
+                        size={size}
+                        visuals={visuals}
+                    />
+                </a>
+            </ErrorBoundary>
         </TileContext.Provider>
     )
 }

@@ -3,7 +3,7 @@ import { useEffect, useState } from "preact/hooks";
 
 const DayFormat = new Intl.DateTimeFormat('en-gb', { weekday: 'long' })
 const DateFormat = new Intl.DateTimeFormat('en-gb', { day: 'numeric', month: 'long' });
-const TimeFormat = new Intl.DateTimeFormat('en-gb', { hour: '2-digit', minute: '2-digit', hour12: false,  });
+const TimeFormat = new Intl.DateTimeFormat('en-gb', { hour: '2-digit', minute: '2-digit', hour12: false, });
 
 export default function CharmsBarClock(props: {}) {
     const time = signal("");
@@ -12,6 +12,10 @@ export default function CharmsBarClock(props: {}) {
 
     useEffect(() => {
         const getTime = () => {
+            if (!('formatToParts' in TimeFormat)) {
+                return;
+            }
+
             const now = new Date();
 
             // feels 

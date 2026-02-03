@@ -1,12 +1,18 @@
 import "./Test"
 
-import CharmsBarRenderer from "./Immersive/Charms/CharmsBarRenderer";
-import CoreWindowContainer from "./Immersive/CoreWindow/CoreWindowContainer";
-import MessageDialogRenderer from "./Immersive/MessageDialog/MessageDialogRenderer";
+// import CharmsBarRenderer from "./Immersive/Charms/CharmsBarRenderer";
+// import CoreWindowContainer from "./Immersive/CoreWindow/CoreWindowContainer";
+// import MessageDialogRenderer from "./Immersive/MessageDialog/MessageDialogRenderer";
+
 import PackageRegistry from "./Data/PackageRegistry";
 import ScrollStateProvider from "./Immersive/Start/ScrollStateProvider";
 import Start from "./Immersive/Start";
 import { useEffect, useState } from "preact/hooks";
+import { lazy, ErrorBoundary } from "preact-iso";
+
+const CharmsBarRenderer = lazy(() => import('./Immersive/Charms/CharmsBarRenderer'))
+const CoreWindowContainer = lazy(() => import('./Immersive/CoreWindow/CoreWindowContainer'))
+const MessageDialogRenderer = lazy(() => import('./Immersive/MessageDialog/MessageDialogRenderer'))
 
 export default function Root() {
     const [layout, setLayout] = useState<string | null>(null);
@@ -27,14 +33,14 @@ export default function Root() {
         loadLayoutAndPackages();
     }, []);
 
-    return  (
-        <>
+    return (
+        <ErrorBoundary>
             <ScrollStateProvider>
-               {layout && <Start layoutString={layout} />}
+                {layout && <Start layoutString={layout} />}
             </ScrollStateProvider>
+            <CharmsBarRenderer />
             <CoreWindowContainer />
             <MessageDialogRenderer />
-            <CharmsBarRenderer />
-        </>
+        </ErrorBoundary>
     );
 }

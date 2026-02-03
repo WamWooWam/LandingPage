@@ -300,6 +300,9 @@ importers:
       file-loader:
         specifier: ^6.2.0
         version: 6.2.0(webpack@5.101.3)
+      html-inline-css-webpack-plugin:
+        specifier: ^1.11.2
+        version: 1.11.2(html-webpack-plugin@5.6.0(webpack@5.101.3))
       html-inline-script-webpack-plugin:
         specifier: ^3.2.1
         version: 3.2.1(html-webpack-plugin@5.6.0(webpack@5.101.3))(webpack@5.101.3)
@@ -2668,6 +2671,11 @@ packages:
 
   html-entities@2.5.2:
     resolution: {integrity: sha512-K//PSRMQk4FZ78Kyau+mZurHn3FH0Vwr+H36eE0rPbeYkRRi9YxceYPhuN60UwWorxyKHhqoAJl2OFKa4BVtaA==}
+
+  html-inline-css-webpack-plugin@1.11.2:
+    resolution: {integrity: sha512-jzJptIAOrYQh9ITxiDeNWQvPwk1nHZIo0P9/ZlLsfSYKqggMENJdO+Hcw67xSHoxtL2t+X9QO00eHu6W/c8V0Q==}
+    peerDependencies:
+      html-webpack-plugin: ^3.0.0 || ^4.0.0 || ^5.0.0
 
   html-inline-script-webpack-plugin@3.2.1:
     resolution: {integrity: sha512-PEj9Ve31BE0dva6eTD6wHMOztgIdPxF6gx3wad7ohBkCn7MXpuUvPC9t5ThMJ2NrVi1jWGBYU76DfoS+8dabRw==}
@@ -7145,6 +7153,12 @@ snapshots:
       whatwg-encoding: 3.1.1
 
   html-entities@2.5.2: {}
+
+  html-inline-css-webpack-plugin@1.11.2(html-webpack-plugin@5.6.0(webpack@5.101.3)):
+    dependencies:
+      html-webpack-plugin: 5.6.0(webpack@5.101.3)
+      lodash: 4.17.21
+      tslib: 2.7.0
 
   html-inline-script-webpack-plugin@3.2.1(html-webpack-plugin@5.6.0(webpack@5.101.3))(webpack@5.101.3):
     dependencies:

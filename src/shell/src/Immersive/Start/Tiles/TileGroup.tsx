@@ -1,9 +1,13 @@
 import "./tile.scss"
 
-import FenceTileRenderer, { FenceTileProps } from "./FenceTileRenderer";
-import TileRenderer, { TileProps } from "./TileRenderer";
+import type { FenceTileProps } from "./FenceTileRenderer";
+import type { TileProps } from "./TileRenderer";
 
 import { TilePropsWithType } from "./TileUtils";
+import { ErrorBoundary, lazy } from "preact-iso";
+
+const TileRenderer = lazy(() => import('./TileRenderer'));
+const FenceTileRenderer = lazy(() => import('./FenceTileRenderer'));
 
 export interface TileGroupProps {
     title: string;
@@ -26,14 +30,9 @@ export default function TileGroup(props: TileGroupProps) {
                 {props.tileColumns.map((column, idx) => {
                     return (
                         <div class="tile-column" key={idx} style={{ '--column': (props.baseColumn + idx).toString() }}>
-                            {column.map((tile, idx) => {
-                                if (tile.type === "fence") {
-                                    return <FenceTileRenderer key={tile.key} style={{ '--idx': tile.animColumn, '--offset': idx + props.baseOffset } as any} {...tile as FenceTileProps} />
-                                }
-                                else {
-                                    return <TileRenderer key={tile.key} style={{ '--idx': tile.animColumn, '--offset': idx + props.baseOffset } as any} {...tile as TileProps} />
-                                }
-                            })}
+                            {column.map((tile, idx) => (tile.type === "fence" ? <FenceTileRenderer key={tile.key} style={{ '--idx': tile.animColumn, '--offset': idx + props.baseOffset } as any} {...tile as FenceTileProps} /> :
+                                <TileRenderer key={tile.key} style={{ '--idx': tile.animColumn, '--offset': idx + props.baseOffset } as any} {...tile as TileProps} />
+                            ))}
                         </div>
                     )
                 })}

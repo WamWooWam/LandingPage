@@ -24,3 +24,17 @@ if (typeof Array.prototype.flatMap !== "function") {
         return Array.prototype.concat(...this.map(callback));
     }
 }
+
+if (typeof queueMicrotask !== 'function') {
+    let promise: Promise<void>;
+    globalThis['queueMicrotask'] = cb => (promise || (promise = Promise.resolve()))
+        .then(cb)
+        .catch((err: Error) => setTimeout(() => { throw err }, 0));
+}
+
+
+if(typeof structuredClone !== 'function') {
+    // incorrect, but good enough for how I use structuredClone
+    // will this bite me in the ass? probably
+    globalThis['structuredClone'] = (e) => JSON.parse(JSON.stringify(e)); 
+}
