@@ -51,7 +51,7 @@ export default class CoreWindowLayout extends Component<CoreWindowLayoutProps, C
     }
 
     render() {
-        const separatorX = this.state.rawWindows[0]?.right ?? (this.state.rawWindows[1]?.left - 22) ?? ((window.innerHeight - 22) / 2);
+        const separatorX = this.state.rawWindows[0]?.right ?? (this.state.rawWindows[1]?.left - 22);
         const separatorY = 0;
         // render corewindows + a separator inbetween each if there are more than one
         return (

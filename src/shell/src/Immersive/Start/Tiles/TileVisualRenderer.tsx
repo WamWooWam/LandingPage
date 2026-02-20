@@ -27,7 +27,7 @@ const DefaultTileVisual: FunctionalComponent<{ size: TileSize, app: PackageAppli
         <div class="tile-visual tile-visual-visible">
             <div class="tile-front-image-container">
                 <PackageImage url={tileImageUrl}>
-                    {image => <img draggable={false} alt={`${app.visualElements.displayName} Icon`} src={image} class={"tile-front-image " + TileSize[size]} width={width} height={height} />}
+                    {image => <img draggable={false} alt={`${app.visualElements.displayName} Icon`} src={image} class={"tile-front-image " + TileSize[size]}  />}
                 </PackageImage>
             </div>
         </div>

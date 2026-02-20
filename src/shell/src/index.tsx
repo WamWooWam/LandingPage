@@ -15,17 +15,4 @@ import { render } from "preact"
 
 Promise.all([hasWebP, hasAvif]);
 
-const Main = () => {
-    return (
-        // <LocationProvider>
-        //     <Router>
-        //         <Route path="/" component={Root} />
-        //         <Route path="/app/:packageId/:appId" component={() => import("./StandaloneRoot").then(m => m.default)} />
-        //     </Router>
-        // </LocationProvider>
-
-        <Root />
-    )
-}
-
-render(<Main />, document.getElementById("app"));
+render(<Root />, document.getElementById("app"));

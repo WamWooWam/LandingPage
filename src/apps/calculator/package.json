@@ -12,20 +12,18 @@
   "author": "",
   "license": "ISC",
   "packageManager": "pnpm@10.16.1+sha512.0e155aa2629db8672b49e8475da6226aa4bdea85fdcdfdc15350874946d4f3c91faaf64cbdc4a5d1ab8002f473d5c3fcedcd197989cf0390f9badd3c04678706",
-  "dependencies": {
-    "@preact/signals": "^2.3.1",
-    "auto-text-size": "^0.2.2",
-    "preact": "11.0.0-beta.0"
-  },
   "devDependencies": {
-    "@types/node": "^24.4.0",
-    "css-loader": "^7.1.2",
+    "@preact/signals": "^2.3.1",
+    "@types/node": "^24.10.13",
+    "auto-text-size": "^0.2.2",
+    "css-loader": "^7.1.4",
     "file-loader": "^6.2.0",
-    "html-webpack-plugin": "^5.5.3",
-    "sass-loader": "^13.3.2",
-    "ts-loader": "^9.5.1",
+    "html-webpack-plugin": "^5.6.6",
+    "preact": "10.28.3",
+    "sass-loader": "^16.0.7",
+    "ts-loader": "^9.5.4",
     "url-loader": "^4.1.1",
-    "webpack": "^5.99.6",
+    "webpack": "^5.105.2",
     "webpack-cli": "^5.1.4"
   },
   "scripts": {

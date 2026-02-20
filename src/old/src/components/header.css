@@ -2,7 +2,7 @@ header {
     margin: -16px -32px 24px -32px;
     padding: 32px 32px 0 32px;
     background-image: linear-gradient(to bottom, hsl(263, 66%, 55%, 0.35), hsla(263, 66%, 55%, 0) 200px);
-	box-shadow: 0 0 8px hsl(263, 66%, 70%);
+    box-shadow: 0 0 8px hsl(263, 66%, 70%);
 }
 
 .nav-links {
@@ -28,6 +28,7 @@ header {
     font-family: 'Myriad Pro Semibold', sans-serif;
 }
 
-.nav-links>li>a:hover {
+.nav-links>li>a:hover,
+.nav-links>li>a.active {
     border-bottom: 2px solid hsl(263, 66%, 75%);
 }

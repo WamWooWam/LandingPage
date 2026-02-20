@@ -3,8 +3,8 @@ import { useLocation } from 'preact-iso';
 
 import "./header.css"
 
-const urls = ['/old/', '/old/projects', '/old/blog'];
-const names = ['Home', 'Projects', 'Blog'];
+const urls = ['/old/', '/blog/', '/old/projects'];
+const names = ['Home', 'Blog', 'Projects'];
 
 export function Header({ children }: RenderableProps<{}>) {
 	const { url } = useLocation();
@@ -21,7 +21,7 @@ export function Header({ children }: RenderableProps<{}>) {
 					<ul className="nav-links">
 						{urls.map((u, i) => (
 							<li>
-								<a href={u} aria-current={activeIndex === i ? 'page' : undefined}>
+								<a href={u} aria-current={activeIndex === i ? 'page' : undefined} className={activeIndex === i ? 'active' : ''}>
 									{names[i]}
 								</a>
 							</li>

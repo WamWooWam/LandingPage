@@ -46,3 +46,6 @@ export default class MessageDialog {
         });
     }
 }
+
+(globalThis as any)["MessageDialog"] = MessageDialog;
+(globalThis as any)["UICommand"] = UICommand;

@@ -37,7 +37,7 @@ export default function TileVisualBinding({ binding }: RenderableProps<TileVisua
     }, []);
 
     return (
-        <div ref={ref} class="tile-visual tile-visual-visible" style={{ transform: `scale(${scale})`, transformOrigin: 'top center' }}>
+        <div ref={ref} class="tile-visual tile-visual-visible" style={{ transform: `scale(${scale})`, transformOrigin: scale > 1 ? 'top center' : 'top left' }}>
             {(TileTemplate !== null && binding !== null) && <TileTemplate elements={binding.elements} />}
         </div>
     )

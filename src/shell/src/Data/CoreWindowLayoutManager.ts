@@ -118,6 +118,12 @@ export default class CoreWindowLayoutManager {
         return { state: this.state, windows: (this.state === CoreWindowLayoutKind.fullScreen ? [this.leftWindow] : [this.leftWindow, this.rightWindow]) };
     }
 
+    public setSplitRatio(ratio: number): void {
+        // minimum window width is _technically_ 320px but 20% is fine 
+        this.splitRatio = Math.max(0.2, Math.min(0.8, ratio));
+        this.recalculateLayout();
+    }
+
     private recalculateLayout(): void {
         if (this.state === CoreWindowLayoutKind.fullScreen) {
             if (!this.leftWindow && this.rightWindow) {

@@ -4,8 +4,8 @@
         <group name="me">
             <!-- <tile AppID="Socials_zfgz6xjnaz0ym!AboutMe" size="square310x310" FencePost="0" /> -->
             <tile AppID="Socials_zfgz6xjnaz0ym!Bluesky" size="square310x310" FencePost="0" />
-            <tile AppID="Socials_zfgz6xjnaz0ym!Snug" size="wide310x150" FencePost="0" />
             <tile AppID="Microsoft.BingWeather_8wekyb3d8bbwe!App" size="square310x310" FencePost="0" />
+            <tile AppID="Socials_zfgz6xjnaz0ym!Snug" size="wide310x150" FencePost="0" />
             <tile AppID="Socials_zfgz6xjnaz0ym!YouTube" size="wide310x150" FencePost="0" />
             <tile AppID="Socials_zfgz6xjnaz0ym!Twitch" size="square150x150" FencePost="0" />
             <tile AppID="Socials_zfgz6xjnaz0ym!Old" size="square150x150" FencePost="0" />

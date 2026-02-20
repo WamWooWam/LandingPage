@@ -15,13 +15,13 @@
 		"preview": "vite preview"
 	},
 	"dependencies": {
-		"preact": "^10.28.0",
-		"preact-iso": "^2.11.0",
-		"preact-render-to-string": "^6.6.3"
+		"preact": "^10.28.3",
+		"preact-iso": "^2.11.1",
+		"preact-render-to-string": "^6.6.5"
 	},
 	"devDependencies": {
 		"@preact/preset-vite": "^2.10.2",
 		"typescript": "^5.9.3",
-		"vite": "^7.2.7"
+		"vite": "^7.3.1"
 	}
 }
