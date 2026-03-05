@@ -144,6 +144,7 @@ html {
 }
 
 .start-tile-group {
+    display: grid;
     grid-template-columns: repeat(3, 1fr);
 }
 
@@ -456,22 +457,23 @@ html {
     }
 
     .start-tile-group {
-        display: grid;
-        grid-auto-flow: none;
-        grid-template-rows: 30px 1fr;
-        grid-template-columns: auto;
-
-        /* display: flex;
-        align-self: flex-start; */
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
         margin-left: 56px;
         margin-bottom: 0;
         align-self: center;
-        align-content: center;
+
+        &>.tile-group-header {
+            margin-bottom: 8px;
+        }
     }
 
     .tile-group-content {
         display: flex;
         gap: 8px;
+        max-height: 760px;
+        height: 100%;
     }
 
     .tile-column {

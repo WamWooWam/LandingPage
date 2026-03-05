@@ -156,7 +156,7 @@ export function layoutMobile(collapseTiles: TilePropsWithType[], availableHeight
 }
 
 export function layoutDesktop(collapseTiles: TilePropsWithType[], availableHeight: number): { tileColumns: TilePropsWithType[][] } {
-    let maxRows = Math.max(1, Math.floor(availableHeight / 128));
+    let maxRows = Math.min(Math.max(1, Math.floor(availableHeight / 128)), 6);
     let row = 0;
     let column = 0;
 
