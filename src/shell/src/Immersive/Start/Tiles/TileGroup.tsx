@@ -18,7 +18,7 @@ export interface TileGroupProps {
 }
 
 export default function TileGroup(props: TileGroupProps) {
-    let style = { height: props.height + "px" };
+    let style = props.height && { height: props.height + "px" };
 
     return (
         <div class="start-tile-group" style={style}>

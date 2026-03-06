@@ -143,11 +143,6 @@ html {
     display: none;
 }
 
-.start-tile-group {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-}
-
 // smaller, lower resolution background
 
 @media screen and (min-width: 600px) {

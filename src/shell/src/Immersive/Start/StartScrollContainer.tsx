@@ -80,7 +80,7 @@ export default function StartScrollContainer({ tileGroups }: StartScrollContaine
 
     }, [tileGroups, height, isMobile]);
 
-    const maxRows = isMobile ? 9999 : (Math.floor(height / 128) * 128) + 30;
+    const maxRows = !isMobile && (Math.floor(height / 128) * 128) + 30;
 
     return (
         <MobileContext.Provider value={isMobile}>
