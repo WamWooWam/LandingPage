@@ -161,6 +161,9 @@ export function layoutDesktop(collapseTiles: TilePropsWithType[], availableHeigh
     let row = 0;
     let column = 0;
 
+    let lastHeight = 0;
+    let lastWidth = 0;
+
     // a column is two tiles, or one wide tile wide (248px)
     let tileColumns: TilePropsWithType[][] = [];
     let currentColumn: TilePropsWithType[] = [];
@@ -177,19 +180,23 @@ export function layoutDesktop(collapseTiles: TilePropsWithType[], availableHeigh
     }
 
     let getPosition = (width: number, height: number): [row: number, column: number] => {
-        let tileRow = row;
         let tileColumn = column;
 
+        column += width;
+        if (column >= 2 || (width === 1 && lastWidth === 2)) {
+            row += lastHeight;
+            column = 0;
+        }
+
+        let tileRow = row;
         if (tileRow + height > maxRows) {
             [tileRow, tileColumn] = newColumn(width, height);
         } else {
             tileColumn = column;
         }
 
-        column = (column + width) % 2;
-        if (column === 0 || width === 2) {
-            row += height;
-        }
+        lastHeight = height;
+        lastWidth = width;
 
         return [tileRow, tileColumn];
     }
