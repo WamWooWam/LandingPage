@@ -109,7 +109,7 @@ export function calculateLayout(tiles: RawTileProps[], availableHeight: number, 
 export function layoutMobile(collapseTiles: TilePropsWithType[], availableHeight: number): { tileColumns: TilePropsWithType[][] } {
     let tileColumn: TilePropsWithType[] = [];
     let width = 0;
-    
+
     for (let i = 0; i < collapseTiles.length; i++) {
         let tile = collapseTiles[i];
         if (tile.size === TileSize.square310x310 || tile.size === TileSize.wide310x150) {
@@ -157,15 +157,42 @@ export function layoutMobile(collapseTiles: TilePropsWithType[], availableHeight
 
 export function layoutDesktop(collapseTiles: TilePropsWithType[], availableHeight: number): { tileColumns: TilePropsWithType[][] } {
     let maxRows = Math.min(Math.max(1, Math.floor(availableHeight / 128)), 6);
+
     let row = 0;
     let column = 0;
-
-    let lastWidth = 0;
-    let lastHeight = 0;
 
     // a column is two tiles, or one wide tile wide (248px)
     let tileColumns: TilePropsWithType[][] = [];
     let currentColumn: TilePropsWithType[] = [];
+
+    let newColumn = (width: number, height: number): [row: number, column: number] => {
+        if (currentColumn.length)
+            tileColumns.push(currentColumn);
+
+        currentColumn = [];
+        row = 0;
+        column = 0;
+
+        return [0, 0];
+    }
+
+    let getPosition = (width: number, height: number): [row: number, column: number] => {
+        let tileRow = row;
+        let tileColumn = column;
+
+        if (tileRow + height > maxRows) {
+            [tileRow, tileColumn] = newColumn(width, height);
+        } else {
+            tileColumn = column;
+        }
+
+        column = (column + width) % 2;
+        if (column === 0 || width === 2) {
+            row += height;
+        }
+
+        return [tileRow, tileColumn];
+    }
 
     for (const tile of collapseTiles) {
         if (maxRows <= 1 && tile.size === TileSize.square310x310) {
@@ -175,29 +202,11 @@ export function layoutDesktop(collapseTiles: TilePropsWithType[], availableHeigh
         let tileWidth = tileSizeToColumns(tile.size);
         let tileHeight = tileSizeToRows(tile.size);
 
-        if (column + tileWidth > 2) {
-            if (row + Math.max(lastHeight, tileHeight) >= maxRows) {
-                tileColumns.push(currentColumn);
-                currentColumn = [];
-                row = 0;
-            }
-            else {
-                row += lastHeight;
-            }
-
-            column = 0;
-        }
-
-        currentColumn.push({ row, column, ...tile, animColumn: 0 });
-
-        column += tileWidth;
-        lastWidth = tileWidth;
-        lastHeight = tileHeight;
+        let [tileRow, tileColumn] = getPosition(tileWidth, tileHeight);
+        currentColumn.push({ ...tile, row: tileRow, column: tileColumn, animColumn: tileColumn });
     }
 
     tileColumns.push(currentColumn);
-
-    console.log(tileColumns);
 
     return { tileColumns };
 }
