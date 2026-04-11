@@ -1,5 +1,3 @@
-import "./tile.scss"
-
 import type { FenceTileProps } from "./FenceTileRenderer";
 import type { TileProps } from "./TileRenderer";
 
@@ -18,13 +16,13 @@ export interface TileGroupProps {
 }
 
 export default function TileGroup(props: TileGroupProps) {
-    let style = props.height && { height: props.height + "px" };
+    let style = props.height ? { height: props.height + "px" } : {};
 
     return (
         <div class="start-tile-group" style={style}>
             <h2 class="tile-group-header">
                 {/* a non breaking space is inserted here to ensure the layout remains the same */}
-                {this.props.title && this.props.title !== "" ? this.props.title : "\u00A0"}
+                {props.title && props.title !== "" ? props.title : "\u00A0"}
             </h2>
             <div class="tile-group-content">
                 {props.tileColumns.map((column, idx) => {

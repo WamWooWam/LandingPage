@@ -1,0 +1,99 @@
+@import 'variables';
+
+.start-tile-group {
+    margin-bottom: 8px;
+
+    @media screen and (min-width: $viewport-sm) {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        margin-left: 56px;
+        margin-bottom: 0;
+        align-self: center;
+
+        > .tile-group-header {
+            margin-bottom: 8px;
+        }
+
+        > .fence-tile-container,
+        > .tile-container {
+            grid-area: tiles;
+            grid-row-end: span 1;
+            grid-column-end: span 1;
+        }
+    }
+}
+
+.tile-group-header {
+    display: flex;
+    margin: 0;
+    font-size: 22px;
+    line-height: 20px;
+    font-weight: 300;
+    white-space: nowrap;
+
+    @media screen and (max-width: $viewport-sm) {
+        margin-top: 4px !important;
+        margin-bottom: 12px !important;
+
+        &::after {
+            content: '';
+            display: flex;
+            flex: 1;
+            align-self: center;
+            margin: 0 0 -6px 8px;
+            border-bottom: 8px solid rgba(255, 255, 255, 0.5);
+        }
+    }
+}
+
+.tile-group-tiles {
+    grid-template-columns: 120px;
+    grid-template-rows: repeat(auto-fill, 120px);
+    grid-auto-columns: 120px;
+    grid-auto-rows: 120px;
+    grid-auto-flow: none;
+}
+
+.tile-group-content {
+    @media screen and (max-width: $viewport-sm) {
+        display: grid;
+        grid-gap: $grid-gap-sm;
+        grid-template-columns: repeat(3, 1fr);
+        grid-template-rows: auto;
+        grid-auto-flow: row;
+        grid-auto-rows: auto;
+    }
+
+    @media screen and (min-width: $viewport-sm) {
+        display: flex;
+        gap: $grid-gap-md;
+        max-height: 760px;
+        height: 100%;
+    }
+}
+
+.tile-column {
+    @media screen and (max-width: $viewport-sm) {
+        display: contents;
+    }
+
+    @media screen and (min-width: $viewport-sm) {
+        display: grid;
+        grid-gap: $grid-gap-md;
+        grid-template-columns: $tile-size-md;
+        grid-template-rows: repeat(auto-fill, $tile-size-md);
+        grid-auto-columns: $tile-size-md;
+        grid-auto-rows: $tile-size-md;
+        grid-auto-flow: none;
+        transform-origin: center;
+        perspective-origin: center;
+    }
+}
+
+.fence-tile-container {
+    @media screen and (min-width: $viewport-sm) {
+        grid-template-columns: $tile-size-sm $tile-size-sm;
+        grid-template-rows: $tile-size-sm $tile-size-sm;
+    }
+}

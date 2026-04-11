@@ -1,0 +1,59 @@
+$viewport-xs: 320px;
+$viewport-sm: 600px;
+$viewport-lg: 1200px;
+
+$primary-color: white;
+$secondary-color: black;
+$accent-color: #2E00A5;
+$accent-dark: #180053;
+$grid-gap-sm: 12px;
+$grid-gap-md: 8px;
+$tile-size-sm: 56px;
+$tile-size-md: 120px;
+
+@mixin tile-container-press($class, $x, $y) {
+    .tile-container.#{$class}.press-top:active {
+        transform: perspective(500px) rotateX(#{$x}deg);
+    }
+
+    .tile-container.#{$class}.press-bottom:active {
+        transform: perspective(500px) rotateX(-#{$x}deg);
+    }
+
+    .tile-container.#{$class}.press-left:active {
+        transform: perspective(500px) rotateY(-#{$y}deg);
+    }
+
+    .tile-container.#{$class}.press-right:active {
+        transform: perspective(500px) rotateY(#{$y}deg);
+    }
+}
+
+@mixin button-icon($color, $fill-color: transparent) {
+    #arrow {
+        fill: $color;
+    }
+
+    #circle {
+        stroke: $color;
+        fill: $fill-color;
+    }
+}
+
+@mixin background-image($small, $medium) {
+    background-image: url($small);
+    background-image: image-set(
+        url(#{$small}-avif.avif) type("image/avif"),
+        url(#{$medium}-webp.webp) type("image/webp"),
+        url($small) type("image/jpeg")
+    );
+}
+
+@mixin text-clamp($lines: 2) {
+    display: -webkit-box;
+    -webkit-line-clamp: $lines;
+    -webkit-box-orient: vertical;
+    line-clamp: $lines;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}

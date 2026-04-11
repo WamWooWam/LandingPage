@@ -1,5 +1,20 @@
+@import 'variables';
+@import 'utilities';
+@import 'animations';
+@import 'tile-groups';
+
 .start {
     color: white;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 2000;
+}
+
+html {
+    background: black;
 }
 
 .start-content {
@@ -7,10 +22,6 @@
     grid-template-columns: 0 1fr 0;
     height: 100%;
     height: -webkit-fill-available;
-}
-
-.start-tiles {
-    margin-right: 8px;
 }
 
 .start-screen,
@@ -22,21 +33,9 @@
     display: none;
 }
 
-html {
-    background: black;
-}
-
-.start {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    z-index: 2000;
-}
-
 .start-tiles {
     margin: 32px 12px 12px 12px;
+    margin-right: 8px;
 }
 
 .start-footer {
@@ -49,10 +48,6 @@ html {
     max-height: 100vh;
 }
 
-.start-tile-group {
-    margin-bottom: 8px;
-}
-
 .start-show-all-button {
     top: 32px;
     position: fixed;
@@ -61,61 +56,56 @@ html {
     margin: 0;
     border: 0;
     appearance: none;
-}
 
+    @include button-icon($primary-color);
+
+    &:hover {
+        #circle {
+            fill: $accent-color;
+        }
+    }
+
+    &:active {
+        #circle {
+            fill: $primary-color;
+        }
+
+        #arrow {
+            fill: $accent-dark;
+        }
+    }
+}
 
 .start-show-all-icon {
     width: 32px;
     height: 32px;
 }
 
-.start-show-all-button #arrow {
-    fill: white;
+.start-hide-all-button {
+    @include button-icon($secondary-color);
+
+    &:hover {
+        #arrow {
+            fill: $primary-color;
+        }
+
+        #circle {
+            fill: $accent-color;
+        }
+    }
+
+    &:active {
+        #circle {
+            fill: $secondary-color;
+        }
+
+        #arrow {
+            fill: $accent-dark;
+        }
+    }
 }
 
-.start-show-all-button #circle {
-    stroke: white;
-    fill: transparent;
-}
-
-.start-show-all-button:hover #circle {
-    fill: #2E00A5;
-}
-
-.start-show-all-button:active #circle {
-    fill: white;
-}
-
-.start-show-all-button:active #arrow {
-    fill: #180053;
-}
-
-.start-hide-all-button #arrow {
-    fill: black;
-}
-
-.start-hide-all-button #circle {
-    stroke: black;
-    fill: transparent;
-}
-
-.start-hide-all-button:hover #arrow {
-    fill: white;
-}
-
-.start-hide-all-button:hover #circle {
-    fill: #2E00A5;
-}
-
-.start-hide-all-button:active #circle {
-    fill: black;
-}
-
-.start-hide-all-button:active #arrow {
-    fill: #180053;
-}
-
-@media screen and (min-width: 320px) {
+@media screen and (min-width: $viewport-xs) {
     .start-content {
         grid-template-columns: 0 1fr 64px;
     }
@@ -130,44 +120,29 @@ html {
     }
 }
 
-
-.start-content {
-    grid-template-columns: 0 1fr 0;
-}
-
-.start-tiles {
-    margin-right: 8px;
-}
-
-.start-footer {
-    display: none;
-}
-
-// smaller, lower resolution background
-
-@media screen and (min-width: 600px) {
-
+@media screen and (min-width: $viewport-sm) {
     body,
     .start {
         background-image: url(static/wallpaper/the-cliffs-small.jpg);
-        background-image: image-set("static/wallpaper/the-cliffs-small.avif" type("image/avif"),
-                "static/wallpaper/the-cliffs-small.webp" type("image/webp"),
-                "static/wallpaper/the-cliffs-small.jpg" type("image/jpeg"));
+        background-image: image-set(
+            "static/wallpaper/the-cliffs-small.avif" type("image/avif"),
+            "static/wallpaper/the-cliffs-small.webp" type("image/webp"),
+            "static/wallpaper/the-cliffs-small.jpg" type("image/jpeg")
+        );
     }
 }
 
-// larger, higher resolution background
-@media screen and (min-width: 1200px) {
-
+@media screen and (min-width: $viewport-lg) {
     body,
     .start {
         background-image: url(static/wallpaper/the-cliffs.jpg);
-        background-image: image-set("static/wallpaper/the-cliffs.avif" type("image/avif"),
-                "static/wallpaper/the-cliffs.webp" type("image/webp"),
-                "static/wallpaper/the-cliffs.jpg" type("image/jpeg"));
+        background-image: image-set(
+            "static/wallpaper/the-cliffs.avif" type("image/avif"),
+            "static/wallpaper/the-cliffs.webp" type("image/webp"),
+            "static/wallpaper/the-cliffs.jpg" type("image/jpeg")
+        );
     }
 }
-
 
 .start-tiles-scroll-container {
     display: flex;
@@ -188,7 +163,7 @@ html {
     perspective-origin: initial !important;
 }
 
-@media screen and (max-width: 600px) {
+@media screen and (max-width: $viewport-sm) {
     .start {
         background-color: black !important;
         position: absolute;
@@ -217,44 +192,9 @@ html {
         perspective-origin: center;
     }
 
-    .start-tile-group:last-child {
-        padding: 0 0 max(env(safe-area-inset-bottom), 120px) 0;
-    }
-
     .start-header,
     .start-footer {
         display: none;
-    }
-
-    .start-tile-group {
-        width: calc(100% - 12px);
-    }
-
-    .tile-group-content {
-        display: grid;
-        grid-gap: 12px;
-        grid-template-columns: repeat(3, 1fr);
-        grid-template-rows: auto;
-        grid-auto-flow: row;
-        grid-auto-rows: auto;
-    }
-
-    .tile-column {
-        display: contents;
-    }
-
-    .tile-group-header {
-        margin-top: 4px !important;
-        margin-bottom: 12px !important;
-
-        &::after {
-            content: '';
-            display: flex;
-            flex: 1;
-            align-self: center;
-            margin: 0 0 -6px 8px;
-            border-bottom: 8px solid rgba(255, 255, 255, 0.5);
-        }
     }
 
     .start {
@@ -265,32 +205,14 @@ html {
                 opacity: 0;
                 transform: translate3d(-64px, 0, -64px) rotateY(90deg);
                 transform-origin: calc(-1 * calc(33vw * var(--idx))) center;
-
                 animation: tile-show-login 1s forwards cubic-bezier(0.16, 1, 0.3, 1) 0.2s;
                 animation-delay: calc(40ms * var(--offset));
-
                 transition: opacity 0.5s ease-out;
             }
 
             .tile-group-header {
                 opacity: 0;
                 animation: start-tile-group-header-show 0.15s forwards linear 1.25s;
-            }
-
-            @keyframes tile-show-login {
-                0% {
-                    transform: translate3d(-64px, 0, -64px) rotateY(90deg);
-                    opacity: 0
-                }
-
-                15% {
-                    opacity: 0;
-                }
-
-                100% {
-                    transform: translate3d(0, 0, 0) rotateY(0deg);
-                    opacity: 1;
-                }
             }
         }
     }
@@ -312,6 +234,75 @@ html {
         background-color: var(--background-colour);
         background-size: cover;
         background-position: center;
+
+        &.animate-open-login {
+            animation: fade-in 0.25s forwards cubic-bezier(0.16, 1, 0.3, 1);
+
+            .start-title {
+                opacity: 0;
+                animation: start-title-show-login 1.5s forwards cubic-bezier(0.16, 1, 0.3, 1) 0.5s;
+            }
+
+            .tile-group-header {
+                opacity: 0;
+                animation: start-tile-group-header-show 0.15s forwards linear 1.25s;
+            }
+
+            .start-tiles-scroll-container {
+                animation: start-tiles-show-login 1.5s forwards cubic-bezier(0.16, 1, 0.3, 1);
+            }
+
+            .tile-column {
+                opacity: 0;
+                transform: perspective(1000px) scale(0.66) rotateY(10deg);
+                animation: tile-column-show-login 0.85s forwards cubic-bezier(0.16, 1, 0.3, 1);
+                animation-delay: calc(133ms * var(--column));
+            }
+
+            .start-show-all-button {
+                opacity: 0;
+                animation: start-show-all-login 0.85s forwards cubic-bezier(0.16, 1, 0.3, 1) 1s;
+            }
+
+            .start-header-buttons {
+                opacity: 0;
+                animation: start-header-buttons-show-login 0.85s forwards cubic-bezier(0.16, 1, 0.3, 1);
+            }
+        }
+
+        &.animate-open {
+            animation: fade-in 0.25s forwards cubic-bezier(0.16, 1, 0.3, 1);
+
+            .start-tiles-scroll-container {
+                animation: start-tiles-show 1.25s forwards cubic-bezier(0.16, 1, 0.3, 1);
+            }
+
+            .tile-column {
+                opacity: 0;
+                transform: perspective(1000px) scale(0.75) rotateY(10deg);
+                animation: tile-column-show 0.66s forwards cubic-bezier(0.16, 1, 0.3, 1);
+                animation-delay: calc(66ms * var(--column));
+            }
+
+            .tile-group-header {
+                opacity: 0;
+                animation: start-tile-group-header-show 0.15s forwards linear 0.66s;
+            }
+
+            .start-show-all-button {
+                opacity: 0;
+                animation: fade-in 0.85s forwards cubic-bezier(0.16, 1, 0.3, 1) 1s;
+            }
+        }
+
+        &.animate-close {
+            z-index: 500;
+            animation: start-hide 0.25s forwards;
+
+            .start-tiles-scroll-container {
+                animation: start-tiles-hide 0.25s forwards;
+            }
+        }
     }
 
     .start-screen {
@@ -331,13 +322,20 @@ html {
     }
 
     .start-title {
-        /* 42pt;Light;None;Segoe UI */
         font-family: "Segoe UI";
         font-size: 42pt;
         font-weight: 200;
         font-feature-settings: "ss17" 1, "dlig" 1;
         line-height: 80px;
         margin: 0;
+    }
+
+    .start-header {
+        margin-left: 124px;
+        align-items: flex-end;
+        font-weight: 300;
+        z-index: 1;
+        grid-column: 1 / span 3;
     }
 
     .start-header-buttons {
@@ -373,26 +371,26 @@ html {
         align-items: center;
         font-weight: 300;
 
-        >.username {
+        > .username {
             flex: 1;
             text-align: right;
 
-            >p {
+            > p {
                 margin: 0;
             }
 
-            >.primary {
+            > .primary {
                 font-size: 27px;
                 line-height: 27px;
             }
 
-            >.secondary {
+            > .secondary {
                 font-size: 18px;
                 line-height: 18px;
             }
         }
 
-        >.start-header-user-picture {
+        > .start-header-user-picture {
             width: 40px;
             height: 40px;
             align-self: center;
@@ -400,7 +398,6 @@ html {
             margin: 10px;
         }
     }
-
 
     .start-header-power,
     .start-header-search {
@@ -412,14 +409,6 @@ html {
         line-height: 30px;
         width: 57px;
         height: 57px;
-    }
-
-    .start-header {
-        margin-left: 72px;
-        align-items: flex-end;
-        font-weight: 300;
-        z-index: 1;
-        grid-column: 1 / span 2;
     }
 
     .start-tiles {
@@ -434,54 +423,13 @@ html {
     }
 
     .start-footer {
-        position: relative;
-        top: -60px;
-        margin-left: 72px;
         display: flex;
         align-items: center;
         align-self: center;
-        grid-row: 3;
-    }
-
-    .start-footer {
+        position: relative;
+        top: -60px;
         margin-left: 140px;
-    }
-
-    .start-header {
-        margin-left: 124px;
-    }
-
-    .start-tile-group {
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        margin-left: 56px;
-        margin-bottom: 0;
-        align-self: center;
-
-        &>.tile-group-header {
-            margin-bottom: 8px;
-        }
-    }
-
-    .tile-group-content {
-        display: flex;
-        gap: 8px;
-        max-height: 760px;
-        height: 100%;
-    }
-
-    .tile-column {
-        display: grid;
-        grid-gap: 8px;
-        grid-template-columns: 120px;
-        grid-template-rows: repeat(auto-fill, 120px);
-        grid-auto-columns: 120px;
-        grid-auto-rows: 120px;
-        grid-auto-flow: none;
-
-        transform-origin: center;
-        perspective-origin: center;
+        grid-row: 3;
     }
 
     .start-show-all-button {
@@ -518,218 +466,10 @@ html {
         transform-style: preserve-3d;
         transform: perspective(1000px);
         perspective-origin: center;
-    }
 
-    .start-tiles-scroll-container * {
-        transform-style: preserve-3d;
-        perspective-origin: initial !important;
-    }
-
-
-    .start {
-        &.animate-open-login {
-            animation: fade-in 0.25s forwards cubic-bezier(0.16, 1, 0.3, 1);
-
-            .start-title {
-                opacity: 0;
-                animation: start-title-show-login 1.5s forwards cubic-bezier(0.16, 1, 0.3, 1) 0.5s;
-            }
-
-            .tile-group-header {
-                opacity: 0;
-                animation: start-tile-group-header-show 0.15s forwards linear 1.25s;
-            }
-
-            .start-tiles-scroll-container {
-                animation: start-tiles-show-login 1.5s forwards cubic-bezier(0.16, 1, 0.3, 1);
-            }
-
-            .tile-column {
-                opacity: 0;
-                transform: perspective(1000px) scale(0.66) rotateY(10deg);
-                animation: tile-column-show-login 0.85s forwards cubic-bezier(0.16, 1, 0.3, 1);
-                animation-delay: calc(133ms * var(--column));
-            }
-
-            .start-show-all-button {
-                opacity: 0;
-                animation: start-show-all-login 0.85s forwards cubic-bezier(0.16, 1, 0.3, 1) 1s;
-            }
-
-            .start-header-buttons {
-                opacity: 0;
-                animation: start-header-buttons-show-login 0.85s forwards cubic-bezier(0.16, 1, 0.3, 1);
-            }
-
-            @keyframes tile-column-show-login {
-                0% {
-                    opacity: 0;
-                    transform: perspective(1000px) scale(0) rotateY(10deg);
-                }
-
-                15% {
-                    opacity: 0;
-                }
-
-                100% {
-                    opacity: 1;
-                    transform: perspective(1000px) scale(1) rotateY(0deg);
-                }
-            }
-
-            @keyframes start-tiles-show-login {
-                10% {
-                    transform: translateX(250px);
-                }
-
-                100% {
-                    transform: translateX(0px);
-                }
-            }
-
-            @keyframes start-title-show-login {
-                0% {
-                    opacity: 0;
-                    transform: translateX(40px);
-                }
-
-                100% {
-                    opacity: 1;
-                    transform: translateX(0px);
-                }
-            }
-
-
-            @keyframes start-header-buttons-show-login {
-                0% {
-                    opacity: 0;
-                    transform: translateX(-40px);
-                }
-
-                20% {
-                    opacity: 0;
-                }
-
-                100% {
-                    opacity: 1;
-                    transform: translateX(0px);
-                }
-            }
+        * {
+            transform-style: preserve-3d;
+            perspective-origin: initial !important;
         }
-
-        &.animate-open {
-            animation: fade-in 0.25s forwards cubic-bezier(0.16, 1, 0.3, 1);
-
-            .start-tiles-scroll-container {
-                animation: start-tiles-show 1.25s forwards cubic-bezier(0.16, 1, 0.3, 1);
-            }
-
-            .tile-column {
-                opacity: 0;
-                transform: perspective(1000px) scale(0.75) rotateY(10deg);
-                animation: tile-column-show 0.66s forwards cubic-bezier(0.16, 1, 0.3, 1);
-                animation-delay: calc(66ms * var(--column));
-            }
-
-            .tile-group-header {
-                opacity: 0;
-                animation: start-tile-group-header-show 0.15s forwards linear 0.66s;
-            }
-
-            .start-show-all-button {
-                opacity: 0;
-                animation: fade-in 0.85s forwards cubic-bezier(0.16, 1, 0.3, 1) 1s;
-            }
-
-            @keyframes tile-column-show {
-                0% {
-                    opacity: 0;
-                    transform: perspective(1000px) scale(0.75) rotateY(10deg);
-                }
-
-                15% {
-                    opacity: 0;
-                }
-
-                100% {
-                    opacity: 1;
-                    transform: perspective(1000px) scale(1) rotateY(0deg);
-                }
-            }
-
-            @keyframes start-tiles-show {
-                10% {
-                    transform: translateX(50px);
-                }
-
-
-                100% {
-                    transform: translateX(0px);
-                }
-            }
-        }
-
-        &.animate-close {
-            z-index: 500;
-            animation: start-hide 0.25s forwards;
-
-            .start-tiles-scroll-container {
-                animation: start-tiles-hide 0.25s forwards;
-            }
-        }
-    }
-}
-
-@keyframes fade-in {
-    0% {
-        opacity: 0;
-    }
-
-    100% {
-        opacity: 1;
-    }
-}
-
-@keyframes fade-out {
-    0% {
-        opacity: 1;
-    }
-
-    100% {
-        opacity: 0;
-    }
-}
-
-@keyframes start-tile-group-header-show {
-    0% {
-        opacity: 0;
-    }
-
-    100% {
-        opacity: 0.66;
-    }
-}
-
-@keyframes start-hide {
-    0% {
-        opacity: 1;
-    }
-
-    25% {
-        opacity: 1;
-    }
-
-    100% {
-        opacity: 0;
-    }
-}
-
-@keyframes start-tiles-hide {
-    0% {
-        transform: scale3d(1, 1, 1);
-    }
-
-    100% {
-        transform: scale3d(0.33, 0.33, 0.33);
     }
 }

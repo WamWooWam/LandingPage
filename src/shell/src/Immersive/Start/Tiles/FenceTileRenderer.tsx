@@ -1,5 +1,3 @@
-import "./tile.scss"
-
 import TileRenderer, { TileProps } from "./TileRenderer";
 
 export interface FenceTileProps {

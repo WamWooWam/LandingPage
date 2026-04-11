@@ -1,4 +1,5 @@
 import "./start.scss"
+import "./Tiles/tiles.scss"
 
 import { parseLayout } from "@landing-page/shared";
 import { useEffect, useMemo, useRef, useState } from "preact/hooks";

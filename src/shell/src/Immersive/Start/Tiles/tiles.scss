@@ -1,0 +1,284 @@
+@import '../variables';
+
+.fence-tile-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+    grid-gap: $grid-gap-md;
+    grid-row-end: span 1;
+    grid-column-end: span 1;
+}
+
+.tile-visual {
+    display: flex;
+    flex: 1;
+    justify-content: center;
+
+    img {
+        object-fit: cover;
+        image-rendering: high-quality;
+    }
+}
+
+.tile-headline-style {
+    font-weight: 100;
+    text-wrap: nowrap;
+}
+
+.tile {
+    width: 100%;
+    overflow: hidden;
+    position: relative;
+}
+
+.tile-border {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    box-sizing: border-box;
+
+    &:hover::before {
+        content: " ";
+        position: absolute;
+        top: -4px;
+        left: -4px;
+        right: -4px;
+        bottom: -4px;
+        border: 3px solid var(--accent-colour);
+    }
+}
+
+.tile-container {
+    display: flex;
+    grid-row-end: span 1;
+    grid-column-end: span 1;
+    transform-style: preserve-3d;
+    appearance: none;
+    margin: 0;
+    padding: 0;
+    border: none;
+    text-align: left;
+    font-family: 'Segoe UI';
+    aspect-ratio: 1/1;
+    text-decoration: none;
+
+    &.text-light {
+        color: white;
+    }
+
+    &.text-dark {
+        color: black;
+    }
+
+    &.press-top:active {
+        transform-origin: 50% bottom;
+    }
+
+    &.press-bottom:active {
+        transform-origin: 50% top;
+    }
+
+    &.press-left:active {
+        transform-origin: right 50%;
+    }
+
+    &.press-right:active {
+        transform-origin: left 50%;
+    }
+
+    &:active {
+        transform: scale3d(0.975, 0.975, 0.975);
+        touch-action: manipulation;
+        transform-origin: initial;
+    }
+
+    &.wide310x150 {
+        grid-column-end: span 2;
+    }
+
+    &.square310x310 {
+        grid-row-end: span 2;
+        grid-column-end: span 2;
+    }
+
+    .front {
+        display: flex;
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        transform: translateY(0);
+        flex-direction: column;
+
+        > * {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+        }
+    }
+}
+
+@include tile-container-press(square70x70, 16, 16);
+@include tile-container-press(square150x150, 6, 6);
+@include tile-container-press(square310x310, 3, 3);
+@include tile-container-press(wide310x150, 6, 3);
+
+.tile-notification {
+    transition: transform 0.8s cubic-bezier(0, 0.50, 0.1, 1);
+}
+
+.next {
+    display: flex;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    flex-direction: column;
+    transform: translateY(calc(100% + 1px));
+    will-change: transform;
+    animation: show-next 0.8s cubic-bezier(0, 0.50, 0.1, 1);
+
+    > * {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+    }
+}
+
+.tile-scale-container {
+    width: 100%;
+    height: 100%;
+}
+
+.tile-front-image-container {
+    display: flex;
+    flex: 1;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+}
+
+.tile-front-image {
+    object-fit: contain;
+    aspect-ratio: 1/1;
+    width: 100%;
+    height: 100%;
+
+    &.wide310x150 {
+        aspect-ratio: 31/15;
+    }
+}
+
+.tile-front-text {
+    padding: 0;
+    margin: 5px 16px;
+    font-size: 12px;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.tile-badge {
+    position: absolute;
+    display: block;
+    right: 0;
+    bottom: 0;
+    width: 44px;
+    height: 24px;
+
+    &.error {
+        background-size: contain;
+        background-repeat: no-repeat;
+        background-position: center;
+        background-image: url(static/tiles/error-badge@1x.png);
+    }
+}
+
+@media (min-device-pixel-ratio: 2),
+(-webkit-min-device-pixel-ratio: 2),
+(min-resolution: 2dppx) {
+    .tile-badge.error {
+        background-image: url(static/tiles/error-badge@2x.png);
+    }
+}
+
+.square70x70 .tile-badge {
+    width: 28px;
+}
+
+.moving > .tile {
+    width: 100%;
+    height: 100%;
+}
+
+.wide310x150 {
+    aspect-ratio: 31/15;
+}
+
+.square310x310,
+.square150x150,
+.square70x70 {
+    aspect-ratio: 1/1;
+}
+
+.tile-toast-footer {
+    height: 24px;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    transition: opacity 0.33s linear;
+
+    &.hidden {
+        opacity: 0;
+    }
+
+    &.visible {
+        opacity: 1;
+    }
+
+    &.new {
+        animation: new-tile-footer 0.33s forwards linear;
+    }
+}
+
+.tile-badge-icon {
+    width: 24px;
+    height: 24px;
+    margin: -9px 16px 0 16px;
+}
+
+.tile-toast-container {
+    display: flex;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    flex-direction: column;
+}
+
+.tile-binding {
+    display: flex;
+    height: calc(100% - 24px);
+    width: 100%;
+}
+
+.tile-background {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-repeat: no-repeat;
+    background-image: url(static/wallpaper/the-cliffs.webp);
+}
