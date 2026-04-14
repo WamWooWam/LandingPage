@@ -263,6 +263,9 @@ const getTileData = (tile: TilePropsWithType) => {
 
 
 export const generateThumbnailPng = async () => {
+    const SegoeUI = require.resolve("../../../fonts/segoeui.ttf");
+    const SegoeUILight = require.resolve("../../../fonts/segoeuil.ttf");
+
     const svg = await generateThumbnail(); 
     const options = {
         background: '#000000',
@@ -272,8 +275,8 @@ export const generateThumbnailPng = async () => {
         },
         font: {
             fontFiles: [
-                './fonts/segoeui.ttf',
-                './fonts/segoeuil.ttf',
+                SegoeUI,
+                SegoeUILight,
             ],
             loadSystemFonts: false,
             defaultFontFamily: 'Segoe UI'
