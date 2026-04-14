@@ -6,7 +6,7 @@
   <Properties>
     <DisplayName>PC Settings</DisplayName>
     <Description>PC Settings</Description>
-    <Logo>images\logo.png</Logo>
+    <Logo>images/logo.png</Logo>
     <PublisherDisplayName>Microsoft Windows</PublisherDisplayName>
   </Properties>
 

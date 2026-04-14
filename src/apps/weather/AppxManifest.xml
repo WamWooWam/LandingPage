@@ -6,7 +6,7 @@
     <DisplayName>Weather</DisplayName>
     <Description>ms-resource:AppDescription</Description>
     <PublisherDisplayName>Microsoft Corporation</PublisherDisplayName>
-    <Logo>images\store.png</Logo>
+    <Logo>images/store.png</Logo>
   </Properties>
   <Prerequisites>
     <OSMinVersion>6.3.0</OSMinVersion>
@@ -27,7 +27,7 @@
   <Applications>
     <Application Id="App" StartPage="https://wttr.in/">
       <Extensions>
-        <Extension Category="windows.backgroundTasks" StartPage="js\dummyTask.js">
+        <Extension Category="windows.backgroundTasks" StartPage="js/dummyTask.js">
           <BackgroundTasks>
             <Task Type="timer"/>
           </BackgroundTasks>
@@ -41,8 +41,8 @@
           <Protocol Name="bingweather"/>
         </Extension>
       </Extensions>
-      <wb:VisualElements DisplayName="Weather" Description="ms-resource:AppDescription" BackgroundColor="#2672EC" ForegroundText="light" Square150x150Logo="images\logo.scale-100.png" Square30x30Logo="images\smalllogo.scale-100.png">
-        <wb:DefaultTile Square310x310Logo="images\largelogo.scale-100.png" Wide310x150Logo="images\widelogo.scale-100.png" Square70x70Logo="images\tinylogo.scale-100.png">
+      <wb:VisualElements DisplayName="Weather" Description="ms-resource:AppDescription" BackgroundColor="#2672EC" ForegroundText="light" Square150x150Logo="images/logo.scale-100.png" Square30x30Logo="images/smalllogo.scale-100.png">
+        <wb:DefaultTile Square310x310Logo="images/largelogo.scale-100.png" Wide310x150Logo="images/widelogo.scale-100.png" Square70x70Logo="images/tinylogo.scale-100.png">
           <wb:TileUpdate Recurrence="hour" UriTemplate="/api/live-tiles/weather/local.xml"/>
           <wb:ShowNameOnTiles>
             <wb:ShowOn Tile="square150x150Logo"/>
@@ -50,14 +50,14 @@
             <wb:ShowOn Tile="square310x310Logo"/>
           </wb:ShowNameOnTiles>
         </wb:DefaultTile>
-        <wb:LockScreen Notification="badgeAndTileText" BadgeLogo="images\badge.scale-100.png"/>
+        <wb:LockScreen Notification="badgeAndTileText" BadgeLogo="images/badge.scale-100.png"/>
         <wb:InitialRotationPreference>
           <wb:Rotation Preference="portrait"/>
           <wb:Rotation Preference="landscape"/>
           <wb:Rotation Preference="portraitFlipped"/>
           <wb:Rotation Preference="landscapeFlipped"/>
         </wb:InitialRotationPreference>
-        <wb:SplashScreen Image="images\splash.scale-100.png"/>
+        <wb:SplashScreen Image="images/splash.scale-100.png"/>
         <wb:ApplicationView MinWidth="width500"/>
       </wb:VisualElements>
     </Application>

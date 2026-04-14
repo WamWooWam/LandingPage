@@ -84,8 +84,9 @@ const app = express();
     // registerTwitter(liveTilesRouter);
     registerGithub(liveTilesRouter);
 
-    registerMisskeyInstance(liveTilesRouter, process.env.SNUG_NAME, process.env.SNUG_BASE_URL, process.env.SNUG_USER_ID);
-
+    if (process.env.SNUG_NAME && process.env.SNUG_BASE_URL && process.env.SNUG_USER_ID) {
+        registerMisskeyInstance(liveTilesRouter, process.env.SNUG_NAME, process.env.SNUG_BASE_URL, process.env.SNUG_USER_ID);
+    }
     registerPeopleTiles(liveTilesRouter);
 
     registerWeather(liveTilesRouter);
@@ -103,7 +104,8 @@ const app = express();
     app.use('/packages', packagesRouter);
 
     for (const pack of PackageRegistry.packages) {
-        packagesRouter.use(`/${pack.identity.packageFullName}`, express.static(pack.path, { index: false, maxAge: '90d' }))
+        if (pack.identity)
+            packagesRouter.use(`/${pack.identity.packageFullName}`, express.static(pack.path, { index: false, maxAge: '90d' }))
     }
 
     app.use(express.static(staticDirectory, { index: false, maxAge: '90d' }));
