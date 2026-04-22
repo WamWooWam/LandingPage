@@ -32,7 +32,7 @@ const standaloneApp = async (req: Request, res: Response, next: NextFunction) =>
         return next();
     }
 
-    let app = pack.applications.get(req.params.id);
+    let app = pack.applications!.get(req.params.id);
     if (!app) {
         return next();
     }
@@ -92,20 +92,20 @@ const generatePreload = async () => {
             const pack = PackageRegistry.getPackage(tile.packageName);
             if (!pack) continue;
 
-            const app = pack.applications.get(tile.appId);
+            const app = pack.applications!.get(tile.appId);
             if (!app) continue;
 
-            const preloadUrls = [];
+            const preloadUrls: string[] = [];
 
             switch (tile.size) {
                 case TileSize.square70x70:
-                    preloadUrls.push(app.visualElements.defaultTile.square70x70Logo);
+                    preloadUrls.push(app.visualElements.defaultTile.square70x70Logo!);
                     break;
                 case TileSize.wide310x150:
-                    preloadUrls.push(app.visualElements.defaultTile.wide310x150Logo);
+                    preloadUrls.push(app.visualElements.defaultTile.wide310x150Logo!);
                     break;
                 case TileSize.square310x310:
-                    preloadUrls.push(app.visualElements.defaultTile.square310x310Logo);
+                    preloadUrls.push(app.visualElements.defaultTile.square310x310Logo!);
                     break;
                 default:
                 case TileSize.square150x150:
@@ -117,7 +117,7 @@ const generatePreload = async () => {
                 preloadUrls.push(app.visualElements.square30x30Logo);
             }
 
-            urls.push(...preloadUrls.map(u => fixupUrl(pack, u)));
+            urls.push(...preloadUrls.map(u => fixupUrl(pack, u)!));
         }
     }
 

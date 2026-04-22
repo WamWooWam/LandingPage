@@ -24,7 +24,7 @@ export default class TileBackgroundRenderer extends Component<TileBackgroundProp
     }
 
     componentDidMount(): void {
-        let bounds = this.element.current.getBoundingClientRect();
+        let bounds = this.element.current!.getBoundingClientRect();
         let height = bounds.height;
         let y = bounds.top + window.scrollY;
         let x = bounds.left + window.scrollX;

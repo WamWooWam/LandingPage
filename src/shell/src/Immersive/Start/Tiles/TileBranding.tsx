@@ -12,7 +12,7 @@ interface TileBrandingProps {
 
 export function TileBranding({ branding, nextBranding, previousBranding, size, visualElements }: TileBrandingProps) {
     const className = "tile-toast-footer" + ((nextBranding && branding != nextBranding) ? " hidden" : "") + ((previousBranding && branding != previousBranding) ? " new" : "");
-    const showTextSizes = visualElements.defaultTile.showNameOnTiles.map(v => TileSize[v as keyof typeof TileSize]);
+    const showTextSizes = visualElements.defaultTile.showNameOnTiles!.map(v => TileSize[v as keyof typeof TileSize]);
 
     switch (branding) {
         case "none":

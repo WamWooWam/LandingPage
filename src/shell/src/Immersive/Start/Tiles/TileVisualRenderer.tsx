@@ -20,14 +20,14 @@ export default function TileVisualRenderer({ app, size, binding }: RenderablePro
 }
 
 const DefaultTileVisual: FunctionalComponent<{ size: TileSize, app: PackageApplication, visualElements: ApplicationVisualElements }> = memo(({ size, app }) => {
-    const tileImageUrl = getTileImageUrl(size, app);
+    const tileImageUrl = getTileImageUrl(size, app)!;
     const { width, height } = getTileSize(size);
 
     return (
         <div class="tile-visual tile-visual-visible">
             <div class="tile-front-image-container">
                 <PackageImage url={tileImageUrl}>
-                    {image => <img draggable={false} alt={`${app.visualElements.displayName} Icon`} src={image} class={"tile-front-image " + TileSize[size]}  />}
+                    {image => <img draggable={false} alt={`${app.visualElements.displayName} Icon`} src={image} class={"tile-front-image " + TileSize[size]} />}
                 </PackageImage>
             </div>
         </div>

@@ -112,10 +112,12 @@ export default class CoreWindowLayoutManager {
         }
 
         this.recalculateLayout();
+        
+        return true;
     }
 
     public getLayoutInfo(): { state: CoreWindowLayoutKind, windows: CoreWindow[] } {
-        return { state: this.state, windows: (this.state === CoreWindowLayoutKind.fullScreen ? [this.leftWindow] : [this.leftWindow, this.rightWindow]) };
+        return { state: this.state, windows: (this.state === CoreWindowLayoutKind.fullScreen ? [this.leftWindow] : [this.leftWindow, this.rightWindow]).filter(w => w !== null) as CoreWindow[] };
     }
 
     public setSplitRatio(ratio: number): void {

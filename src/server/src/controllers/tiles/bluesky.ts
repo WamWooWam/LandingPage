@@ -6,8 +6,8 @@ import { TileTemplateType } from "../../TileTemplateType";
 import { XMLSerializer } from "xmldom";
 import { XRPCError } from "@atproto/xrpc";
 
-const bskyUsername = process.env.BLUESKY_USERNAME;
-const bskyPassword = process.env.BLUESKY_APP_PASSWORD;
+const bskyUsername = process.env.BLUESKY_USERNAME!;
+const bskyPassword = process.env.BLUESKY_APP_PASSWORD!;
 
 const agent = new AtpAgent({ service: "https://bsky.social" });
 
@@ -43,7 +43,7 @@ async function latestPosts(req: Request, res: Response) {
         if (data.reply || (data.reason && req.params.did)) {
             continue;
         }
-        
+
         const visual = createVisual(root);
         const author = data.post.author;
         const record = data.post.record as AppBskyFeedPost.Record;
@@ -55,10 +55,11 @@ async function latestPosts(req: Request, res: Response) {
             content.getElementsByTagName("image")[0].setAttribute("alt", embed.images[0].alt);
             content.getElementsByTagName("text")[0].textContent = record.text;
 
-            let wideContent = null;
+            let wideContent: Element = null!;
             if (record.text.length) {
                 wideContent = createBindingFromTemplate(root, visual, TileTemplateType.tileWide310x150PeekImage07);
-                wideContent.getElementsByTagName("image")[1].setAttribute("src", author.avatar);
+                if (author.avatar)
+                    wideContent.getElementsByTagName("image")[1].setAttribute("src", author.avatar);
                 wideContent.getElementsByTagName("image")[1].setAttribute("alt", author.displayName + " profile picture");
                 wideContent.getElementsByTagName("text")[0].textContent = record.text;
             }
@@ -79,15 +80,17 @@ async function latestPosts(req: Request, res: Response) {
             content.getElementsByTagName("text")[0].textContent = record.text;
 
             const wideContent = createBindingFromTemplate(root, visual, TileTemplateType.tileWideSmallImageAndText03);
-            wideContent.getElementsByTagName("image")[0].setAttribute("src", author.avatar);
+            if (author.avatar)
+                wideContent.getElementsByTagName("image")[0].setAttribute("src", author.avatar);
             wideContent.getElementsByTagName("image")[0].setAttribute("alt", author.displayName + " profile picture");
             wideContent.getElementsByTagName("text")[0].textContent = record.text;
 
-            const largeContent = createBindingFromTemplate(root, visual, TileTemplateType.tileSquare310x310SmallImageAndText01,);
-            largeContent.getElementsByTagName('image')[0].setAttribute('src', author.avatar);
+            const largeContent = createBindingFromTemplate(root, visual, TileTemplateType.tileSquare310x310SmallImageAndText01);
+            if (author.avatar)
+                largeContent.getElementsByTagName('image')[0].setAttribute('src', author.avatar);
             largeContent.getElementsByTagName('image')[0].setAttribute('alt', author.displayName + ' profile picture');
 
-            largeContent.getElementsByTagName('text')[0].textContent = author.displayName;
+            largeContent.getElementsByTagName('text')[0].textContent = author.displayName ?? author.handle;
             largeContent.getElementsByTagName('text')[1].textContent = record.text;
         }
     }

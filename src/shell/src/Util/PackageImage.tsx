@@ -11,7 +11,7 @@ type PackageImageProps = {
 
 const PackageImage = memo((props: PackageImageProps) => {
     const unmounted = useRef<boolean>(false);
-    const [image, setImage] = useState<string>(null);
+    const [image, setImage] = useState<string>(null!);
 
     useEffect(() => {
         if (!props.url) return;

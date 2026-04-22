@@ -13,7 +13,7 @@ export class Launcher {
             throw new Error(`Package ${packageId} not found!`);
         }
 
-        let app = pack.applications.get(appId);
+        let app = pack.applications!.get(appId);
         if (!app) {
             throw new Error(`Application ${appId} not found!`);
         }

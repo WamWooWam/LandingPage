@@ -25,16 +25,16 @@ interface CoreWindowRenderProps {
 };
 
 interface CoreWindowRenderState {
-    window: CoreWindow;
-    error?: Error;
+    window: CoreWindow | null;
+    error?: Error | null;
     splashScreenVisible?: boolean;
-    title: string;
+    title: string | null;
     titleBarVisible?: boolean;
     titleBarTimeout?: number;
 };
 
 export default class CoreWindowRenderer extends Component<CoreWindowRenderProps, CoreWindowRenderState> {
-    ref: RefObject<CoreWindowDragContainer> = null;
+    ref: RefObject<CoreWindowDragContainer> = null!;
 
     constructor(props: CoreWindowRenderProps) {
         super(props);
@@ -50,7 +50,7 @@ export default class CoreWindowRenderer extends Component<CoreWindowRenderProps,
 
     componentDidMount() {
         this.setState({
-            splashScreenVisible: this.state.window.state == CoreWindowStateEnum.loading,
+            splashScreenVisible: this.state.window!.state == CoreWindowStateEnum.loading,
             titleBarVisible: !CoreWindowManager.isStandalone()
         });
 
@@ -64,7 +64,7 @@ export default class CoreWindowRenderer extends Component<CoreWindowRenderProps,
     }
 
     onWindowStateChanged(e: CoreWindowEvent) {
-        if (e.detail.id == this.state.window.id) {
+        if (e.detail.id == this.state.window!.id) {
             this.setState({
                 splashScreenVisible: e.detail.state == CoreWindowStateEnum.loading,
                 error: e.detail.error
@@ -85,7 +85,7 @@ export default class CoreWindowRenderer extends Component<CoreWindowRenderProps,
     }
 
     onCloseClicked() {
-        this.state.window.requestClose();
+        this.state.window!.requestClose();
     }
 
     onMouseMoved(e: MouseEvent) {
@@ -114,20 +114,24 @@ export default class CoreWindowRenderer extends Component<CoreWindowRenderProps,
         const target = e.target as HTMLElement;
         target.setPointerCapture(e.pointerId);
 
-        this.ref.current.startWindowDrag(this.state.window, e);
+        this.ref.current!.startWindowDrag(this.state.window!, e);
     }
 
-    render(props?: RenderableProps<CoreWindowRenderProps, any>, state?: Readonly<CoreWindowRenderState>, context?: any): ComponentChild {
-        let app = state.window.packageApplication;
+    render(props: RenderableProps<CoreWindowRenderProps, any>, state: Readonly<CoreWindowRenderState>, context?: any): ComponentChild {
+        if (!state.window) {
+            return <></>
+        }
+
+        let app = state.window!.packageApplication;
         let visualElements = app.visualElements;
         let primaryColour = visualElements.backgroundColor;
         let iconUrl = visualElements.square30x30Logo;
 
         let style = {
-            x: (props.x !== undefined ? props.x : state.window.position.x) + "px",
-            y: (props.y !== undefined ? props.y : state.window.position.y) + "px",
-            width: (props.width !== undefined ? props.width : state.window.size.width) + "px",
-            height: (props.height !== undefined ? props.height : state.window.size.height) + "px",
+            x: (props.x !== undefined ? props.x : state.window!.position.x) + "px",
+            y: (props.y !== undefined ? props.y : state.window!.position.y) + "px",
+            width: (props.width !== undefined ? props.width : state.window!.size.width) + "px",
+            height: (props.height !== undefined ? props.height : state.window!.size.height) + "px",
         }
 
         if (props.visible !== undefined && !props.visible) {
@@ -137,13 +141,13 @@ export default class CoreWindowRenderer extends Component<CoreWindowRenderProps,
         return (
             <CoreWindowDragContainer ref={this.ref} onMouseMove={this.onMouseMoved.bind(this)} {...style}>
                 <CoreWindowErrorBoundary error={this.state.error}>
-                    <CoreWindowAppHost window={this.state.window} />
+                    <CoreWindowAppHost window={this.state.window!} />
                 </CoreWindowErrorBoundary>
                 <CoreWindowSplashScreen elements={app.visualElements}
-                    visible={this.state.splashScreenVisible} />
+                    visible={!!this.state.splashScreenVisible} />
                 {!CoreWindowManager.isStandalone() &&
-                    <CoreWindowTitleBar window={this.state.window}
-                        isVisible={this.state.titleBarVisible}
+                    <CoreWindowTitleBar window={this.state.window!}
+                        isVisible={!!this.state.titleBarVisible}
                         primaryColour={primaryColour}
                         iconUrl={iconUrl}
                         onCloseClicked={this.onCloseClicked.bind(this)}

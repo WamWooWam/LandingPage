@@ -33,7 +33,7 @@ interface CoreWindowImposterState {
 
 export default class CoreWindowMobileLaunchAnimation extends Component<CoreWindowImposterProps, CoreWindowImposterState> {
 
-    rootRef: RefObject<HTMLDivElement> = null;
+    rootRef: RefObject<HTMLDivElement> = null!;
 
     constructor(props: CoreWindowImposterProps) {
         super(props);
@@ -82,8 +82,8 @@ export default class CoreWindowMobileLaunchAnimation extends Component<CoreWindo
             const values = e.values;
             const transform = `perspective(666px) rotate3d(0,1,0,${values.angle}deg)`;
 
-            this.rootRef.current.style.transform = transform;
-            this.rootRef.current.style.opacity = values.opacity;
+            this.rootRef.current!.style.transform = transform;
+            this.rootRef.current!.style.opacity = values.opacity;
         });
 
         runner.addEventListener("complete", () => {

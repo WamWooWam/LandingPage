@@ -28,7 +28,7 @@ export default function StartScrollContainer({ tileGroups }: StartScrollContaine
             };
 
             const resizeObserver = new ResizeObserver(onResize);
-            resizeObserver.observe(startTilesContainer.current);
+            resizeObserver.observe(startTilesContainer.current!);
             return () => resizeObserver.disconnect();
         }
 
@@ -80,7 +80,7 @@ export default function StartScrollContainer({ tileGroups }: StartScrollContaine
 
     }, [tileGroups, height, isMobile]);
 
-    const maxRows = !isMobile && (Math.floor(height / 128) * 128) + 30;
+    const maxRows = (!isMobile && (Math.floor(height / 128) * 128) + 30) || 0;
 
     return (
         <MobileContext.Provider value={isMobile}>

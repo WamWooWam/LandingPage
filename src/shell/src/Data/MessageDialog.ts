@@ -6,11 +6,11 @@ import { newGuid } from "../Util";
 export default class MessageDialog {
     private id: string;
 
-    title: string = null;
-    content: string = null;
-    defaultCommandIndex: number = null;
-    cancelCommandIndex: number = null;
-    commands: UICommand[] = null;
+    title: string | null = null;
+    content: string | null = null;
+    defaultCommandIndex: number | null = null;
+    cancelCommandIndex: number | null = null;
+    commands: UICommand[] = [];
 
     constructor(content: string, title: string = "") {
         this.id = newGuid();

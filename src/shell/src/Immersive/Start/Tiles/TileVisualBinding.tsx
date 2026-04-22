@@ -14,7 +14,7 @@ export interface TileVisualRendererProps {
 }
 
 export default function TileVisualBinding({ binding }: RenderableProps<TileVisualRendererProps>) {
-    const TileTemplate = TileTemplates[binding.template as keyof typeof TileTemplates];
+    const TileTemplate = TileTemplates[binding!.template as keyof typeof TileTemplates];
     const tileSize = useTileSize();
     const ref = useRef<HTMLDivElement>(null);
     const [scale, setScale] = useState(1);
@@ -38,7 +38,7 @@ export default function TileVisualBinding({ binding }: RenderableProps<TileVisua
 
     return (
         <div ref={ref} class="tile-visual tile-visual-visible" style={{ transform: `scale(${scale})`, transformOrigin: scale > 1 ? 'top center' : 'top left' }}>
-            {(TileTemplate !== null && binding !== null) && <TileTemplate elements={binding.elements} />}
+            {(TileTemplate !== null && binding !== null) && <TileTemplate elements={binding!.elements} />}
         </div>
     )
 }

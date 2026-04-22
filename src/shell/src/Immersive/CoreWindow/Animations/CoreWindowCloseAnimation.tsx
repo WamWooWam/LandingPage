@@ -21,8 +21,7 @@ interface CoreWindowImposterState {
 }
 
 export default class CoreWindowCloseAnimation extends Component<CoreWindowImposterProps, CoreWindowImposterState> {
-
-    rootRef: RefObject<HTMLDivElement> = null;
+    rootRef: RefObject<HTMLDivElement> = null!;
 
     constructor(props: CoreWindowImposterProps) {
         super(props);
@@ -45,8 +44,8 @@ export default class CoreWindowCloseAnimation extends Component<CoreWindowImpost
             const values = e.values;
             const transform = `scale(${values.scale})`;
 
-            this.rootRef.current.style.transform = transform;
-            this.rootRef.current.style.opacity = `${values.opacity}`;
+            this.rootRef.current!.style.transform = transform;
+            this.rootRef.current!.style.opacity = `${values.opacity}`;
         });
 
         runner.addEventListener("complete", () => {

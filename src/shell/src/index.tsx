@@ -15,4 +15,4 @@ import { render } from "preact"
 
 Promise.all([hasWebP, hasAvif]);
 
-render(<Root />, document.getElementById("app"));
+render(<Root />, document.getElementById("app")!);

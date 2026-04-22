@@ -30,7 +30,7 @@ export default class CoreWindowManager {
         return info;
     }
 
-    static getWindowById(id: string): CoreWindow {
+    static getWindowById(id: string): CoreWindow | undefined {
         return CoreWindowManager.coreWindowMap.get(id);
     }
 

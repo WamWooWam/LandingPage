@@ -1,8 +1,6 @@
-import { Component } from "preact";
 import CoreApplicationManager from "./Data/CoreApplicationManager";
 import CoreWindowLayoutManager from "./Data/CoreWindowLayoutManager";
 import CoreWindowRenderer from "~/Immersive/CoreWindow/CoreWindowRenderer";
-import Events from "./Events";
 import MessageDialogRenderer from "~/Immersive/MessageDialog/MessageDialogRenderer";
 import PackageRegistry from "./Data/PackageRegistry";
 import ViewSizePreference from "./Data/ViewSizePreference";
@@ -12,40 +10,32 @@ interface StandaloneRootProps {
     packageId: string;
 }
 
-interface StandaloneRootState {
-    id: string;
-}
-
 // BUGBUG: this is currently optimised for a single window to reduce bundle size,
 // but may we need to support multiple windows per app in future
-export default class StandaloneRoot extends Component<StandaloneRootProps, StandaloneRootState> {
-    componentWillMount() {
-        let pack = PackageRegistry.getPackage(this.props.packageId);
-        let app = pack.applications.get(this.props.appId);
-        if (!app) {
-            throw new Error(`Application ${this.props.appId} not found!`);
-        }
-
-        const instance = CoreApplicationManager.launchInstance(pack, app);
-        CoreWindowLayoutManager.getInstance()
-            .addWindowToLayout(instance.mainWindow, ViewSizePreference.default)
-
-        Events.getInstance()
-            .addEventListener("layout-updated", () => {
-                this.forceUpdate(); // slight hack to force a re-render
-            });
-
-        this.setState({ id: instance.mainWindow.id });
+// export default class StandaloneRoot extends Component<StandaloneRootProps, StandaloneRootState> {
+export default function StandaloneRoot(props: StandaloneRootProps) {
+    let pack = PackageRegistry.getPackage(props.packageId)!;
+    let app = pack.applications!.get(props.appId);
+    if (!app) {
+        throw new Error(`Application ${props.appId} not found!`);
     }
 
-    render() {
-        return (
-            <>
-                <div class="core-window-container">
-                    <CoreWindowRenderer id={this.state.id} isLaunching={false} visible={true} />
-                </div>
-                <MessageDialogRenderer />
-            </>
-        );
-    }
+    const instance = CoreApplicationManager.launchInstance(pack, app);
+    CoreWindowLayoutManager.getInstance()
+        .addWindowToLayout(instance.mainWindow, ViewSizePreference.default)
+
+    // Events.getInstance()
+    //     .addEventListener("layout-updated", () => {
+    //         this.forceUpdate(); // slight hack to force a re-render
+    //     });
+
+    const id = instance.mainWindow.id;
+    return (
+        <>
+            <div class="core-window-container">
+                <CoreWindowRenderer id={id} isLaunching={false} visible={true} />
+            </div>
+            <MessageDialogRenderer />
+        </>
+    );
 }

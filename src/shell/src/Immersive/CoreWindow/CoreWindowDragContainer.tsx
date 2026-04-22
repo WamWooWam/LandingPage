@@ -1,4 +1,4 @@
-import * as bezier from "bezier-easing";
+import bezier from "bezier-easing";
 
 import { Component, RefObject, createRef } from "preact";
 
@@ -11,8 +11,8 @@ import { Position } from "~/Util";
 import Storyboard from "~/Animation/Storyboard";
 
 interface CoreWindowDragContainerState {
-    window: CoreWindow;
-    anchor: Position;
+    window: CoreWindow | null;
+    anchor: Position | null;
     dragState: CoreWindowDragState;
     x: number;
     y: number;
@@ -43,7 +43,7 @@ const EASE_FASTIN = bezier(0.1, 0.9, 0.2, 1.0);
 const EASE_DESKTOPWITHPOP = bezier(0.84, 0.21, 0.82, 0.72);
 
 export default class CoreWindowDragContainer extends Component<CoreWindowDragContainerProps, CoreWindowDragContainerState> {
-    rootRef: RefObject<HTMLDivElement> = null;
+    rootRef: RefObject<HTMLDivElement> = null!;
 
     constructor(props: CoreWindowDragContainerProps) {
         super(props);
@@ -86,7 +86,7 @@ export default class CoreWindowDragContainer extends Component<CoreWindowDragCon
         switch (this.state.dragState) {
             case CoreWindowDragState.closing:
                 // close the window
-                this.state.window.close();
+                this.state.window!.close();
                 break;
         }
 
@@ -132,7 +132,7 @@ export default class CoreWindowDragContainer extends Component<CoreWindowDragCon
         var sb = new Storyboard()
             .addLayer("scaleX", this.state.scaleX, 0.25, 0, 0.66, EASE_FASTIN)
             .addLayer("scaleY", this.state.scaleY, 0.25, 0, 0.66, EASE_FASTIN)
-            .addLayer("y", this.state.y, window.innerHeight - ((this.state.window.size.height * 0.25) / 2), 0, 0.66, EASE_FASTIN)
+            .addLayer("y", this.state.y, window.innerHeight - ((this.state.window!.size.height * 0.25) / 2), 0, 0.66, EASE_FASTIN)
             .addLayer("opacity", this.state.opacity, 0.4, 0, 0.66, EASE_FASTIN);
 
         var runner = new AnimationRunner(sb.createAnimation());
@@ -145,7 +145,7 @@ export default class CoreWindowDragContainer extends Component<CoreWindowDragCon
     onPointerMove(e: PointerEvent) {
         // calculate the new position of the window
         const pointerPos = { x: e.clientX, y: e.clientY };
-        const x = pointerPos.x - this.state.anchor.x;
+        const x = pointerPos.x - this.state.anchor!.x;
         if (pointerPos.y > window.innerHeight * 0.75) {
             // y is in the bottom 25% of the screen, so snap to the bottom
             this.goToState(CoreWindowDragState.closing);
@@ -170,10 +170,10 @@ export default class CoreWindowDragContainer extends Component<CoreWindowDragCon
         console.log("pointer up");
 
         // remove event listeners
-        this.state.sourceElement.removeEventListener("pointermove", this.onPointerMove);
-        this.state.sourceElement.removeEventListener("pointerup", this.onPointerUp);
-        this.state.sourceElement.removeEventListener("pointercancel", this.onPointerUp);
-        this.state.sourceElement.releasePointerCapture(e.pointerId);
+        this.state.sourceElement!.removeEventListener("pointermove", this.onPointerMove);
+        this.state.sourceElement!.removeEventListener("pointerup", this.onPointerUp);
+        this.state.sourceElement!.removeEventListener("pointercancel", this.onPointerUp);
+        this.state.sourceElement!.releasePointerCapture(e.pointerId);
     }
 
     onPointerUpDragging(e: PointerEvent) {
@@ -188,15 +188,15 @@ export default class CoreWindowDragContainer extends Component<CoreWindowDragCon
         }
 
         CoreWindowLayoutManager.getInstance()
-            .snapWindow(this.state.window, snap);
+            .snapWindow(this.state.window!, snap);
 
         // fix the transform origin to the center of the window
-        const bounds = this.rootRef.current.getBoundingClientRect();
+        const bounds = this.rootRef.current!.getBoundingClientRect();
         const initialPosition = { x: bounds.left, y: bounds.top };
         const initialSize = { width: bounds.width, height: bounds.height };
 
-        const targetSize = this.state.window.size;
-        const targetPosition = this.state.window.position;
+        const targetSize = this.state.window!.size;
+        const targetPosition = this.state.window!.position;
 
         const initialX = initialPosition.x - (targetSize.width / 2) + (initialSize.width / 2);
         const initialY = initialPosition.y - (targetSize.height / 2) + (initialSize.height / 2);
@@ -236,7 +236,7 @@ export default class CoreWindowDragContainer extends Component<CoreWindowDragCon
         var sb = new Storyboard()
             .addLayer("scaleX", this.state.scaleX, 0.20, 0, 0.5, EASE_FASTIN)
             .addLayer("scaleY", this.state.scaleY, 0.20, 0, 0.5, EASE_FASTIN)
-            .addLayer("y", this.state.y, window.innerHeight - ((this.state.window.size.height * 0.25) / 2), 0, 0.5, EASE_FASTIN)
+            .addLayer("y", this.state.y, window.innerHeight - ((this.state.window!.size.height * 0.25) / 2), 0, 0.5, EASE_FASTIN)
             .addLayer("opacity", this.state.opacity, 0, 0, 0.5, EASE_FASTIN);
 
         var runner = new AnimationRunner(sb.createAnimation());
@@ -259,8 +259,8 @@ export default class CoreWindowDragContainer extends Component<CoreWindowDragCon
             style = {
                 border: "1px solid #555555",
                 position: 'absolute',
-                width: this.state.window.size.width + "px",
-                height: this.state.window.size.height + "px",
+                width: this.state.window!.size.width + "px",
+                height: this.state.window!.size.height + "px",
                 transformOrigin: this.state.transformOrigin,
                 transform: `translate3d(${this.state.x}px, ${this.state.y}px, 0px) scale(${this.state.scaleX}, ${this.state.scaleY})`,
                 opacity: this.state.opacity,

@@ -1,4 +1,4 @@
-export function ConvertMarginToStyle(margin: string) {
+export function ConvertMarginToStyle(margin: string | undefined): string | null {
     if (!margin) return null;
 
     const parts = margin.split(",");

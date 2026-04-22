@@ -3,7 +3,7 @@ import { Package } from "@landing-page/shared";
 export default class PackageRegistry {
     static __packages: Map<string, Package> = new Map();
 
-    static getPackage(id: string): Package {
+    static getPackage(id: string): Package | undefined {
         var pack = PackageRegistry.__packages.get(id);
         return pack;
     }

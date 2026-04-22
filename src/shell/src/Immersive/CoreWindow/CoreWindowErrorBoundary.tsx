@@ -3,7 +3,7 @@ import "./core-window-error.scss"
 import { Component, createContext } from "preact"
 
 interface CoreWindowErrorBoundaryProps {
-    error: Error
+    error?: Error | null;
 }
 
 

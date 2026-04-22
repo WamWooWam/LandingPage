@@ -5,7 +5,7 @@ import { PackageIdentity } from "./PackageIdentity";
 import { PackageProperties } from "./PackageProperties";
 export interface Package {
     path: string;
-    identity?: PackageIdentity;
+    identity: PackageIdentity;
     properties?: PackageProperties;
     applications?: Map<string, PackageApplication>;
     capabilities?: PackageCapability[];

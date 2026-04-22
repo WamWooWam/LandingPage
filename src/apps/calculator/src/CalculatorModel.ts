@@ -7,7 +7,7 @@ function getSeparator(separatorType: Intl.NumberFormatPartTypes) {
     const num = 10000.1;
     return Intl.NumberFormat()
         .formatToParts(num)
-        .find(part => part.type === separatorType)
+        .find(part => part.type === separatorType)!
         .value;
 }
 

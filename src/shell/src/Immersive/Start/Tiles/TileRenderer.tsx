@@ -37,7 +37,7 @@ interface TileContextData {
     size: TileSize;
 }
 
-const TileContext = createContext<TileContextData>(null);
+const TileContext = createContext<TileContextData>(null!);
 
 interface TileInnerProps {
     pack: Package;
@@ -54,7 +54,7 @@ const getAppAndPackage = (packageName: string, appId: string): { pack: Package, 
     if (!pack) console.warn(`Package ${packageName} not found!`);
     let app = pack?.applications?.get(appId);
     if (!app) console.warn(`App ${appId} in package ${packageName} not found!`);
-    return { pack, app };
+    return { pack: pack!, app: app! };
 }
 
 const TileInner = ({ pack, app, visuals, appStatus, size }: TileInnerProps) => {
@@ -112,16 +112,14 @@ const TileInner = ({ pack, app, visuals, appStatus, size }: TileInnerProps) => {
     return (
         <>
             <div class="tile">
-                <>
-                    <div class="front" style={frontStyle} key={frontKey}>
-                        <TileVisualRenderer key={frontKey} app={app} binding={frontBinding} size={size} />
+                <div class="front" style={frontStyle} key={frontKey}>
+                    <TileVisualRenderer key={frontKey} app={app} binding={frontBinding} size={size} />
+                </div>
+                {swapping.value &&
+                    <div class="next" style={frontStyle} key={nextKey} onAnimationEnd={onAnimationEnded}>
+                        <TileVisualRenderer key={nextKey} app={app} binding={nextBinding} size={size} />
                     </div>
-                    {swapping.value &&
-                        <div class="next" style={frontStyle} key={nextKey} onAnimationEnd={onAnimationEnded}>
-                            <TileVisualRenderer key={nextKey} app={app} binding={nextBinding} size={size} />
-                        </div>
-                    }
-                </>
+                }
 
                 {size !== TileSize.square70x70 &&
                     <TileBranding branding={visual.branding}
@@ -131,7 +129,7 @@ const TileInner = ({ pack, app, visuals, appStatus, size }: TileInnerProps) => {
                         visualElements={app.visualElements} />}
             </div>
 
-            <TileBadge isError={appStatus && appStatus.statusCode !== 0} />
+            <TileBadge isError={!!(appStatus && appStatus.statusCode !== 0)} />
 
             <div className="tile-border"
                 style={{ border: '1px solid rgba(255,255,255,0.1)' }} />
@@ -147,12 +145,12 @@ export default function TileRenderer({ packageName, appId, row, column, style, s
     const root = useRef<HTMLAnchorElement>(null);
 
     const [pressState, setPressState] = useState<PressState>("none");
-    const [appStatus, setAppStatus] = useState<AppStatus>(null);
+    const [appStatus, setAppStatus] = useState<AppStatus>(null!);
     const [availableVisuals, setAvailableVisuals] = useState<Map<TileSize, TileVisual[]>>(new Map());
     const [visuals, setVisuals] = useState<TileVisual[]>([]);
     const [visible, setVisible] = useState<boolean>(true);
 
-    const { pack, app } = getAppAndPackage(packageName, appId);
+    const { pack, app } = getAppAndPackage(packageName!, appId);
 
     const isMobile = useMobile();
 
@@ -225,7 +223,7 @@ export default function TileRenderer({ packageName, appId, row, column, style, s
 
     const onMouseDown = (e: PointerEvent) => {
         // capture the event to get mouseup outside the element
-        root.current.setPointerCapture(e.pointerId);
+        root.current!.setPointerCapture(e.pointerId);
 
         updatePressState(e);
     };
@@ -233,7 +231,7 @@ export default function TileRenderer({ packageName, appId, row, column, style, s
     const onMouseUp = (e: PointerEvent) => {
         setPressState("none");
 
-        root.current.releasePointerCapture(e.pointerId);
+        root.current!.releasePointerCapture(e.pointerId);
     }
 
     const onClick = (e: MouseEvent) => {
@@ -261,7 +259,7 @@ export default function TileRenderer({ packageName, appId, row, column, style, s
         if (app.executable) {
             e.preventDefault();
 
-            const bounds = root.current.getBoundingClientRect();
+            const bounds = root.current!.getBoundingClientRect();
             const event = new AppLaunchRequestedEvent(
                 pack,
                 app,

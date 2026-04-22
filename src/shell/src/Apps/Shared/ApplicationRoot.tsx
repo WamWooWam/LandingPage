@@ -2,8 +2,8 @@ import { AppInstance, CoreWindow } from "@landing-page/shared";
 
 import { createContext } from "preact";
 
-export const InstanceContext = createContext<AppInstance>(null);
-export const CoreWindowContext = createContext<CoreWindow>(null);
+export const InstanceContext = createContext<AppInstance>(null!);
+export const CoreWindowContext = createContext<CoreWindow>(null!);
 
 export default function ApplicationRoot(props: { instance: AppInstance, window: CoreWindow, children: any }) {
     return (

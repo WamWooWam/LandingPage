@@ -30,7 +30,7 @@ export default class AnimationRunner {
     public stop() {
         if (this.running) {
             this.running = false;
-            cancelAnimationFrame(this.animationFrame);
+            cancelAnimationFrame(this.animationFrame!);
         }
     }
 
@@ -51,17 +51,17 @@ export default class AnimationRunner {
             this.animationFrame = requestAnimationFrame(this.run);
         } else {
             let values = this.animation.tick(1.0);
-            this.eventTarget.dispatchEvent(new AnimationEvent(progress, values));
+            this.eventTarget.dispatchEvent(new AnimationEvent(1.0, values));
             this.running = false;
             this.eventTarget.dispatchEvent(new Event("complete"));
         }
     }
 
-    public addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void {
-        this.eventTarget.addEventListener(type, listener, options);
+    public addEventListener(type: string, listener: Function, options?: boolean | AddEventListenerOptions): void {
+        this.eventTarget.addEventListener(type, listener as EventListenerOrEventListenerObject, options);
     }
 
-    public removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void {
-        this.eventTarget.removeEventListener(type, listener, options);
+    public removeEventListener(type: string, listener: Function, options?: boolean | EventListenerOptions): void {
+        this.eventTarget.removeEventListener(type, listener as EventListenerOrEventListenerObject, options);
     }
 }

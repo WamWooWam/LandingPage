@@ -1,7 +1,7 @@
 import "./externals"
 
 import PackageRegistry from "./Data/PackageRegistry";
-import ScrollStateProvider from "./Immersive/Start/ScrollStateProvider";
+// import ScrollStateProvider from "./Immersive/Start/ScrollStateProvider";
 import Start from "./Immersive/Start";
 import CharmsBarRenderer from "./Immersive/Charms/CharmsBarRenderer";
 import CoreWindowContainer from "./Immersive/CoreWindow/CoreWindowContainer";
@@ -22,8 +22,8 @@ export default function Root() {
 
     useEffect(() => {
         async function loadLayoutAndPackages() {
-            const layout = document.getElementById("start-screen-xml").textContent;
-            const packages = JSON.parse(document.getElementById("packages-json").textContent);
+            const layout = document.getElementById("start-screen-xml")!.textContent;
+            const packages = JSON.parse(document.getElementById("packages-json")!.textContent);
 
             for (const key in packages) {
                 const pack = packages[key];
@@ -38,9 +38,9 @@ export default function Root() {
 
     return (
         <ErrorBoundary>
-            <ScrollStateProvider>
+            {/* <ScrollStateProvider> */}
                 {layout && <Start layoutString={layout} />}
-            </ScrollStateProvider>
+            {/* </ScrollStateProvider> */}
 
             <CharmsBarRenderer />
             <CoreWindowContainer />

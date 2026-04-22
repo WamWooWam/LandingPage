@@ -15,12 +15,12 @@ export default class Events {
         return Events.instance;
     }
 
-    public addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void {
-        this.eventTarget.addEventListener(type, listener, options);
+    public addEventListener(type: string, listener: EventListenerOrEventListenerObject | Function, options?: boolean | AddEventListenerOptions): void {
+        this.eventTarget.addEventListener(type, listener as EventListenerOrEventListenerObject, options);
     }
 
-    public removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void {
-        this.eventTarget.removeEventListener(type, listener, options);
+    public removeEventListener(type: string, listener: EventListenerOrEventListenerObject | Function, options?: boolean | EventListenerOptions): void {
+        this.eventTarget.removeEventListener(type, listener as EventListenerOrEventListenerObject, options);
     }
 
     public dispatchEvent(event: Event): boolean {

@@ -38,7 +38,7 @@ interface CoreWindowImposterState {
 
 export default class CoreWindowLaunchAnimationFromTile extends Component<CoreWindowImposterProps, CoreWindowImposterState> {
 
-    rootRef: RefObject<HTMLDivElement> = null;
+    rootRef: RefObject<HTMLDivElement> = null!;
 
     constructor(props: CoreWindowImposterProps) {
         super(props);
@@ -81,7 +81,7 @@ export default class CoreWindowLaunchAnimationFromTile extends Component<CoreWin
             const values = e.values;
             const transform = `perspective(4000px) translate3d(${values.x}px, ${values.y}px, 0px) scale(${values.width}, ${values.height}) rotate3d(0,1,0,${values.angle}deg)`;
 
-            this.rootRef.current.style.transform = transform;
+            this.rootRef.current!.style.transform = transform;
         });
 
         runner.addEventListener("complete", () => {

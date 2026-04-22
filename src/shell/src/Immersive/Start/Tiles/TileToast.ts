@@ -33,8 +33,8 @@ export function getVisuals(doc: Document, size: TileSize): TileVisual[] {
 
         for (let i = 0; i < bindingElements.length; i++) {
             let element = bindingElements[i];
-            let template = element.getAttribute("template");
-            let fallback = element.getAttribute("fallback");
+            let template = element.getAttribute("template")!;
+            let fallback = element.getAttribute("fallback")!;
 
 
             if (getTileSizeForTemplate(template) !== size || (fallback && getTileSizeForTemplate(fallback) !== size))
@@ -59,9 +59,9 @@ export function getVisuals(doc: Document, size: TileSize): TileVisual[] {
 
 function getElements(node: Element): TileElement {
     return {
-        id: parseInt(node.getAttribute("id")),
+        id: parseInt(node.getAttribute("id")!),
         type: <"image" | "text">node.tagName.toLowerCase(),
-        content: node.tagName.toLowerCase() === "image" ? node.getAttribute("src") : node.textContent,
-        alt: node.getAttribute("alt")
+        content: node.tagName.toLowerCase() === "image" ? node.getAttribute("src")! : node.textContent,
+        alt: node.getAttribute("alt")!
     }
 }

@@ -1,4 +1,5 @@
-import { Component, Ref, RefObject, createRef } from "preact";
+import { memo } from "preact/compat";
+import { useEffect, useRef } from "preact/hooks";
 
 import CoreWindow from "~/Data/CoreWindow";
 
@@ -6,32 +7,33 @@ interface CoreWindowAppHostProps {
     window: CoreWindow;
 }
 
-export default class CoreWindowAppHost extends Component<CoreWindowAppHostProps, {}> {
-    hostRef: RefObject<HTMLDivElement>;
+const CoreWindowAppHost = memo(({ window }: CoreWindowAppHostProps) => {
+    const hostRef = useRef<HTMLDivElement>(null);
 
-    constructor(props: CoreWindowAppHostProps) {
-        super(props);
-        this.hostRef = createRef<HTMLDivElement>();
-    }
-
-    shouldComponentUpdate(): boolean {
-        return false;
-    }
-
-    async componentDidMount(): Promise<void> {
-        this.hostRef.current.appendChild(this.props.window.view);
-        await this.props.window.load();
-    }
-
-    componentWillUnmount(): void {
-        try {
-            this.hostRef.current.removeChild(this.props.window.view);
-        } catch (e) {
-            this.props.window.view.remove();
+    useEffect(() => {
+        const host = hostRef.current;
+        if (host) {
+            host.appendChild(window.view);
         }
-    }
 
-    render() {
-        return (<div ref={this.hostRef} className="core-window-app-host"></div>);
-    }
-}
+        const loadWindow = async () => {
+            await window.load();
+        };
+
+        loadWindow();
+
+        return () => {
+            if (host) {
+                try {
+                    host.removeChild(window.view);
+                } catch (e) {
+                    window.view.remove();
+                }
+            }
+        };
+    }, [window]);
+
+    return (<div ref={hostRef} className="core-window-app-host"></div>);
+});
+
+export default CoreWindowAppHost;

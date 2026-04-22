@@ -31,7 +31,6 @@ export default class CoreWindow {
     private _size: Size;
     private _position: Position;
     private _signals: CoreWindowSignals = new CoreWindowSignals();
-    private _messageChannel: MessageChannel;
 
     constructor(instance: CoreApplication) {
         this._id = `CoreWindow_${newGuid()}`
@@ -45,6 +44,8 @@ export default class CoreWindow {
 
         this.signals.title.value = "";
         this.signals.isVisible.value = false;
+
+        this.error = null;
     }
 
     get signals(): CoreWindowSignals {
@@ -166,7 +167,7 @@ export default class CoreWindow {
             this.state = CoreWindowState.loaded;
         }
         catch (e) {
-            this.error = e;
+            this.error = e as Error;
             this.title = "This page can\u2019t be displayed";
             this.state = CoreWindowState.errored;
 

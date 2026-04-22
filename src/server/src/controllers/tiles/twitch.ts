@@ -10,8 +10,8 @@ const twitchUsername = process.env.TWITCH_USERNAME;
 const clientId = process.env.TWITCH_CLIENT_ID;
 const clientSecret = process.env.TWITCH_CLIENT_SECRET;
 
-let access_token = null;
-let token_expires = null;
+let access_token: string | null = null;
+let token_expires: number | null = null;
 
 let avatar_url = null;
 
@@ -45,7 +45,7 @@ const getUser = async (username: string) => {
     const resp = await fetch(url, {
         method: 'GET',
         headers: {
-            'Client-ID': clientId,
+            'Client-ID': clientId!,
             'Authorization': `Bearer ${await ensureAccessToken()}`
         }
     })
@@ -60,7 +60,7 @@ const isLive = async (req: Request, res: Response) => {
     let resp = await fetch(url, {
         method: 'GET',
         headers: {
-            'Client-ID': clientId,
+            'Client-ID': clientId!,
             'Authorization': `Bearer ${await ensureAccessToken()}`
         }
     })
@@ -84,7 +84,7 @@ const isLive = async (req: Request, res: Response) => {
     resp = await fetch(url, {
         method: 'GET',
         headers: {
-            'Client-ID': clientId,
+            'Client-ID': clientId!,
             'Authorization': `Bearer ${await ensureAccessToken()}`
         }
     })

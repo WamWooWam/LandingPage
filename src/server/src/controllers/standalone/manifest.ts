@@ -5,7 +5,7 @@ import { getAppAndPackage } from "../../utils";
 
 function getManifest(req: Request, res: Response) {
     const { app, pack } = getAppAndPackage(req.params.app, req.params.package);
-    const packageId = pack.identity.packageFamilyName;
+    const packageId = pack.identity!.packageFamilyName;
     const appId = app.id;
 
     const manifest = {
@@ -56,7 +56,7 @@ function getManifest(req: Request, res: Response) {
 function getApplicationConfig(req: Request, res: Response) {
     const { app, pack } = getAppAndPackage(req.params.app, req.params.package);
 
-    const packId = pack.identity.packageFamilyName;
+    const packId = pack.identity!.packageFamilyName;
     const id = app.id;
     const config = `<?xml version="1.0" encoding="utf-8"?>
 <browserconfig>

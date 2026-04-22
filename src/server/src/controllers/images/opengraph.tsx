@@ -21,9 +21,6 @@ import { Router } from 'express';
 import { render } from 'preact-render-to-string';
 import type { JSX } from 'preact/jsx-runtime';
 
-
-
-
 const createCoordinate = (row: number, column: number, cellSize: number, padding: number) => ({
     x: column * (cellSize + padding),
     y: row * (cellSize + padding),
@@ -101,8 +98,7 @@ const Tile = ({ pack, ...params }: TileParams & { pack: Package }) => (
                 font-size="7.5pt"
                 fill={params.textStyle === 'light' ? 'white' : 'black'}
                 style="font-family: 'Segoe UI';">
-                {params.text}
-            </text>
+                {params.text}</text>
         )}
     </g>
 );
@@ -220,13 +216,13 @@ const generateThumbnail = async () => {
     return render(
         <svg width="1280" height="800" viewBox="0 0 640 400" fill="none" xmlns="http://www.w3.org/2000/svg">
             <defs>
-                {createGradientsForPackages()}
+                {...createGradientsForPackages()}
             </defs>
             <rect width="640" height="400" fill="#04016c" />
             <text x={58} y={72} font-size="42pt" fill="white" style="font-family: 'Segoe UI'; font-weight: 300;">
                 Start
             </text>
-            {renderedGroups}
+            {...renderedGroups}
         </svg>
     );
 };
@@ -235,7 +231,7 @@ const generateThumbnail = async () => {
 // Get tile styling and content data
 const getTileData = (tile: TilePropsWithType) => {
     const tileProps = tile as TileProps;
-    const pack = PackageRegistry.getPackage(tileProps.packageName);
+    const pack = PackageRegistry.getPackage(tileProps.packageName)!;
     const app = pack.applications!.get(tileProps.appId)!;
 
     let image = app.visualElements.square150x150Logo;
@@ -266,7 +262,7 @@ export const generateThumbnailPng = async () => {
     const SegoeUI = require.resolve("../../../fonts/segoeui.ttf");
     const SegoeUILight = require.resolve("../../../fonts/segoeuil.ttf");
 
-    const svg = await generateThumbnail(); 
+    const svg = await generateThumbnail();
     const options = {
         background: '#000000',
         fitTo: {

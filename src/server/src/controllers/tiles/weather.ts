@@ -174,7 +174,7 @@ type WeatherData = {
 type Hourly = WeatherData["weather"][0]["hourly"][0];
 
 let weatherMutex = new Mutex();
-let weatherData: Record<string, WeatherData> = null;
+let weatherData: Record<string, WeatherData> = null as any;
 const fetchWeatherData = async () => {
     await weatherMutex.run(async () => {
         await _fetchWeatherData();
@@ -207,7 +207,7 @@ const _fetchWeatherData = async () => {
         }
     }
 
-    const cities = process.env.WEATHER_CITIES.split(',');
+    const cities = process.env.WEATHER_CITIES!.split(',');
     const output = await Promise.all(cities.map(city => fetchCity(city)));
 
     let weather = {};
@@ -289,7 +289,7 @@ const addLargeVisual = (json: WeatherData, root: Document, visual: Element) => {
 
     const pack = PackageRegistry.getPackage("Microsoft.BingWeather_8wekyb3d8bbwe");
     const binding = createBindingFromTemplate(root, visual, TileTemplateType.tileSquare310x310BlockAndText02);
-    binding.getElementsByTagName("image")[0].setAttribute("src", `/packages/${pack.identity.packageFullName}/images/tiles/${weatherBackgroundCode}.jpg`);
+    binding.getElementsByTagName("image")[0].setAttribute("src", `/packages/${pack!.identity!.packageFullName}/images/tiles/${weatherBackgroundCode}.jpg`);
     binding.getElementsByTagName("text")[0].textContent = `${condition.temp_C}°`;
     binding.getElementsByTagName("text")[1].textContent = `${nearestArea.areaName[0].value}`;
     binding.getElementsByTagName("text")[2].textContent = `${weatherDesc}`;
@@ -318,7 +318,7 @@ async function getWeatherTile(req: Request, res: Response) {
     const visual = createVisual(root);
     visual.setAttribute("branding", "name");
 
-    const cities = process.env.WEATHER_CITIES.split(',').map(c => c.trim());
+    const cities = process.env.WEATHER_CITIES!.split(',').map(c => c.trim());
 
     addLargeVisual(weatherData[cities[0]], root, visual);
 

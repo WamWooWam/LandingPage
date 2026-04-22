@@ -31,10 +31,10 @@ export default class TileUpdateManager {
         if (!this._tileUpdateMap.has(packageApplication)) {
             this._tileUpdateMap.set(packageApplication, []);
         }
-        this._tileUpdateMap.get(packageApplication).push(callback);
+        this._tileUpdateMap.get(packageApplication)!.push(callback);
 
         if (this._visualsCache.has(packageApplication)) {
-            callback(this._visualsCache.get(packageApplication));
+            callback(this._visualsCache.get(packageApplication)!);
         }
         else {
             this._fetchQueue.push(packageApplication);
@@ -48,7 +48,7 @@ export default class TileUpdateManager {
         if (!this._tileUpdateMap.has(packageApplication)) {
             return;
         }
-        let callbacks: TileUpdateCallback[] = this._tileUpdateMap.get(packageApplication);
+        let callbacks: TileUpdateCallback[] = this._tileUpdateMap.get(packageApplication) ?? [];
         let index: number = callbacks.indexOf(callback);
         if (index >= 0) {
             callbacks.splice(index, 1);
@@ -113,8 +113,8 @@ export default class TileUpdateManager {
     private notifyVisualUpdate(packageApplication: PackageApplication, visuals: Map<TileSize, TileVisual[]>): void {
         if (!this._tileUpdateMap.has(packageApplication)) {
             return;
-        }
-        let callbacks: TileUpdateCallback[] = this._tileUpdateMap.get(packageApplication);
+        }   
+        let callbacks: TileUpdateCallback[] = this._tileUpdateMap.get(packageApplication) ?? [];
         for (let callback of callbacks) {
             callback(visuals);
         }

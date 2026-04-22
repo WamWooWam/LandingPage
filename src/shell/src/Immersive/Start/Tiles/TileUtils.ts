@@ -29,8 +29,8 @@ export type TilePropsWithType = (TileProps | FenceTileProps) & {
 
 export function collapseTiles(tiles: RawTileProps[]): Array<TilePropsWithType> {
     let fullTiles: TilePropsWithType[] = [];
-    let currentFence: Array<TileProps> = null;
-    let resetFence = (val: [] = null) => {
+    let currentFence: TileProps[] = null!;
+    let resetFence = (val: [] | null = null) => {
         if (currentFence && currentFence.length) {
             fullTiles.push({
                 size: TileSize.square150x150,
@@ -41,13 +41,13 @@ export function collapseTiles(tiles: RawTileProps[]): Array<TilePropsWithType> {
             });
         }
 
-        currentFence = val;
+        currentFence = val as any;
     }
 
     for (const tile of tiles) {
         if (tile.fence && tile.size === TileSize.square70x70) {
             resetFence([]);
-            currentFence.push(tile);
+            currentFence?.push(tile);
             continue;
         }
 
@@ -60,7 +60,7 @@ export function collapseTiles(tiles: RawTileProps[]): Array<TilePropsWithType> {
                     resetFence([]);
                 }
 
-                currentFence.push(tile);
+                currentFence?.push(tile);
                 continue;
             }
         }
